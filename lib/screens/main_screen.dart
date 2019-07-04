@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_travel_concept/screens/home.dart';
-import 'package:flutter_travel_concept/widgets/icon_badge.dart';
+import 'package:SmartRabit/screens/home.dart';
+import 'package:SmartRabit/widgets/icon_badge.dart';
 
 class MainScreen extends StatefulWidget {
   @override

@@ -1,5 +1,6 @@
+import 'package:SmartRabit/util/const.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_travel_concept/screens/main_screen.dart';
+import 'package:SmartRabit/screens/main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,93 +14,21 @@ class _LoginScreenState extends State<LoginScreen>
     super.initState();
   }
 
-  Widget HomePage() {
-    return new Container(
+  Widget homePage() {
+    return Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
-        color: Colors.redAccent,
-        // image: DecorationImage(
-        //   colorFilter: new ColorFilter.mode(
-        //       Colors.black.withOpacity(0.1), BlendMode.dstATop),
-        //   image: AssetImage('1.jpge'),
-        //   fit: BoxFit.cover,
-        // ),
+        image: DecorationImage(
+          image: AssetImage('assets/home.png'),
+          fit: BoxFit.cover,
+        ),
       ),
-      child: new Column(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(top: 250.0),
-            child: Center(
-              child: Icon(
-                Icons.headset_mic,
-                color: Colors.white,
-                size: 40.0,
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20.0),
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Awesome",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                ),
-                Text(
-                  "App",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          new Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 150.0),
-            alignment: Alignment.center,
-            child: new Row(
-              children: <Widget>[
-                new Expanded(
-                  child: new OutlineButton(
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
-                    color: Colors.redAccent,
-                    highlightedBorderColor: Colors.white,
-                    onPressed: () => gotoSignup(),
-                    child: new Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20.0,
-                        horizontal: 20.0,
-                      ),
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Expanded(
-                            child: Text(
-                              "SIGN UP",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          new Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
+            margin: const EdgeInsets.only(left: 60.0, right: 60.0),
             alignment: Alignment.center,
             child: new Row(
               children: <Widget>[
@@ -109,24 +38,42 @@ class _LoginScreenState extends State<LoginScreen>
                         borderRadius: new BorderRadius.circular(30.0)),
                     color: Colors.white,
                     onPressed: () => gotoLogin(),
-                    child: new Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20.0,
-                        horizontal: 20.0,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 18.0),
+                      child: Text(
+                        "LOG IN",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Constants.textColor,
+                            fontWeight: FontWeight.bold),
                       ),
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Expanded(
-                            child: Text(
-                              "LOGIN",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.redAccent,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.only(
+                left: 60.0, right: 60.0, top: 15.0, bottom: 50.0),
+            alignment: Alignment.center,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: OutlineButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    color: Colors.redAccent,
+                    highlightedBorderColor: Colors.white,
+                    onPressed: () => gotoSignup(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 18.0),
+                      child: Text(
+                        "SIGN UP",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -139,18 +86,9 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget LoginPage() {
+  Widget loginPage() {
     return new Container(
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        // image: DecorationImage(
-        //   colorFilter: new ColorFilter.mode(
-        //       Colors.black.withOpacity(0.05), BlendMode.dstATop),
-        //   image: AssetImage('assets/1.jpge'),
-        //   fit: BoxFit.cover,
-        // ),
-      ),
       child: new ListView(
         padding: EdgeInsets.only(bottom: 30.0),
         children: <Widget>[
@@ -332,156 +270,12 @@ class _LoginScreenState extends State<LoginScreen>
               ],
             ),
           ),
-          // new Container(
-          //   width: MediaQuery.of(context).size.width,
-          //   margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
-          //   alignment: Alignment.center,
-          //   child: Row(
-          //     children: <Widget>[
-          //       new Expanded(
-          //         child: new Container(
-          //           margin: EdgeInsets.all(8.0),
-          //           decoration: BoxDecoration(border: Border.all(width: 0.25)),
-          //         ),
-          //       ),
-          //       Text(
-          //         "OR CONNECT WITH",
-          //         style: TextStyle(
-          //           color: Colors.grey,
-          //           fontWeight: FontWeight.bold,
-          //         ),
-          //       ),
-          //       new Expanded(
-          //         child: new Container(
-          //           margin: EdgeInsets.all(8.0),
-          //           decoration: BoxDecoration(border: Border.all(width: 0.25)),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // new Container(
-          //   width: MediaQuery.of(context).size.width,
-          //   margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
-          //   child: new Row(
-          //     children: <Widget>[
-          //       new Expanded(
-          //         child: new Container(
-          //           margin: EdgeInsets.only(right: 8.0),
-          //           alignment: Alignment.center,
-          //           child: new Row(
-          //             children: <Widget>[
-          //               new Expanded(
-          //                 child: new FlatButton(
-          //                   shape: new RoundedRectangleBorder(
-          //                     borderRadius: new BorderRadius.circular(30.0),
-          //                   ),
-          //                   color: Color(0Xff3B5998),
-          //                   onPressed: () => {},
-          //                   child: new Container(
-          //                     child: new Row(
-          //                       mainAxisAlignment: MainAxisAlignment.center,
-          //                       children: <Widget>[
-          //                         new Expanded(
-          //                           child: new FlatButton(
-          //                             onPressed: () => {},
-          //                             padding: EdgeInsets.only(
-          //                               top: 20.0,
-          //                               bottom: 20.0,
-          //                             ),
-          //                             child: new Row(
-          //                               mainAxisAlignment:
-          //                                   MainAxisAlignment.spaceEvenly,
-          //                               children: <Widget>[
-          //                                 Icon(
-          //                                   const IconData(0xea90,
-          //                                       fontFamily: 'icomoon'),
-          //                                   color: Colors.white,
-          //                                   size: 15.0,
-          //                                 ),
-          //                                 Text(
-          //                                   "FACEBOOK",
-          //                                   textAlign: TextAlign.center,
-          //                                   style: TextStyle(
-          //                                       color: Colors.white,
-          //                                       fontWeight: FontWeight.bold),
-          //                                 ),
-          //                               ],
-          //                             ),
-          //                           ),
-          //                         ),
-          //                       ],
-          //                     ),
-          //                   ),
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //       new Expanded(
-          //         child: new Container(
-          //           margin: EdgeInsets.only(left: 8.0),
-          //           alignment: Alignment.center,
-          //           child: new Row(
-          //             children: <Widget>[
-          //               new Expanded(
-          //                 child: new FlatButton(
-          //                   shape: new RoundedRectangleBorder(
-          //                     borderRadius: new BorderRadius.circular(30.0),
-          //                   ),
-          //                   color: Color(0Xffdb3236),
-          //                   onPressed: () => {},
-          //                   child: new Container(
-          //                     child: new Row(
-          //                       mainAxisAlignment: MainAxisAlignment.center,
-          //                       children: <Widget>[
-          //                         new Expanded(
-          //                           child: new FlatButton(
-          //                             onPressed: () => {},
-          //                             padding: EdgeInsets.only(
-          //                               top: 20.0,
-          //                               bottom: 20.0,
-          //                             ),
-          //                             child: new Row(
-          //                               mainAxisAlignment:
-          //                                   MainAxisAlignment.spaceEvenly,
-          //                               children: <Widget>[
-          //                                 Icon(
-          //                                   const IconData(0xea88,
-          //                                       fontFamily: 'icomoon'),
-          //                                   color: Colors.white,
-          //                                   size: 15.0,
-          //                                 ),
-          //                                 Text(
-          //                                   "GOOGLE",
-          //                                   textAlign: TextAlign.center,
-          //                                   style: TextStyle(
-          //                                       color: Colors.white,
-          //                                       fontWeight: FontWeight.bold),
-          //                                 ),
-          //                               ],
-          //                             ),
-          //                           ),
-          //                         ),
-          //                       ],
-          //                     ),
-          //                   ),
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // )
         ],
       ),
     );
   }
 
-  Widget SignupPage() {
+  Widget signupPage() {
     return new Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
@@ -723,19 +517,17 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   gotoLogin() {
-    //controller_0To1.forward(from: 0.0);
     _controller.animateToPage(
       0,
-      duration: Duration(milliseconds: 800),
+      duration: Duration(milliseconds: 750),
       curve: Curves.easeInOut,
     );
   }
 
   gotoSignup() {
-    //controller_minus1To0.reverse(from: 0.0);
     _controller.animateToPage(
       2,
-      duration: Duration(milliseconds: 800),
+      duration: Duration(milliseconds: 750),
       curve: Curves.easeInOut,
     );
   }
@@ -749,7 +541,7 @@ class _LoginScreenState extends State<LoginScreen>
       body: PageView(
         controller: _controller,
         physics: new AlwaysScrollableScrollPhysics(),
-        children: <Widget>[LoginPage(), HomePage(), SignupPage()],
+        children: <Widget>[loginPage(), homePage(), signupPage()],
         scrollDirection: Axis.horizontal,
       ),
     );

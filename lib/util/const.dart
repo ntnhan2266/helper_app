@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 class Constants{
 
-  static String appName = "Foody Bite";
+  static String appName = "Smart Rabbit";
 
   //Colors for theme
-  static Color lightPrimary = Color(0xfffcfcff);
-  static Color darkPrimary = Colors.black;
+  static Color primaryColor = Color(0xff5cc7c1);
+  static Color textColor = Color(0xff13918C);
   static Color lightAccent = Colors.blueGrey[900];
-  static Color darkAccent = Colors.white;
   static Color lightBG = Color(0xfffcfcff);
   static Color darkBG = Colors.black;
-  static Color badgeColor = Colors.red;
 
   static ThemeData lightTheme = ThemeData(
     backgroundColor: lightBG,
-    primaryColor: lightPrimary,
+    primaryColor: primaryColor,
     accentColor:  lightAccent,
     cursorColor: lightAccent,
     scaffoldBackgroundColor: lightBG,
@@ -32,28 +30,5 @@ class Constants{
 //      ),
     ),
   );
-
-  static ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    backgroundColor: darkBG,
-    primaryColor: darkPrimary,
-    accentColor: darkAccent,
-    scaffoldBackgroundColor: darkBG,
-    cursorColor: darkAccent,
-    appBarTheme: AppBarTheme(
-      elevation: 0,
-      textTheme: TextTheme(
-        title: TextStyle(
-          color: lightBG,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-//      iconTheme: IconThemeData(
-//        color: darkAccent,
-//      ),
-    ),
-  );
-
 
 }

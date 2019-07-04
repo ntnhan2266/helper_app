@@ -1,5 +1,5 @@
-name: flutter_travel_concept
-description: A UI concept for travel app
+name: SmartRabit
+description: Applications for helping your housework
 
 version: 1.0.0+1
 
@@ -37,6 +37,7 @@ flutter:
     - assets/3.jpeg
     - assets/4.jpeg
     - assets/5.jpeg
+    - assets/home.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

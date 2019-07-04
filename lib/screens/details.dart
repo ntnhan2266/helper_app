@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_travel_concept/util/places.dart';
-import 'package:flutter_travel_concept/widgets/icon_badge.dart';
+import 'package:SmartRabit/util/places.dart';
+import 'package:SmartRabit/widgets/icon_badge.dart';
 
 
 class Details extends StatefulWidget {

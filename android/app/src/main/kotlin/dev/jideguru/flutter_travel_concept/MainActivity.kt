@@ -1,4 +1,4 @@
-package dev.jideguru.flutter_travel_concept
+package dev.jideguru.SmartRabit
 
 import android.os.Bundle
 
