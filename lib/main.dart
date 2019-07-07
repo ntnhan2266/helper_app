@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: Constants.appName,
       theme: Constants.lightTheme,
-      home: LoginScreen(),
+      home: WelcomeScreen(),
     );
   }
 }

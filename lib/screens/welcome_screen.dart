@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:SmartRabit/screens/main_screen.dart';
 import 'package:flutter/painting.dart';
 
-class LoginScreen extends StatefulWidget {
+class WelcomeScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class _WelcomeScreenState extends State<WelcomeScreen>
     with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
   }
 
-  Widget homePage() {
+  Widget _homePage() {
     return Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen>
                   borderRadius: BorderRadius.circular(30.0),
                 ),
                 color: Colors.white,
-                onPressed: gotoLogin,
+                onPressed: _gotoLogin,
               ),
             ),
             Container(
@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen>
                   borderRadius: BorderRadius.circular(30.0),
                 ),
                 color: Colors.transparent,
-                onPressed: gotoSignup,
+                onPressed: _gotoSignup,
               ),
             ),
           ],
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget loginPage() {
+  Widget _loginPage() {
     return Container(
       height: MediaQuery.of(context).size.height,
       child: ListView(
@@ -144,7 +144,15 @@ class _LoginScreenState extends State<LoginScreen>
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                     color: Constants.primaryColor,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return MainScreen();
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -155,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget signupPage() {
+  Widget _signupPage() {
     return Container(
       height: MediaQuery.of(context).size.height,
       child: ListView(
@@ -228,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen>
                       ),
                     ),
                   ),
-                  onTap: jumpToLogin,
+                  onTap: _jumpToLogin,
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -259,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  gotoLogin() {
+  _gotoLogin() {
     _controller.animateToPage(
       0,
       duration: Duration(milliseconds: 750),
@@ -267,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  gotoSignup() {
+  _gotoSignup() {
     _controller.animateToPage(
       2,
       duration: Duration(milliseconds: 750),
@@ -275,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  jumpToLogin() {
+  _jumpToLogin() {
     _controller.jumpToPage(0);
   }
 
@@ -318,7 +326,7 @@ class _LoginScreenState extends State<LoginScreen>
         body: PageView(
           controller: _controller,
           physics: AlwaysScrollableScrollPhysics(),
-          children: <Widget>[loginPage(), homePage(), signupPage()],
+          children: <Widget>[_loginPage(), _homePage(), _signupPage()],
           scrollDirection: Axis.horizontal,
         ),
       ),
