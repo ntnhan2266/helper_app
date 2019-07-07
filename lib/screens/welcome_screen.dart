@@ -79,190 +79,206 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   Widget _loginPage() {
     return Container(
-      height: MediaQuery.of(context).size.height,
-      child: ListView(
-        padding: EdgeInsets.only(bottom: 30.0),
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            height: MediaQuery.of(context).size.height * 0.4,
-            padding: EdgeInsets.only(top: 50.0),
-            child: Text(
-              "Smart Rabbit",
-              style: TextStyle(
-                  fontSize: 35,
-                  fontFamily: "Pacifico",
-                  color: Constants.primaryColor),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 40.0),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
-                    labelText: "TÊN ĐĂNG NHẬP",
-                    labelStyle: TextStyle(fontSize: 13.0),
-                  ),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    labelText: "MẬT KHẨU",
-                    labelStyle: TextStyle(fontSize: 13.0),
-                  ),
-                  obscureText: true,
-                ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  padding: EdgeInsets.only(top: 30.0),
-                  child: Text(
-                    "Quên mật khẩu?",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Constants.primaryTextColor,
-                      fontSize: 15.0,
+      color: Constants.primaryColor,
+      child: Center(
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          shrinkWrap: true,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 40.0),
+                    child: Text(
+                      "Smart Rabbit",
+                      style: TextStyle(
+                          fontSize: 35,
+                          fontFamily: "Pacifico",
+                          color: Constants.primaryTextColor),
                     ),
                   ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.only(top: 60.0),
-                  child: RaisedButton(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 18.0),
-                      child: Text(
-                        "ĐĂNG NHẬP",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Constants.lightTextColor,
-                            fontWeight: FontWeight.bold),
+                  TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person),
+                      labelText: "TÊN ĐĂNG NHẬP",
+                      labelStyle: TextStyle(fontSize: 12.0),
+                    ),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
+                      labelText: "MẬT KHẨU",
+                      labelStyle: TextStyle(fontSize: 12.0),
+                    ),
+                    obscureText: true,
+                  ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.only(top: 30.0, bottom: 10.0),
+                    child: Text(
+                      "Quên mật khẩu?",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Constants.primaryTextColor,
+                        fontSize: 14.0,
                       ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    color: Constants.primaryColor,
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return MainScreen();
-                          },
-                        ),
-                      );
-                    },
                   ),
-                ),
-              ],
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 40.0, vertical: 40.0),
+                    child: RaisedButton(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 18.0),
+                        child: Text(
+                          "ĐĂNG NHẬP",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Constants.lightTextColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      color: Constants.primaryColor,
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) {
+                              return MainScreen();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _signupPage() {
     return Container(
-      height: MediaQuery.of(context).size.height,
-      child: ListView(
-        padding: EdgeInsets.only(bottom: 30.0),
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            height: MediaQuery.of(context).size.height * 0.4,
-            padding: EdgeInsets.only(top: 50.0),
-            child: Text(
-              "Smart Rabbit",
-              style: TextStyle(
-                  fontSize: 35,
-                  fontFamily: "Pacifico",
-                  color: Constants.primaryColor),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 40.0),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
-                    labelText: "TÊN ĐĂNG NHẬP",
-                    labelStyle: TextStyle(fontSize: 13.0),
-                  ),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    labelText: "MẬT KHẨU",
-                    labelStyle: TextStyle(fontSize: 13.0),
-                  ),
-                  obscureText: true,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.mail),
-                    labelText: "EMAIL",
-                    labelStyle: TextStyle(fontSize: 13.0),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.phone),
-                    labelText: "SỐ ĐIỆN THOẠI",
-                    labelStyle: TextStyle(fontSize: 13.0),
-                  ),
-                  keyboardType: TextInputType.phone,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.home),
-                    labelText: "ĐỊA CHỈ",
-                    labelStyle: TextStyle(fontSize: 13.0),
-                  ),
-                ),
-                GestureDetector(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.only(top: 30.0),
+      color: Constants.primaryColor,
+      child: Center(
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          shrinkWrap: true,
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height,
+              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 40.0),
                     child: Text(
-                      "Đã có tài khoản?",
+                      "Smart Rabbit",
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Constants.primaryTextColor,
-                        fontSize: 15.0,
-                      ),
+                          fontSize: 35,
+                          fontFamily: "Pacifico",
+                          color: Constants.primaryTextColor),
                     ),
                   ),
-                  onTap: _jumpToLogin,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.only(top: 60.0),
-                  child: RaisedButton(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 18.0),
+                  TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person),
+                      labelText: "TÊN ĐĂNG NHẬP",
+                      labelStyle: TextStyle(fontSize: 12.0),
+                    ),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
+                      labelText: "MẬT KHẨU",
+                      labelStyle: TextStyle(fontSize: 12.0),
+                    ),
+                    obscureText: true,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.mail),
+                      labelText: "EMAIL",
+                      labelStyle: TextStyle(fontSize: 12.0),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.phone),
+                      labelText: "SỐ ĐIỆN THOẠI",
+                      labelStyle: TextStyle(fontSize: 12.0),
+                    ),
+                    keyboardType: TextInputType.phone,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.home),
+                      labelText: "ĐỊA CHỈ",
+                      labelStyle: TextStyle(fontSize: 12.0),
+                    ),
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(top: 30.0),
                       child: Text(
-                        "ĐĂNG KÝ",
-                        textAlign: TextAlign.center,
+                        "Đã có tài khoản?",
                         style: TextStyle(
-                            color: Constants.lightTextColor,
-                            fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          color: Constants.primaryTextColor,
+                          fontSize: 14.0,
+                        ),
                       ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    color: Constants.primaryColor,
-                    onPressed: () {},
+                    onTap: _jumpToLogin,
                   ),
-                ),
-              ],
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(top: 60.0),
+                    child: RaisedButton(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 18.0),
+                        child: Text(
+                          "ĐĂNG KÝ",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Constants.lightTextColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      color: Constants.primaryColor,
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
