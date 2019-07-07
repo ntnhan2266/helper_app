@@ -1,6 +1,6 @@
+import 'package:SmartRabit/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartRabit/screens/details.dart';
-import 'package:SmartRabit/screens/login_screen.dart';
 import 'package:SmartRabit/widgets/icon_badge.dart';
 import 'package:SmartRabit/util/places.dart';
 
