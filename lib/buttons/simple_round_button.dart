@@ -4,13 +4,13 @@ class SimpleRoundButton extends StatelessWidget {
 
   final Color backgroundColor;
   final Text buttonText;
-  final Color textColor;
+  final Color primaryTextColor;
   final Function onPressed;
 
   SimpleRoundButton({
     this.backgroundColor,
     this.buttonText,
-    this.textColor,
+    this.primaryTextColor,
     this.onPressed
   });
 

@@ -1,6 +1,6 @@
+import 'package:SmartRabit/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:SmartRabit/screens/login_screen.dart';
 import 'package:SmartRabit/util/const.dart';
 
 void main() async {

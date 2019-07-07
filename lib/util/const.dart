@@ -5,7 +5,9 @@ class Constants{
 
   //Colors for theme
   static Color primaryColor = Color(0xff5cc7c1);
-  static Color textColor = Color(0xff13918C);
+  static Color primaryTextColor = Color(0xff13918C);
+  static Color lightTextColor = Colors.white;
+  static Color darkTextColor = Colors.black;
   static Color lightAccent = Colors.blueGrey[900];
   static Color lightBG = Color(0xfffcfcff);
   static Color darkBG = Colors.black;

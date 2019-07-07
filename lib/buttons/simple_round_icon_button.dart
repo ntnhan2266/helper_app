@@ -4,7 +4,7 @@ class SimpleRoundIconButton extends StatelessWidget {
 
   final Color backgroundColor;
   final Text buttonText;
-  final Color textColor;
+  final Color primaryTextColor;
   final Icon icon;
   final Color iconColor;
   final Alignment iconAlignment;
@@ -13,7 +13,7 @@ class SimpleRoundIconButton extends StatelessWidget {
   SimpleRoundIconButton({
     this.backgroundColor = Colors.redAccent,
     this.buttonText = const Text("REQUIRED TEXT"),
-    this.textColor = Colors.white,
+    this.primaryTextColor = Colors.white,
     this.icon = const Icon(Icons.email),
     this.iconColor,
     this.iconAlignment = Alignment.centerLeft,
