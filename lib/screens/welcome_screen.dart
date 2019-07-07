@@ -134,8 +134,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 40.0, vertical: 40.0),
+                    padding: EdgeInsets.all(40.0),
                     child: RaisedButton(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 18.0),
@@ -180,7 +179,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           shrinkWrap: true,
           children: <Widget>[
             Container(
-              height: MediaQuery.of(context).size.height,
               margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               decoration: BoxDecoration(
@@ -255,7 +253,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.only(top: 60.0),
+                    padding: EdgeInsets.all(40.0),
                     child: RaisedButton(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 18.0),
