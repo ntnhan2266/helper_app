@@ -1,3 +1,4 @@
+import 'package:SmartRabit/screens/otp_screen.dart';
 import 'package:SmartRabit/util/const.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartRabit/screens/main_screen.dart';
@@ -139,7 +140,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (BuildContext context) {
-                                  return MainScreen();
+                                  return OtpScreen();
                                 },
                               ),
                             );
@@ -256,14 +257,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         ),
                       ),
                       Padding(
-                          padding: const EdgeInsets.only(top: 18.0, bottom: 14.0),
-                          child: GestureDetector(
-                            child: Text(
-                              "Đã có tài khoản?",
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                            onTap: _jumpToLogin,
-                          ))
+                        padding: const EdgeInsets.only(top: 18.0, bottom: 14.0),
+                        child: GestureDetector(
+                          child: Text(
+                            "Đã có tài khoản?",
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                          onTap: _jumpToLogin,
+                        ),
+                      ),
                     ],
                   ),
                 ],
