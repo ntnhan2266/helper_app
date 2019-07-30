@@ -2,6 +2,7 @@ import 'package:SmartRabit/util/const.dart';
 import 'package:flutter/material.dart';
 import 'package:SmartRabit/screens/main_screen.dart';
 import 'package:flutter/painting.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -88,15 +89,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.0),
               padding: EdgeInsets.symmetric(horizontal: 20.0),
+              height: MediaQuery.of(context).size.height * 0.75,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
+                borderRadius: BorderRadius.circular(20.0),
                 color: Colors.white,
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(vertical: 40.0),
                     child: Text(
                       "Smart Rabbit",
                       style: TextStyle(
@@ -107,59 +109,74 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                   TextField(
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      labelText: "TÊN ĐĂNG NHẬP",
+                      prefixIcon: Icon(Icons.phone),
+                      labelText: "SỐ ĐIỆN THOẠI",
                       labelStyle: TextStyle(fontSize: 12.0),
                     ),
+                    keyboardType: TextInputType.phone,
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock),
-                      labelText: "MẬT KHẨU",
-                      labelStyle: TextStyle(fontSize: 12.0),
-                    ),
-                    obscureText: true,
-                  ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.only(top: 30.0, bottom: 10.0),
-                    child: Text(
-                      "Quên mật khẩu?",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Constants.primaryTextColor,
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(40.0),
-                    child: RaisedButton(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 18.0),
-                        child: Text(
-                          "ĐĂNG NHẬP",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Constants.lightTextColor,
-                              fontWeight: FontWeight.bold),
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.symmetric(horizontal: 40.0),
+                        child: RaisedButton(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 18.0),
+                            child: Text(
+                              "ĐĂNG NHẬP",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Constants.lightTextColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          color: Constants.primaryColor,
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return MainScreen();
+                                },
+                              ),
+                            );
+                          },
                         ),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      color: Constants.primaryColor,
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return MainScreen();
-                            },
-                          ),
-                        );
-                      },
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Đăng nhập bằng ",
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                EvaIcons.facebook,
+                                color: Colors.blue,
+                              ),
+                              onPressed: () {},
+                            ),
+                            Text(
+                              " | ",
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                EvaIcons.google,
+                                color: Colors.red,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ],
               ),
@@ -179,17 +196,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           shrinkWrap: true,
           children: <Widget>[
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
+              margin: EdgeInsets.symmetric(horizontal: 20.0),
               padding: EdgeInsets.symmetric(horizontal: 20.0),
+              height: MediaQuery.of(context).size.height * 0.75,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
+                borderRadius: BorderRadius.circular(20.0),
                 color: Colors.white,
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(vertical: 40.0),
                     child: Text(
                       "Smart Rabbit",
                       style: TextStyle(
@@ -200,77 +218,53 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                   TextField(
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      labelText: "TÊN ĐĂNG NHẬP",
-                      labelStyle: TextStyle(fontSize: 12.0),
-                    ),
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock),
-                      labelText: "MẬT KHẨU",
-                      labelStyle: TextStyle(fontSize: 12.0),
-                    ),
-                    obscureText: true,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.mail),
-                      labelText: "EMAIL",
-                      labelStyle: TextStyle(fontSize: 12.0),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
                       prefixIcon: Icon(Icons.phone),
                       labelText: "SỐ ĐIỆN THOẠI",
                       labelStyle: TextStyle(fontSize: 12.0),
                     ),
                     keyboardType: TextInputType.phone,
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.home),
-                      labelText: "ĐỊA CHỈ",
-                      labelStyle: TextStyle(fontSize: 12.0),
-                    ),
-                  ),
-                  GestureDetector(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.only(top: 30.0),
-                      child: Text(
-                        "Đã có tài khoản?",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Constants.primaryTextColor,
-                          fontSize: 14.0,
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.symmetric(horizontal: 40.0),
+                        child: RaisedButton(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 18.0),
+                            child: Text(
+                              "ĐĂNG KÝ",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Constants.lightTextColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          color: Constants.primaryColor,
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return MainScreen();
+                                },
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    ),
-                    onTap: _jumpToLogin,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(40.0),
-                    child: RaisedButton(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 18.0),
-                        child: Text(
-                          "ĐĂNG KÝ",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Constants.lightTextColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      color: Constants.primaryColor,
-                      onPressed: () {},
-                    ),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 18.0, bottom: 14.0),
+                          child: GestureDetector(
+                            child: Text(
+                              "Đã có tài khoản?",
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                            onTap: _jumpToLogin,
+                          ))
+                    ],
                   ),
                 ],
               ),
@@ -283,7 +277,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   _gotoLogin() {
     _controller.animateToPage(
-      0,
+      2,
       duration: Duration(milliseconds: 750),
       curve: Curves.easeInOut,
     );
@@ -291,14 +285,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   _gotoSignup() {
     _controller.animateToPage(
-      2,
+      0,
       duration: Duration(milliseconds: 750),
       curve: Curves.easeInOut,
     );
   }
 
   _jumpToLogin() {
-    _controller.jumpToPage(0);
+    _controller.jumpToPage(2);
   }
 
   PageController _controller =
@@ -340,7 +334,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         body: PageView(
           controller: _controller,
           physics: AlwaysScrollableScrollPhysics(),
-          children: <Widget>[_loginPage(), _homePage(), _signupPage()],
+          children: <Widget>[_signupPage(), _homePage(), _loginPage()],
           scrollDirection: Axis.horizontal,
         ),
       ),
