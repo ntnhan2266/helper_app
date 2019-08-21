@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1001001704459",
+    "firebase_url": "https://smart-rabbit-aa1e6.firebaseio.com",
+    "project_id": "smart-rabbit-aa1e6",
+    "storage_bucket": "smart-rabbit-aa1e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001001704459:android:6bb2f33e02c0668c",
+        "android_client_info": {
+          "package_name": "com.example.smart_rabbit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1001001704459-dikfcfqrsh8o2bm0pkh52sljjmiun8ak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASj6ymqeIMYRXy4CuTTIhKzUB3QpNSg3I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1001001704459-dikfcfqrsh8o2bm0pkh52sljjmiun8ak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
