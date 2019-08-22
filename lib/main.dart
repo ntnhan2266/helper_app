@@ -3,7 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import './screens/splash_screen.dart';
+import './screens/home_screen.dart';
 import './utils/constants.dart';
+import './utils/route_names.dart';
 
 void main() {
   runApp(EasyLocalization(child: SmartRabbitApp()));
@@ -39,7 +41,24 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
           primarySwatch: Colors.blue,
         ),
         home: SplashScreen(),
+        onGenerateRoute: _getRoute
       ),
+    );
+  }
+
+  Route _getRoute(RouteSettings settings) {
+    switch (settings.name){
+      case homeRoute:
+        return _buildRoute(settings, HomeScreen());
+      default:
+        return null;
+    }
+  }
+
+  MaterialPageRoute _buildRoute(RouteSettings settings, Widget builder){
+    return new MaterialPageRoute(
+      settings: settings,
+      builder: (BuildContext context) => builder,
     );
   }
 }
