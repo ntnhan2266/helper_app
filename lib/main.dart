@@ -23,11 +23,11 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
     return EasyLocalizationProvider(
       data: data,
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: APP_NAME,
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          //app-specific localization
+          // App-specific localization
           EasylocaLizationDelegate(
               locale: data.locale,
               path: 'assets/i18n'
