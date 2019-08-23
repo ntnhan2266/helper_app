@@ -16,8 +16,21 @@ class SmartRabbitApp extends StatefulWidget {
   _SmartRabbitAppState createState() => _SmartRabbitAppState();
 }
 
+Map<int, Color> color = {
+  50: Color.fromRGBO(75, 134, 180, .1),
+  100: Color.fromRGBO(75, 134, 180, .2),
+  200: Color.fromRGBO(75, 134, 180, .3),
+  300: Color.fromRGBO(75, 134, 180, .4),
+  400: Color.fromRGBO(75, 134, 180, .5),
+  500: Color.fromRGBO(75, 134, 180, .6),
+  600: Color.fromRGBO(75, 134, 180, .7),
+  700: Color.fromRGBO(75, 134, 180, .8),
+  800: Color.fromRGBO(75, 134, 180, .9),
+  900: Color.fromRGBO(75, 134, 180, 1),
+};
+
 class _SmartRabbitAppState extends State<SmartRabbitApp> {
-  
+  MaterialColor colorCustom = MaterialColor(0xFF880E4F, color);
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +38,26 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
     return EasyLocalizationProvider(
       data: data,
       child: MaterialApp(
-        title: APP_NAME,
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          // App-specific localization
-          EasylocaLizationDelegate(
-              locale: data.locale,
-              path: 'assets/i18n'
+          title: APP_NAME,
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            // App-specific localization
+            EasylocaLizationDelegate(locale: data.locale, path: 'assets/i18n'),
+          ],
+          supportedLocales: [Locale('vi', 'VN'), Locale('en', 'US')],
+          locale: data.savedLocale,
+          theme: ThemeData(
+              primarySwatch: colorCustom,
+              primaryColor: Color.fromRGBO(75, 134, 180, 1),
           ),
-        ],
-        supportedLocales: [Locale('vi', 'VN'), Locale('en', 'US')],
-        locale: data.savedLocale,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: SplashScreen(),
-        onGenerateRoute: _getRoute
-      ),
+          home: SplashScreen(),
+          onGenerateRoute: _getRoute),
     );
   }
 
   Route _getRoute(RouteSettings settings) {
-    switch (settings.name){
+    switch (settings.name) {
       case homeRoute:
         return _buildRoute(settings, HomeScreen());
       default:
@@ -55,7 +65,7 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
     }
   }
 
-  MaterialPageRoute _buildRoute(RouteSettings settings, Widget builder){
+  MaterialPageRoute _buildRoute(RouteSettings settings, Widget builder) {
     return new MaterialPageRoute(
       settings: settings,
       builder: (BuildContext context) => builder,
