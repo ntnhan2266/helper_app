@@ -1,3 +1,11 @@
 {
-    "test": "test i18n"
+    "test": "test i18n",
+    "login_with_facebook": "Login with Facebook",
+    "login_with_phonenumber": "Login with phone number",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "please_fill_some_info": "Vui lòng điền một số thông tin dưới đây",
+    "full_name": "Tên đầy đủ",
+    "email": "Email",
+    "phone_number": "Số điện thoại"
 }

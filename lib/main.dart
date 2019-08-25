@@ -4,6 +4,11 @@ import 'package:easy_localization/easy_localization.dart';
 
 import './screens/splash_screen.dart';
 import './screens/home_screen.dart';
+import './screens/intro_screen.dart';
+import './screens/auth_screen.dart';
+import './screens/register_screen.dart';
+import './screens/login_screen.dart';
+
 import './utils/constants.dart';
 import './utils/route_names.dart';
 
@@ -30,11 +35,14 @@ Map<int, Color> color = {
 };
 
 class _SmartRabbitAppState extends State<SmartRabbitApp> {
+  
   MaterialColor colorCustom = MaterialColor(0xFF880E4F, color);
 
   @override
   Widget build(BuildContext context) {
+    // Localization
     var data = EasyLocalizationProvider.of(context).data;
+
     return EasyLocalizationProvider(
       data: data,
       child: MaterialApp(
@@ -50,6 +58,12 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
           theme: ThemeData(
               primarySwatch: colorCustom,
               primaryColor: Color.fromRGBO(75, 134, 180, 1),
+              textTheme: Theme.of(context).textTheme.copyWith(
+                title: TextStyle(
+                  color: Color.fromRGBO(42, 77, 108, 1),
+                  fontFamily: 'Pacifico-Regular'
+                )
+              )
           ),
           home: SplashScreen(),
           onGenerateRoute: _getRoute),
@@ -58,8 +72,16 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
 
   Route _getRoute(RouteSettings settings) {
     switch (settings.name) {
-      case homeRoute:
+      case homeScreenRoute:
         return _buildRoute(settings, HomeScreen());
+      case introScreenRoute:
+        return _buildRoute(settings, IntroScreen());
+      case authScreenRoute:
+        return _buildRoute(settings, AuthScreen());
+      case registerScreenRoute:
+        return _buildRoute(settings, RegisterScreen());
+      case loginScreenRoute:
+        return _buildRoute(settings, LoginScreen());
       default:
         return null;
     }

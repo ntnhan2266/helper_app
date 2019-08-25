@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_rabbit/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/route_names.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // startTime();
+    startTime();
   }
 
   startTime() async {
@@ -23,8 +26,22 @@ class _SplashScreenState extends State<SplashScreen> {
     return new Timer(_duration, navigationPage);
   }
 
-  void navigationPage() {
-      Navigator.of(context).pushReplacementNamed('/home');
+  void navigationPage() async {
+    // If user first login show intro screen
+    // Else if user logged navigate to home
+    // Else navigatate to sign up/sign in page
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final isFirstLogin = prefs.getBool(IS_FIRST_LOGIN) ?? true;
+    if (isFirstLogin) {
+      Navigator.of(context).pushReplacementNamed(introScreenRoute);
+    } else {
+      final token = prefs.getString(X_TOKEN);
+      if (token != null) {
+        Navigator.of(context).pushReplacementNamed(homeScreenRoute);
+      } else {
+        Navigator.of(context).pushReplacementNamed(authScreenRoute);
+      }
+    }
   }
   
   @override
@@ -51,13 +68,17 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'assets/images/logo_x1.png',
+                  'assets/images/logo_x5.png',
                   fit: BoxFit.fill,
-                  height: ScreenUtil.instance.setWidth(70.0),
-                  width: ScreenUtil.instance.setWidth(70.0),
+                  height: ScreenUtil.instance.setWidth(90.0),
+                  width: ScreenUtil.instance.setWidth(90.0),
                 ),
-                SizedBox(height: ScreenUtil.instance.setHeight(20.0),),
-                Text(APP_NAME)
+                SizedBox(height: ScreenUtil.instance.setHeight(5.0),),
+                Text(APP_NAME, 
+                  style: Theme.of(context).textTheme.title.copyWith(
+                    fontSize: ScreenUtil.instance.setSp(28)
+                  ),
+                )
               ],
             )
           ),

@@ -1,3 +1,11 @@
 {
-    "test": "thử"
+    "test": "thử",
+    "login_with_facebook": "Đăng nhập bằng Facebook",
+    "login_with_phonenumber": "Đăng nhập bằng số điện thoại",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "please_fill_some_info": "Vui lòng điền một số thông tin dưới đây",
+    "full_name": "Tên đầy đủ",
+    "email": "Email",
+    "phone_number": "Số điện thoại"
 }

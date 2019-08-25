@@ -135,6 +135,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.15.8"
+  intro_slider:
+    dependency: "direct main"
+    description:
+      name: intro_slider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.7"
   matcher:
     dependency: transitive
     description:
@@ -171,7 +178,7 @@ packages:
     source: hosted
     version: "2.0.3"
   shared_preferences:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
