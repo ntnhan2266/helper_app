@@ -61,6 +61,8 @@ flutter:
     - assets/images/logo_x5.png
     - assets/images/logo_x1.png
     - assets/images/easy.png
+    - assets/images/vn_flag_icon.png
+    - assets/images/login_banner.png
 
 
   #  - images/a_dot_burr.jpeg

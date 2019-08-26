@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -40,6 +41,11 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
 
   @override
   Widget build(BuildContext context) {
+    // Prevent device orientation changes and force portrait
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+    ]);
     // Localization
     var data = EasyLocalizationProvider.of(context).data;
 

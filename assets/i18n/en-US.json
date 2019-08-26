@@ -7,5 +7,7 @@
     "please_fill_some_info": "Vui lòng điền một số thông tin dưới đây",
     "full_name": "Tên đầy đủ",
     "email": "Email",
-    "phone_number": "Số điện thoại"
+    "phone_number": "Số điện thoại",
+    "phone_number_example": "Ví dụ: Nguyễn Văn A",
+    "email_example": "Ví dụ: nguyenvana@email.com"
 }
