@@ -86,7 +86,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontFamily: 'Roboto',
                             fontSize: ScreenUtil.instance.setSp(12.0),
                           )
-                      )
+                      ),
+                      SizedBox(height: ScreenUtil.instance.setHeight(20.0),),
+                      Container(
+                        margin: EdgeInsets.only(
+                          bottom: ScreenUtil.instance.setWidth(labelMargin),
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context).tr('email'),
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: ScreenUtil.instance.setSp(12.0),
+                          )
+                        ),
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Ví dụ: nguyenvana@email.com',
+                        ),
+                        style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: ScreenUtil.instance.setSp(12.0),
+                          )
+                      ),
+                      SizedBox(height: ScreenUtil.instance.setHeight(20.0),),
+                      Container(
+                        margin: EdgeInsets.only(
+                          bottom: ScreenUtil.instance.setWidth(labelMargin),
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context).tr('phone_number'),
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: ScreenUtil.instance.setSp(12.0),
+                          )
+                        ),
+                      ),
                     ],
                   )
                 ),

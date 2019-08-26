@@ -36,7 +36,8 @@ class _AuthScreenState extends State<AuthScreen> {
     @required String label,
     @required Color backgroundColor,
     @required Color textColor,
-    @required Function onTapHandler
+    @required Function onTapHandler,
+    @required Color borderColor
   }) {
     return InkWell(
       onTap: onTapHandler,
@@ -48,7 +49,7 @@ class _AuthScreenState extends State<AuthScreen> {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(5.0),
           border: Border.all(
-            color: Color.fromRGBO(42, 77, 108, 1),
+            color: borderColor,
             width: 1.0
           )
         ),
@@ -139,6 +140,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           width: (screenWidth - ScreenUtil.instance.setWidth(MAIN_MARGIN * 2)) * 0.48,
                           label: AppLocalizations.of(context).tr('login'),
                           backgroundColor: Colors.white,
+                          borderColor: Color.fromRGBO(42, 77, 108, 1),
                           textColor: Color.fromRGBO(42, 77, 108, 1),
                           onTapHandler: () {_navigateToSigninScreen(context);}
                         ),
@@ -147,6 +149,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           width: (screenWidth - ScreenUtil.instance.setWidth(MAIN_MARGIN * 2)) * 0.48,
                           label: AppLocalizations.of(context).tr('register'),
                           backgroundColor: Colors.white,
+                          borderColor: Color.fromRGBO(42, 77, 108, 1),
                           textColor: Color.fromRGBO(42, 77, 108, 1),
                           onTapHandler: () {_navigateToRegisterScreen(context);}
                         ),
@@ -164,6 +167,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   width: (screenWidth - ScreenUtil.instance.setWidth(MAIN_MARGIN * 2)),
                   label: AppLocalizations.of(context).tr('login_with_facebook'),
                   backgroundColor: Color.fromRGBO(59, 89, 152, 1),
+                  borderColor: Color.fromRGBO(59, 89, 152, 1),
                   textColor: Colors.white,
                   onTapHandler: () {}
                 ),
