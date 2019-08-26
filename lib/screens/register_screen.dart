@@ -109,6 +109,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontSize: ScreenUtil.instance.setSp(12.0),
                           )
                       ),
+                      SizedBox(height: ScreenUtil.instance.setHeight(20.0),),
+                      Container(
+                        margin: EdgeInsets.only(
+                          bottom: ScreenUtil.instance.setWidth(labelMargin),
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context).tr('phone_number'),
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: ScreenUtil.instance.setSp(12.0),
+                          )
+                        ),
+                      ),
                     ],
                   )
                 ),
