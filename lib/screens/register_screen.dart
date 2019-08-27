@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../utils/route_names.dart';
 import '../utils/constants.dart';
@@ -11,16 +12,76 @@ class RegisterScreen extends StatefulWidget {
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
+class _RegisterData {
+  String name = '';
+  String email = '';
+  String phoneNumber = '';
+}
+
 class _RegisterScreenState extends State<RegisterScreen> {
 
   final _form = GlobalKey<FormState>();
   final _emailFocusNode = FocusNode();
   final _phoneNumberFocusNode = FocusNode();
+  _RegisterData _data = _RegisterData();
 
-  void register() {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void _verifyPhoneNumber(String phoneNumber) async {
+
+    final PhoneVerificationCompleted verificationCompleted =
+      (AuthCredential phoneAuthCredential) {
+      _auth.signInWithCredential(phoneAuthCredential);
+      print('Received phone auth credential: $phoneAuthCredential');
+    };
+
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException authException) {
+        print('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+
+        // Handle error
+    };
+
+    final PhoneCodeSent codeSent =
+      (String verificationId, [int forceResendingToken]) async {
+        print('Please check your phone for the verification code');
+      // _verificationId = verificationId;
+      // Navigate to verify code screen
+      Navigator.pushNamed(context, 
+        verificationCodeRoute, 
+        arguments: {
+          verificationId: verificationId,
+          phoneNumber: _data.phoneNumber
+        }
+      );
+    };
+
+    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+        (String verificationId) {
+      // _verificationId = verificationId;
+      // Handle time out
+    };
+
+    await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: const Duration(seconds: 30),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+  }
+
+  void _register() {
     if (_form.currentState.validate()) {
-      // If the form is valid, display a Snackbar.
-      print('ok');
+      // If the form is valid, save form data
+      _form.currentState.save();
+      print('Printing the register data.');
+      print('Email: ${_data.email}');
+      print('Name: ${_data.name}');
+      print('Phone: ${_data.phoneNumber}');
+
+      // Verify phone number
+      _verifyPhoneNumber(_data.phoneNumber);
     }
   }
 
@@ -104,7 +165,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: ScreenUtil.instance.setSp(12.0),
-                    )
+                    ),
+                    onSaved: (String value) {
+                      this._data.name = value;
+                    }
                   ),
                   SizedBox(height: ScreenUtil.instance.setHeight(20.0),),
                   Container(
@@ -141,7 +205,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: ScreenUtil.instance.setSp(12.0),
-                    )
+                    ),
+                    onSaved: (String value) {
+                      this._data.email = value;
+                    }
                   ),
                   SizedBox(height: ScreenUtil.instance.setHeight(20.0),),
                   Container(
@@ -211,13 +278,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontFamily: 'Roboto',
                             fontSize: ScreenUtil.instance.setSp(12.0),
                           ),
+                          onSaved: (String value) {
+                            this._data.phoneNumber = value;
+                          }
                         ),
                       )
                     ],
                   ),
                   SizedBox(height: ScreenUtil.instance.setHeight(20.0),),
                   InkWell(
-                    onTap: register,
+                    onTap: () async {
+                      _register();
+                    },
                     child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(

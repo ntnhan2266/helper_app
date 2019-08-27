@@ -5,3 +5,4 @@ const String introScreenRoute = '/intro';
 const String authScreenRoute = '/auth';
 const String registerScreenRoute = '/register';
 const String loginScreenRoute = '/login';
+const String verificationCodeRoute = '/verify-code';

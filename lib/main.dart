@@ -9,6 +9,7 @@ import './screens/intro_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/register_screen.dart';
 import './screens/login_screen.dart';
+import './screens/verify_code.dart';
 
 import './utils/constants.dart';
 import './utils/route_names.dart';
@@ -88,6 +89,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, RegisterScreen());
       case loginScreenRoute:
         return _buildRoute(settings, LoginScreen());
+      case verificationCodeRoute:
+        return _buildRoute(settings, VerifyCodeScreen());
       default:
         return null;
     }
