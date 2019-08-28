@@ -50,8 +50,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Navigator.pushNamed(context, 
         verificationCodeRoute, 
         arguments: {
-          verificationId: verificationId,
-          phoneNumber: _data.phoneNumber
+          'verificationId': verificationId,
+          'phoneNumber': _data.phoneNumber
         }
       );
     };
@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       print('Phone: ${_data.phoneNumber}');
 
       // Verify phone number
-      _verifyPhoneNumber(_data.phoneNumber);
+      _verifyPhoneNumber('+84' + _data.phoneNumber);
     }
   }
 

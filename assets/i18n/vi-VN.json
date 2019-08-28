@@ -18,5 +18,7 @@
     "invalid_phone_number": "Vui lòng đúng số điện thoại",
     "enter_registered_phone_number_to_login": "Vui lòng nhập số điện thoại đã đăng ký để đăng nhập",
     "one_more_step": "Thêm một bước nữa",
-    "enter_otp": "Bạn chỉ cần nhập mã OTP gửi tới số điện thoại bạn đã đăng ký"
+    "enter_otp": "Bạn chỉ cần nhập mã OTP gửi tới số điện thoại bạn đã đăng ký",
+    "please_enter_otp_code": "Vui lòng nhập mã OTP",
+    "confirm": "Xác nhận"
 }

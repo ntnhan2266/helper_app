@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 import '../utils/route_names.dart';
 import '../utils/constants.dart';
@@ -11,14 +12,29 @@ class VerifyCodeScreen extends StatefulWidget {
   _VerifyCodeScreenState createState() => _VerifyCodeScreenState();
 }
 
+class VerifyData {
+  String verificationId = '';
+  String phoneNumber = '';
+  String otpCode = '';
+}
+
 class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
   final _form = GlobalKey<FormState>();
 
+  String thisText = "";
+  int pinLength = 6;
+
+  bool hasError = false;
+  String errorMessage;
+  TextEditingController controller = TextEditingController();
+
+  VerifyData _data = VerifyData();
+
   void _signInWithPhone() {
     if (_form.currentState.validate()) {
       // If the form is valid, display a Snackbar.
-      print('ok');
+      _form.currentState.save();
     }
   }
 
@@ -26,6 +42,8 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
   Widget build(BuildContext context) {
     // Get arguments from route
     final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    _data.verificationId = args['verificationId'];
+    _data.phoneNumber = args['phoneNumber'];
     // Responsive
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
@@ -92,14 +110,51 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                       bottom: ScreenUtil.instance.setWidth(LABEL_MARGIN),
                     ),
                     child: Text(
-                      AppLocalizations.of(context).tr('enter_otp'),
+                      AppLocalizations.of(context).tr('enter_otp') + ' +84' + _data.phoneNumber,
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: ScreenUtil.instance.setSp(12.0),
+                        height: 1.4
                       )
                     ),
                   ),
-                   
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      PinCodeTextField(
+                        autofocus: false,
+                        controller: controller,
+                        hideCharacter: false,
+                        highlight: true,
+                        highlightColor: Colors.blue,
+                        defaultBorderColor: Colors.black,
+                        hasTextBorderColor: Colors.green,
+                        maxLength: pinLength,
+                        hasError: hasError,
+                        onTextChanged: (text) {
+                          setState(() {
+                            hasError = false;
+                          });
+                        },
+                        onDone: (otpCode) {
+                          _data.otpCode = otpCode;
+                        },
+                        pinCodeTextFieldLayoutType: PinCodeTextFieldLayoutType.AUTO_ADJUST_WIDTH,
+                        wrapAlignment: WrapAlignment.start,
+                        pinBoxDecoration: ProvidedPinBoxDecoration.underlinedPinBoxDecoration,
+                        pinTextStyle: TextStyle(fontSize: 20.0),
+                        pinTextAnimatedSwitcherTransition: ProvidedPinBoxTextAnimation.scalingTransition,
+                        pinTextAnimatedSwitcherDuration: Duration(milliseconds: 200),
+                      ),
+                      Visibility(
+                        child: Text(
+                          "Wrong PIN!",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        visible: true,
+                      ),
+                    ],
+                  ),
                   SizedBox(height: ScreenUtil.instance.setHeight(20.0)),
                   InkWell(
                     onTap: _signInWithPhone,
@@ -112,7 +167,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Text(
-                          AppLocalizations.of(context).tr('login').toUpperCase(),
+                          AppLocalizations.of(context).tr('confirm').toUpperCase(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontFamily: 'Roboto',
