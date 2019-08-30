@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -8,6 +9,7 @@ import './screens/intro_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/register_screen.dart';
 import './screens/login_screen.dart';
+import './screens/verify_code.dart';
 
 import './utils/constants.dart';
 import './utils/route_names.dart';
@@ -40,6 +42,11 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
 
   @override
   Widget build(BuildContext context) {
+    // Prevent device orientation changes and force portrait
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+    ]);
     // Localization
     var data = EasyLocalizationProvider.of(context).data;
 
@@ -82,6 +89,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, RegisterScreen());
       case loginScreenRoute:
         return _buildRoute(settings, LoginScreen());
+      case verificationCodeRoute:
+        return _buildRoute(settings, VerifyCodeScreen());
       default:
         return null;
     }

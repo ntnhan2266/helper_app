@@ -13,5 +13,18 @@
     "intro_slide_2_title": "Tiện lợi",
     "intro_slide_2_description": "Quản lý công việc và liên lạc \n với người giúp việc ngay trên ứng dụng",
     "intro_slide_3_title": "Đầy đủ hông tin",
-    "intro_slide_3_description": "Xem thông tin và đánh giá \n đầy đủ về người giúp việc"
+    "intro_slide_3_description": "Xem thông tin và đánh giá \n đầy đủ về người giúp việc",
+    "phone_number_example": "Ví dụ: 09xx xxx xxx",
+    "email_example": "Ví dụ: nguyenvana@email.com",
+    "name_example": "Ví dụ: Nguyễn Văn A",
+    "please_enter_name": "Vui lòng nhập tên",
+    "please_enter_email": "Vui lòng nhập email",
+    "please_enter_phone_number": "Vui lòng nhập số điện thoại",
+    "invalid_email": "Email không chính xác. Vui lòng nhập theo định dạng abcd@email.com",
+    "invalid_phone_number": "Vui lòng đúng số điện thoại",
+    "enter_registered_phone_number_to_login": "Vui lòng nhập số điện thoại đã đăng ký để đăng nhập",
+    "one_more_step": "Thêm một bước nữa",
+    "enter_otp": "Bạn chỉ cần nhập mã OTP gửi tới số điện thoại bạn đã đăng ký",
+    "please_enter_otp_code": "Vui lòng nhập mã OTP",
+    "confirm": "Xác nhận"
 }
