@@ -2,10 +2,16 @@
     "test": "test i18n",
     "login_with_facebook": "Login with Facebook",
     "login_with_phonenumber": "Login with phone number",
-    "login": "Đăng nhập",
-    "register": "Đăng ký",
-    "please_fill_some_info": "Vui lòng điền một số thông tin dưới đây",
-    "full_name": "Tên đầy đủ",
+    "login": "Log In",
+    "register": "Sign Up",
+    "please_fill_some_info": "Please fill in these information",
+    "full_name": "Full name",
     "email": "Email",
-    "phone_number": "Số điện thoại"
+    "phone_number": "Phone number",
+    "intro_slide_1_title": "Fast",
+    "intro_slide_1_description": "Find helpers \n with just a few manipulations",
+    "intro_slide_2_title": "Convenient",
+    "intro_slide_2_description": "Manage jobs and contact \n with helpers on the phone",
+    "intro_slide_3_title": "Informative",
+    "intro_slide_3_description": "View information and reviews \n of helpers completely"
 }

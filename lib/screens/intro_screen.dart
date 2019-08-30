@@ -29,26 +29,38 @@ class _IntroScreenState extends State<IntroScreen> {
   void _buildSlideList(BuildContext context) {
     slides.add(
       new Slide(
-        title: AppLocalizations.of(context).tr('test_title'),
-        description: AppLocalizations.of(context).tr('test_content'),
-        pathImage: "assets/images/easy.png",
-        backgroundColor: Color(0xfff5a623),
+        title: AppLocalizations.of(context).tr('intro_slide_1_title'),
+        styleTitle: TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold),
+        marginTitle: EdgeInsets.only(top: 80.0),
+        description: AppLocalizations.of(context).tr('intro_slide_1_description'),
+        styleDescription: TextStyle(color: Colors.black, fontSize: 16),
+        marginDescription: EdgeInsets.only(top: 10.0),
+        backgroundImage: "assets/images/speed.png",
+        backgroundOpacity: 0.0,
       ),
     );
     slides.add(
       new Slide(
-        title: AppLocalizations.of(context).tr('test_title'),
-        description: AppLocalizations.of(context).tr('test_content'),
-        pathImage: "assets/images/easy.png",
-        backgroundColor: Color(0xff203152),
+        title: AppLocalizations.of(context).tr('intro_slide_2_title'),
+        styleTitle: TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold),
+        marginTitle: EdgeInsets.only(top: 80.0),
+        description: AppLocalizations.of(context).tr('intro_slide_2_description'),
+        styleDescription: TextStyle(color: Colors.black, fontSize: 16),
+        marginDescription: EdgeInsets.only(top: 10.0),
+        backgroundImage: "assets/images/convenience.png",
+        backgroundOpacity: 0.0,
       ),
     );
     slides.add(
       new Slide(
-        title: AppLocalizations.of(context).tr('test_title'),
-        description: AppLocalizations.of(context).tr('test_content'),
-        pathImage: "assets/images/easy.png",
-        backgroundColor: Color(0xff9932CC),
+        title: AppLocalizations.of(context).tr('intro_slide_3_title'),
+        styleTitle: TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold),
+        marginTitle: EdgeInsets.only(top: 80.0),
+        description: AppLocalizations.of(context).tr('intro_slide_3_description'),
+        styleDescription: TextStyle(color: Colors.black, fontSize: 16),
+        marginDescription: EdgeInsets.only(top: 10.0),
+        backgroundImage: "assets/images/review.png",
+        backgroundOpacity: 0.0,
       ),
     );
   }
