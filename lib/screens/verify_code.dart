@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 
-import '../utils/route_names.dart';
 import '../utils/constants.dart';
 
 class VerifyCodeScreen extends StatefulWidget {
