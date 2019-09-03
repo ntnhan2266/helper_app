@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../utils/constants.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class VerifyCodeScreen extends StatefulWidget {
   @override
@@ -20,7 +23,6 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
   final _form = GlobalKey<FormState>();
 
-  String thisText = "";
   int pinLength = 6;
 
   bool hasError = false;
@@ -29,10 +31,42 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
   VerifyData _data = VerifyData();
 
-  void _signInWithPhone() {
+  void _signInWithPhone() async {
     if (_form.currentState.validate()) {
       // If the form is valid, display a Snackbar.
       _form.currentState.save();
+      print(_data.otpCode);
+
+      final AuthCredential credential = PhoneAuthProvider.getCredential(
+      verificationId: _data.verificationId,
+      smsCode: _data.otpCode,
+      );
+      try {
+        final FirebaseUser user =
+            (await _auth.signInWithCredential(credential)).user;
+        final FirebaseUser currentUser = await _auth.currentUser();
+        final IdTokenResult token = await currentUser.getIdToken();
+        print(token);
+        assert(user.uid == currentUser.uid);
+        setState(() {
+          if (user != null) {
+            print('Successfully signed in, uid: ' + user.uid);
+            setState(() {
+              hasError = false; 
+            });
+          } else {
+            print('Sign in failed');
+            setState(() {
+             hasError = true; 
+            });
+          }
+        });
+      } catch (err) {
+        print(err);
+        setState(() {
+          hasError = true; 
+        });
+      }
     }
   }
 
@@ -146,10 +180,10 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                       ),
                       Visibility(
                         child: Text(
-                          "Wrong PIN!",
+                          AppLocalizations.of(context).tr('wrong_pin'),
                           style: TextStyle(color: Colors.red),
                         ),
-                        visible: true,
+                        visible: hasError,
                       ),
                     ],
                   ),

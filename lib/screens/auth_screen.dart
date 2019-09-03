@@ -99,6 +99,9 @@ class _AuthScreenState extends State<AuthScreen> {
           elevation: 0,
           actions: <Widget>[
             InkWell(
+              onTap: () {
+                data.changeLocale(Locale("vi","VN"));
+              },
               child: Container(
                 margin: EdgeInsets.only(right: 10.0),
                 width: ScreenUtil.instance.setWidth(25.0),
