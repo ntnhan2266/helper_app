@@ -3,11 +3,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+
 
 import '../utils/constants.dart';
-import '../services/user.dart';
+import '../services/auth.dart';
+import '../models/user.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+final userStore = User();
 
 class VerifyCodeScreen extends StatefulWidget {
   @override
@@ -27,9 +32,8 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
   final _form = GlobalKey<FormState>();
 
   int pinLength = 6;
-
   bool hasError = false;
-  String errorMessage;
+  String errorMessage = '';
   TextEditingController controller = TextEditingController();
 
   VerifyData _data = VerifyData();
@@ -55,17 +59,22 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
             hasError = false; 
           });
           // Call API to register new account with token, phone number, first name, last name
-          await User.register(email: _data.email, name: _data.name, phoneNumber: _data.phoneNumber, token: idTokenResult.token);
+          int code = await AuthService.register(email: _data.email, name: _data.name, phoneNumber: _data.phoneNumber, token: idTokenResult.token);
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          var token = prefs.getString(X_TOKEN);
+          print('token: $token');
         } else {
           print('Sign in failed');
           setState(() {
-            hasError = true; 
+            hasError = true;
+            errorMessage = AppLocalizations.of(context).tr('wrong_pin');
           });
         }
       } catch (err) {
         print(err);
         setState(() {
           hasError = true; 
+          errorMessage = AppLocalizations.of(context).tr('something_went_wrong');
         });
       }
     }
@@ -183,7 +192,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                       ),
                       Visibility(
                         child: Text(
-                          AppLocalizations.of(context).tr('wrong_pin'),
+                          errorMessage,
                           style: TextStyle(color: Colors.red),
                         ),
                         visible: hasError,
@@ -214,6 +223,11 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                     ),
                   ),
                   SizedBox(height: ScreenUtil.instance.setHeight(20.0),),
+                  Observer(
+                    builder: (_) => Text(
+                          'uid: ${userStore.uid}'
+                        ),
+                  ),
                 ],
               ),
             ),
