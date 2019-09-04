@@ -50,7 +50,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         verificationCodeRoute, 
         arguments: {
           'verificationId': verificationId,
-          'phoneNumber': _data.phoneNumber
+          'phoneNumber': _data.phoneNumber,
+          'name': _data.name,
+          'email': _data.email
         }
       );
     };

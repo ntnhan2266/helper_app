@@ -5,6 +5,7 @@ import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../utils/constants.dart';
+import '../services/user.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -15,7 +16,9 @@ class VerifyCodeScreen extends StatefulWidget {
 
 class VerifyData {
   String verificationId = '';
+  String name = '';
   String phoneNumber = '';
+  String email = '';
   String otpCode = '';
 }
 
@@ -45,22 +48,20 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
         final FirebaseUser user =
             (await _auth.signInWithCredential(credential)).user;
         final FirebaseUser currentUser = await _auth.currentUser();
-        final IdTokenResult token = await currentUser.getIdToken();
-        print(token);
         assert(user.uid == currentUser.uid);
-        setState(() {
-          if (user != null) {
-            print('Successfully signed in, uid: ' + user.uid);
-            setState(() {
-              hasError = false; 
-            });
-          } else {
-            print('Sign in failed');
-            setState(() {
-             hasError = true; 
-            });
-          }
-        });
+        if (user != null) {
+        final IdTokenResult idTokenResult = await currentUser.getIdToken();
+          setState(() {
+            hasError = false; 
+          });
+          // Call API to register new account with token, phone number, first name, last name
+          await User.register(email: _data.email, name: _data.name, phoneNumber: _data.phoneNumber, token: idTokenResult.token);
+        } else {
+          print('Sign in failed');
+          setState(() {
+            hasError = true; 
+          });
+        }
       } catch (err) {
         print(err);
         setState(() {
@@ -76,6 +77,8 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
     final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
     _data.verificationId = args['verificationId'];
     _data.phoneNumber = args['phoneNumber'];
+    _data.email = args['email'];
+    _data.name = args['name'];
     // Responsive
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;

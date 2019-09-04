@@ -1,11 +1,17 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
+import 'package:http/http.dart' as http;
+
+import '../configs/api.dart';
 
 /// An annotation for the code generator to know that this class needs the
 /// JSON serialization logic to be generated.
 @JsonSerializable()
 
 class User {
-  final String userId;
+  final String uid;
   final String firstName;
   final String lastName;
   final String email;
@@ -16,8 +22,12 @@ class User {
   final double lat;
   final String address;
 
+  // Config API routers
+  static const Map<String, String> headers = {"Content-type": "application/json"};
+  static const String _registerRoute = APIConfig.baseURL + '/register';
+
   User({
-    this.userId,
+    this.uid,
     this.firstName,
     this.lastName,
     this.email,
@@ -31,7 +41,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      userId: json['userId'],
+      uid: json['uid'],
       firstName: json['firstName'],
       lastName: json['lastName'],
       email: json['email'],
@@ -46,7 +56,7 @@ class User {
 
   Map<String, dynamic> toJson() =>
     {
-      'userId': userId,
+      'uid': uid,
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
@@ -57,6 +67,19 @@ class User {
       'lat': lat,
       'address': address
     };
-  
-  
+
+  static Future register({token, phoneNumber, email, name}) async {
+    Map<String, String> body = {
+      'token': token,
+      'name': name,
+      'phoneNumber': phoneNumber,
+      'email': email
+    };
+    var response = await http.post(_registerRoute, headers: headers, body: jsonEncode(body));
+    print('Response code: ${response.statusCode}');
+    print('Body: ${response.body}');
+    var completer = new Completer();
+    completer.complete(null);
+    return completer.future;
+  }
 }
