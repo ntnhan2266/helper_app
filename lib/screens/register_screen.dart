@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,7 +50,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         verificationCodeRoute, 
         arguments: {
           'verificationId': verificationId,
-          'phoneNumber': _data.phoneNumber
+          'phoneNumber': _data.phoneNumber,
+          'name': _data.name,
+          'email': _data.email
         }
       );
     };

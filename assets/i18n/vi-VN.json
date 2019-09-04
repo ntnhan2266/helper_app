@@ -26,5 +26,6 @@
     "one_more_step": "Thêm một bước nữa",
     "enter_otp": "Bạn chỉ cần nhập mã OTP gửi tới số điện thoại bạn đã đăng ký",
     "please_enter_otp_code": "Vui lòng nhập mã OTP",
-    "confirm": "Xác nhận"
+    "confirm": "Xác nhận",
+    "wrong_pin": "Sai mã OTP. Vui lòng kiểm tra lại"
 }

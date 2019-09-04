@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/constants.dart';
 import '../utils/route_names.dart';
@@ -100,6 +99,9 @@ class _AuthScreenState extends State<AuthScreen> {
           elevation: 0,
           actions: <Widget>[
             InkWell(
+              onTap: () {
+                data.changeLocale(Locale("vi","VN"));
+              },
               child: Container(
                 margin: EdgeInsets.only(right: 10.0),
                 width: ScreenUtil.instance.setWidth(25.0),
@@ -169,7 +171,9 @@ class _AuthScreenState extends State<AuthScreen> {
                   backgroundColor: Color.fromRGBO(59, 89, 152, 1),
                   borderColor: Color.fromRGBO(59, 89, 152, 1),
                   textColor: Colors.white,
-                  onTapHandler: () {}
+                  onTapHandler: () {
+                    _loginWithFacebook();
+                  }
                 ),
               ),
             ],

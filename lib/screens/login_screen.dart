@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/route_names.dart';
 import '../utils/constants.dart';
 
 class LoginScreen extends StatefulWidget {
