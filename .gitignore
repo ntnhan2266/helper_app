@@ -40,7 +40,7 @@ pubspec.lock
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
-android/*
+android/
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
@@ -67,7 +67,7 @@ android/*
 **/ios/Flutter/flutter_assets/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
-ios/*
+ios/
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3
