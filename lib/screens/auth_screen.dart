@@ -11,7 +11,6 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-
   Widget _buildLogo(BuildContext context) {
     return Column(
       children: <Widget>[
@@ -21,45 +20,45 @@ class _AuthScreenState extends State<AuthScreen> {
           height: ScreenUtil.instance.setWidth(80.0),
           width: ScreenUtil.instance.setWidth(80.0),
         ),
-        Text(APP_NAME, 
-          style: Theme.of(context).textTheme.title.copyWith(
-            fontSize: ScreenUtil.instance.setSp(26)
-          ),
+        Text(
+          APP_NAME,
+          style: Theme.of(context)
+              .textTheme
+              .title
+              .copyWith(fontSize: ScreenUtil.instance.setSp(26)),
         )
       ],
     );
   }
-  
-  Widget _buildButton({
-    @required double width,
-    @required String label,
-    @required Color backgroundColor,
-    @required Color textColor,
-    @required Function onTapHandler,
-    @required Color borderColor
-  }) {
+
+  Widget _buildButton(
+      {@required double width,
+      @required String label,
+      @required Color backgroundColor,
+      @required Color textColor,
+      @required Function onTapHandler,
+      @required Color borderColor,
+      bool bold: false}) {
     return InkWell(
       onTap: onTapHandler,
       child: Container(
         width: width,
         alignment: Alignment.center,
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(5.0),
-          border: Border.all(
-            color: borderColor,
-            width: 1.0
-          )
+          borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(color: borderColor, width: 1.0),
         ),
         child: Text(
           label.toUpperCase(),
           style: TextStyle(
             color: textColor,
             fontFamily: 'Roboto',
-            fontSize: ScreenUtil.instance.setSp(14)
+            fontSize: ScreenUtil.instance.setSp(14),
+            fontWeight: bold ? FontWeight.bold : FontWeight.normal,
           ),
-        )
+        ),
       ),
     );
   }
@@ -69,12 +68,10 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _navigateToSigninScreen(BuildContext context) {
-        Navigator.of(context).pushNamed(loginScreenRoute);
+    Navigator.of(context).pushNamed(loginScreenRoute);
   }
 
-  void _loginWithFacebook() {
-
-  }
+  void _loginWithFacebook() {}
 
   @override
   Widget build(BuildContext context) {
@@ -89,97 +86,99 @@ class _AuthScreenState extends State<AuthScreen> {
     )..init(context);
     // Localization
     var data = EasyLocalizationProvider.of(context).data;
-    // Get screen width
+    // Get screen width, height
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return EasyLocalizationProvider(
-      data: data, 
+      data: data,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          actions: <Widget>[
-            InkWell(
-              onTap: () {
-                data.changeLocale(Locale("vi","VN"));
-              },
-              child: Container(
-                margin: EdgeInsets.only(right: 10.0),
-                width: ScreenUtil.instance.setWidth(25.0),
-                height: ScreenUtil.instance.setHeight(25.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.green,
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/easy.png'),
-                    fit: BoxFit.cover,
-                  )
-                ),
-              ),
-            )
-          ],
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: Colors.white,
+        //   elevation: 0,
+        //   actions: <Widget>[
+        //     InkWell(
+        //       onTap: () {
+        //         data.changeLocale(Locale("vi", "VN"));
+        //       },
+        //       child: Container(
+        //         margin: EdgeInsets.only(right: 10.0),
+        //         width: ScreenUtil.instance.setWidth(25.0),
+        //         height: ScreenUtil.instance.setHeight(25.0),
+        //         decoration: BoxDecoration(
+        //             shape: BoxShape.circle,
+        //             color: Colors.green,
+        //             image: DecorationImage(
+        //               image: AssetImage('assets/images/easy.png'),
+        //               fit: BoxFit.cover,
+        //             )),
+        //       ),
+        //     )
+        //   ],
+        // ),
         body: Container(
-          alignment: Alignment.center,
+          alignment: Alignment.bottomCenter,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Colors.white 
+            color: Colors.white,
+            image: DecorationImage(
+              image: AssetImage('assets/images/welcome.png'),
+              fit: BoxFit.cover,
+            ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildLogo(context),
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil.instance.setWidth(MAIN_MARGIN), 
-                  vertical: ScreenUtil.instance.setHeight(10)
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          child: Container(
+            width: screenWidth * 0.8,
+            height: screenHeight * 0.5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        _buildButton(
-                          width: (screenWidth - ScreenUtil.instance.setWidth(MAIN_MARGIN * 2)) * 0.48,
-                          label: AppLocalizations.of(context).tr('login'),
-                          backgroundColor: Colors.white,
-                          borderColor: Color.fromRGBO(42, 77, 108, 1),
-                          textColor: Color.fromRGBO(42, 77, 108, 1),
-                          onTapHandler: () {_navigateToSigninScreen(context);}
-                        ),
-                        SizedBox(width: (screenWidth - ScreenUtil.instance.setWidth(MAIN_MARGIN * 2)) * 0.04,),
-                        _buildButton(
-                          width: (screenWidth - ScreenUtil.instance.setWidth(MAIN_MARGIN * 2)) * 0.48,
-                          label: AppLocalizations.of(context).tr('register'),
-                          backgroundColor: Colors.white,
-                          borderColor: Color.fromRGBO(42, 77, 108, 1),
-                          textColor: Color.fromRGBO(42, 77, 108, 1),
-                          onTapHandler: () {_navigateToRegisterScreen(context);}
-                        ),
-                      ],
-                    )
+                    _buildButton(
+                      width: screenWidth * 0.38,
+                      label: AppLocalizations.of(context).tr('login'),
+                      backgroundColor: Colors.white,
+                      borderColor: Color(0xff40618e),
+                      textColor: Color(0xff40618e),
+                      bold: true,
+                      onTapHandler: () {
+                        _navigateToSigninScreen(context);
+                      },
+                    ),
+                    _buildButton(
+                      width: screenWidth * 0.38,
+                      label: AppLocalizations.of(context).tr('register'),
+                      backgroundColor: Colors.white,
+                      borderColor: Color(0xff40618e),
+                      textColor: Color(0xff40618e),
+                      bold: true,
+                      onTapHandler: () {
+                        _navigateToRegisterScreen(context);
+                      },
+                    ),
                   ],
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil.instance.setWidth(MAIN_MARGIN), 
-                  vertical: ScreenUtil.instance.setHeight(10)
+                Container(
+                  margin: EdgeInsets.only(
+                    top: ScreenUtil.instance.setHeight(15),
+                  ),
+                  child: _buildButton(
+                    width: screenWidth * 0.8,
+                    label:
+                        AppLocalizations.of(context).tr('login_with_facebook'),
+                    backgroundColor: Color.fromRGBO(59, 89, 152, 1),
+                    borderColor: Color.fromRGBO(59, 89, 152, 1),
+                    textColor: Colors.white,
+                    onTapHandler: () {
+                      _loginWithFacebook();
+                    },
+                  ),
                 ),
-                child: _buildButton(
-                  width: (screenWidth - ScreenUtil.instance.setWidth(MAIN_MARGIN * 2)),
-                  label: AppLocalizations.of(context).tr('login_with_facebook'),
-                  backgroundColor: Color.fromRGBO(59, 89, 152, 1),
-                  borderColor: Color.fromRGBO(59, 89, 152, 1),
-                  textColor: Colors.white,
-                  onTapHandler: () {
-                    _loginWithFacebook();
-                  }
-                ),
-              ),
-            ],
-          )
-        )
-      )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
