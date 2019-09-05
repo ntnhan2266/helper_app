@@ -37,17 +37,16 @@ abstract class _User with Store {
 
   @action
   void fromJson(Map<String, dynamic> json) {
-    print(json['uid']);
-    id = json['id'];
+    // id = json['id'];
     uid = json['uid'];
-    name = json['name'];
-    email = json['email'];
-    gender = json['gender'];
-    birthday = DateTime.parse(json['birthday']);
-    phoneNumber = json['phoneNumber'];
-    long = json['long'];
-    lat = json['lat'];
-    address = json['address'];
+    // name = json['name'];
+    // email = json['email'];
+    // gender = json['gender'];
+    // birthday = DateTime.parse(json['birthday']);
+    // phoneNumber = json['phoneNumber'];
+    // long = json['long'];
+    // lat = json['lat'];
+    // address = json['address'];
   }
 
   @action

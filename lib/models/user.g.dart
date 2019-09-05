@@ -190,4 +190,14 @@ mixin _$User on _User, Store {
       _$_UserActionController.endAction(_$actionInfo);
     }
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final _$actionInfo = _$_UserActionController.startAction();
+    try {
+      return super.toJson();
+    } finally {
+      _$_UserActionController.endAction(_$actionInfo);
+    }
+  }
 }
