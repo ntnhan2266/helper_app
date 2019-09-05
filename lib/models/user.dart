@@ -1,66 +1,48 @@
-import 'package:mobx/mobx.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'user.g.dart';
+/// An annotation for the code generator to know that this class needs the
+/// JSON serialization logic to be generated.
+@JsonSerializable()
 
-class User = _User with _$User;
-
-abstract class _User with Store {
-  @observable
+class User {
   String id = '';
-
-  @observable
   String uid = '';
-
-  @observable
   String name;
-
-  @observable
   String email;
-
-  @observable
   int gender;
-
-  @observable
   DateTime birthday;
-
-  @observable
   String phoneNumber;
-
-  @observable
   double long;
-
-  @observable
   double lat;
-
-  @observable
   String address;
 
-  @action
-  void fromJson(Map<String, dynamic> json) {
-    // id = json['id'];
-    uid = json['uid'];
-    // name = json['name'];
-    // email = json['email'];
-    // gender = json['gender'];
-    // birthday = DateTime.parse(json['birthday']);
-    // phoneNumber = json['phoneNumber'];
-    // long = json['long'];
-    // lat = json['lat'];
-    // address = json['address'];
+  User({this.id, this.uid, this.name, this.email, this.gender, this.birthday, this.phoneNumber, this.long, this.lat, this.address});
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      uid: json['uid'],
+      name: json['name'],
+      email: json['email'],
+      birthday: DateTime.parse(json['birthday']),
+      gender: json['gender'],
+      phoneNumber: json['phoneNumber'],
+      long: json['long'],
+      lat: json['lat'],
+      address: json['address']
+    );
   }
 
-  @action
-  Map<String, dynamic> toJson() =>
-    {
-      'id': id,
-      'uid': uid,
-      'name': name,
-      'email': email,
-      'gender': gender,
-      'birthday': birthday,
-      'phoneNumber': phoneNumber,
-      'long': long,
-      'lat': lat,
-      'address': address
-    };
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'uid': uid,
+    'name': name,
+    'email': email,
+    'birthday': birthday.toString(),
+    'gender': gender,
+    'phoneNumber': phoneNumber,
+    'long': long,
+    'lat': lat,
+    'address': address
+  };
 }

@@ -49,6 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Navigator.pushNamed(context, 
         verificationCodeRoute, 
         arguments: {
+          'isLogin': false,
           'verificationId': verificationId,
           'phoneNumber': _data.phoneNumber,
           'name': _data.name,
@@ -76,10 +77,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_form.currentState.validate()) {
       // If the form is valid, save form data
       _form.currentState.save();
-      print('Printing the register data.');
-      print('Email: ${_data.email}');
-      print('Name: ${_data.name}');
-      print('Phone: ${_data.phoneNumber}');
 
       // Verify phone number
       _verifyPhoneNumber('+84' + _data.phoneNumber);

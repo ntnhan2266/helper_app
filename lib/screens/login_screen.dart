@@ -1,22 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../utils/constants.dart';
+import '../utils/route_names.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
+class _LoginData {
+  String phoneNumber = '';
+}
+
 class _LoginScreenState extends State<LoginScreen> {
 
   final _form = GlobalKey<FormState>();
+  _LoginData _data = _LoginData();
+
+  void _verifyPhoneNumber(String phoneNumber) async {
+    final PhoneVerificationCompleted verificationCompleted =
+      (AuthCredential phoneAuthCredential) {
+      _auth.signInWithCredential(phoneAuthCredential);
+      print('Received phone auth credential: $phoneAuthCredential');
+    };
+
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException authException) {
+        print('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+
+        // Handle error
+    };
+
+    final PhoneCodeSent codeSent =
+      (String verificationId, [int forceResendingToken]) async {
+        print('Please check your phone for the verification code');
+      // _verificationId = verificationId;
+      // Navigate to verify code screen
+      Navigator.pushNamed(context, 
+        verificationCodeRoute, 
+        arguments: {
+          'isLogin': true,
+          'verificationId': verificationId,
+          'phoneNumber': _data.phoneNumber
+        }
+      );
+    };
+
+    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+        (String verificationId) {
+      // _verificationId = verificationId;
+      // Handle time out
+    };
+
+    await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: const Duration(seconds: 30),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+  }
 
   void login() {
     if (_form.currentState.validate()) {
       // If the form is valid, display a Snackbar.
-      print('ok');
+      
+      _form.currentState.save();
+
+      _verifyPhoneNumber('+84' + _data.phoneNumber);
     }
   }
 
@@ -146,6 +202,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontFamily: 'Roboto',
                             fontSize: ScreenUtil.instance.setSp(12.0),
                           ),
+                          onSaved: (value) {
+                            this._data.phoneNumber = value;
+                          },
                         ),
                       )
                     ],
