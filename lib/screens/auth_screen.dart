@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_rabbit/services/auth.dart';
+import 'package:flushbar/flushbar.dart';
 
 import '../utils/constants.dart';
 import '../utils/route_names.dart';
@@ -72,8 +74,43 @@ class _AuthScreenState extends State<AuthScreen> {
         Navigator.of(context).pushNamed(loginScreenRoute);
   }
 
-  void _loginWithFacebook() {
-
+  void _loginWithFacebook(BuildContext context) async {
+    final resCode = await AuthService.loginWithFacebook();
+    switch (resCode) {
+      case NO_ERROR:
+        Navigator.of(context).pushNamedAndRemoveUntil(homeScreenRoute, (Route<dynamic> route) => false);
+        break;
+      case FB_LOGIN_FAILED:
+        Flushbar(
+        titleText: Text(
+          AppLocalizations.of(context).tr('error'),
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: ScreenUtil.instance.setSp(14.0),
+            color: Colors.red
+          )
+        ),
+        messageText: Text(
+          AppLocalizations.of(context).tr('something_went_wrong'),
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: ScreenUtil.instance.setSp(12.0),
+            color: Colors.red
+          )
+        ),
+        icon: Icon(
+          Icons.error,
+          size: 22,
+          color: Colors.red,
+        ),
+        backgroundColor: Colors.white,
+        borderWidth: 1.0,
+        borderColor: Colors.red,
+        duration: Duration(seconds: 3),
+      )..show(context);
+        break;
+      default:
+    }
   }
 
   @override
@@ -172,7 +209,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   borderColor: Color.fromRGBO(59, 89, 152, 1),
                   textColor: Colors.white,
                   onTapHandler: () {
-                    _loginWithFacebook();
+                    _loginWithFacebook(context);
                   }
                 ),
               ),

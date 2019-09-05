@@ -30,5 +30,6 @@
     "wrong_pin": "Sai mã OTP. Vui lòng kiểm tra lại",
     "something_went_wrong": "Đã có lỗi xảy ra. Vui lòng thử lại.",
     "uid_duplicated": "Số điện thoại này đã có người sử dụng",
-    "you_have_not_registered": "Số điện thoại này chưa được đăng ký. Vui lòng đăng ký trước khi đăng nhập"
+    "you_have_not_registered": "Số điện thoại này chưa được đăng ký. Vui lòng đăng ký trước khi đăng nhập",
+    "error": "Lỗi"
 }

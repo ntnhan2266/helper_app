@@ -14,3 +14,4 @@ const int NO_ERROR = 0;
 const int CAN_NOT_VERIFY_TOKEN = 1;
 const int UID_DUPLICATED = 2;
 const int NOT_REGISTERED_PHONE_NUMBER = 3;
+const int FB_LOGIN_FAILED = 4;
