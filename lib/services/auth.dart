@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:smart_rabbit/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import '../configs/api.dart';
+import '../utils/route_names.dart';
 import '../stores/user_store.dart';     // Import the user store
 
 final userStore = UserStore();
@@ -119,5 +121,12 @@ class AuthService {
         break;
     }
     return completer.future;
+  }
+
+  static void logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(USER_ID);
+    prefs.remove(X_TOKEN);
+    Navigator.of(context).pushNamedAndRemoveUntil(authScreenRoute, (Route<dynamic> route) => false);
   }
 }
