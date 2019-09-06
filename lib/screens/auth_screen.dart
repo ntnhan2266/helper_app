@@ -138,8 +138,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       width: screenWidth * 0.38,
                       label: AppLocalizations.of(context).tr('login'),
                       backgroundColor: Colors.white,
-                      borderColor: Color(0xff40618e),
-                      textColor: Color(0xff40618e),
+                      borderColor: Color(MAIN_COLOR),
+                      textColor: Color(MAIN_COLOR),
                       bold: true,
                       onTapHandler: () {
                         _navigateToSigninScreen(context);
@@ -149,8 +149,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       width: screenWidth * 0.38,
                       label: AppLocalizations.of(context).tr('register'),
                       backgroundColor: Colors.white,
-                      borderColor: Color(0xff40618e),
-                      textColor: Color(0xff40618e),
+                      borderColor: Color(MAIN_COLOR),
+                      textColor: Color(MAIN_COLOR),
                       bold: true,
                       onTapHandler: () {
                         _navigateToRegisterScreen(context);

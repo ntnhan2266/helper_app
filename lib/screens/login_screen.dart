@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_rabbit/utils/route_names.dart';
 
 import '../utils/constants.dart';
 
@@ -17,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_form.currentState.validate()) {
       // If the form is valid, display a Snackbar.
       print('ok');
+      Navigator.of(context).pushReplacementNamed(homeScreenRoute);
     }
   }
 
