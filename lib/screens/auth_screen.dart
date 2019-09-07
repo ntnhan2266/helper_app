@@ -88,7 +88,7 @@ class _AuthScreenState extends State<AuthScreen> {
             fontFamily: 'Roboto',
             fontSize: ScreenUtil.instance.setSp(14.0),
             color: Colors.red
-          )
+          ) 
         ),
         messageText: Text(
           AppLocalizations.of(context).tr('something_went_wrong'),
