@@ -76,7 +76,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 SizedBox(height: ScreenUtil.instance.setHeight(5.0),),
                 Text(APP_NAME, 
                   style: Theme.of(context).textTheme.title.copyWith(
-                    fontSize: ScreenUtil.instance.setSp(28)
+                    fontSize: ScreenUtil.instance.setSp(28),
+                    fontFamily: 'Pacifico-Regular'
                   ),
                 )
               ],

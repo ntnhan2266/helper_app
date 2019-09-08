@@ -10,10 +10,6 @@ import './screens/auth_screen.dart';
 import './screens/register_screen.dart';
 import './screens/login_screen.dart';
 import './screens/verify_code_screen.dart';
-import './screens/service_category_screen.dart';
-import './screens/service_history_screen.dart';
-import './screens/favorite_staff_screen.dart';
-import './screens/profile_screen.dart';
 
 
 import './utils/constants.dart';
@@ -75,7 +71,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
                   color: Color.fromRGBO(42, 77, 108, 1),
                   fontFamily: 'Pacifico-Regular'
                 )
-              )
+              ),
+              fontFamily: 'Roboto'
           ),
           home: SplashScreen(),
           onGenerateRoute: _getRoute),

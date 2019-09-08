@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
   int _tabIndex = 0;
-  Widget body;
+  Widget body = HomeTab();
 
   void _changeTabIndex(int index, BuildContext context) {
     setState(() {
