@@ -14,46 +14,64 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
   int _tabIndex = 0;
-  Widget body = HomeTab();
 
-  void _changeTabIndex(int index, BuildContext context) {
+  PageController pageController = PageController(
+    initialPage: 0,
+    keepPage: true,
+  );
+
+  Widget _buildPageView() {
+    return PageView(
+      controller: pageController,
+      onPageChanged: (index) {
+        _pageChanged(index);
+      },
+      children: <Widget>[
+        HomeTab(),
+        ServiceCategoryTab(),
+        ServiceHistoryTab(),
+        FavouriteStaffTab(),
+        UserProfileTab()
+      ],
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _pageChanged(int index) {
     setState(() {
-      setState(() {
-        _tabIndex = index;
-      });
-      switch (index) {
-        case 0:
-          setState(() {
-            body = HomeTab();
-          });
-          break;
-        case 1:
-          setState(() {
-            body = ServiceCategoryTab();
-          });
-          break;
-        case 2:
-          setState(() {
-            body = ServiceHistoryTab();
-          });
-          break;
-        case 3:
-          setState(() {
-            body = FavouriteStaffTab();
-          });
-          break;
-        case 4:
-          setState(() {
-            body = UserProfileTab();
-          });
-          break;
-        default:
-          setState(() {
-            body = HomeTab();
-          });
-          break;
-      }
+      _tabIndex = index;
     });
+  }
+
+  void _bottomTapped(int index) {
+    setState(() {
+      _tabIndex = index;
+      pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
+    });
+  }
+
+  Widget _buildAppBar(BuildContext context) {
+    switch (_tabIndex) {
+      case 1:
+        return AppBar(
+          centerTitle: true,
+          title: Text(
+            AppLocalizations.of(context).tr('choose_service_type'),
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w300
+            )
+          ),
+          backgroundColor: Colors.white,
+        );
+        break;
+      default:
+        return null;
+    }
   }
 
   @override
@@ -62,7 +80,8 @@ class _HomeState extends State<HomeScreen> {
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
-        body: body,
+        appBar: _buildAppBar(context),
+        body: _buildPageView(),
         bottomNavigationBar: BottomNavigationBar(
         // Disable title of bar item
           showSelectedLabels: false,
@@ -81,13 +100,13 @@ class _HomeState extends State<HomeScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.date_range,
+                Icons.add_circle,
               ),
               title: new Text('')
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.list,
+                Icons.history,
               ),
               title: new Text('')
             ),
@@ -105,7 +124,7 @@ class _HomeState extends State<HomeScreen> {
             )
           ],
           onTap: (index){
-            _changeTabIndex(index, context);
+            _bottomTapped(index);
           },
         ),
       ),

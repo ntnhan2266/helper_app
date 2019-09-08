@@ -69,10 +69,11 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
               textTheme: Theme.of(context).textTheme.copyWith(
                 title: TextStyle(
                   color: Color.fromRGBO(42, 77, 108, 1),
-                  fontFamily: 'Pacifico-Regular'
+                  fontFamily: 'Pacifico-Regeular'
                 )
               ),
-              fontFamily: 'Roboto'
+              fontFamily: 'Roboto',
+              scaffoldBackgroundColor: Colors.white
           ),
           home: SplashScreen(),
           onGenerateRoute: _getRoute),
