@@ -10,7 +10,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black12,
+      color: Colors.blueGrey[50],
       child: ListView(
         children: <Widget>[
           InkWell(
@@ -34,7 +34,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
             ),
           ),
           Container(
-            color: Colors.black12,
+            color: Colors.blueGrey[50],
             height: 10,
           ),
           InkWell(
@@ -74,7 +74,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
             ),
           ),
           Container(
-            color: Colors.black12,
+            color: Colors.blueGrey[50],
             height: 10,
           ),
           InkWell(
@@ -114,7 +114,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
             ),
           ),
           Container(
-            color: Colors.black12,
+            color: Colors.blueGrey[50],
             height: 10,
           ),
           InkWell(
@@ -154,7 +154,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
             ),
           ),
           Container(
-            color: Colors.black12,
+            color: Colors.blueGrey[50],
             height: 10,
           ),
           InkWell(
