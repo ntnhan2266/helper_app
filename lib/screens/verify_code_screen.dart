@@ -4,15 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 
 import '../utils/constants.dart';
 import '../services/auth.dart';
-import '../stores/user_store.dart';
 import '../utils/route_names.dart';
+import '../models/user.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-final userStore = UserStore();
 
 class VerifyCodeScreen extends StatefulWidget {
   @override
@@ -39,34 +39,22 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
   VerifyData _data = VerifyData();
 
-  void _register(IdTokenResult idTokenResult) async {
-    int code = await AuthService.register(email: _data.email, name: _data.name, phoneNumber: _data.phoneNumber, token: idTokenResult.token);
-    switch (code) {
-      case NO_ERROR:
-        Navigator.of(context).pushNamedAndRemoveUntil(homeScreenRoute, (Route<dynamic> route) => false);
-        break;
-      case UID_DUPLICATED:
-        setState(() {
-          hasError = true;
-          errorMessage = AppLocalizations.of(context).tr('uid_duplicated');
-        });
-        break;
-      case CAN_NOT_VERIFY_TOKEN:
-        errorMessage = AppLocalizations.of(context).tr('wrong_pin');
-        break;
-      default:
-        setState(() {
-          hasError = true;
-          errorMessage = AppLocalizations.of(context).tr('something_went_wrong');
-        });
-        break;
-    }
+  void _register(BuildContext context, IdTokenResult idTokenResult) async {
+    Map<String, dynamic> res = await AuthService.register(email: _data.email, name: _data.name, phoneNumber: _data.phoneNumber, token: idTokenResult.token);
+    _processAuthData(context, res);
   }
 
-  void _login(IdTokenResult idTokenResult) async {
-    int code = await AuthService.login(token: idTokenResult.token);
-    switch (code) {
+  void _login(BuildContext context, IdTokenResult idTokenResult) async {
+    Map<String, dynamic> res = await AuthService.login(token: idTokenResult.token);
+    _processAuthData(context, res);
+  }
+
+  void _processAuthData(BuildContext context, res) {
+    final userProvider = Provider.of<User>(context, listen: false);
+    switch (res['responseCode']) {
       case NO_ERROR:
+        // Set state
+        userProvider.fromJson(res['user']);
         Navigator.of(context).pushNamedAndRemoveUntil(homeScreenRoute, (Route<dynamic> route) => false);
         break;
       case NOT_REGISTERED_PHONE_NUMBER:
@@ -84,7 +72,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
     }
   }
 
-  void _signInWithPhone() async {
+  void _signInWithPhone(BuildContext context) async {
     if (_form.currentState.validate()) {
       // If the form is valid, display a Snackbar.
       _form.currentState.save();
@@ -106,10 +94,10 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
           });
           if (_data.isLogin) {
             // Call API to login
-            _login(idTokenResult);
+            _login(context, idTokenResult);
           } else {
             // Call API to register new account with token, phone number, first name, last name
-            _register(idTokenResult);
+            _register(context, idTokenResult);
           }
         } else {
           print('Sign in failed');
@@ -160,7 +148,6 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
         ),
         body: Observer(
           builder: (BuildContext context) {
-            print(_data.isLogin);
             return Container(
               width: double.infinity,
               height: double.infinity,
@@ -258,7 +245,9 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                       ),
                       SizedBox(height: ScreenUtil.instance.setHeight(20.0)),
                       InkWell(
-                        onTap: _signInWithPhone,
+                        onTap: () {
+                          _signInWithPhone(context);
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(

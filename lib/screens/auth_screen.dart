@@ -3,9 +3,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_rabbit/services/auth.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/constants.dart';
 import '../utils/route_names.dart';
+import '../models/user.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -75,9 +77,12 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _loginWithFacebook(BuildContext context) async {
-    final resCode = await AuthService.loginWithFacebook();
-    switch (resCode) {
+    final res = await AuthService.loginWithFacebook();
+    switch (res['responseCode']) {
       case NO_ERROR:
+        // Set state
+        final userProvider = Provider.of<User>(context, listen: false);
+        userProvider.fromJson(res['user']);
         Navigator.of(context).pushNamedAndRemoveUntil(homeScreenRoute, (Route<dynamic> route) => false);
         break;
       case FB_LOGIN_FAILED:

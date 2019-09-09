@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/user.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -9,7 +12,11 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('home')
+      child: Consumer<User>(
+        builder: (ctx, user, _) => Text(
+          user.uid
+        ),
+      ),
     );
   }
 }

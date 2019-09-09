@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
 import './screens/splash_screen.dart';
 import './screens/home_screen.dart';
@@ -10,7 +11,7 @@ import './screens/auth_screen.dart';
 import './screens/register_screen.dart';
 import './screens/login_screen.dart';
 import './screens/verify_code_screen.dart';
-
+import './models/user.dart';
 
 import './utils/constants.dart';
 import './utils/route_names.dart';
@@ -51,7 +52,13 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
     // Localization
     var data = EasyLocalizationProvider.of(context).data;
 
-    return EasyLocalizationProvider(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: User(),
+        ),
+      ],
+      child: EasyLocalizationProvider(
       data: data,
       child: MaterialApp(
           title: APP_NAME,
@@ -77,6 +84,7 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
           ),
           home: SplashScreen(),
           onGenerateRoute: _getRoute),
+      ),
     );
   }
 

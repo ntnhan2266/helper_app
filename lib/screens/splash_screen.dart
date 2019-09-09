@@ -4,8 +4,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_rabbit/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/route_names.dart';
+import '../services/user.dart';
+import '../models/user.dart';
+import '../services/auth.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -37,7 +41,16 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       final token = prefs.getString(X_TOKEN);
       if (token != null) {
-        Navigator.of(context).pushReplacementNamed(homeScreenRoute);
+        UserService.getUser(token).then((res) {
+          if (res['isValid']) {
+            final user = res['user'];
+            final userProvider = Provider.of<User>(context, listen: false);
+            userProvider.fromJson(user);
+            Navigator.of(context).pushReplacementNamed(homeScreenRoute);
+          } else {
+            AuthService.logout(context);
+          }
+        });
       } else {
         Navigator.of(context).pushReplacementNamed(authScreenRoute);
       }

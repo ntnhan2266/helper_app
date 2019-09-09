@@ -15,3 +15,5 @@ const int CAN_NOT_VERIFY_TOKEN = 1;
 const int UID_DUPLICATED = 2;
 const int NOT_REGISTERED_PHONE_NUMBER = 3;
 const int FB_LOGIN_FAILED = 4;
+const int COMMON_ERROR = 5;
+const int UNAUTHORIZED = 401;

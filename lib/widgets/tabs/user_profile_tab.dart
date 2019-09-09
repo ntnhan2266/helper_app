@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import '../../services/auth.dart';
+
 class UserProfileTab extends StatefulWidget {
   @override
   _UserProfileTabState createState() => _UserProfileTabState();
@@ -158,7 +160,9 @@ class _UserProfileTabState extends State<UserProfileTab> {
             height: 10,
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              AuthService.logout(context);
+            },
             child: Container(
               color: Colors.white,
               alignment: Alignment.center,

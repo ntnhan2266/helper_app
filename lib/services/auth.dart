@@ -9,9 +9,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import '../configs/api.dart';
 import '../utils/route_names.dart';
-import '../stores/user_store.dart';     // Import the user store
 
-final userStore = UserStore();
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class AuthService {
@@ -33,14 +31,25 @@ class AuthService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['errorCode'] != null) {
-        completer.complete(data['errorCode']);
+        completer.complete({
+          'responseCode': data['errorCode'],
+          'user': null
+        });
       } else {
-        final user = data['user'];
+        final user = data['user'];        
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString(USER_ID, user['_id']);
         await prefs.setString(X_TOKEN, data['token']);
-        completer.complete(NO_ERROR);
+        completer.complete({
+          'responseCode': NO_ERROR,
+          'user': user
+        });
       }
+    } else {
+      completer.complete({
+        'responseCode': COMMON_ERROR,
+        'user': null
+      });
     }
     return completer.future;
   }
@@ -54,14 +63,25 @@ class AuthService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['errorCode'] != null) {
-        completer.complete(data['errorCode']);
+        completer.complete({
+          'responseCode': data['errorCode'],
+          'user': null
+        });
       } else {
         final user = data['user'];
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString(USER_ID, user['_id']);
         await prefs.setString(X_TOKEN, data['token']);
-        completer.complete(NO_ERROR);
+        completer.complete({
+          'responseCode': NO_ERROR,
+          'user': user
+        });
       }
+    } else {
+      completer.complete({
+        'responseCode': COMMON_ERROR,
+        'user': null
+      });
     }
     return completer.future;
   }
@@ -100,23 +120,35 @@ class AuthService {
           if (response.statusCode == 200) {
             final data = jsonDecode(response.body);
             if (data['errorCode'] != null) {
-              completer.complete(data['errorCode']);
+              completer.complete({
+                'responseCode': data['errorCode'],
+                'user': null
+              });
             } else {
               final user = data['user'];
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.setString(USER_ID, user['_id']);
               await prefs.setString(X_TOKEN, data['token']);
-              completer.complete(NO_ERROR);
+              completer.complete({
+                'responseCode': NO_ERROR,
+                'user': user
+              });
             }
           }
         }
         break;
       case FacebookLoginStatus.cancelledByUser:
-        completer.complete(FB_LOGIN_FAILED);
+        completer.complete({
+          'responseCode': FB_LOGIN_FAILED,
+          'user': null
+        });
         print('Cancel message');
         break;
       case FacebookLoginStatus.error:
-        completer.complete(FB_LOGIN_FAILED);
+        completer.complete({
+          'responseCode': FB_LOGIN_FAILED,
+          'user': null
+        });
         print('Error');
         break;
     }
