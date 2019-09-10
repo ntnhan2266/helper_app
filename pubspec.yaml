@@ -76,6 +76,12 @@ flutter:
     - assets/images/login_banner.png
     - assets/images/send_message.png
     - assets/images/female_user.jpg
+    - assets/images/house_cleaning.png
+    - assets/images/garden.png
+    - assets/images/go_to_market.png
+    - assets/images/child_care.png
+    - assets/images/laundry.png
+    - assets/images/other.png
 
 
   #  - images/a_dot_burr.jpeg

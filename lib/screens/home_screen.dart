@@ -50,7 +50,7 @@ class _HomeState extends State<HomeScreen> {
   void _bottomTapped(int index) {
     setState(() {
       _tabIndex = index;
-      pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
+      pageController.jumpToPage(index);
     });
   }
 

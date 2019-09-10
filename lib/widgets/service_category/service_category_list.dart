@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../models/service_category.dart';
 import './service_category_item.dart';
+import '../../utils/dummy_data.dart';
 
 class ServiceCategoryList extends StatefulWidget {
   @override
@@ -10,18 +10,7 @@ class ServiceCategoryList extends StatefulWidget {
 }
 
 class _ServiceCategoryListState extends State<ServiceCategoryList> {
-  var categories = [
-    ServiceCategory(imgURL: 'easy.png', serviceName: 'Test'),
-    ServiceCategory(imgURL: 'easy.png', serviceName: 'Test'),
-    ServiceCategory(imgURL: 'easy.png', serviceName: 'Test'),
-    ServiceCategory(imgURL: 'easy.png', serviceName: 'Test'),
-    ServiceCategory(imgURL: 'easy.png', serviceName: 'Test'),
-    ServiceCategory(imgURL: 'easy.png', serviceName: 'Test'),
-    ServiceCategory(imgURL: 'easy.png', serviceName: 'Test'),
-    ServiceCategory(imgURL: 'easy.png', serviceName: 'Test'),
-    ServiceCategory(imgURL: 'easy.png', serviceName: 'Test'),
-    ServiceCategory(imgURL: 'easy.png', serviceName: 'Test'),
-  ];
+  var categories = categoriesData;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +25,7 @@ class _ServiceCategoryListState extends State<ServiceCategoryList> {
       ),
       itemBuilder: (BuildContext context, int index) {
         final item = categories[index];
-        return ServiceCategoryItem(imgURL: item.imgURL, serviceName: item.serviceName + ' $index',);
+        return ServiceCategoryItem(id: item.id, imgURL: item.imgURL, serviceName: item.serviceName,);
       }
     );
   }

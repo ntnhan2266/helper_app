@@ -27,7 +27,8 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
         Text(APP_NAME, 
           style: Theme.of(context).textTheme.title.copyWith(
-            fontSize: ScreenUtil.instance.setSp(26)
+            fontSize: ScreenUtil.instance.setSp(26),
+            fontFamily: 'Pacifico-Regular'
           ),
         )
       ],

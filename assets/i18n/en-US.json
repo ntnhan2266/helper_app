@@ -41,5 +41,11 @@
     "about_app": "Về ứng dụng",
     "choose_service_type": "Chọn loại dịch vụ",
     "home_tab_welcome_title": "Chào buổi chiều, bạn cần gì?",
-    "home_tab_search_hint": "dịch vụ, người giúp việc..."
+    "home_tab_search_hint": "Dịch vụ, người giúp việc...",
+    "house_cleaning": "Dọn dẹp nhà cửa",
+    "garden": "Làm vườn",
+    "go_to_market": "Đi chợ",
+    "child_care": "Giữ trẻ",
+    "laundry": "Giặt ủi",
+    "other": "Khác"
 }

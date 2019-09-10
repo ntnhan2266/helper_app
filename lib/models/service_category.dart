@@ -1,6 +1,13 @@
+import 'package:flutter/foundation.dart';
+
 class ServiceCategory {
+  final int id;
   final String imgURL;
   final String serviceName;
 
-  ServiceCategory({this.imgURL, this.serviceName});
+  ServiceCategory({
+    @required this.id, 
+    this.imgURL, 
+    this.serviceName
+  });
 }

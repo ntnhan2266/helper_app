@@ -40,7 +40,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
   VerifyData _data = VerifyData();
 
   void _register(BuildContext context, IdTokenResult idTokenResult) async {
-    Map<String, dynamic> res = await AuthService.register(email: _data.email, name: _data.name, phoneNumber: _data.phoneNumber, token: idTokenResult.token);
+    Map<String, dynamic> res = await AuthService.register(email: _data.email, name: _data.name, phoneNumber: '+84' + _data.phoneNumber, token: idTokenResult.token);
     _processAuthData(context, res);
   }
 
