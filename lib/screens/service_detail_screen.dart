@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../widgets/booking_step_title.dart';
+import '../utils/route_names.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
   @override
@@ -28,26 +29,44 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context).tr('service_details'),
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
+          appBar: AppBar(
+            title: Text(
+              AppLocalizations.of(context).tr('service_details'),
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(
+              color: Colors.black, //change back button color
+            ),
+            elevation: 0,
           ),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(
-            color: Colors.black, //change back button color
-          ),
-          elevation: 0,
-        ),
-        body: Column(
-          children: <Widget>[
-            BookingStepTitle(),
-            SizedBox(height: 10,),
-            Text(serviceId.toString())
-          ],
-        )
-      ),
+          body: Column(
+            children: <Widget>[
+              BookingStepTitle(
+                currentStep: 0,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(serviceId.toString()),
+              Container(  
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: RaisedButton(
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: Text('Next'),
+                  ),
+                  onPressed: () {
+                    print('ok');
+                    Navigator.pushNamed(context, chooseMaidRoute);
+                  },
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
