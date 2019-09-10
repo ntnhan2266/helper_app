@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utils/route_names.dart';
+
 class ServiceCategoryItem extends StatelessWidget {
   final int id;
   final String imgURL;
@@ -24,7 +26,13 @@ class ServiceCategoryItem extends StatelessWidget {
     return EasyLocalizationProvider(
       data: data,
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            serviceDetailRoute,
+            arguments: {'id': id},
+          );
+        },
         child: new Card(
           elevation: 5.0,
           child: new Container(

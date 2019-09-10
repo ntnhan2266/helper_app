@@ -67,6 +67,7 @@ class _HomeState extends State<HomeScreen> {
             )
           ),
           backgroundColor: Colors.white,
+          elevation: 0,
         );
         break;
       default:

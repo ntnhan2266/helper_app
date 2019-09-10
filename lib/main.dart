@@ -11,6 +11,7 @@ import './screens/auth_screen.dart';
 import './screens/register_screen.dart';
 import './screens/login_screen.dart';
 import './screens/verify_code_screen.dart';
+import './screens/service_detail_screen.dart';
 import './models/user.dart';
 
 import './utils/constants.dart';
@@ -102,14 +103,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, LoginScreen());
       case verificationCodeRoute:
         return _buildRoute(settings, VerifyCodeScreen());
-      // case serviceCategoryRoute:
-      //   return _buildRoute(settings, ServiceCategoryScreen());
-      // case serviceHistoryRoute:
-      //   return _buildRoute(settings, ServiceHistoryScreen());
-      // case favouriteStaffRoute:
-      //   return _buildRoute(settings, FavoriteStaffScreen());
-      // case userProfileRoute:
-      //   return _buildRoute(settings, UserProfileScreen());
+      case serviceDetailRoute:
+        return _buildRoute(settings, ServiceDetailScreen());
       default:
         return null;
     }
