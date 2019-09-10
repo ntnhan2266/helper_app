@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_rabbit/screens/user_detail_screen.dart';
 
 import './screens/splash_screen.dart';
 import './screens/home_screen.dart';
@@ -102,14 +103,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, LoginScreen());
       case verificationCodeRoute:
         return _buildRoute(settings, VerifyCodeScreen());
-      // case serviceCategoryRoute:
-      //   return _buildRoute(settings, ServiceCategoryScreen());
-      // case serviceHistoryRoute:
-      //   return _buildRoute(settings, ServiceHistoryScreen());
-      // case favouriteStaffRoute:
-      //   return _buildRoute(settings, FavoriteStaffScreen());
-      // case userProfileRoute:
-      //   return _buildRoute(settings, UserProfileScreen());
+      case userDetailRoute:
+        return _buildRoute(settings, UserDetailScreen());
       default:
         return null;
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../services/auth.dart';
+import '../../utils/route_names.dart';
 
 class UserProfileTab extends StatefulWidget {
   @override
@@ -16,7 +17,9 @@ class _UserProfileTabState extends State<UserProfileTab> {
       child: ListView(
         children: <Widget>[
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(userDetailRoute);
+            },
             child: Container(
               color: Color.fromRGBO(42, 77, 108, 1),
               padding: const EdgeInsets.symmetric(vertical: 7.0),
