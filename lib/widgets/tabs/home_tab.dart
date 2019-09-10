@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_rabbit/utils/users.dart';
 
-import '../../models/user.dart';
+import '../../utils/dummy_data.dart';
 
 class HomeTab extends StatefulWidget {
   @override
