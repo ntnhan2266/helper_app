@@ -29,7 +29,7 @@ class _HomeState extends State<HomeScreen> {
       children: <Widget>[
         HomeTab(),
         ServiceCategoryTab(),
-        ServiceHistoryTab(),
+        ServiceHistoryTab(), 
         FavouriteStaffTab(),
         UserProfileTab()
       ],
