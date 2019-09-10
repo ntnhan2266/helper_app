@@ -75,6 +75,7 @@ flutter:
     - assets/images/vn_flag_icon.png
     - assets/images/login_banner.png
     - assets/images/send_message.png
+    - assets/images/female_user.jpg
 
 
   #  - images/a_dot_burr.jpeg
