@@ -79,7 +79,7 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
               textTheme: Theme.of(context).textTheme.copyWith(
                 title: TextStyle(
                   color: Color.fromRGBO(42, 77, 108, 1),
-                  fontFamily: 'Pacifico-Regeular'
+                  fontFamily: 'Pacifico-Regular'
                 )
               ),
               fontFamily: 'Roboto',

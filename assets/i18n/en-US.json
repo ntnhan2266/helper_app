@@ -51,5 +51,10 @@
     "service_details": "Chi tiết dịch vụ",
     "information": "Thông tin",
     "choose_maid": "Chọn nhân viên",
-    "verify": "Xác nhận"
+    "verify": "Xác nhận",
+    "next": "Tiếp theo",
+    "retail_use": "Dùng lẻ",
+    "periodic": "Định kỳ",
+    "retail_use_content": "Dọn dẹp theo giờ, khi có nhu cầu",
+    "periodic_content": "Cố định hằng tuần, giá ưu đãi"
 }

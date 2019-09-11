@@ -24,6 +24,7 @@ class BookingStepTitle extends StatelessWidget {
               style: TextStyle(
                 fontSize: ScreenUtil.instance.setSp(12),
                 color: isActive ? Color.fromRGBO(42, 77, 108, 1) : Colors.grey,
+                fontWeight: FontWeight.w600,
               ),
             ),
             SizedBox(
@@ -75,19 +76,19 @@ class BookingStepTitle extends StatelessWidget {
                 context,
                 AppLocalizations.of(context).tr('information'),
                 Icons.view_headline,
-                currentStep == 0,
+                currentStep >= 0,
               ),
               _buildStep(
                 context,
                 AppLocalizations.of(context).tr('choose_maid'),
                 Icons.assignment_ind,
-                currentStep == 1,
+                currentStep >= 1,
               ),
               _buildStep(
                 context,
                 AppLocalizations.of(context).tr('verify'),
                 Icons.check,
-                currentStep == 2,
+                currentStep >= 2,
               ),
             ],
           ),
