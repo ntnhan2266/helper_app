@@ -60,5 +60,6 @@
     "work_location": "Địa điểm làm việc",
     "house_number": "Số nhà / căn hộ",
     "start_time": "Thời gian bắt đầu",
-    "end_time": "Thời gian kết thúc"
+    "end_time": "Thời gian kết thúc",
+    "note": "Ghi chú"
 }

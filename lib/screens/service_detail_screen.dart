@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../widgets/booking_step_title.dart';
 import '../utils/route_names.dart';
 import '../utils/constants.dart';
+import '../services/permission.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class ServiceDetailsData {
   String houseNumber = '';
   DateTime startTime = DateTime.now();
   DateTime endTime = DateTime.now();
+  String note = '';
 }
 
 class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
@@ -29,6 +31,30 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     setState(() {
       _data.type = value;
     });
+  }
+
+  void _getCurrentLocation() async {
+    try {
+      double lat = 21.0048;
+      double long = 105.8453;
+      
+      final isGrantedPermission = await PermissionsService().requestLocationPermission(
+        onPermissionDenied: () {
+          print('Can not get permission');
+        }
+      );
+      if (isGrantedPermission) {
+        Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        lat = position.latitude;
+        long = position.longitude;
+      }
+      Navigator.pushNamed(context, chooseAdressRoute, arguments: {
+        'lat': lat,
+        'long': long
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -125,6 +151,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         ),
                       ),
                       InkWell(
+                        onTap: () {
+                          _getCurrentLocation();
+                        },
                         child: TextFormField(
                           enabled: false,
                           decoration: InputDecoration(
@@ -236,10 +265,12 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                             context: context,
                             initialTime: TimeOfDay.fromDateTime(_data.startTime ?? DateTime.now()),
                           );
-                          final format = DateFormat("HH:mm");
-                          final now = DateTime.now();
-                          final currentTime = new DateTime(now.year, now.month, now.day, time.hour, time.minute, now.second, now.millisecond, now.microsecond);
-                          _startTimeController.text = format.format(currentTime);
+                          if (time != null) {
+                            final format = DateFormat("HH:mm");
+                            final now = DateTime.now();
+                            final currentTime = new DateTime(now.year, now.month, now.day, time.hour, time.minute, now.second, now.millisecond, now.microsecond);
+                            _startTimeController.text = format.format(currentTime);
+                          }
                         },
                         child: TextFormField(
                           controller: _startTimeController,
@@ -276,7 +307,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         child: Row(
                           children: <Widget>[
                             Icon(
-                              Icons.timer,
+                              Icons.timer_off,
                               size: ScreenUtil.instance.setSp(16),
                               color: Color.fromRGBO(42, 77, 108, 1),
                             ),
@@ -299,14 +330,81 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                             context: context,
                             initialTime: TimeOfDay.fromDateTime(_data.endTime ?? DateTime.now()),
                           );
-                          final format = DateFormat("HH:mm");
-                          final now = DateTime.now();
-                          final currentTime = new DateTime(now.year, now.month, now.day, time.hour, time.minute, now.second, now.millisecond, now.microsecond);
-                          _endTimeController.text = format.format(currentTime);
+                          if (time != null) {
+                            final format = DateFormat("HH:mm");
+                            final now = DateTime.now();
+                            final currentTime = new DateTime(now.year, now.month, now.day, time.hour, time.minute, now.second, now.millisecond, now.microsecond);
+                            _endTimeController.text = format.format(currentTime);
+                          }
                         },
                         child: TextFormField(
                           controller: _endTimeController,
                           enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.grey),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.grey),
+                            ),
+                            fillColor: Color.fromRGBO(0, 0, 0, 0.05),
+                            filled: true,
+                            contentPadding: EdgeInsets.all(
+                              ScreenUtil.instance.setSp(14.0),
+                            ),
+                          ),
+                          style: TextStyle(
+                            fontSize: ScreenUtil.instance.setSp(12.0),
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: ScreenUtil.instance.setHeight(20.0),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(
+                          bottom: ScreenUtil.instance.setHeight(LABEL_MARGIN),
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.edit,
+                              size: ScreenUtil.instance.setSp(16),
+                              color: Color.fromRGBO(42, 77, 108, 1),
+                            ),
+                            SizedBox(
+                              width:
+                                  ScreenUtil.instance.setHeight(LABEL_MARGIN),
+                            ),
+                            Text(
+                              AppLocalizations.of(context).tr('note'),
+                              style: TextStyle(
+                                fontSize: ScreenUtil.instance.setSp(12.0),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          final time = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.fromDateTime(_data.endTime ?? DateTime.now()),
+                          );
+                          if (time != null) {
+                            final format = DateFormat("HH:mm");
+                            final now = DateTime.now();
+                            final currentTime = new DateTime(now.year, now.month, now.day, time.hour, time.minute, now.second, now.millisecond, now.microsecond);
+                            _endTimeController.text = format.format(currentTime);
+                          }
+                        },
+                        child: TextFormField(
+                          minLines: 4,
+                          maxLines: 4,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderSide:
@@ -349,7 +447,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text('Ghi chú'),
+              Text('Phí dịch vụ (đã bao gồm dụng cụ): '),
               Container(
                 width: double.infinity,
                 child: RaisedButton(

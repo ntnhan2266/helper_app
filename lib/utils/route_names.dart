@@ -12,3 +12,4 @@ const String userProfileRoute = '/profile';
 const String serviceDetailRoute = '/service-details';
 const String chooseMaidRoute = '/choose-maid';
 const String verifyBookingRoute = '/verify-booking';
+const String chooseAdressRoute = '/choose-address';
