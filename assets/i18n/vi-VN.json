@@ -56,5 +56,9 @@
     "retail_use": "Dùng lẻ",
     "periodic": "Định kỳ",
     "retail_use_content": "Dọn dẹp theo giờ, khi có nhu cầu",
-    "periodic_content": "Cố định hằng tuần, giá ưu đãi"
+    "periodic_content": "Cố định hằng tuần, giá ưu đãi",
+    "work_location": "Địa điểm làm việc",
+    "house_number": "Số nhà / căn hộ",
+    "start_time": "Thời gian bắt đầu",
+    "end_time": "Thời gian kết thúc"
 }

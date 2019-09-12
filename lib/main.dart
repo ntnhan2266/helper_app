@@ -29,16 +29,16 @@ class SmartRabbitApp extends StatefulWidget {
 }
 
 Map<int, Color> color = {
-  50: Color.fromRGBO(75, 134, 180, .1),
-  100: Color.fromRGBO(75, 134, 180, .2),
-  200: Color.fromRGBO(75, 134, 180, .3),
-  300: Color.fromRGBO(75, 134, 180, .4),
-  400: Color.fromRGBO(75, 134, 180, .5),
-  500: Color.fromRGBO(75, 134, 180, .6),
-  600: Color.fromRGBO(75, 134, 180, .7),
-  700: Color.fromRGBO(75, 134, 180, .8),
-  800: Color.fromRGBO(75, 134, 180, .9),
-  900: Color.fromRGBO(75, 134, 180, 1),
+  50: Color.fromRGBO(42, 77, 108, .1),
+  100: Color.fromRGBO(42, 77, 108, .2),
+  200: Color.fromRGBO(42, 77, 108, .3),
+  300: Color.fromRGBO(42, 77, 108, .4),
+  400: Color.fromRGBO(42, 77, 108, .5),
+  500: Color.fromRGBO(42, 77, 108, .6),
+  600: Color.fromRGBO(42, 77, 108, .7),
+  700: Color.fromRGBO(42, 77, 108, .8),
+  800: Color.fromRGBO(42, 77, 108, .9),
+  900: Color.fromRGBO(42, 77, 108, 1),
 };
 
 class _SmartRabbitAppState extends State<SmartRabbitApp> {
@@ -75,7 +75,7 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
           locale: data.savedLocale,
           theme: ThemeData(
               primarySwatch: colorCustom,
-              primaryColor: Color.fromRGBO(75, 134, 180, 1),
+              primaryColor: Color.fromRGBO(42, 77, 108, 1),
               textTheme: Theme.of(context).textTheme.copyWith(
                 title: TextStyle(
                   color: Color.fromRGBO(42, 77, 108, 1),
