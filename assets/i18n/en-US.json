@@ -61,5 +61,7 @@
     "house_number": "Số nhà / căn hộ",
     "start_time": "Thời gian bắt đầu",
     "end_time": "Thời gian kết thúc",
-    "note": "Ghi chú"
+    "note": "Ghi chú",
+    "choose_address": "Chọn địa chỉ",
+    "address_example": "Richmond City apartment, Nguyễn Xí, Phường 26, Bình Thạnh, Ho Chi Minh City"
 }
