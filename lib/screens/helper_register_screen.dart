@@ -121,9 +121,22 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                     .tr('experience'),
                                 hint: AppLocalizations.of(context)
                                     .tr('experience_hint'),
-                                hasNext: true,
                                 inputType: TextInputType.multiline,
                               ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(top: 20),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                        color: Colors.white,
+                        child: Form(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
                               FormDropdown(
                                 label:
                                     AppLocalizations.of(context).tr('salary'),
@@ -171,31 +184,38 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                   AppLocalizations.of(context)
                                       .tr('work_choice_6'),
                                 ],
-                                hasNext: true,
                               ),
-                              Row(
-                                children: <Widget>[
-                                  Checkbox(
-                                    value: _agree,
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        _agree = value;
-                                      });
-                                    },
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _agree = !_agree;
-                                      });
-                                    },
-                                    child: Text(
-                                      AppLocalizations.of(context)
-                                          .tr('i_agree'),
-                                    ),
-                                  )
-                                ],
-                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(top: 20),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                        color: Colors.white,
+                        child: Form(
+                          child: Row(
+                            children: <Widget>[
+                              Checkbox(
+                                value: _agree,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    _agree = value;
+                                  });
+                                },
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _agree = !_agree;
+                                  });
+                                },
+                                child: Text(
+                                  AppLocalizations.of(context).tr('i_agree'),
+                                ),
+                              ),
                             ],
                           ),
                         ),
