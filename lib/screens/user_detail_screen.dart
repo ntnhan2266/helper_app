@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
+import '../widgets/form/form_dropdown.dart';
+import '../widgets/form/form_input.dart';
+
 class UserDetailScreen extends StatefulWidget {
   @override
   _UserDetailScreenState createState() => _UserDetailScreenState();
@@ -33,6 +36,9 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     var data = EasyLocalizationProvider.of(context).data;
     // Get screen width
     final screenWidth = MediaQuery.of(context).size.width;
+    // Focus Node
+    final FocusNode _nameFocus = FocusNode();
+    final FocusNode _emailFocus = FocusNode();
     // Build slide list
     return EasyLocalizationProvider(
       data: data,
@@ -45,7 +51,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
             IconButton(
               icon: Icon(Icons.save),
               onPressed: () {},
-            )
+            ),
           ],
         ),
         body: Container(
@@ -113,98 +119,26 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                "Ten nguoi dung",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black45,
-                                ),
-                              ),
-                              TextFormField(
-                                // validator: (value) {
-                                //   if (value.isEmpty || value == "") {
-                                //     return 'Please enter some text';
-                                //   }
-                                //   return null;
-                                // },
+                              FormInput(
+                                label: "Ten nguoi dung",
                                 initialValue: "Nhan Nguyen",
-                                keyboardType: TextInputType.text,
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: ScreenUtil.instance.setSp(16.0),
-                                ),
-                                decoration: InputDecoration(
-                                  enabledBorder: InputBorder.none,
-                                  contentPadding:
-                                      EdgeInsets.only(top: 10, bottom: 5),
-                                ),
+                                hasNext: true,
+                                focusNode: _nameFocus,
+                                nextNode: _emailFocus,
                               ),
-                              SizedBox(height: 20),
-                              Text(
-                                "Email",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black45,
-                                ),
-                              ),
-                              TextFormField(
-                                // validator: (value) {
-                                //   if (value.isEmpty || value == "") {
-                                //     return 'Please enter some text';
-                                //   }
-                                //   return null;
-                                // },
+                              FormInput(
+                                label: "Email",
                                 initialValue: "nhan.nguyen@gmail.com",
-                                keyboardType: TextInputType.emailAddress,
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: ScreenUtil.instance.setSp(16.0),
-                                ),
-                                decoration: InputDecoration(
-                                  enabledBorder: InputBorder.none,
-                                  contentPadding:
-                                      EdgeInsets.only(top: 10, bottom: 5),
-                                ),
+                                hasNext: true,
+                                focusNode: _emailFocus,
+                                nextNode: null,
                               ),
-                              SizedBox(height: 20),
-                              Text(
-                                "Gioi tinh",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black45,
-                                ),
+                              FormDropdown(
+                                label: "Gioi tinh",
+                                choices: ["Nam", "Nu"],
+                                initialValue: "Nu",
+                                hasNext: true,
                               ),
-                              DropdownButtonFormField(
-                                decoration: InputDecoration(
-                                  enabledBorder: InputBorder.none,
-                                  contentPadding:
-                                      EdgeInsets.only(top: 5, bottom: 0),
-                                ),
-                                items: <DropdownMenuItem>[
-                                  DropdownMenuItem(
-                                    child: Text(
-                                      "Nam",
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto',
-                                        fontSize:
-                                            ScreenUtil.instance.setSp(16.0),
-                                      ),
-                                    ),
-                                  ),
-                                  DropdownMenuItem(
-                                    child: Text(
-                                      "Nu",
-                                      style: TextStyle(
-                                        fontFamily: 'Roboto',
-                                        fontSize:
-                                            ScreenUtil.instance.setSp(16.0),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                                onChanged: (value) {},
-                              ),
-                              SizedBox(height: 20),
                               Text(
                                 "Ngay sinh",
                                 style: TextStyle(
@@ -236,36 +170,12 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                             EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                         color: Colors.white,
                         child: Form(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "So dien thoai",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black45,
-                                ),
-                              ),
-                              TextFormField(
-                                // validator: (value) {
-                                //   if (value.isEmpty || value == "") {
-                                //     return 'Please enter some text';
-                                //   }
-                                //   return null;
-                                // },
-                                initialValue: "0123456789",
-                                keyboardType: TextInputType.phone,
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: ScreenUtil.instance.setSp(16.0),
-                                ),
-                                decoration: InputDecoration(
-                                  enabledBorder: InputBorder.none,
-                                  contentPadding:
-                                      EdgeInsets.only(top: 10, bottom: 5),
-                                ),
-                              ),
-                            ],
+                          child: FormInput(
+                            label: "So dien thoai",
+                            initialValue: "013456789",
+                            hasNext: false,
+                            // focusNode: _nameFocus,
+                            // nextNode: _emailFocus,
                           ),
                         ),
                       ),
@@ -276,36 +186,12 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                             EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                         color: Colors.white,
                         child: Form(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Dia chi",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black45,
-                                ),
-                              ),
-                              TextFormField(
-                                // validator: (value) {
-                                //   if (value.isEmpty || value == "") {
-                                //     return 'Please enter some text';
-                                //   }
-                                //   return null;
-                                // },
-                                initialValue: "123 To Hien Thanh, HCM",
-                                keyboardType: TextInputType.text,
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: ScreenUtil.instance.setSp(16.0),
-                                ),
-                                decoration: InputDecoration(
-                                  enabledBorder: InputBorder.none,
-                                  contentPadding:
-                                      EdgeInsets.only(top: 10, bottom: 5),
-                                ),
-                              ),
-                            ],
+                          child: FormInput(
+                            label: "Dia chi",
+                            initialValue: "13 To Hien Thanh, HCM",
+                            hasNext: false,
+                            // focusNode: _nameFocus,
+                            // nextNode: _emailFocus,
                           ),
                         ),
                       ),
