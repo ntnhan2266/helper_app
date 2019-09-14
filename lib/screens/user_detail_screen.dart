@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
+import '../widgets/form/form_datepicker.dart';
 import '../widgets/form/form_dropdown.dart';
 import '../widgets/form/form_input.dart';
 
@@ -12,16 +12,6 @@ class UserDetailScreen extends StatefulWidget {
 }
 
 class _UserDetailScreenState extends State<UserDetailScreen> {
-  DateTime _birthday = DateTime.now();
-  Future _selectDate() async {
-    DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: _birthday,
-        firstDate: new DateTime(2016),
-        lastDate: new DateTime(2020));
-    if (picked != null) setState(() => _birthday = picked);
-  }
-
   @override
   Widget build(BuildContext context) {
     // Responsive
@@ -45,7 +35,12 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text("Tai khoan"),
+          title: Text(
+            "Tai khoan",
+            style: TextStyle(
+              fontSize: ScreenUtil.instance.setSp(20.0),
+            ),
+          ),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
@@ -135,29 +130,13 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                               ),
                               FormDropdown(
                                 label: "Gioi tinh",
-                                choices: ["Nam", "Nu"],
+                                values: ["Nam", "Nu"],
                                 initialValue: "Nu",
                                 hasNext: true,
                               ),
-                              Text(
-                                "Ngay sinh",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black45,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: _selectDate,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 10, bottom: 5),
-                                  child: Text(
-                                    DateFormat.yMd('vi_VN').format(_birthday),
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontSize: ScreenUtil.instance.setSp(16.0),
-                                    ),
-                                  ),
-                                ),
+                              FormDatePicker(
+                                label: "Ngay sinh",
+                                value: DateTime.now(),
                               ),
                             ],
                           ),
@@ -171,12 +150,9 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                         color: Colors.white,
                         child: Form(
                           child: FormInput(
-                            label: "So dien thoai",
-                            initialValue: "013456789",
-                            hasNext: false,
-                            // focusNode: _nameFocus,
-                            // nextNode: _emailFocus,
-                          ),
+                              label: "So dien thoai",
+                              initialValue: "013456789",
+                              hasNext: false),
                         ),
                       ),
                       Container(
@@ -187,12 +163,9 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                         color: Colors.white,
                         child: Form(
                           child: FormInput(
-                            label: "Dia chi",
-                            initialValue: "13 To Hien Thanh, HCM",
-                            hasNext: false,
-                            // focusNode: _nameFocus,
-                            // nextNode: _emailFocus,
-                          ),
+                              label: "Dia chi",
+                              initialValue: "13 To Hien Thanh, HCM",
+                              hasNext: false),
                         ),
                       ),
                     ],

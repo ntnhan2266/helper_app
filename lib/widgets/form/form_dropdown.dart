@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../form/form_label.dart';
+
 class FormDropdown extends StatefulWidget {
   final String label;
-  final List<String> choices;
+  final List<String> values;
   final String initialValue;
   final bool hasNext;
 
   const FormDropdown(
       {Key key,
-      this.label,
-      this.choices,
+      @required this.label,
+      @required this.values,
       this.initialValue,
       this.hasNext = false})
       : super(key: key);
@@ -27,7 +29,7 @@ class _FormDropdownState extends State<FormDropdown> {
   @override
   void initState() {
     super.initState();
-    _value = widget.initialValue;
+    _value = widget.initialValue ?? widget.values[0];
   }
 
   @override
@@ -44,20 +46,14 @@ class _FormDropdownState extends State<FormDropdown> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          widget.label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.black45,
-          ),
-        ),
+        FormLabel(widget.label),
         DropdownButtonFormField(
           decoration: InputDecoration(
             enabledBorder: InputBorder.none,
             contentPadding: EdgeInsets.only(top: 5, bottom: 0),
           ),
           value: _value,
-          items: widget.choices
+          items: widget.values
               .map(
                 (value) => DropdownMenuItem(
                       value: value,

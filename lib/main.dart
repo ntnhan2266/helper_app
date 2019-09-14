@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_rabbit/screens/helper_register_screen.dart';
 import 'package:smart_rabbit/screens/user_detail_screen.dart';
 
 import './screens/splash_screen.dart';
@@ -40,15 +41,14 @@ Map<int, Color> color = {
 };
 
 class _SmartRabbitAppState extends State<SmartRabbitApp> {
-  
   MaterialColor colorCustom = MaterialColor(0xFF880E4F, color);
 
   @override
   Widget build(BuildContext context) {
     // Prevent device orientation changes and force portrait
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
     ]);
     // Localization
     var data = EasyLocalizationProvider.of(context).data;
@@ -60,31 +60,29 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         ),
       ],
       child: EasyLocalizationProvider(
-      data: data,
-      child: MaterialApp(
-          title: APP_NAME,
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            // App-specific localization
-            EasylocaLizationDelegate(locale: data.locale, path: 'assets/i18n'),
-          ],
-          supportedLocales: [Locale('vi', 'VN'), Locale('en', 'US')],
-          locale: data.savedLocale,
-          theme: ThemeData(
-              primarySwatch: colorCustom,
-              primaryColor: Color.fromRGBO(75, 134, 180, 1),
-              textTheme: Theme.of(context).textTheme.copyWith(
-                title: TextStyle(
-                  color: Color.fromRGBO(42, 77, 108, 1),
-                  fontFamily: 'Pacifico-Regeular'
-                )
-              ),
-              fontFamily: 'Roboto',
-              scaffoldBackgroundColor: Colors.white
-          ),
-          home: SplashScreen(),
-          onGenerateRoute: _getRoute),
+        data: data,
+        child: MaterialApp(
+            title: APP_NAME,
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              // App-specific localization
+              EasylocaLizationDelegate(
+                  locale: data.locale, path: 'assets/i18n'),
+            ],
+            supportedLocales: [Locale('vi', 'VN'), Locale('en', 'US')],
+            locale: data.savedLocale,
+            theme: ThemeData(
+                primarySwatch: colorCustom,
+                primaryColor: Color.fromRGBO(75, 134, 180, 1),
+                textTheme: Theme.of(context).textTheme.copyWith(
+                    title: TextStyle(
+                        color: Color.fromRGBO(42, 77, 108, 1),
+                        fontFamily: 'Pacifico-Regeular')),
+                fontFamily: 'Roboto',
+                scaffoldBackgroundColor: Colors.white),
+            home: SplashScreen(),
+            onGenerateRoute: _getRoute),
       ),
     );
   }
@@ -105,6 +103,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, VerifyCodeScreen());
       case userDetailRoute:
         return _buildRoute(settings, UserDetailScreen());
+      case helperRegisterRoute:
+        return _buildRoute(settings, HelperRegisterScreen());
       default:
         return null;
     }

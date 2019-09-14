@@ -1,20 +1,27 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../form/form_label.dart';
 
 class FormInput extends StatefulWidget {
   final String label;
   final String initialValue;
+  final String hint;
   final FocusNode focusNode;
   final FocusNode nextNode;
   final bool hasNext;
+  final TextInputType inputType;
 
   const FormInput(
       {Key key,
-      this.label,
+      @required this.label,
       this.initialValue,
+      this.hint,
       this.focusNode,
       this.nextNode,
-      this.hasNext = false})
+      this.hasNext = false,
+      this.inputType = TextInputType.text})
       : super(key: key);
 
   @override
@@ -43,13 +50,7 @@ class _FormInputState extends State<FormInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          widget.label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.black45,
-          ),
-        ),
+        FormLabel(widget.label),
         TextFormField(
           // validator: (value) {
           //   if (value.isEmpty || value == "") {
@@ -58,9 +59,13 @@ class _FormInputState extends State<FormInput> {
           //   return null;
           // },
           initialValue: widget.initialValue,
-          keyboardType: TextInputType.text,
-          textInputAction:
-              widget.hasNext && widget.nextNode != null ? TextInputAction.next : TextInputAction.done,
+          keyboardType: widget.inputType,
+          maxLines: widget.inputType == TextInputType.multiline ? null : 1,
+          textInputAction: widget.inputType == TextInputType.multiline
+              ? TextInputAction.newline
+              : widget.nextNode != null
+                  ? TextInputAction.next
+                  : TextInputAction.done,
           focusNode: widget.focusNode,
           onFieldSubmitted: (term) {
             if (widget.hasNext)
@@ -71,6 +76,8 @@ class _FormInputState extends State<FormInput> {
             fontSize: ScreenUtil.instance.setSp(16.0),
           ),
           decoration: InputDecoration(
+            hintText: widget.hint,
+            hintStyle: TextStyle(fontStyle: FontStyle.italic),
             enabledBorder: InputBorder.none,
             contentPadding: EdgeInsets.only(top: 10, bottom: 5),
           ),

@@ -92,6 +92,28 @@ class _UserProfileTabState extends State<UserProfileTab> {
               ),
             ),
           ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).pushNamed(helperRegisterRoute);
+            },
+            child: Container(
+              padding: const EdgeInsets.only(left: 7.0),
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                border: new Border(
+                    bottom: BorderSide(color: Colors.black12, width: 1.0)),
+              ),
+              child: ListTile(
+                title: Text(
+                    AppLocalizations.of(context).tr('register_to_helperer')),
+                leading: Icon(
+                  Icons.receipt,
+                  color: Color.fromRGBO(42, 77, 108, 1),
+                ),
+                trailing: Icon(Icons.chevron_right),
+              ),
+            ),
+          ),
           Container(
             color: Colors.blueGrey[50],
             height: 10,

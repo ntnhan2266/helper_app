@@ -10,3 +10,4 @@ const String serviceHistoryRoute = '/service-history';
 const String favouriteStaffRoute = '/favourite-staff';
 const String userProfileRoute = '/profile';
 const String userDetailRoute = '/user-detail';
+const String helperRegisterRoute = '/helper-register';
