@@ -116,6 +116,23 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                 hasNext: true,
                                 inputType: TextInputType.multiline,
                               ),
+                              FormDropdown(
+                                label:
+                                    AppLocalizations.of(context).tr('literacy'),
+                                values: [
+                                  AppLocalizations.of(context)
+                                      .tr('literacy_choice_1'),
+                                  AppLocalizations.of(context)
+                                      .tr('literacy_choice_2'),
+                                  AppLocalizations.of(context)
+                                      .tr('literacy_choice_3'),
+                                  AppLocalizations.of(context)
+                                      .tr('literacy_choice_4'),
+                                  AppLocalizations.of(context)
+                                      .tr('literacy_choice_5'),
+                                ],
+                                hasNext: true,
+                              ),
                               FormInput(
                                 label: AppLocalizations.of(context)
                                     .tr('experience'),
@@ -183,6 +200,59 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                       .tr('work_choice_5'),
                                   AppLocalizations.of(context)
                                       .tr('work_choice_6'),
+                                ],
+                                hasNext: true,
+                              ),
+                              FormMultiChoice(
+                                label: AppLocalizations.of(context)
+                                    .tr('support_area'),
+                                hint: AppLocalizations.of(context)
+                                    .tr('support_area_hint'),
+                                values: <String>[
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_1'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_2'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_3'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_4'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_5'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_6'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_7'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_8'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_9'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_10'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_11'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_12'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_13'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_14'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_15'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_16'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_17'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_18'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_19'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_20'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_21'),
+                                  AppLocalizations.of(context)
+                                      .tr('support_area_choice_22'),
                                 ],
                               ),
                             ],
