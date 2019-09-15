@@ -77,7 +77,7 @@ class _HomeTabState extends State<HomeTab> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Text(
-              "Người giúp việc được đánh giá cao nhất",
+              AppLocalizations.of(context).tr('home_tab_title_highest_ratting_users'),
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -129,27 +129,27 @@ class _HomeTabState extends State<HomeTab> {
                             children: <Widget>[
                               Icon(
                                 Icons.star,
-                                color: Colors.yellowAccent[100],
+                                color: Color(0xFFF4D03F),
                                 size: 18,
                               ),
                               Icon(
                                 Icons.star,
-                                color: Colors.yellowAccent[100],
+                                color: Color(0xFFF4D03F),
                                 size: 18,
                               ),
                               Icon(
                                 Icons.star,
-                                color: Colors.yellowAccent[100],
+                                color: Color(0xFFF4D03F),
                                 size: 18,
                               ),
                               Icon(
                                 Icons.star,
-                                color: Colors.yellowAccent[100],
+                                color: Color(0xFFF4D03F),
                                 size: 18,
                               ),
                               Icon(
                                 Icons.star,
-                                color: Colors.yellowAccent[100],
+                                color: Color(0xFFF4D03F),
                                 size: 18,
                               ),
                             ],
@@ -170,7 +170,7 @@ class _HomeTabState extends State<HomeTab> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Text(
-              "Những dịch vụ được sử dụng gần đây",
+              AppLocalizations.of(context).tr('home_tab_title_recent_service'),
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,

@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_rabbit/screens/helper_register_screen.dart';
+import 'package:smart_rabbit/screens/user_detail_screen.dart';
 
 import './screens/splash_screen.dart';
 import './screens/home_screen.dart';
@@ -43,15 +45,14 @@ Map<int, Color> color = {
 };
 
 class _SmartRabbitAppState extends State<SmartRabbitApp> {
-  
   MaterialColor colorCustom = MaterialColor(0xFF880E4F, color);
 
   @override
   Widget build(BuildContext context) {
     // Prevent device orientation changes and force portrait
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
     ]);
     // Localization
     var data = EasyLocalizationProvider.of(context).data;
@@ -87,7 +88,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
               scaffoldBackgroundColor: Colors.white
           ),
           home: SplashScreen(),
-          onGenerateRoute: _getRoute),
+          onGenerateRoute: _getRoute,
+        ),
       ),
     );
   }
@@ -114,6 +116,10 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, VerifyBookingScreen());
       case chooseAdressRoute:
         return _buildRoute(settings, ChooseAddressScreen());
+      case userDetailRoute:
+        return _buildRoute(settings, UserDetailScreen());
+      case helperRegisterRoute:
+        return _buildRoute(settings, HelperRegisterScreen());
       default:
         return null;
     }
