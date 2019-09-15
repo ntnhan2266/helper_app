@@ -93,5 +93,15 @@
     "work_choice_4": "Dọn dẹp",
     "work_choice_5": "Khuôn vác",
     "work_choice_6": "Sửa chữa",
-    "i_agree": "Tôi đồng ý với các điều khoản"
+    "i_agree": "Tôi đồng ý với các điều khoản",
+    "service_fee": "Phí dịch vụ (đã bao gồm dụng cụ): ",
+    "choose_time": "Chọn thời gian",
+    "note_example": "Ví dụ: \n - Lau dọn 2 phòng ngủ, 1 phòng khách bếp. \n - Lau khô sàn (sàn gỗ).",
+    "house_number_example": "Ví dụ: Căn hộ 301, số 121A",
+    "location_required": "Vui lòng chọn địa điểm",
+    "house_required": "Vui lòng chọn số nhà",
+    "start_time_required": "Vui lòng chọn thời gian bắt đầu",
+    "end_time_required": "Vui lòng chọn thời gian kết thúc",
+    "end_time_have_to_after_start_time": "Thời gian kết thúc phải sau thời gian bắt đầu",
+    "end_time_have_to_more_than_start_time_one_hour": "Thời gian kết thúc phải lớn hơn thời gian bắt đầu ít nhất 1 giờ"
 }
