@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_rabbit/widgets/booking_bottom_bar.dart';
 
 import '../widgets/booking_step_title.dart';
-import '../utils/route_names.dart';
 import '../models/service_details.dart';
+import '../widgets/booking_bottom_bar.dart';
 
 class ChooseMaidScreen extends StatefulWidget {
   @override
@@ -14,7 +13,6 @@ class ChooseMaidScreen extends StatefulWidget {
 
 class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
   ServiceDetails _data = ServiceDetails();
-
   void _onSubmit() {
 
   }

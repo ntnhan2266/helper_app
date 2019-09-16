@@ -131,7 +131,6 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                               FormDropdown(
                                 label: "Gioi tinh",
                                 values: ["Nam", "Nu"],
-                                initialValue: "Nu",
                                 hasNext: true,
                               ),
                               FormDatePicker(

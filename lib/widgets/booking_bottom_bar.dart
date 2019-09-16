@@ -27,6 +27,9 @@ class BookingBottomBar extends StatelessWidget {
             child: RaisedButton(
               child: Text(
                 AppLocalizations.of(context).tr('next').toUpperCase(),
+                style: TextStyle(
+                  fontSize: ScreenUtil.instance.setSp(13),
+                ),
               ),
               color: Color.fromRGBO(42, 77, 108, 1),
               textColor: Colors.white,

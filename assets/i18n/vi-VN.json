@@ -109,7 +109,7 @@
     "literacy_choice_2": "Cấp ba",
     "literacy_choice_3": "Đại học",
     "literacy_choice_4": "Cao đẳng",
-    "literacy_choice_5": "Thạc sĩ",
+    "literacy_choice_5": "Cao học",
     "support_area": "Vị trí hỗ trợ",
     "support_area_hint": "Lựa chọn các vị trí làm việc",
     "support_area_choice_1": "Quận 1",
@@ -155,5 +155,7 @@
     "start_date": "Ngày bắt đầu: ",
     "end_date": "Ngày kết thúc: ",
     "please_choose_interval": "Vui lòng chọn lịch làm việc hàng tuần",
-    "ok": "Đồng ý"
+    "ok": "Đồng ý",
+    "intro_required": "Vui lòng điền giới thiệu bản thân",
+    "exp_required": "Vui lòng điền kinh nghiệm"
 }

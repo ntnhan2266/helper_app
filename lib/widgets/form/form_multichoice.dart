@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../form/form_label.dart';
 import '../form/form_multichoice_dialog.dart';
+import '../../utils/constants.dart';
 
 class FormMultiChoice extends StatefulWidget {
   final String label;
@@ -77,31 +78,29 @@ class _FormMultiChoiceState extends State<FormMultiChoice> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         FormLabel(widget.label),
+        SizedBox(height: ScreenUtil.instance.setHeight(LABEL_MARGIN)),
         GestureDetector(
           onTap: _showReportDialog,
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.only(top: 10, bottom: 5),
             child: _selectedValues.isEmpty
                 ? Text(
                     widget.hint,
                     style: TextStyle(
-                      color: Colors.black54,
-                      fontFamily: 'Roboto',
-                      fontSize: ScreenUtil.instance.setSp(16.0),
-                      fontStyle: FontStyle.italic,
+                      color: Colors.black,
+                      fontSize: ScreenUtil.instance.setSp(12.0),
                     ),
                   )
                 : Text(
                     _selectedValues.join(", "),
                     style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: ScreenUtil.instance.setSp(16.0),
+                      color: Colors.black,
+                      fontSize: ScreenUtil.instance.setSp(12.0),
                     ),
                   ),
           ),
         ),
-        SizedBox(height: widget.hasNext ? 20 : 0),
+        SizedBox(height: widget.hasNext ? ScreenUtil.instance.setHeight(20) : 0),
       ],
     );
   }

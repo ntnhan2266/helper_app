@@ -3,8 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:smart_rabbit/widgets/booking_bottom_bar.dart';
-import 'package:smart_rabbit/widgets/service_interval.dart';
 
 import '../widgets/booking_step_title.dart';
 import '../screens/choose_address_screen.dart';
@@ -12,6 +10,9 @@ import '../utils/constants.dart';
 import '../services/permission.dart';
 import '../models/service_details.dart';
 import '../utils/route_names.dart';
+import '../widgets/booking_bottom_bar.dart';
+import '../widgets/service_interval.dart';
+import '../widgets/form/text_form_field_configs.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
   @override
@@ -138,27 +139,6 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     }
   }
 
-  InputDecoration _textFormFieldConfig(String hintText) {
-    return InputDecoration(
-      errorStyle: TextStyle(color: Colors.red),
-      hintText: hintText,
-      border: OutlineInputBorder(
-        borderSide: BorderSide(width: 1, color: Colors.grey),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 1, color: Colors.red),
-      ),
-      disabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(width: 1, color: Colors.grey),
-      ),
-      fillColor: Color.fromRGBO(0, 0, 0, 0.05),
-      filled: true,
-      contentPadding: EdgeInsets.all(
-        ScreenUtil.instance.setSp(14.0),
-      ),
-    );
-  }
-
   Widget _buildLabel(IconData icon, String labelText) {
     return Container(
       alignment: Alignment.centerLeft,
@@ -232,7 +212,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
           child: TextFormField(
             controller: _startDateController,
             enabled: false,
-            decoration: _textFormFieldConfig(
+            decoration: textFormFieldConfig(
               AppLocalizations.of(context).tr('choose_date'),
             ),
             style: TextStyle(
@@ -467,7 +447,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         child: TextFormField(
                           controller: _addressController,
                           enabled: false,
-                          decoration: _textFormFieldConfig(
+                          decoration: textFormFieldConfig(
                             AppLocalizations.of(context).tr('choose_address'),
                           ),
                           style: TextStyle(
@@ -492,7 +472,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                       ),
                       TextFormField(
                         enabled: true,
-                        decoration: _textFormFieldConfig(
+                        decoration: textFormFieldConfig(
                           AppLocalizations.of(context)
                               .tr('house_number_example'),
                         ),
@@ -553,7 +533,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         child: TextFormField(
                           controller: _startTimeController,
                           enabled: false,
-                          decoration: _textFormFieldConfig(
+                          decoration: textFormFieldConfig(
                             AppLocalizations.of(context).tr('choose_time'),
                           ),
                           style: TextStyle(
@@ -603,7 +583,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         child: TextFormField(
                           controller: _endTimeController,
                           enabled: false,
-                          decoration: _textFormFieldConfig(
+                          decoration: textFormFieldConfig(
                             AppLocalizations.of(context).tr('choose_time'),
                           ),
                           style: TextStyle(
@@ -663,7 +643,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         child: TextFormField(
                           minLines: 4,
                           maxLines: 4,
-                          decoration: _textFormFieldConfig(
+                          decoration: textFormFieldConfig(
                             AppLocalizations.of(context).tr('note_example'),
                           ),
                           style: TextStyle(

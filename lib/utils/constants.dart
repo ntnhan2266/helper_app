@@ -17,3 +17,19 @@ const int NOT_REGISTERED_PHONE_NUMBER = 3;
 const int FB_LOGIN_FAILED = 4;
 const int COMMON_ERROR = 5;
 const int UNAUTHORIZED = 401;
+
+enum LITERACY_TYPE {
+  other,
+  highschool,
+  university,
+  college,
+  post_graduate
+}
+
+enum SALARY_TYPE {
+  less_one,
+  one_to_three,
+  three_to_five,
+  five_to_seven,
+  more_seven
+}

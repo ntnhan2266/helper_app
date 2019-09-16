@@ -12,6 +12,7 @@ class FormInput extends StatefulWidget {
   final FocusNode nextNode;
   final bool hasNext;
   final TextInputType inputType;
+  final dynamic validator;
 
   const FormInput(
       {Key key,
@@ -21,6 +22,7 @@ class FormInput extends StatefulWidget {
       this.focusNode,
       this.nextNode,
       this.hasNext = false,
+      this.validator,
       this.inputType = TextInputType.text})
       : super(key: key);
 
@@ -52,12 +54,7 @@ class _FormInputState extends State<FormInput> {
       children: <Widget>[
         FormLabel(widget.label),
         TextFormField(
-          // validator: (value) {
-          //   if (value.isEmpty || value == "") {
-          //     return 'Please enter some text';
-          //   }
-          //   return null;
-          // },
+          validator: widget.validator,
           initialValue: widget.initialValue,
           keyboardType: widget.inputType,
           maxLines: widget.inputType == TextInputType.multiline ? null : 1,
@@ -72,14 +69,14 @@ class _FormInputState extends State<FormInput> {
               _fieldFocusChange(context, widget.focusNode, widget.nextNode);
           },
           style: TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: ScreenUtil.instance.setSp(16.0),
+            fontSize: ScreenUtil.instance.setSp(12.0),
+            color: Colors.black,
           ),
           decoration: InputDecoration(
             hintText: widget.hint,
-            hintStyle: TextStyle(fontStyle: FontStyle.italic),
+            hintStyle: TextStyle(),
             enabledBorder: InputBorder.none,
-            contentPadding: EdgeInsets.only(top: 10, bottom: 5),
+            contentPadding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(10), bottom: ScreenUtil.instance.setHeight(10)),
           ),
         ),
         SizedBox(height: widget.hasNext ? 20 : 0),

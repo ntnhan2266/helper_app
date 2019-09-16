@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FormLabel extends StatelessWidget {
   final String label;
@@ -10,8 +11,8 @@ class FormLabel extends StatelessWidget {
     return Text(
       label.toUpperCase(),
       style: TextStyle(
-        fontSize: 12,
-        color: Colors.black45,
+        fontSize: ScreenUtil.instance.setSp(12),
+        color: Colors.black,
       ),
     );
   }

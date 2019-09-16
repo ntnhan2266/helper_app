@@ -2,35 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../form/form_label.dart';
+import '../../utils/constants.dart';
+import '../../models/form_select_item.dart';
 
-class FormDropdown extends StatefulWidget {
+class FormDropdown extends StatelessWidget {
   final String label;
   final List<String> values;
-  final String initialValue;
   final bool hasNext;
+  final LITERACY_TYPE value;
+  final Function handleOnChange;
 
-  const FormDropdown(
-      {Key key,
-      @required this.label,
-      @required this.values,
-      this.initialValue,
-      this.hasNext = false})
-      : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return _FormDropdownState();
-  }
-}
-
-class _FormDropdownState extends State<FormDropdown> {
-  String _value;
-
-  @override
-  void initState() {
-    super.initState();
-    _value = widget.initialValue ?? widget.values[0];
-  }
+  const FormDropdown({
+    Key key,
+    @required this.label,
+    @required this.values,
+    this.hasNext = false,
+    this.value,
+    this.handleOnChange,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,32 +35,33 @@ class _FormDropdownState extends State<FormDropdown> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        FormLabel(widget.label),
+        FormLabel(label),
         DropdownButtonFormField(
           decoration: InputDecoration(
             enabledBorder: InputBorder.none,
-            contentPadding: EdgeInsets.only(top: 5, bottom: 0),
+            contentPadding: EdgeInsets.only(
+                top: ScreenUtil.instance.setHeight(5),
+                bottom: ScreenUtil.instance.setHeight(5)),
           ),
-          value: _value,
-          items: widget.values
+          value: value,
+          items: values
               .map(
                 (value) => DropdownMenuItem(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: ScreenUtil.instance.setSp(16.0),
-                        ),
-                      ),
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: ScreenUtil.instance.setSp(12.0),
                     ),
+                  ),
+                ),
               )
               .toList(),
-          onChanged: (value) {
-            setState(() => _value = value);
-          },
+          onChanged: handleOnChange,
         ),
-        SizedBox(height: widget.hasNext ? 20 : 0),
+        SizedBox(
+            height: hasNext ? ScreenUtil.instance.setHeight(20) : 0),
       ],
     );
   }
