@@ -56,12 +56,12 @@ class _FormDatePickerState extends State<FormDatePicker> {
           onTap: _selectDate,
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.only(top: 10, bottom: 5),
+            padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(10), bottom: ScreenUtil.instance.setHeight(10)),
             child: Text(
               DateFormat.yMd('vi_VN').format(_birthday),
               style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: ScreenUtil.instance.setSp(16.0),
+                color: Colors.black,
+                fontSize: ScreenUtil.instance.setSp(12.0),
               ),
             ),
           ),

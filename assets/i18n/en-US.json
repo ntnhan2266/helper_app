@@ -157,5 +157,11 @@
     "please_choose_interval": "Vui lòng chọn lịch làm việc hàng tuần",
     "ok": "OK",
     "intro_required": "Vui lòng điền giới thiệu bản thân",
-    "exp_required": "Vui lòng điền kinh nghiệm"
+    "exp_required": "Vui lòng điền kinh nghiệm",
+    "account_info": "Thông tin tài khoản",
+    "male": "Nam",
+    "female": "Nữ",
+    "fullname": "Tên đầy đủ",
+    "gender": "Giới tính",
+    "birthday": "Ngày sinh"
 }

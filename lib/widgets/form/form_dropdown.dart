@@ -7,7 +7,7 @@ import '../../models/form_select_item.dart';
 
 class FormDropdown extends StatelessWidget {
   final String label;
-  final List<String> values;
+  final List<FormSelectItem> values;
   final bool hasNext;
   final LITERACY_TYPE value;
   final Function handleOnChange;
@@ -46,10 +46,10 @@ class FormDropdown extends StatelessWidget {
           value: value,
           items: values
               .map(
-                (value) => DropdownMenuItem(
-                  value: value,
+                (item) => DropdownMenuItem(
+                  value: item.value,
                   child: Text(
-                    value,
+                    item.label,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: ScreenUtil.instance.setSp(12.0),

@@ -2,12 +2,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_rabbit/utils/constants.dart';
 import 'package:smart_rabbit/widgets/form/form_multichoice.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/form/form_dropdown.dart';
 import '../widgets/form/form_input.dart';
+import '../models/form_select_item.dart';
 import '../models/user.dart';
+import '../utils/constants.dart';
 
 class HelperRegisterScreen extends StatefulWidget {
   @override
@@ -142,7 +145,8 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                   inputType: TextInputType.multiline,
                                   validator: (String value) {
                                     if (value.isEmpty) {
-                                      return AppLocalizations.of(context).tr('intro_required');
+                                      return AppLocalizations.of(context)
+                                          .tr('intro_required');
                                     }
                                     return null;
                                   },
@@ -151,16 +155,31 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                   label: AppLocalizations.of(context)
                                       .tr('literacy'),
                                   values: [
-                                    AppLocalizations.of(context)
-                                        .tr('literacy_choice_1'),
-                                    AppLocalizations.of(context)
-                                        .tr('literacy_choice_2'),
-                                    AppLocalizations.of(context)
-                                        .tr('literacy_choice_3'),
-                                    AppLocalizations.of(context)
-                                        .tr('literacy_choice_4'),
-                                    AppLocalizations.of(context)
-                                        .tr('literacy_choice_5'),
+                                    FormSelectItem(
+                                      label: AppLocalizations.of(context)
+                                          .tr('literacy_choice_1'),
+                                      value: LITERACY_TYPE.other,
+                                    ),
+                                    FormSelectItem(
+                                      label: AppLocalizations.of(context)
+                                          .tr('literacy_choice_2'),
+                                      value: LITERACY_TYPE.highschool,
+                                    ),
+                                    FormSelectItem(
+                                      label: AppLocalizations.of(context)
+                                          .tr('literacy_choice_3'),
+                                      value: LITERACY_TYPE.university,
+                                    ),
+                                    FormSelectItem(
+                                      label: AppLocalizations.of(context)
+                                          .tr('literacy_choice_4'),
+                                      value: LITERACY_TYPE.college,
+                                    ),
+                                    FormSelectItem(
+                                      label: AppLocalizations.of(context)
+                                          .tr('literacy_choice_5'),
+                                      value: LITERACY_TYPE.post_graduate,
+                                    ),
                                   ],
                                   hasNext: true,
                                 ),
@@ -172,7 +191,8 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                   inputType: TextInputType.multiline,
                                   validator: (String value) {
                                     if (value.isEmpty) {
-                                      return AppLocalizations.of(context).tr('exp_required');
+                                      return AppLocalizations.of(context)
+                                          .tr('exp_required');
                                     }
                                     return null;
                                   },
@@ -190,31 +210,34 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 FormDropdown(
-                                  label: AppLocalizations.of(context)
-                                      .tr('salary'),
+                                  label:
+                                      AppLocalizations.of(context).tr('salary'),
                                   values: [
-                                    AppLocalizations.of(context)
+                                    FormSelectItem(
+                                      value: SALARY_TYPE.less_one,
+                                      label: AppLocalizations.of(context)
                                         .tr('salary_choice_1'),
-                                    AppLocalizations.of(context)
+                                    ),
+                                    FormSelectItem(
+                                      value: SALARY_TYPE.less_one,
+                                      label: AppLocalizations.of(context)
                                         .tr('salary_choice_2'),
-                                    AppLocalizations.of(context)
+                                    ),
+                                    FormSelectItem(
+                                      value: SALARY_TYPE.less_one,
+                                      label: AppLocalizations.of(context)
                                         .tr('salary_choice_3'),
-                                    AppLocalizations.of(context)
+                                    ),
+                                    FormSelectItem(
+                                      value: SALARY_TYPE.less_one,
+                                      label: AppLocalizations.of(context)
                                         .tr('salary_choice_4'),
-                                    AppLocalizations.of(context)
+                                    ),
+                                    FormSelectItem(
+                                      value: SALARY_TYPE.less_one,
+                                      label: AppLocalizations.of(context)
                                         .tr('salary_choice_5'),
-                                    AppLocalizations.of(context)
-                                        .tr('salary_choice_6'),
-                                    AppLocalizations.of(context)
-                                        .tr('salary_choice_7'),
-                                    AppLocalizations.of(context)
-                                        .tr('salary_choice_8'),
-                                    AppLocalizations.of(context)
-                                        .tr('salary_choice_9'),
-                                    AppLocalizations.of(context)
-                                        .tr('salary_choice_10'),
-                                    AppLocalizations.of(context)
-                                        .tr('salary_choice_11'),
+                                    ),
                                   ],
                                   hasNext: true,
                                 ),
@@ -296,7 +319,9 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                           ),
                           Container(
                             width: double.infinity,
-                            margin: EdgeInsets.only(top: ScreenUtil.instance.setHeight(20),),
+                            margin: EdgeInsets.only(
+                              top: ScreenUtil.instance.setHeight(20),
+                            ),
                             color: Colors.white,
                             child: Row(
                               children: <Widget>[
@@ -315,8 +340,7 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                     });
                                   },
                                   child: Text(
-                                    AppLocalizations.of(context)
-                                        .tr('i_agree'),
+                                    AppLocalizations.of(context).tr('i_agree'),
                                   ),
                                 ),
                               ],
