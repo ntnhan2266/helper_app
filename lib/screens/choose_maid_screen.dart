@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_rabbit/widgets/booking_bottom_bar.dart';
 
 import '../widgets/booking_step_title.dart';
 import '../utils/route_names.dart';
+import '../models/service_details.dart';
 
 class ChooseMaidScreen extends StatefulWidget {
   @override
@@ -11,10 +13,16 @@ class ChooseMaidScreen extends StatefulWidget {
 }
 
 class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
+  ServiceDetails _data = ServiceDetails();
+
+  void _onSubmit() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
-
+    final ServiceDetails _data = ModalRoute.of(context).settings.arguments;
+    print(_data.toMap());
     var data = EasyLocalizationProvider.of(context).data;
 
     double defaultScreenWidth = 400.0;
@@ -45,21 +53,9 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
             BookingStepTitle(currentStep: 1,),
             SizedBox(height: 10,),
             Text('2'),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: RaisedButton(
-                child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  child: Text('Next'),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, verifyBookingRoute);
-                },
-              ),
-            ),
           ],
-        )
+        ),
+        bottomNavigationBar: BookingBottomBar(onSubmit: _onSubmit,),
       ),
     );
   }

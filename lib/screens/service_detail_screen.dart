@@ -3,48 +3,39 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:smart_rabbit/widgets/booking_bottom_bar.dart';
+import 'package:smart_rabbit/widgets/service_interval.dart';
 
 import '../widgets/booking_step_title.dart';
 import '../screens/choose_address_screen.dart';
 import '../utils/constants.dart';
 import '../services/permission.dart';
+import '../models/service_details.dart';
+import '../utils/route_names.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
   @override
   _ServiceDetailScreenState createState() => _ServiceDetailScreenState();
 }
 
-class ServiceDetailsData {
-  int type = 1;
-  String address = '';
-  String houseNumber = '';
-  DateTime startTime = DateTime.now();
-  DateTime endTime = DateTime.now();
-  String note = '';
-  double lat = 0;
-  double long = 0;
-  Map<String, bool> interval = {
-    'mon': false,
-    'tue': false,
-    'wed': false,
-    'thu': false,
-    'fri': false,
-    'sat': false,
-    'sun': false
-  };
-}
-
 class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
-  ServiceDetailsData _data = ServiceDetailsData();
+  ServiceDetails _data = ServiceDetails();
   final _form = GlobalKey<FormState>();
   final _startTimeController = TextEditingController();
   final _endTimeController = TextEditingController();
   final _addressController = TextEditingController();
+  final _startDateController = TextEditingController();
+  final _endDateController = TextEditingController();
+  bool intervalError = false;
 
   void _handleChangeType(int value) {
     setState(() {
       _data.type = value;
+      _data.startDate = null;
+      _data.endDate = null;
     });
+    _startDateController.text = '';
+    _endDateController.text = '';
   }
 
   void _handleChangeInterval(String index) {
@@ -88,7 +79,63 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   }
 
   void _onSubmit() {
-    if (_form.currentState.validate()) {}
+    if (_form.currentState.validate()) {
+      if (_data.type == 2 &&
+          !_data.interval['mon'] &&
+          !_data.interval['tue'] &&
+          !_data.interval['wed'] &&
+          !_data.interval['thu'] &&
+          !_data.interval['fri'] &&
+          !_data.interval['sat'] &&
+          !_data.interval['sun']) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              title: Text(
+                AppLocalizations.of(context).tr('please_choose_interval'),
+                style: TextStyle(
+                  fontSize: ScreenUtil.instance.setSp(14.0),
+                  color: Colors.red,
+                ),
+              ),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                FlatButton(
+                  color: Colors.red,
+                  child: Text(
+                    AppLocalizations.of(context).tr('ok'),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: ScreenUtil.instance.setSp(12.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        setState(() {
+          intervalError = true;
+        });
+        return;
+      }
+      setState(() {
+        intervalError = false;
+      });
+
+      // Form is valid
+      _form.currentState.save();
+      Navigator.pushNamed(
+        context,
+        chooseMaidRoute,
+        arguments: _data,
+      );
+    }
   }
 
   InputDecoration _textFormFieldConfig(String hintText) {
@@ -112,31 +159,227 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     );
   }
 
+  Widget _buildLabel(IconData icon, String labelText) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.only(
+        bottom: ScreenUtil.instance.setHeight(LABEL_MARGIN),
+      ),
+      child: Row(
+        children: <Widget>[
+          Icon(
+            icon,
+            size: ScreenUtil.instance.setSp(16),
+            color: Color.fromRGBO(42, 77, 108, 1),
+          ),
+          SizedBox(
+            width: ScreenUtil.instance.setHeight(LABEL_MARGIN),
+          ),
+          Text(
+            labelText,
+            style: TextStyle(
+              fontSize: ScreenUtil.instance.setSp(12.0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Null> _selectStartDate() async {
+    var now = DateTime.now();
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: _data.startDate != null ? _data.startDate : DateTime.now(),
+        firstDate: DateTime.parse(DateFormat('yyyy-MM-dd').format(now)),
+        lastDate: DateTime(2100));
+    print(picked);
+    if (picked != null && picked != _data.startDate) {
+      setState(() {
+        _data.startDate = picked;
+      });
+      _startDateController.text = DateFormat('dd-MM-yyyy').format(picked);
+    }
+  }
+
+  Future<Null> _selectEndDate() async {
+    var now = DateTime.now();
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: _data.startDate != null ? _data.startDate : DateTime.now(),
+        firstDate: DateTime.parse(DateFormat('yyyy-MM-dd').format(now)),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != _data.startDate) {
+      setState(() {
+        _data.endDate = picked;
+      });
+      _endDateController.text = DateFormat('dd-MM-yyyy').format(picked);
+    }
+  }
+
   Widget _buildFixedTimeSelector() {
     return Column(
       children: <Widget>[
         SizedBox(
           height: ScreenUtil.instance.setHeight(20.0),
         ),
-        Container(
-          alignment: Alignment.centerLeft,
-          margin: EdgeInsets.only(
-            bottom: ScreenUtil.instance.setHeight(LABEL_MARGIN),
+        _buildLabel(
+          Icons.date_range,
+          AppLocalizations.of(context).tr('working_date'),
+        ),
+        InkWell(
+          onTap: _selectStartDate,
+          child: TextFormField(
+            controller: _startDateController,
+            enabled: false,
+            decoration: _textFormFieldConfig(
+              AppLocalizations.of(context).tr('choose_date'),
+            ),
+            style: TextStyle(
+              fontSize: ScreenUtil.instance.setSp(12.0),
+              color: Colors.black,
+            ),
+            validator: (String value) {
+              if (value.isEmpty) {
+                return AppLocalizations.of(context).tr('date_required');
+              }
+              return null;
+            },
           ),
-          child: Row(
+        ),
+      ],
+    );
+  }
+
+  Widget _buildIntervalSelector() {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(20.0),
+        ),
+        _buildLabel(
+          Icons.date_range,
+          AppLocalizations.of(context).tr('weeky_interval'),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: ScreenUtil.instance.setWidth(5.0),
+            vertical: ScreenUtil.instance.setWidth(10.0),
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
+              color: intervalError ? Colors.red : Color.fromRGBO(0, 0, 0, 0.05),
+            ),
+            borderRadius: BorderRadius.circular(5.0),
+            color: Color.fromRGBO(0, 0, 0, 0.05),
+          ),
+          child: Column(
             children: <Widget>[
-              Icon(
-                Icons.timer,
-                size: ScreenUtil.instance.setSp(16),
-                color: Color.fromRGBO(42, 77, 108, 1),
+              ServiceInterval(
+                data: _data.interval,
+                handleClick: _handleChangeInterval,
               ),
               SizedBox(
-                width: ScreenUtil.instance.setHeight(LABEL_MARGIN),
+                height: ScreenUtil.instance.setHeight(8.0),
               ),
-              Text(
-                AppLocalizations.of(context).tr('start_time'),
-                style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(12.0),
+              InkWell(
+                onTap: _selectStartDate,
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil.instance.setWidth(10.0),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context).tr('start_date'),
+                        style: TextStyle(
+                          fontSize: ScreenUtil.instance.setSp(12.0),
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        height: ScreenUtil.instance.setHeight(8.0),
+                      ),
+                      TextFormField(
+                        controller: _startDateController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(0),
+                          errorStyle: TextStyle(color: Colors.red),
+                          border: InputBorder.none,
+                          hintText:
+                              AppLocalizations.of(context).tr('choose_date'),
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        style: TextStyle(
+                            fontSize: ScreenUtil.instance.setSp(12.0),
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold),
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return AppLocalizations.of(context)
+                                .tr('date_required');
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: ScreenUtil.instance.setHeight(20.0),
+              ),
+              InkWell(
+                onTap: _selectEndDate,
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil.instance.setWidth(10.0),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context).tr('end_date'),
+                        style: TextStyle(
+                          fontSize: ScreenUtil.instance.setSp(12.0),
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        height: ScreenUtil.instance.setHeight(8.0),
+                      ),
+                      TextFormField(
+                        controller: _endDateController,
+                        enabled: false,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(0),
+                          errorStyle: TextStyle(color: Colors.red),
+                          border: InputBorder.none,
+                          hintText:
+                              AppLocalizations.of(context).tr('choose_date'),
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        style: TextStyle(
+                            fontSize: ScreenUtil.instance.setSp(12.0),
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold),
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return AppLocalizations.of(context)
+                                .tr('date_required');
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -149,8 +392,6 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
-    _data.type = args['id'];
-
     var data = EasyLocalizationProvider.of(context).data;
 
     double defaultScreenWidth = 400.0;
@@ -215,30 +456,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         height: ScreenUtil.instance.setHeight(LABEL_MARGIN),
                       ),
                       // -- Common
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(
-                          bottom: ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.location_on,
-                              size: ScreenUtil.instance.setSp(16),
-                              color: Color.fromRGBO(42, 77, 108, 1),
-                            ),
-                            SizedBox(
-                              width:
-                                  ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                            ),
-                            Text(
-                              AppLocalizations.of(context).tr('work_location'),
-                              style: TextStyle(
-                                fontSize: ScreenUtil.instance.setSp(12.0),
-                              ),
-                            ),
-                          ],
-                        ),
+                      _buildLabel(
+                        Icons.location_on,
+                        AppLocalizations.of(context).tr('work_location'),
                       ),
                       InkWell(
                         onTap: () {
@@ -266,30 +486,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                       SizedBox(
                         height: ScreenUtil.instance.setHeight(20.0),
                       ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(
-                          bottom: ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.home,
-                              size: ScreenUtil.instance.setSp(16),
-                              color: Color.fromRGBO(42, 77, 108, 1),
-                            ),
-                            SizedBox(
-                              width:
-                                  ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                            ),
-                            Text(
-                              AppLocalizations.of(context).tr('house_number'),
-                              style: TextStyle(
-                                fontSize: ScreenUtil.instance.setSp(12.0),
-                              ),
-                            ),
-                          ],
-                        ),
+                      _buildLabel(
+                        Icons.home,
+                        AppLocalizations.of(context).tr('house_number'),
                       ),
                       TextFormField(
                         enabled: true,
@@ -313,36 +512,18 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         },
                       ),
                       // Depend on type
-
-                      // Fixed time
+                      _data.type == 1
+                          // Fixed time
+                          ? _buildFixedTimeSelector()
+                          // Interval
+                          : _buildIntervalSelector(),
 
                       SizedBox(
                         height: ScreenUtil.instance.setHeight(20.0),
                       ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(
-                          bottom: ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.timer,
-                              size: ScreenUtil.instance.setSp(16),
-                              color: Color.fromRGBO(42, 77, 108, 1),
-                            ),
-                            SizedBox(
-                              width:
-                                  ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                            ),
-                            Text(
-                              AppLocalizations.of(context).tr('start_time'),
-                              style: TextStyle(
-                                fontSize: ScreenUtil.instance.setSp(12.0),
-                              ),
-                            ),
-                          ],
-                        ),
+                      _buildLabel(
+                        Icons.timer,
+                        AppLocalizations.of(context).tr('start_time'),
                       ),
                       InkWell(
                         onTap: () async {
@@ -391,30 +572,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                       SizedBox(
                         height: ScreenUtil.instance.setHeight(20.0),
                       ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(
-                          bottom: ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.timer_off,
-                              size: ScreenUtil.instance.setSp(16),
-                              color: Color.fromRGBO(42, 77, 108, 1),
-                            ),
-                            SizedBox(
-                              width:
-                                  ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                            ),
-                            Text(
-                              AppLocalizations.of(context).tr('end_time'),
-                              style: TextStyle(
-                                fontSize: ScreenUtil.instance.setSp(12.0),
-                              ),
-                            ),
-                          ],
-                        ),
+                      _buildLabel(
+                        Icons.timer_off,
+                        AppLocalizations.of(context).tr('end_time'),
                       ),
                       InkWell(
                         onTap: () async {
@@ -473,30 +633,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                       SizedBox(
                         height: ScreenUtil.instance.setHeight(20.0),
                       ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(
-                          bottom: ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.edit,
-                              size: ScreenUtil.instance.setSp(16),
-                              color: Color.fromRGBO(42, 77, 108, 1),
-                            ),
-                            SizedBox(
-                              width:
-                                  ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                            ),
-                            Text(
-                              AppLocalizations.of(context).tr('note'),
-                              style: TextStyle(
-                                fontSize: ScreenUtil.instance.setSp(12.0),
-                              ),
-                            ),
-                          ],
-                        ),
+                      _buildLabel(
+                        Icons.edit,
+                        AppLocalizations.of(context).tr('note'),
                       ),
                       InkWell(
                         onTap: () async {
@@ -544,33 +683,8 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(color: Colors.white, boxShadow: [
-            BoxShadow(blurRadius: 10, color: Color.fromRGBO(0, 0, 0, 0.4))
-          ]),
-          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                AppLocalizations.of(context).tr('service_fee'),
-              ),
-              Container(
-                width: double.infinity,
-                child: RaisedButton(
-                  child: Text(
-                    AppLocalizations.of(context).tr('next').toUpperCase(),
-                  ),
-                  color: Color.fromRGBO(42, 77, 108, 1),
-                  textColor: Colors.white,
-                  onPressed: () {
-                    _onSubmit();
-                  },
-                ),
-              ),
-            ],
-          ),
+        bottomNavigationBar: BookingBottomBar(
+          onSubmit: _onSubmit,
         ),
       ),
     );

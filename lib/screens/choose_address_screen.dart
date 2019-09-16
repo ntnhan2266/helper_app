@@ -81,40 +81,43 @@ class _ChooseAddressScreenState extends State<ChooseAddressScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: (_lat != null && _long != null && _address.isNotEmpty)
-        ? Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [BoxShadow(blurRadius: 10, color: Color.fromRGBO(0, 0, 0, 0.4))]
-          ),
-          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(_address),
-              Container(
-                width: double.infinity, 
-                child: RaisedButton(
-                  child: Text(
-                    AppLocalizations.of(context).tr('confirm').toUpperCase(),
+      bottomNavigationBar: (_lat != null &&
+              _long != null &&
+              _address.isNotEmpty)
+          ? Container(
+              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(blurRadius: 10, color: Color.fromRGBO(0, 0, 0, 0.4))
+              ]),
+              padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(_address),
+                  Container(
+                    width: double.infinity,
+                    child: RaisedButton(
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .tr('confirm')
+                            .toUpperCase(),
+                      ),
+                      color: Color.fromRGBO(42, 77, 108, 1),
+                      textColor: Colors.white,
+                      onPressed: () {
+                        Map<String, dynamic> returnedData = {
+                          'lat': _lat,
+                          'long': _long,
+                          'address': _address
+                        };
+                        Navigator.pop(context, returnedData);
+                      },
+                    ),
                   ),
-                  color: Color.fromRGBO(42, 77, 108, 1),
-                  textColor: Colors.white,
-                  onPressed: () {
-                    Map<String, dynamic> returnedData = {
-                      'lat': _lat,
-                      'long': _long,
-                      'address': _address
-                    };
-                    Navigator.pop(context, returnedData);
-                  },
-                ),
+                ],
               ),
-            ],
-          ),
-        )
-        : null,
+            )
+          : null,
     );
   }
 
@@ -126,24 +129,28 @@ class _ChooseAddressScreenState extends State<ChooseAddressScreen> {
       var placeId = p.placeId;
       double lat = detail.result.geometry.location.lat;
       double lng = detail.result.geometry.location.lng;
-
-      var address = await Geocoder.local.findAddressesFromQuery(p.description);
-      GoogleMapController controller = await _controller.future;
-      controller
-          .animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 16.0));
-      setState(() {
-        print(address[0].toMap());
-        _address = address[0].addressLine;
-        this._lat = lat;
-        this._long = lng;
-        _markers.clear();
-        _markers.add(
-          Marker(
-            markerId: MarkerId(placeId),
-            position: LatLng(lat, lng),
-          ),
-        );
-      });
+      try {
+        var address =
+            await Geocoder.local.findAddressesFromQuery(p.description);
+        GoogleMapController controller = await _controller.future;
+        controller
+            .animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 16.0));
+        setState(() {
+          print(address[0].toMap());
+          _address = address[0].addressLine;
+          this._lat = lat;
+          this._long = lng;
+          _markers.clear();
+          _markers.add(
+            Marker(
+              markerId: MarkerId(placeId),
+              position: LatLng(lat, lng),
+            ),
+          );
+        });
+      } catch (err) {
+        print(err);
+      }
     }
   }
 }
