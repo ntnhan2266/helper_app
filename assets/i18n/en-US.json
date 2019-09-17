@@ -165,5 +165,7 @@
     "gender": "Giới tính",
     "birthday": "Ngày sinh",
     "success": "Thành công",
-    "update_profile_successfully": "Cập nhật thông tin thành công"
+    "update_profile_successfully": "Cập nhật thông tin thành công",
+    "see": "Xem",
+    "choose_image": "Chọn hình ảnh"
 }

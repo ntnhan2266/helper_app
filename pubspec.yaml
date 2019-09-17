@@ -46,6 +46,7 @@ dependencies:
   permission_handler: ^3.1.0
   flutter_google_places: ^0.2.3
   geocoder: ^0.2.1
+  image_picker_modern: ^0.4.12+2
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -89,6 +90,7 @@ flutter:
     - assets/images/child_care.png
     - assets/images/laundry.png
     - assets/images/other.png
+    - assets/images/avt_default.png
 
 
   #  - images/a_dot_burr.jpeg

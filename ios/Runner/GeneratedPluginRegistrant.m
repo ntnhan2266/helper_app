@@ -12,6 +12,7 @@
 #import <google_api_availability/GoogleApiAvailabilityPlugin.h>
 #import <google_maps_flutter/GoogleMapsPlugin.h>
 #import <google_sign_in/GoogleSignInPlugin.h>
+#import <image_picker_modern/ImagePickerPlugin.h>
 #import <location_permissions/LocationPermissionsPlugin.h>
 #import <permission_handler/PermissionHandlerPlugin.h>
 #import <shared_preferences/SharedPreferencesPlugin.h>
@@ -28,6 +29,7 @@
   [GoogleApiAvailabilityPlugin registerWithRegistrar:[registry registrarForPlugin:@"GoogleApiAvailabilityPlugin"]];
   [FLTGoogleMapsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleMapsPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
+  [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
   [LocationPermissionsPlugin registerWithRegistrar:[registry registrarForPlugin:@"LocationPermissionsPlugin"]];
   [PermissionHandlerPlugin registerWithRegistrar:[registry registrarForPlugin:@"PermissionHandlerPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];

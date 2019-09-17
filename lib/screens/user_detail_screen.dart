@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -8,18 +9,21 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:image_picker_modern/image_picker_modern.dart';
 
-import '../widgets/form/form_datepicker.dart';
-import '../widgets/form/form_dropdown.dart';
 import '../models/form_select_item.dart';
 import '../models/user.dart';
-import '../utils/constants.dart';
 import '../services/permission.dart';
-import '../screens/choose_address_screen.dart';
+import '../services/file.dart';
 import '../services/user.dart';
+import '../screens/choose_address_screen.dart';
 import '../widgets/form/form_label.dart';
+import '../widgets/user_avatar.dart';
+import '../widgets/form/form_datepicker.dart';
+import '../widgets/form/form_dropdown.dart';
 import '../utils/route_names.dart';
 import '../utils/utils.dart';
+import '../utils/constants.dart';
 
 class UserDetailScreen extends StatefulWidget {
   @override
@@ -31,8 +35,11 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
+  PersistentBottomSheetController _controller;
   final _form = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   User _data = User();
+  bool _open = false;
 
   @override
   void initState() {
@@ -49,22 +56,21 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
           final user = res['user'];
           setState(() {
             _data = User(
-              id: user['id'],
-              uid: user['uid'],
-              name: user['name'],
-              email: user['email'],
-              gender: user['gender'],
-              birthday: DateTime.parse(user['birthday']),
-              phoneNumber: user['phoneNumber'],
-              long: user['long'],
-              lat: user['lat'],
-              address: user['address'],
-            );
-            print(user);
+                id: user['id'],
+                uid: user['uid'],
+                name: user['name'],
+                email: user['email'],
+                gender: user['gender'],
+                birthday: DateTime.parse(user['birthday']),
+                phoneNumber: user['phoneNumber'],
+                long: user['long'],
+                lat: user['lat'],
+                address: user['address'],
+                avatar: user['avatar']);
             _addressController.text = _data.address;
-            _nameController.text = _data.name;
             _emailController.text = _data.email;
             _phoneController.text = _data.phoneNumber;
+            _nameController.text = _data.name;
           });
         }
       });
@@ -83,6 +89,85 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     setState(() {
       _data.gender = value;
     });
+  }
+
+  Future _getImage(int source) async {
+    var file = await ImagePicker.pickImage(source: source == 1 ? ImageSource.gallery : ImageSource.camera);
+
+    _upload(file);
+  }
+
+  void _upload(File file) async {
+    if (file == null) return;
+    String base64Image = base64Encode(file.readAsBytesSync());
+    String fileName = file.path.split("/").last;
+
+    final res = await FileService.upload(base64Image, fileName);
+ }
+
+  void _handleChangeAvatar(context) async {
+    if (!_open) {
+      _controller = scaffoldKey.currentState.showBottomSheet(
+        (context) => Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(blurRadius: 10, color: Color.fromRGBO(0, 0, 0, 0.4))
+            ],
+          ),
+          width: double.infinity,
+          padding: EdgeInsets.all(
+            ScreenUtil.instance.setWidth(20),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                AppLocalizations.of(context).tr('choose_image'),
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: ScreenUtil.instance.setSp(12),
+                ),
+              ),
+              Divider(),
+              Container(
+                child: InkWell(
+                  onTap: () {
+                    _getImage(1); // Choose from gallery
+                  },
+                  child: Text(
+                    'Chon hinh anh',
+                    style: TextStyle(
+                      fontSize: ScreenUtil.instance.setSp(14),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+              ),
+              Divider(),
+              Container(
+                child: InkWell(
+                  onTap: () {
+                    _getImage(2); // Choose from gallery
+                  },
+                  child: Text(
+                    'Chon hinh anh 2',
+                    style: TextStyle(
+                      fontSize: ScreenUtil.instance.setSp(14),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      _controller.close();
+    }
+    setState(() => _open = !_open);
   }
 
   void _getCurrentLocation() async {
@@ -126,7 +211,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
         final userProvider = Provider.of<User>(context, listen: false);
         userProvider.fromJson(res['user']);
         setState(() {
-         _data.fromJson(res['user']); 
+          _data.fromJson(res['user']);
         });
         Flushbar(
           titleText: Text(AppLocalizations.of(context).tr('success'),
@@ -191,11 +276,11 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     var data = EasyLocalizationProvider.of(context).data;
     // Get screen width
     final screenWidth = MediaQuery.of(context).size.width;
-    // Focus Node
     // Build slide list
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
+        key: scaffoldKey,
         appBar: AppBar(
           elevation: 0.0,
           title: Text(
@@ -212,6 +297,10 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
         body: GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
+            if (_open) {
+              _controller.close();
+              setState(() => _open = !_open);
+            }
           },
           child: Container(
             color: Colors.blueGrey[50],
@@ -244,12 +333,14 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Container(
-                                  width: ScreenUtil.instance.setWidth(70),
-                                  height: ScreenUtil.instance.setWidth(70),
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        "assets/images/female_user.jpg"),
+                                InkWell(
+                                  onTap: () {
+                                    _handleChangeAvatar(context);
+                                  },
+                                  child: Container(
+                                    width: ScreenUtil.instance.setWidth(70),
+                                    height: ScreenUtil.instance.setWidth(70),
+                                    child: UserAvatar(_data.avatar),
                                   ),
                                 ),
                                 Padding(

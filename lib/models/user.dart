@@ -18,6 +18,7 @@ class User with ChangeNotifier {
   double long;
   double lat;
   String address;
+  String avatar;
 
   User({
     this.id,
@@ -30,6 +31,7 @@ class User with ChangeNotifier {
     this.long,
     this.lat,
     this.address,
+    this.avatar
   });
 
   void changeName(String name) {
@@ -83,6 +85,7 @@ class User with ChangeNotifier {
     this.long = json['long'];
     this.lat = json['lat'];
     this.address = json['address'];
+    this.avatar = json['avatar'];
     notifyListeners();
   }
 

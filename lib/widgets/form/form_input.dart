@@ -48,7 +48,7 @@ class FormInput extends StatelessWidget {
           textInputAction: inputType == TextInputType.multiline
               ? TextInputAction.newline
               : nextNode != null ? TextInputAction.next : TextInputAction.done,
-          focusNode: focusNode,
+          focusNode: focusNode != null ? focusNode : null,
           onFieldSubmitted: (term) {
             if (hasNext) _fieldFocusChange(context, focusNode, nextNode);
           },

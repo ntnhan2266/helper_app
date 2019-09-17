@@ -10,6 +10,7 @@ import com.baseflow.geolocator.GeolocatorPlugin;
 import com.baseflow.googleapiavailability.GoogleApiAvailabilityPlugin;
 import io.flutter.plugins.googlemaps.GoogleMapsPlugin;
 import io.flutter.plugins.googlesignin.GoogleSignInPlugin;
+import io.flutter.plugins.imagepicker.ImagePickerPlugin;
 import com.baseflow.location_permissions.LocationPermissionsPlugin;
 import com.baseflow.permissionhandler.PermissionHandlerPlugin;
 import io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin;
@@ -31,6 +32,7 @@ public final class GeneratedPluginRegistrant {
     GoogleApiAvailabilityPlugin.registerWith(registry.registrarFor("com.baseflow.googleapiavailability.GoogleApiAvailabilityPlugin"));
     GoogleMapsPlugin.registerWith(registry.registrarFor("io.flutter.plugins.googlemaps.GoogleMapsPlugin"));
     GoogleSignInPlugin.registerWith(registry.registrarFor("io.flutter.plugins.googlesignin.GoogleSignInPlugin"));
+    ImagePickerPlugin.registerWith(registry.registrarFor("io.flutter.plugins.imagepicker.ImagePickerPlugin"));
     LocationPermissionsPlugin.registerWith(registry.registrarFor("com.baseflow.location_permissions.LocationPermissionsPlugin"));
     PermissionHandlerPlugin.registerWith(registry.registrarFor("com.baseflow.permissionhandler.PermissionHandlerPlugin"));
     SharedPreferencesPlugin.registerWith(registry.registrarFor("io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin"));

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../services/auth.dart';
 import '../../models/user.dart';
 import '../../utils/route_names.dart';
+import '../../widgets/user_avatar.dart';
 
 class UserProfileTab extends StatefulWidget {
   @override
@@ -26,20 +27,23 @@ class _UserProfileTabState extends State<UserProfileTab> {
               color: Theme.of(context).primaryColor,
               padding: const EdgeInsets.symmetric(vertical: 7.0),
               child: ListTile(
-                title: Text(
-                  'Test User',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w500),
+                title: Consumer<User>(
+                  builder: (ctx, user, _) => Text(
+                    user.name != null ? user.name : '--',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage("assets/images/female_user.jpg"),
-                ),
+                leading: Consumer<User>(
+                    builder: (ctx, user, _) => UserAvatar(user.avatar)),
                 trailing: FittedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Text(
-                        "Xem",
+                        AppLocalizations.of(context).tr('see'),
                         style: TextStyle(color: Colors.white),
                       ),
                       Icon(
