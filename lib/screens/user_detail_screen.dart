@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/form/form_datepicker.dart';
 import '../widgets/form/form_dropdown.dart';
-import '../widgets/form/form_input.dart';
 import '../models/form_select_item.dart';
 import '../models/user.dart';
 import '../utils/constants.dart';
@@ -17,6 +16,7 @@ import '../screens/choose_address_screen.dart';
 import '../services/user.dart';
 import '../widgets/form/form_label.dart';
 import '../utils/route_names.dart';
+import '../utils/utils.dart';
 
 class UserDetailScreen extends StatefulWidget {
   @override
@@ -25,6 +25,10 @@ class UserDetailScreen extends StatefulWidget {
 
 class _UserDetailScreenState extends State<UserDetailScreen> {
   TextEditingController _addressController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  final _form = GlobalKey<FormState>();
   User _data = User();
 
   @override
@@ -43,16 +47,20 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
           setState(() {
             _data = User(
               id: user['id'],
-              uid : user['uid'],
-              name : user['name'],
-              email : user['email'],
-              gender : user['gender'],
-              birthday : DateTime.parse(user['birthday']),
-              phoneNumber : user['phoneNumber'],
-              long : user['long'],
-              lat : user['lat'],
-              address : user['address'],
+              uid: user['uid'],
+              name: user['name'],
+              email: user['email'],
+              gender: user['gender'],
+              birthday: DateTime.parse(user['birthday']),
+              phoneNumber: user['phoneNumber'],
+              long: user['long'],
+              lat: user['lat'],
+              address: user['address'],
             );
+            _addressController.text = _data.address;
+            _nameController.text = _data.name;
+            _emailController.text = _data.email;
+            _phoneController.text = _data.phoneNumber;
           });
         }
       });
@@ -94,9 +102,14 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     }
   }
 
+  void _onSubmit() {
+    if (_form.currentState.validate()) {
+      print(_form.currentState);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(_data.name);
     // Responsive
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
@@ -110,7 +123,6 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     // Get screen width
     final screenWidth = MediaQuery.of(context).size.width;
     // Focus Node
-    final FocusNode _nameFocus = FocusNode();
     final FocusNode _emailFocus = FocusNode();
     // Build slide list
     return EasyLocalizationProvider(
@@ -125,7 +137,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.save),
-              onPressed: () {},
+              onPressed: _onSubmit,
             ),
           ],
         ),
@@ -147,6 +159,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                       color: Theme.of(context).primaryColor,
                     ),
                     Form(
+                      key: _form,
                       child: Column(
                         children: <Widget>[
                           Container(
@@ -207,38 +220,106 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                FormInput(
-                                  label: AppLocalizations.of(context)
-                                      .tr('fullname'),
-                                  initialValue:
-                                      _data.name != null ? _data.name : '',
-                                  hasNext: true,
-                                  focusNode: _nameFocus,
-                                  nextNode: _emailFocus,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    FormLabel(
+                                      AppLocalizations.of(context)
+                                          .tr('fullname'),
+                                    ),
+                                    TextFormField(
+                                      validator: (String value) {
+                                        if (value.isEmpty) {
+                                          return AppLocalizations.of(context)
+                                              .tr('phone_required');
+                                        }
+                                        return null;
+                                      },
+                                      controller: _nameController,
+                                      style: TextStyle(
+                                        fontSize:
+                                            ScreenUtil.instance.setSp(12.0),
+                                        color: Colors.black,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: AppLocalizations.of(context)
+                                            .tr('name_example'),
+                                        hintStyle: TextStyle(),
+                                        enabledBorder: InputBorder.none,
+                                        contentPadding: EdgeInsets.only(
+                                            top: ScreenUtil.instance
+                                                .setHeight(10),
+                                            bottom: ScreenUtil.instance
+                                                .setHeight(10)),
+                                      ),
+                                      onFieldSubmitted: (_) {
+                                        _emailFocus.requestFocus();
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: ScreenUtil.instance.setHeight(20),
+                                    ),
+                                  ],
                                 ),
-                                FormInput(
-                                  label: "Email",
-                                  initialValue:
-                                      _data.email != null ? _data.email : '',
-                                  hasNext: true,
-                                  focusNode: _emailFocus,
-                                  nextNode: null,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    FormLabel(
+                                      AppLocalizations.of(context).tr('email'),
+                                    ),
+                                    TextFormField(
+                                      validator: (String value) {
+                                        RegExp regex = new RegExp(EMAIL_PATTERN);
+                                        if (value.isEmpty) {
+                                          return AppLocalizations.of(context)
+                                              .tr('please_enter_email');
+                                        } else if (!regex.hasMatch(value)) {
+                                          return AppLocalizations.of(context).tr('invalid_email');
+                                        }
+                                        return null;
+                                      },
+                                      controller: _emailController,
+                                      style: TextStyle(
+                                        fontSize:
+                                            ScreenUtil.instance.setSp(12.0),
+                                        color: Colors.black,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: AppLocalizations.of(context)
+                                            .tr('email_example'),
+                                        hintStyle: TextStyle(),
+                                        enabledBorder: InputBorder.none,
+                                        contentPadding: EdgeInsets.only(
+                                            top: ScreenUtil.instance
+                                                .setHeight(10),
+                                            bottom: ScreenUtil.instance
+                                                .setHeight(10)),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: ScreenUtil.instance.setHeight(20),
+                                    ),
+                                  ],
                                 ),
                                 FormDropdown(
+                                  value: _data.gender != null
+                                      ? _data.gender
+                                      : Utils.genderToInt(GENDER.male),
                                   label:
                                       AppLocalizations.of(context).tr('gender'),
                                   values: [
                                     FormSelectItem(
-                                        label: AppLocalizations.of(context)
-                                            .tr('male'),
-                                        value: GENDER.male),
+                                      label: AppLocalizations.of(context)
+                                          .tr('male'),
+                                      value: Utils.genderToInt(GENDER.male),
+                                    ),
                                     FormSelectItem(
-                                      value: GENDER.female,
+                                      value: Utils.genderToInt(GENDER.female),
                                       label: AppLocalizations.of(context)
                                           .tr('female'),
                                     ),
                                     FormSelectItem(
-                                      value: GENDER.other,
+                                      value: Utils.genderToInt(GENDER.other),
                                       label: AppLocalizations.of(context)
                                           .tr('other'),
                                     ),
@@ -248,7 +329,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                 FormDatePicker(
                                   label: AppLocalizations.of(context)
                                       .tr('birthday'),
-                                  value: _data.birthday,
+                                  value: _data.birthday != null ? _data.birthday : DateTime.parse('1990-01-01'),
                                 ),
                               ],
                             ),
@@ -262,12 +343,37 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                               horizontal: ScreenUtil.instance.setHeight(15),
                             ),
                             color: Colors.white,
-                            child: FormInput(
-                              label: AppLocalizations.of(context).tr('phone'),
-                              initialValue: _data.phoneNumber != null
-                                  ? _data.phoneNumber
-                                  : '',
-                              hasNext: false,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                FormLabel(
+                                  AppLocalizations.of(context).tr('phone'),
+                                ),
+                                TextFormField(
+                                  validator: (String value) {
+                                    if (value.isEmpty) {
+                                      return AppLocalizations.of(context)
+                                          .tr('please_enter_phone_number');
+                                    }
+                                    return null;
+                                  },
+                                  controller: _phoneController,
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil.instance.setSp(12.0),
+                                    color: Colors.black,
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: AppLocalizations.of(context)
+                                        .tr('phone_number_example'),
+                                    hintStyle: TextStyle(),
+                                    enabledBorder: InputBorder.none,
+                                    contentPadding: EdgeInsets.only(
+                                        top: ScreenUtil.instance.setHeight(10),
+                                        bottom:
+                                            ScreenUtil.instance.setHeight(10)),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           SizedBox(
@@ -293,7 +399,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                     }
                                     return null;
                                   },
-                                  initialValue: _data.name,
+                                  controller: _addressController,
                                   style: TextStyle(
                                     fontSize: ScreenUtil.instance.setSp(12.0),
                                     color: Colors.black,
@@ -309,8 +415,6 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                             ScreenUtil.instance.setHeight(10)),
                                   ),
                                 ),
-                                SizedBox(
-                                    height: ScreenUtil.instance.setHeight(20)),
                               ],
                             ),
                           ),

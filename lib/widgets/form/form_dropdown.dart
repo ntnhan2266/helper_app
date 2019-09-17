@@ -9,7 +9,7 @@ class FormDropdown extends StatelessWidget {
   final String label;
   final List<FormSelectItem> values;
   final bool hasNext;
-  final LITERACY_TYPE value;
+  final dynamic value;
   final Function handleOnChange;
 
   const FormDropdown({

@@ -66,7 +66,7 @@ class _FormDatePickerState extends State<FormDatePicker> {
             ),
           ),
         ),
-        SizedBox(height: widget.hasNext ? 20 : 0),
+        SizedBox(height: widget.hasNext ? ScreenUtil.instance.setHeight(20.0) : 0),
       ],
     );
   }
