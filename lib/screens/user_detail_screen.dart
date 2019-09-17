@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:flushbar/flushbar.dart';
 
 import '../widgets/form/form_datepicker.dart';
 import '../widgets/form/form_dropdown.dart';
@@ -57,6 +60,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
               lat: user['lat'],
               address: user['address'],
             );
+            print(user);
             _addressController.text = _data.address;
             _nameController.text = _data.name;
             _emailController.text = _data.email;
@@ -67,6 +71,18 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     } else {
       Navigator.of(context).pushReplacementNamed(authScreenRoute);
     }
+  }
+
+  void _handleChangeBirthday(DateTime birthday) {
+    setState(() {
+      _data.birthday = birthday;
+    });
+  }
+
+  void _handleChangeGender(int value) {
+    setState(() {
+      _data.gender = value;
+    });
   }
 
   void _getCurrentLocation() async {
@@ -102,9 +118,62 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     }
   }
 
-  void _onSubmit() {
+  void _onSubmit() async {
     if (_form.currentState.validate()) {
-      print(_form.currentState);
+      _form.currentState.save();
+      var res = await UserService.editUser(_data);
+      if (res['isValid']) {
+        final userProvider = Provider.of<User>(context, listen: false);
+        userProvider.fromJson(res['user']);
+        setState(() {
+         _data.fromJson(res['user']); 
+        });
+        Flushbar(
+          titleText: Text(AppLocalizations.of(context).tr('success'),
+              style: TextStyle(
+                  fontSize: ScreenUtil.instance.setSp(14.0),
+                  color: Colors.green)),
+          messageText: Text(
+            AppLocalizations.of(context).tr('update_profile_successfully'),
+            style: TextStyle(
+              fontSize: ScreenUtil.instance.setSp(12.0),
+              color: Colors.green,
+            ),
+          ),
+          icon: Icon(
+            Icons.error,
+            size: 22,
+            color: Colors.green,
+          ),
+          backgroundColor: Colors.white,
+          borderWidth: 1.0,
+          borderColor: Colors.green,
+          duration: Duration(seconds: 3),
+        )..show(context);
+      } else {
+        Flushbar(
+          titleText: Text(AppLocalizations.of(context).tr('error'),
+              style: TextStyle(
+                  fontSize: ScreenUtil.instance.setSp(14.0),
+                  color: Colors.red)),
+          messageText: Text(
+            AppLocalizations.of(context).tr('something_went_wrong'),
+            style: TextStyle(
+              fontSize: ScreenUtil.instance.setSp(12.0),
+              color: Colors.red,
+            ),
+          ),
+          icon: Icon(
+            Icons.error,
+            size: 22,
+            color: Colors.red,
+          ),
+          backgroundColor: Colors.white,
+          borderWidth: 1.0,
+          borderColor: Colors.red,
+          duration: Duration(seconds: 3),
+        )..show(context);
+      }
     }
   }
 
@@ -123,7 +192,6 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     // Get screen width
     final screenWidth = MediaQuery.of(context).size.width;
     // Focus Node
-    final FocusNode _emailFocus = FocusNode();
     // Build slide list
     return EasyLocalizationProvider(
       data: data,
@@ -231,7 +299,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                       validator: (String value) {
                                         if (value.isEmpty) {
                                           return AppLocalizations.of(context)
-                                              .tr('phone_required');
+                                              .tr('please_enter_name');
                                         }
                                         return null;
                                       },
@@ -252,8 +320,8 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                             bottom: ScreenUtil.instance
                                                 .setHeight(10)),
                                       ),
-                                      onFieldSubmitted: (_) {
-                                        _emailFocus.requestFocus();
+                                      onSaved: (String value) {
+                                        _data.name = value;
                                       },
                                     ),
                                     SizedBox(
@@ -269,12 +337,14 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                     ),
                                     TextFormField(
                                       validator: (String value) {
-                                        RegExp regex = new RegExp(EMAIL_PATTERN);
+                                        RegExp regex =
+                                            new RegExp(EMAIL_PATTERN);
                                         if (value.isEmpty) {
                                           return AppLocalizations.of(context)
                                               .tr('please_enter_email');
                                         } else if (!regex.hasMatch(value)) {
-                                          return AppLocalizations.of(context).tr('invalid_email');
+                                          return AppLocalizations.of(context)
+                                              .tr('invalid_email');
                                         }
                                         return null;
                                       },
@@ -295,6 +365,9 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                             bottom: ScreenUtil.instance
                                                 .setHeight(10)),
                                       ),
+                                      onSaved: (String value) {
+                                        _data.email = value;
+                                      },
                                     ),
                                     SizedBox(
                                       height: ScreenUtil.instance.setHeight(20),
@@ -302,6 +375,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                   ],
                                 ),
                                 FormDropdown(
+                                  handleOnChange: _handleChangeGender,
                                   value: _data.gender != null
                                       ? _data.gender
                                       : Utils.genderToInt(GENDER.male),
@@ -327,9 +401,12 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                   hasNext: true,
                                 ),
                                 FormDatePicker(
+                                  hanldeChange: _handleChangeBirthday,
                                   label: AppLocalizations.of(context)
                                       .tr('birthday'),
-                                  value: _data.birthday != null ? _data.birthday : DateTime.parse('1990-01-01'),
+                                  value: _data.birthday != null
+                                      ? _data.birthday
+                                      : DateTime.parse('1990-01-01'),
                                 ),
                               ],
                             ),
@@ -372,6 +449,9 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                                         bottom:
                                             ScreenUtil.instance.setHeight(10)),
                                   ),
+                                  onSaved: (String value) {
+                                    _data.phoneNumber = value;
+                                  },
                                 ),
                               ],
                             ),
@@ -386,36 +466,42 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                               horizontal: ScreenUtil.instance.setHeight(15),
                             ),
                             color: Colors.white,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                FormLabel(
-                                    AppLocalizations.of(context).tr('address')),
-                                TextFormField(
-                                  validator: (String value) {
-                                    if (value.isEmpty) {
-                                      return AppLocalizations.of(context)
-                                          .tr('location_required');
-                                    }
-                                    return null;
-                                  },
-                                  controller: _addressController,
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil.instance.setSp(12.0),
-                                    color: Colors.black,
+                            child: InkWell(
+                              onTap: _getCurrentLocation,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  FormLabel(AppLocalizations.of(context)
+                                      .tr('address')),
+                                  TextFormField(
+                                    enabled: false,
+                                    validator: (String value) {
+                                      if (value.isEmpty) {
+                                        return AppLocalizations.of(context)
+                                            .tr('location_required');
+                                      }
+                                      return null;
+                                    },
+                                    controller: _addressController,
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil.instance.setSp(12.0),
+                                      color: Colors.black,
+                                    ),
+                                    decoration: InputDecoration(
+                                      hintText: AppLocalizations.of(context)
+                                          .tr('choose_address'),
+                                      errorStyle: TextStyle(color: Colors.red),
+                                      enabledBorder: InputBorder.none,
+                                      disabledBorder: InputBorder.none,
+                                      contentPadding: EdgeInsets.only(
+                                          top:
+                                              ScreenUtil.instance.setHeight(10),
+                                          bottom: ScreenUtil.instance
+                                              .setHeight(10)),
+                                    ),
                                   ),
-                                  decoration: InputDecoration(
-                                    hintText: AppLocalizations.of(context)
-                                        .tr('choose_address'),
-                                    hintStyle: TextStyle(),
-                                    enabledBorder: InputBorder.none,
-                                    contentPadding: EdgeInsets.only(
-                                        top: ScreenUtil.instance.setHeight(10),
-                                        bottom:
-                                            ScreenUtil.instance.setHeight(10)),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(

@@ -173,7 +173,6 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
         initialDate: _data.startDate != null ? _data.startDate : DateTime.now(),
         firstDate: DateTime.parse(DateFormat('yyyy-MM-dd').format(now)),
         lastDate: DateTime(2100));
-    print(picked);
     if (picked != null && picked != _data.startDate) {
       setState(() {
         _data.startDate = picked;

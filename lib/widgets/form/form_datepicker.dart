@@ -5,36 +5,26 @@ import 'package:intl/intl.dart';
 
 import '../form/form_label.dart';
 
-class FormDatePicker extends StatefulWidget {
+class FormDatePicker extends StatelessWidget {
   final String label;
   final DateTime value;
   final bool hasNext;
+  final Function hanldeChange;
 
-  const FormDatePicker(
-      {Key key, @required this.label, this.value, this.hasNext = false})
-      : super(key: key);
+  FormDatePicker(
+      {@required this.label, this.value, this.hasNext = false, @required this.hanldeChange});
 
-  @override
-  State<StatefulWidget> createState() {
-    return _FormDatePickerState();
-  }
-}
 
-class _FormDatePickerState extends State<FormDatePicker> {
-  DateTime _birthday;
-  @override
-  void initState() {
-    super.initState();
-    _birthday = widget.value ?? DateTime.now();
-  }
-
-  Future _selectDate() async {
-    DateTime picked = await showDatePicker(
+  Future _selectDate(BuildContext context) async {
+    var now = DateTime.now();
+    final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: _birthday,
-        firstDate: new DateTime(2016),
-        lastDate: new DateTime(2020));
-    if (picked != null) setState(() => _birthday = picked);
+        initialDate: value != null ? value : DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != value) {
+      hanldeChange(picked);
+    }
   }
 
   @override
@@ -51,14 +41,16 @@ class _FormDatePickerState extends State<FormDatePicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        FormLabel(widget.label),
+        FormLabel(label),
         GestureDetector(
-          onTap: _selectDate,
+          onTap: () {
+            _selectDate(context);
+          },
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(10), bottom: ScreenUtil.instance.setHeight(10)),
             child: Text(
-              DateFormat.yMd('vi_VN').format(_birthday),
+              DateFormat.yMd('vi_VN').format(value),
               style: TextStyle(
                 color: Colors.black,
                 fontSize: ScreenUtil.instance.setSp(12.0),
@@ -66,7 +58,7 @@ class _FormDatePickerState extends State<FormDatePicker> {
             ),
           ),
         ),
-        SizedBox(height: widget.hasNext ? ScreenUtil.instance.setHeight(20.0) : 0),
+        SizedBox(height: hasNext ? ScreenUtil.instance.setHeight(20.0) : 0),
       ],
     );
   }

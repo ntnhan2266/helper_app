@@ -52,7 +52,7 @@ class _ChooseAddressScreenState extends State<ChooseAddressScreen> {
                   apiKey: GOOGLE_API_KEY,
                   mode: Mode.fullscreen, // Mode.fullscreen
                   language: "vn",
-                  components: [new Component(Component.country, "vn")]);
+                  components: [Component(Component.country, "vn")]);
               displayPrediction(p);
             },
           )

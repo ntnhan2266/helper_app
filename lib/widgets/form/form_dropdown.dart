@@ -58,7 +58,9 @@ class FormDropdown extends StatelessWidget {
                 ),
               )
               .toList(),
-          onChanged: handleOnChange,
+          onChanged: (dynamic value) {
+            handleOnChange(value);
+          }
         ),
         SizedBox(
             height: hasNext ? ScreenUtil.instance.setHeight(20) : 0),

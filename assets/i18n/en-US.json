@@ -163,5 +163,7 @@
     "female": "Nữ",
     "fullname": "Tên đầy đủ",
     "gender": "Giới tính",
-    "birthday": "Ngày sinh"
+    "birthday": "Ngày sinh",
+    "success": "Thành công",
+    "update_profile_successfully": "Cập nhật thông tin thành công"
 }

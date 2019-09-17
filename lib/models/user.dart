@@ -18,7 +18,6 @@ class User with ChangeNotifier {
   double long;
   double lat;
   String address;
-  String token;
 
   User({
     this.id,
@@ -31,7 +30,6 @@ class User with ChangeNotifier {
     this.long,
     this.lat,
     this.address,
-    this.token
   });
 
   void changeName(String name) {
@@ -86,6 +84,21 @@ class User with ChangeNotifier {
     this.lat = json['lat'];
     this.address = json['address'];
     notifyListeners();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'uid': uid,
+      'name': name,
+      'email': email,
+      'gender': gender,
+      'birthday': birthday.toString(),
+      'phoneNumber': phoneNumber,
+      'long': long,
+      'lat': lat,
+      'address': address
+    };
   }
 
   void clear() {
