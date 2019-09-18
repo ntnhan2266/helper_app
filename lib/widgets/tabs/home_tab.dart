@@ -159,7 +159,7 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pushNamed(helperRattingRoute);
+                      Navigator.of(context).pushNamed(helperDetailRoute);
                     },
                     onDoubleTap: () {
                       Navigator.of(context).pushNamed(helperRattingRoute);

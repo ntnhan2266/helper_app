@@ -13,21 +13,19 @@ import '../utils/constants.dart';
 import '../utils/dummy_data.dart';
 import '../widgets/review_carousel_slider.dart';
 
-class HelperRattingScreen extends StatefulWidget {
+class HelperDeatailScreen extends StatefulWidget {
   @override
-  _HelperRattingScreenState createState() => _HelperRattingScreenState();
+  _HelperDeatailScreenState createState() => _HelperDeatailScreenState();
 }
 
-class _HelperRattingScreenState extends State<HelperRattingScreen> {
+class _HelperDeatailScreenState extends State<HelperDeatailScreen> {
   final _form = GlobalKey<FormState>();
   double _rating;
-  String _rattingComment;
 
   @override
   void initState() {
     super.initState();
-    _rating = 0.0;
-    _rattingComment = '';
+    _rating = 4.0;
   }
 
   void _onSubmit() {
@@ -58,7 +56,7 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
         appBar: AppBar(
           elevation: 0.0,
           title: Text(
-            AppLocalizations.of(context).tr('helper_review'),
+            AppLocalizations.of(context).tr('helper_information'),
             style: TextStyle(
               fontSize: ScreenUtil.instance.setSp(20.0),
             ),
@@ -148,6 +146,7 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                               children: <Widget>[
                                 Center(
                                   child: RatingBar(
+                                    ignoreGestures: true,
                                     initialRating: _rating,
                                     allowHalfRating: true,
                                     itemCount: 5,
@@ -157,28 +156,14 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                                           Icons.star,
                                           color: Colors.amber,
                                         ),
-                                    onRatingUpdate: (rating) {
-                                      setState(() {
-                                        _rating = rating;
-                                        _rattingComment =
-                                            RATTING[rating.ceil()];
-                                      });
-                                    },
+                                    onRatingUpdate: (rating) {},
                                   ),
                                 ),
                                 Container(
                                   alignment: Alignment.center,
-                                  padding: EdgeInsets.only(bottom: 30, top: 10),
+                                  padding: EdgeInsets.only(bottom: 10, top: 10),
                                   child: Text(AppLocalizations.of(context)
-                                      .tr(_rattingComment)),
-                                ),
-                                FormInput(
-                                  label:
-                                      AppLocalizations.of(context).tr('review'),
-                                  hint: AppLocalizations.of(context)
-                                      .tr('review_hint'),
-                                  hasNext: false,
-                                  inputType: TextInputType.multiline,
+                                      .tr('ratting_comment', args: ['30'])),
                                 ),
                               ],
                             ),
@@ -192,7 +177,7 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                             color: Colors.white,
                             child: ReviewCarouselSlider(
                               label: AppLocalizations.of(context)
-                                  .tr('other_review'),
+                                  .tr('review'),
                               reviews: reviews,
                             ),
                           ),

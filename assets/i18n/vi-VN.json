@@ -169,5 +169,8 @@
     "sentiment_satisfied": "Hài lòng",
     "sentiment_very_satisfied": "Rất hài lòng",
     "review_hint": "Thêm đánh giá cho người giúp việc này",
-    "other_review": "Đánh giá khác"
+    "other_review": "Đánh giá khác",
+    "helper_review": "Đánh giá người giúp việc",
+    "helper_information": "Thông tin người giúp việc",
+    "ratting_comment": "trên tổng số {} đánh giá"
 }
