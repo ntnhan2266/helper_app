@@ -16,7 +16,6 @@ class FormDatePicker extends StatelessWidget {
 
 
   Future _selectDate(BuildContext context) async {
-    var now = DateTime.now();
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: value != null ? value : DateTime.now(),

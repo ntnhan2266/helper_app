@@ -12,7 +12,7 @@ class ChooseMaidScreen extends StatefulWidget {
 }
 
 class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
-  ServiceDetails _data = ServiceDetails();
+  // ServiceDetails _data = ServiceDetails();
   void _onSubmit() {
 
   }

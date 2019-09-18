@@ -167,5 +167,7 @@
     "success": "Thành công",
     "update_profile_successfully": "Cập nhật thông tin thành công",
     "see": "Xem",
-    "choose_image": "Chọn hình ảnh"
+    "choose_image": "Chọn hình ảnh",
+    "choose_imge_from_gallery": "Chọn hình ảnh có sẵn",
+    "choose_image_from_camera": "Chụp ảnh mới"
 }

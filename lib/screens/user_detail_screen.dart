@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:image_picker_modern/image_picker_modern.dart';
+import 'package:smart_rabbit/utils/dummy_data.dart';
 
 import '../models/form_select_item.dart';
 import '../models/user.dart';
@@ -102,7 +103,20 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     String base64Image = base64Encode(file.readAsBytesSync());
     String fileName = file.path.split("/").last;
 
-    final res = await FileService.upload(base64Image, fileName);
+    final res = await FileService.uploadAvatar(base64Image, fileName);
+    if (res['isValid']) {
+      setState(() {
+       _data.avatar = res['path'];
+       _open = false; 
+      });
+      _controller.close();
+    } else {
+      setState(() {
+        _open = false; 
+      });
+      _controller.close();
+      Utils.showErrorSnackbar(context);
+    }
  }
 
   void _handleChangeAvatar(context) async {
@@ -137,7 +151,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                     _getImage(1); // Choose from gallery
                   },
                   child: Text(
-                    'Chon hinh anh',
+                    AppLocalizations.of(context).tr('choose_imge_from_gallery'),
                     style: TextStyle(
                       fontSize: ScreenUtil.instance.setSp(14),
                       color: Theme.of(context).primaryColor,
@@ -152,7 +166,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                     _getImage(2); // Choose from gallery
                   },
                   child: Text(
-                    'Chon hinh anh 2',
+                    AppLocalizations.of(context).tr('choose_image_from_camera'),
                     style: TextStyle(
                       fontSize: ScreenUtil.instance.setSp(14),
                       color: Theme.of(context).primaryColor,
@@ -206,6 +220,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
   void _onSubmit() async {
     if (_form.currentState.validate()) {
       _form.currentState.save();
+      print(_data.toJson());
       var res = await UserService.editUser(_data);
       if (res['isValid']) {
         final userProvider = Provider.of<User>(context, listen: false);
@@ -213,51 +228,9 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
         setState(() {
           _data.fromJson(res['user']);
         });
-        Flushbar(
-          titleText: Text(AppLocalizations.of(context).tr('success'),
-              style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(14.0),
-                  color: Colors.green)),
-          messageText: Text(
-            AppLocalizations.of(context).tr('update_profile_successfully'),
-            style: TextStyle(
-              fontSize: ScreenUtil.instance.setSp(12.0),
-              color: Colors.green,
-            ),
-          ),
-          icon: Icon(
-            Icons.error,
-            size: 22,
-            color: Colors.green,
-          ),
-          backgroundColor: Colors.white,
-          borderWidth: 1.0,
-          borderColor: Colors.green,
-          duration: Duration(seconds: 3),
-        )..show(context);
+        Utils.showSuccessSnackbar(context, AppLocalizations.of(context).tr('update_profile_successfully'),);
       } else {
-        Flushbar(
-          titleText: Text(AppLocalizations.of(context).tr('error'),
-              style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(14.0),
-                  color: Colors.red)),
-          messageText: Text(
-            AppLocalizations.of(context).tr('something_went_wrong'),
-            style: TextStyle(
-              fontSize: ScreenUtil.instance.setSp(12.0),
-              color: Colors.red,
-            ),
-          ),
-          icon: Icon(
-            Icons.error,
-            size: 22,
-            color: Colors.red,
-          ),
-          backgroundColor: Colors.white,
-          borderWidth: 1.0,
-          borderColor: Colors.red,
-          duration: Duration(seconds: 3),
-        )..show(context);
+        Utils.showErrorSnackbar(context);
       }
     }
   }

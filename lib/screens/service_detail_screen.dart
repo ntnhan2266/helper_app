@@ -370,7 +370,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    // final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
     var data = EasyLocalizationProvider.of(context).data;
 
     double defaultScreenWidth = 400.0;

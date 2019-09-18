@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../form/form_label.dart';
-import '../../utils/constants.dart';
 import '../../models/form_select_item.dart';
 
 class FormDropdown extends StatelessWidget {

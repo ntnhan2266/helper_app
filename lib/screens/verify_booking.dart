@@ -12,7 +12,7 @@ class VerifyBookingScreen extends StatefulWidget {
 class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    // final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
 
     var data = EasyLocalizationProvider.of(context).data;
 

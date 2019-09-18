@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../configs/api.dart';
+
 class UserAvatar extends StatelessWidget {
   final String avatar;
   UserAvatar(this.avatar);
@@ -8,7 +10,7 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       backgroundImage: avatar != null
-          ? NetworkImage(avatar)
+          ? NetworkImage(APIConfig.hostURL + avatar)
           : AssetImage('assets/images/avt_default.png'),
       backgroundColor: Colors.white,
     );

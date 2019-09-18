@@ -11,7 +11,7 @@ import '../utils/constants.dart';
 class FileService {
   static String uploadAvatarRoute = APIConfig.baseURL + '/file/upload';
 
-  static Future<Map<String, dynamic>> upload(
+  static Future<Map<String, dynamic>> uploadAvatar(
     String base64Image,
     String fileName,
   ) async {
@@ -26,13 +26,19 @@ class FileService {
       "image": base64Image,
       "name": fileName,
     };
-    final res = await http.post(uploadAvatarRoute, headers: headers, body: jsonEncode(body));
-    print(res.statusCode);
+    final res = await http.post(uploadAvatarRoute,
+        headers: headers, body: jsonEncode(body));
     if (res.statusCode == 200) {
-      print(res.body);
-      completer.complete({'isValid': true});
+      final body = jsonDecode(res.body);
+      completer.complete({
+        'isValid': true,
+        'path': body['path'],
+      });
     } else {
-      completer.complete({'isValid': false});
+      completer.complete({
+        'isValid': false,
+        'path': null,
+      });
     }
     return completer.future;
   }

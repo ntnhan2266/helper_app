@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../utils/constants.dart';
-
 /// An annotation for the code generator to know that this class needs the
 /// JSON serialization logic to be generated.
 @JsonSerializable()
@@ -100,7 +98,8 @@ class User with ChangeNotifier {
       'phoneNumber': phoneNumber,
       'long': long,
       'lat': lat,
-      'address': address
+      'address': address,
+      'avatar': avatar
     };
   }
 
