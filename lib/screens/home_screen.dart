@@ -27,7 +27,7 @@ class _HomeState extends State<HomeScreen> {
         _pageChanged(index);
       },
       children: <Widget>[
-        HomeTab(),
+        HomeTab(bottomTapped: _bottomTapped),
         ServiceCategoryTab(),
         ServiceHistoryTab(), 
         FavouriteStaffTab(),

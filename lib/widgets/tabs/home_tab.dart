@@ -11,6 +11,10 @@ import '../../utils/dummy_data.dart';
 import '../../utils/route_names.dart';
 
 class HomeTab extends StatefulWidget {
+  final Function bottomTapped;
+
+  const HomeTab({Key key, this.bottomTapped}) : super(key: key);
+
   @override
   _HomeTabState createState() => _HomeTabState();
 }
@@ -94,11 +98,16 @@ class _HomeTabState extends State<HomeTab> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Text(
-                  AppLocalizations.of(context).tr('more'),
-                  style: TextStyle(
-                    fontSize: ScreenUtil.instance.setSp(15.0),
-                    color: Theme.of(context).primaryColor,
+                GestureDetector(
+                  onTap: () {
+                    widget.bottomTapped(1);
+                  },
+                  child: Text(
+                    AppLocalizations.of(context).tr('more'),
+                    style: TextStyle(
+                      fontSize: ScreenUtil.instance.setSp(15.0),
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ],
@@ -107,34 +116,43 @@ class _HomeTabState extends State<HomeTab> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: _categories.map((category) {
-              return SizedBox(
-                width: MediaQuery.of(context).size.width / 4 - 20.0,
-                child: Column(
-                  children: <Widget>[
-                    Card(
-                      elevation: 3.0,
-                      shape: CircleBorder(),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          category.imgURL,
-                          width: MediaQuery.of(context).size.width / 8,
-                          height: MediaQuery.of(context).size.width / 8,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    serviceDetailRoute,
+                    arguments: {'id': category.id},
+                  );
+                },
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 4 - 20.0,
+                  child: Column(
+                    children: <Widget>[
+                      Card(
+                        elevation: 3.0,
+                        shape: CircleBorder(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            category.imgURL,
+                            width: MediaQuery.of(context).size.width / 8,
+                            height: MediaQuery.of(context).size.width / 8,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: Text(
-                        AppLocalizations.of(context).tr(category.serviceName),
-                        style: TextStyle(
-                          fontSize: ScreenUtil.instance.setSp(13.0),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: Text(
+                          AppLocalizations.of(context).tr(category.serviceName),
+                          style: TextStyle(
+                            fontSize: ScreenUtil.instance.setSp(13.0),
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }).toList(),
