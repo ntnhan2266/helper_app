@@ -172,5 +172,7 @@
     "other_review": "Đánh giá khác",
     "helper_review": "Đánh giá người giúp việc",
     "helper_information": "Thông tin người giúp việc",
-    "ratting_comment": "trên tổng số {} đánh giá"
+    "ratting_comment": "trên tổng số {} đánh giá",
+    "suggested_services": "Các dịch vụ đề xuất",
+    "more": "Xem thêm"
 }

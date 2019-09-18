@@ -1,5 +1,11 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_rabbit/models/service_category.dart';
 
 import '../../utils/dummy_data.dart';
 import '../../utils/route_names.dart';
@@ -11,6 +17,7 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   final TextEditingController _searchControl = new TextEditingController();
+  var _categories = categoriesData.sublist(0, 4);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,7 @@ class _HomeTabState extends State<HomeTab> {
             child: Text(
               AppLocalizations.of(context).tr('home_tab_welcome_title'),
               style: TextStyle(
-                fontSize: 30,
+                fontSize: ScreenUtil.instance.setSp(32.0),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -38,7 +45,7 @@ class _HomeTabState extends State<HomeTab> {
               ),
               child: TextField(
                 style: TextStyle(
-                  fontSize: 15.0,
+                  fontSize: ScreenUtil.instance.setSp(16.0),
                   color: Colors.blueGrey[300],
                 ),
                 decoration: InputDecoration(
@@ -62,7 +69,7 @@ class _HomeTabState extends State<HomeTab> {
                     color: Colors.blueGrey[300],
                   ),
                   hintStyle: TextStyle(
-                    fontSize: 15.0,
+                    fontSize: ScreenUtil.instance.setSp(16.0),
                     color: Colors.blueGrey[300],
                   ),
                 ),
@@ -77,10 +84,72 @@ class _HomeTabState extends State<HomeTab> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  AppLocalizations.of(context).tr('suggested_services'),
+                  style: TextStyle(
+                    fontSize: ScreenUtil.instance.setSp(17.0),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  AppLocalizations.of(context).tr('more'),
+                  style: TextStyle(
+                    fontSize: ScreenUtil.instance.setSp(15.0),
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: _categories.map((category) {
+              return SizedBox(
+                width: MediaQuery.of(context).size.width / 4 - 20.0,
+                child: Column(
+                  children: <Widget>[
+                    Card(
+                      elevation: 3.0,
+                      shape: CircleBorder(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          category.imgURL,
+                          width: MediaQuery.of(context).size.width / 8,
+                          height: MediaQuery.of(context).size.width / 8,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Text(
+                        AppLocalizations.of(context).tr(category.serviceName),
+                        style: TextStyle(
+                          fontSize: ScreenUtil.instance.setSp(13.0),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+          Container(
+            color: Colors.blueGrey[50],
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Text(
-              AppLocalizations.of(context).tr('home_tab_title_highest_ratting_users'),
+              AppLocalizations.of(context)
+                  .tr('home_tab_title_highest_ratting_users'),
               style: TextStyle(
-                fontSize: 16,
+                fontSize: ScreenUtil.instance.setSp(17.0),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -119,7 +188,7 @@ class _HomeTabState extends State<HomeTab> {
                               "${user["name"]}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                                fontSize: ScreenUtil.instance.setSp(15.0),
                               ),
                               maxLines: 2,
                               textAlign: TextAlign.left,
@@ -178,20 +247,21 @@ class _HomeTabState extends State<HomeTab> {
             child: Text(
               AppLocalizations.of(context).tr('home_tab_title_recent_service'),
               style: TextStyle(
-                fontSize: 16,
+                fontSize: ScreenUtil.instance.setSp(17.0),
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: ListView.builder(
               primary: false,
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: services == null ? 0 : services.length,
+              itemCount: 10,
               itemBuilder: (BuildContext context, int index) {
-                Map service = services[index];
+                ServiceCategory service =
+                    categoriesData[new Random().nextInt(categoriesData.length)];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 15.0),
                   child: InkWell(
@@ -199,10 +269,10 @@ class _HomeTabState extends State<HomeTab> {
                       height: 70,
                       child: Row(
                         children: <Widget>[
-                          Icon(
-                            Icons.local_laundry_service,
-                            size: 60,
-                            color: Color.fromRGBO(42, 77, 108, 1),
+                          Image.asset(
+                            service.imgURL,
+                            width: MediaQuery.of(context).size.width / 4,
+                            height: MediaQuery.of(context).size.width / 4,
                           ),
                           SizedBox(width: 15),
                           Container(
@@ -216,10 +286,11 @@ class _HomeTabState extends State<HomeTab> {
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "${service["name"]}",
+                                    AppLocalizations.of(context)
+                                        .tr(service.serviceName),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 14,
+                                      fontSize: ScreenUtil.instance.setSp(15.0),
                                     ),
                                     maxLines: 2,
                                     textAlign: TextAlign.left,
@@ -237,10 +308,10 @@ class _HomeTabState extends State<HomeTab> {
                                     Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "${service["location"]}",
+                                        "Quận 5, HCM",
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13,
+                                          fontSize:
+                                              ScreenUtil.instance.setSp(14.0),
                                           color: Colors.blueGrey[300],
                                         ),
                                         maxLines: 1,
@@ -253,10 +324,10 @@ class _HomeTabState extends State<HomeTab> {
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "${service["price"]}",
+                                    "100\$",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                                      fontSize: ScreenUtil.instance.setSp(14.0),
                                     ),
                                     maxLines: 1,
                                     textAlign: TextAlign.left,
