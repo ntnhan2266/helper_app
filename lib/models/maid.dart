@@ -1,23 +1,49 @@
 import 'dart:core';
-import 'package:flutter/foundation.dart';
+
+import 'package:json_annotation/json_annotation.dart';
 
 import '../utils/constants.dart';
+import '../utils/utils.dart';
 
-// Maid model
+
+/// An annotation for the code generator to know that this class needs the
+/// JSON serialization logic to be generated.
+/// // Maid model
+
+@JsonSerializable()
 class Maid {
   String intro = '';
-  LITERACY_TYPE literacyType = LITERACY_TYPE.other;
+  int literacyType = 1; // LITERACY_TYPE
   String exp = '';
-  SALARY_TYPE salaryType = SALARY_TYPE.less_one;
-  List<JOB_TYPE> jobTypes = [];
-  List<SUPPURT_AREA> supportAreas = [];
+  int salaryType = 1;   // SALARY_TYPE
+  List<int> jobTypes = []; // JOB_TYPE
+  List<int> supportAreas = []; // SUPPORT_AREA
 
   Maid({
-    @required this.intro,
-    @required this.literacyType,
-    @required this.exp,
-    @required this.salaryType,
-    @required this.jobTypes,
-    @required this.supportAreas
+    this.intro,
+    this.literacyType,
+    this.exp,
+    this.salaryType,
+    this.jobTypes,
+    this.supportAreas
   });
+
+  void fromJson(Map<String, dynamic> json) {
+    this.intro = json['intro'];
+    this.literacyType = json['literacyType'];
+    this.exp = json['exp'];
+    this.salaryType = json['salaryType'];
+    this.jobTypes = json['jobTypes'];
+    this.supportAreas = json['supportAreas'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'intro': intro,
+      'literacyType': literacyType,
+      'exp': exp,
+      'salaryType': salaryType,
+      'jobTypes': 1
+    };
+  }
 }

@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:image_picker_modern/image_picker_modern.dart';
-import 'package:smart_rabbit/utils/dummy_data.dart';
+import '../utils/dummy_data.dart';
 
 import '../models/form_select_item.dart';
 import '../models/user.dart';
@@ -220,7 +220,6 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
   void _onSubmit() async {
     if (_form.currentState.validate()) {
       _form.currentState.save();
-      print(_data.toJson());
       var res = await UserService.editUser(_data);
       if (res['isValid']) {
         final userProvider = Provider.of<User>(context, listen: false);
