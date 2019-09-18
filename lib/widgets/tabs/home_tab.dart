@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/dummy_data.dart';
+import '../../utils/route_names.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -157,7 +158,12 @@ class _HomeTabState extends State<HomeTab> {
                         ],
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pushNamed(helperRattingRoute);
+                    },
+                    onDoubleTap: () {
+                      Navigator.of(context).pushNamed(helperRattingRoute);
+                    },
                   ),
                 );
               },

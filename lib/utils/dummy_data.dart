@@ -93,3 +93,26 @@ var categoriesData = [
     imgURL: 'assets/images/other.png',
   ),
 ];
+
+List reviews = [
+  {
+    'username': 'ngan123',
+    'ratting': 4.0,
+    'content': 'Chăm chỉ \nLàm việc cũng cẩn thận'
+  },
+  {
+    'username': 'anhanhanh',
+    'ratting': 5.0,
+    'content': 'Làm tốt công việc'
+  },
+  {
+    'username': 'binh56',
+    'ratting': 4.5,
+    'content': 'Tốt'
+  },
+  {
+    'username': 'trung874',
+    'ratting': 4.0,
+    'content': 'Cẩn thận và chu đáo'
+  },
+];

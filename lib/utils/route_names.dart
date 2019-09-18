@@ -15,3 +15,4 @@ const String verifyBookingRoute = '/verify-booking';
 const String chooseAdressRoute = '/choose-address';
 const String userDetailRoute = '/user-detail';
 const String helperRegisterRoute = '/helper-register';
+const String helperRattingRoute = '/helper-ratting';

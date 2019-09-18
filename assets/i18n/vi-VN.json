@@ -161,5 +161,13 @@
     "success": "Thành công",
     "update_profile_successfully": "Cập nhật thông tin thành công",
     "see": "Xem",
-    "choose_image": "Chọn hình ảnh"
+    "choose_image": "Chọn hình ảnh",
+    "user_information": "Thông tin người dùng",
+    "sentiment_very_dissatisfied": "Rất không hài lòng",
+    "sentiment_dissatisfied": "Không hài lòng",
+    "sentiment_neutral": "Bình thường",
+    "sentiment_satisfied": "Hài lòng",
+    "sentiment_very_satisfied": "Rất hài lòng",
+    "review_hint": "Thêm đánh giá cho người giúp việc này",
+    "other_review": "Đánh giá khác"
 }
