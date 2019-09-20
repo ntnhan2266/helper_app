@@ -6,12 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../form/form_label.dart';
 import '../form/form_multichoice_dialog.dart';
 import '../../utils/constants.dart';
+import '../../models/form_select_item.dart';
 
 class FormMultiChoice extends StatefulWidget {
   final String label;
   final String hint;
-  final List<String> values;
-  final List<String> selectedValues;
+  final List<FormSelectItem> values;
+  final List<int> selectedValues;
   final bool hasNext;
 
   const FormMultiChoice(
@@ -30,7 +31,7 @@ class FormMultiChoice extends StatefulWidget {
 }
 
 class _FormMultiChoiceState extends State<FormMultiChoice> {
-  List<String> _selectedValues;
+  List<int> _selectedValues;
   @override
   void initState() {
     super.initState();
@@ -42,7 +43,9 @@ class _FormMultiChoiceState extends State<FormMultiChoice> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          // title: Text("Dich vu"),
+          title: Text(
+            AppLocalizations.of(context).tr('choose_service'),
+          ),
           content: FormMultiChoiceDialog(
             values: widget.values,
             selectedValues: _selectedValues,

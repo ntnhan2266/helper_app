@@ -20,10 +20,10 @@ class Maid {
   List<int> supportAreas = []; // SUPPORT_AREA
 
   Maid({
-    this.intro,
-    this.literacyType,
-    this.exp,
-    this.salaryType,
+    this.intro = '',
+    this.literacyType = 1,
+    this.exp = '',
+    this.salaryType = 1,
     this.jobTypes,
     this.supportAreas
   });

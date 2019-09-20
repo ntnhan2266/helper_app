@@ -56,6 +56,12 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
     }
   }
 
+  void _handleChangeLiteracy(int value) {
+    setState(() {
+     _data.literacyType = value; 
+    });
+  }
+
   void _onSubmit() {
     if (_form.currentState.validate()) {
       print('ok');
@@ -255,6 +261,7 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                           ),
                                         ],
                                         hasNext: true,
+                                        handleOnChange: _handleChangeLiteracy,
                                       ),
                                       FormInput(
                                         label: AppLocalizations.of(context)
@@ -284,31 +291,32 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       FormDropdown(
+                                        value: _data.salaryType,
                                         label: AppLocalizations.of(context)
                                             .tr('salary'),
                                         values: [
                                           FormSelectItem(
-                                            value: SALARY_TYPE.less_one,
+                                            value: Utils.salaryToInt(SALARY_TYPE.less_one),
                                             label: AppLocalizations.of(context)
                                                 .tr('salary_choice_1'),
                                           ),
                                           FormSelectItem(
-                                            value: SALARY_TYPE.less_one,
+                                            value: Utils.salaryToInt(SALARY_TYPE.one_to_three),
                                             label: AppLocalizations.of(context)
                                                 .tr('salary_choice_2'),
                                           ),
                                           FormSelectItem(
-                                            value: SALARY_TYPE.less_one,
+                                            value: Utils.salaryToInt(SALARY_TYPE.three_to_five),
                                             label: AppLocalizations.of(context)
                                                 .tr('salary_choice_3'),
                                           ),
                                           FormSelectItem(
-                                            value: SALARY_TYPE.less_one,
+                                            value: Utils.salaryToInt(SALARY_TYPE.five_to_seven),
                                             label: AppLocalizations.of(context)
                                                 .tr('salary_choice_4'),
                                           ),
                                           FormSelectItem(
-                                            value: SALARY_TYPE.less_one,
+                                            value: Utils.salaryToInt(SALARY_TYPE.more_seven),
                                             label: AppLocalizations.of(context)
                                                 .tr('salary_choice_5'),
                                           ),
@@ -320,20 +328,12 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                             .tr('work'),
                                         hint: AppLocalizations.of(context)
                                             .tr('work_hint'),
-                                        values: <String>[
-                                          AppLocalizations.of(context)
-                                              .tr('work_choice_1'),
-                                          AppLocalizations.of(context)
-                                              .tr('work_choice_2'),
-                                          AppLocalizations.of(context)
-                                              .tr('work_choice_3'),
-                                          AppLocalizations.of(context)
-                                              .tr('work_choice_4'),
-                                          AppLocalizations.of(context)
-                                              .tr('work_choice_5'),
-                                          AppLocalizations.of(context)
-                                              .tr('work_choice_6'),
-                                        ],
+                                        values: services.map((item) {
+                                          return FormSelectItem(
+                                            label: AppLocalizations.of(context).tr(item.serviceName),
+                                            value: item.id,
+                                          );
+                                        }).toList(),
                                         hasNext: true,
                                       ),
                                       FormMultiChoice(
@@ -341,51 +341,51 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                             .tr('support_area'),
                                         hint: AppLocalizations.of(context)
                                             .tr('support_area_hint'),
-                                        values: <String>[
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_1'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_2'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_3'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_4'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_5'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_6'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_7'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_8'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_9'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_10'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_11'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_12'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_13'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_14'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_15'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_16'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_17'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_18'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_19'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_20'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_21'),
-                                          AppLocalizations.of(context)
-                                              .tr('support_area_choice_22'),
+                                        values: <FormSelectItem>[
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_1'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_2'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_3'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_4'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_5'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_6'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_7'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_8'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_9'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_10'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_11'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_12'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_13'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_14'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_15'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_16'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_17'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_18'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_19'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_20'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_21'),
+                                          // AppLocalizations.of(context)
+                                          //     .tr('support_area_choice_22'),
                                         ],
                                       ),
                                     ],

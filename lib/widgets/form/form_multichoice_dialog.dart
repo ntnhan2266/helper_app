@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/form_select_item.dart';
+
 class FormMultiChoiceDialog extends StatefulWidget {
-  final List<String> values;
-  final List<String> selectedValues;
-  final Function(List<String>) onSelectionChanged;
+  final List<FormSelectItem> values;
+  final List<int> selectedValues;
+  final Function(List<int>) onSelectionChanged;
 
   const FormMultiChoiceDialog(
       {Key key,
@@ -20,7 +22,7 @@ class FormMultiChoiceDialog extends StatefulWidget {
 }
 
 class _FormMultiChoiceDialogState extends State<FormMultiChoiceDialog> {
-  List<String> _selectedValues = List();
+  List<int> _selectedValues = List();
   @override
   void initState() {
     super.initState();
@@ -32,13 +34,13 @@ class _FormMultiChoiceDialogState extends State<FormMultiChoiceDialog> {
         .map((item) => Container(
               padding: const EdgeInsets.all(2.0),
               child: ChoiceChip(
-                label: Text(item),
+                label: Text(item.label),
                 selected: _selectedValues.contains(item),
                 onSelected: (selected) {
                   setState(() {
                     _selectedValues.contains(item)
                         ? _selectedValues.remove(item)
-                        : _selectedValues.add(item);
+                        : _selectedValues.add(item.value);
                     widget.onSelectionChanged(_selectedValues);
                   });
                 },
