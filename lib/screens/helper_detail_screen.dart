@@ -1,15 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_rabbit/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../widgets/form/form_input.dart';
 import '../models/user.dart';
-import '../utils/constants.dart';
 import '../utils/dummy_data.dart';
 import '../widgets/review_carousel_slider.dart';
 

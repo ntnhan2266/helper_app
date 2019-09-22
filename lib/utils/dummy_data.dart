@@ -41,22 +41,27 @@ List services = [
 List users = [
   {
     "name": "Binh An",
+    "ratting": 5.0,
     "img": "assets/images/female_user.jpg",
   },
   {
     "name": "Binh An",
+    "ratting": 5.0,
     "img": "assets/images/female_user.jpg",
   },
   {
     "name": "Binh An",
+    "ratting": 4.5,
     "img": "assets/images/female_user.jpg",
   },
   {
     "name": "Binh An",
+    "ratting": 4.5,
     "img": "assets/images/female_user.jpg",
   },
   {
     "name": "Binh An",
+    "ratting": 4.0,
     "img": "assets/images/female_user.jpg",
   }
 ];

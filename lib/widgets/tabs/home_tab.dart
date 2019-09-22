@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_rabbit/models/service_category.dart';
 
@@ -181,7 +182,7 @@ class _HomeTabState extends State<HomeTab> {
               primary: false,
               itemCount: users == null ? 0 : users.length,
               itemBuilder: (BuildContext context, int index) {
-                Map user = users.reversed.toList()[index];
+                Map user = users.toList()[index];
                 return Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: InkWell(
@@ -189,6 +190,7 @@ class _HomeTabState extends State<HomeTab> {
                       height: 250,
                       width: 140,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
@@ -200,47 +202,27 @@ class _HomeTabState extends State<HomeTab> {
                             ),
                           ),
                           SizedBox(height: 7),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "${user["name"]}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: ScreenUtil.instance.setSp(15.0),
-                              ),
-                              maxLines: 2,
-                              textAlign: TextAlign.left,
+                          Text(
+                            "${user["name"]}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ScreenUtil.instance.setSp(15.0),
                             ),
+                            maxLines: 2,
+                            textAlign: TextAlign.left,
                           ),
                           SizedBox(height: 3),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.star,
-                                color: Color(0xFFF4D03F),
-                                size: 18,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Color(0xFFF4D03F),
-                                size: 18,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Color(0xFFF4D03F),
-                                size: 18,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Color(0xFFF4D03F),
-                                size: 18,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Color(0xFFF4D03F),
-                                size: 18,
-                              ),
-                            ],
+                          RatingBar(
+                            initialRating: user['ratting'],
+                            allowHalfRating: true,
+                            itemSize: ScreenUtil.instance.setSp(20),
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.only(right: 2.0),
+                            itemBuilder: (context, _) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                            onRatingUpdate: (rating) {},
                           ),
                         ],
                       ),
@@ -276,7 +258,7 @@ class _HomeTabState extends State<HomeTab> {
               primary: false,
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: 10,
+              itemCount: 5,
               itemBuilder: (BuildContext context, int index) {
                 ServiceCategory service =
                     categoriesData[new Random().nextInt(categoriesData.length)];
