@@ -1,3 +1,5 @@
+import '../models/user_maid.dart';
+
 class ServiceDetails {
   int type = 1;
   String address = '';
@@ -18,7 +20,7 @@ class ServiceDetails {
   };
   DateTime startDate;
   DateTime endDate;
-  String maidID;
+  UserMaid maid;
 
   Map<String, dynamic> toMap() {
     return {
@@ -33,7 +35,7 @@ class ServiceDetails {
       'interval': interval,
       'startDate': startDate.toString(),
       'endDate': endDate.toString(),
-      'maidID': maidID,
+      'maid': maid,
     };
   }
 }

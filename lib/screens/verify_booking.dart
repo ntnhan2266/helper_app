@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../widgets/booking_step_title.dart';
+import '../models/service_details.dart';
 
 class VerifyBookingScreen extends StatefulWidget {
   @override
@@ -12,7 +13,8 @@ class VerifyBookingScreen extends StatefulWidget {
 class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
   @override
   Widget build(BuildContext context) {
-    // final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    final ServiceDetails _data = ModalRoute.of(context).settings.arguments;
+    print(_data.maid);
 
     var data = EasyLocalizationProvider.of(context).data;
 
