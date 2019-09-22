@@ -13,6 +13,7 @@ import '../utils/route_names.dart';
 import '../widgets/booking_bottom_bar.dart';
 import '../widgets/service_interval.dart';
 import '../widgets/form/text_form_field_configs.dart';
+import '../widgets/dialogs/error_dialog.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
   @override
@@ -93,30 +94,8 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
           context: context,
           builder: (BuildContext context) {
             // return object of type Dialog
-            return AlertDialog(
-              title: Text(
-                AppLocalizations.of(context).tr('please_choose_interval'),
-                style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(14.0),
-                  color: Colors.red,
-                ),
-              ),
-              actions: <Widget>[
-                // usually buttons at the bottom of the dialog
-                FlatButton(
-                  color: Colors.red,
-                  child: Text(
-                    AppLocalizations.of(context).tr('ok'),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: ScreenUtil.instance.setSp(12.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
+            return ErrorDialog(
+              AppLocalizations.of(context).tr('please_choose_interval'),
             );
           },
         );

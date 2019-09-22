@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../widgets/form/form_dropdown.dart';
 import '../widgets/form/form_input.dart';
 import '../widgets/user_avatar.dart';
+import '../widgets/dialogs/error_dialog.dart';
 import '../widgets/form/form_label.dart';
 import '../models/form_select_item.dart';
 import '../models/user.dart';
@@ -26,7 +27,14 @@ class HelperRegisterScreen extends StatefulWidget {
 class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
   TextEditingController _introController = TextEditingController();
   TextEditingController _expController = TextEditingController();
-  Maid _data = Maid();
+  Maid _data = Maid(
+    exp: '',
+    intro: '',
+    literacyType: 1,
+    salaryType: 1,
+    jobTypes: [],
+    supportAreas: [],
+  );
   bool loading = true;
   bool isHost = false;
   final _form = GlobalKey<FormState>();
@@ -58,13 +66,106 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
 
   void _handleChangeLiteracy(int value) {
     setState(() {
-     _data.literacyType = value; 
+      _data.literacyType = value;
     });
   }
 
-  void _onSubmit() {
+  void _handleChangeSalary(int value) {
+    setState(() {
+      _data.salaryType = value;
+    });
+  }
+
+  void _handleChangeJob(List<int> values) {
+    setState(() {
+      _data.jobTypes = values;
+    });
+  }
+
+  void _handleChangeArea(List<int> values) {
+    setState(() {
+      _data.supportAreas = values;
+    });
+  }
+
+  void _onSubmit() async {
     if (_form.currentState.validate()) {
-      print('ok');
+      // Specific custom validate
+      if (!_agree && !isHost) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return ErrorDialog(
+              AppLocalizations.of(context).tr('agree_with_policy'),
+            );
+          },
+        );
+        return;
+      }
+      if (_data.jobTypes.length == 0) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return ErrorDialog(
+              AppLocalizations.of(context).tr('choose_job_type'),
+            );
+          },
+        );
+        return;
+      }
+      if (_data.supportAreas.length == 0) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return ErrorDialog(
+              AppLocalizations.of(context).tr('choose_supported_area'),
+            );
+          },
+        );
+        return;
+      }
+      // Call API register host
+      _form.currentState.save();
+      if (isHost) {
+        // Edit info
+        editHostInfo();
+      } else {
+        // Register host
+        _registerHost();
+      }
+    }
+  }
+
+  void _registerHost() async {
+    final res = await MaidService.registerHost(_data);
+    if (res['isValid']) {
+      setState(() {
+        _data.fromJson(res['maid']);
+      });
+      Utils.showSuccessSnackbar(
+        context,
+        AppLocalizations.of(context).tr('update_profile_successfully'),
+      );
+    } else {
+      Utils.showErrorSnackbar(context);
+    }
+  }
+
+  void editHostInfo() async {
+    final res = await MaidService.editHostInfo(_data);
+    if (res['isValid']) {
+      setState(() {
+        _data.fromJson(res['maid']);
+      });
+      Utils.showSuccessSnackbar(
+        context,
+        AppLocalizations.of(context).tr('update_profile_successfully'),
+      );
+    } else {
+      Utils.showErrorSnackbar(context);
     }
   }
 
@@ -237,45 +338,84 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                           FormSelectItem(
                                             label: AppLocalizations.of(context)
                                                 .tr('literacy_choice_1'),
-                                            value: Utils.literacyToInt(LITERACY_TYPE.other),
+                                            value: Utils.literacyToInt(
+                                                LITERACY_TYPE.other),
                                           ),
                                           FormSelectItem(
                                             label: AppLocalizations.of(context)
                                                 .tr('literacy_choice_2'),
-                                            value: Utils.literacyToInt(LITERACY_TYPE.highschool),
+                                            value: Utils.literacyToInt(
+                                                LITERACY_TYPE.highschool),
                                           ),
                                           FormSelectItem(
                                             label: AppLocalizations.of(context)
                                                 .tr('literacy_choice_3'),
-                                            value: Utils.literacyToInt(LITERACY_TYPE.university),
+                                            value: Utils.literacyToInt(
+                                                LITERACY_TYPE.university),
                                           ),
                                           FormSelectItem(
                                             label: AppLocalizations.of(context)
                                                 .tr('literacy_choice_4'),
-                                            value: Utils.literacyToInt(LITERACY_TYPE.college),
+                                            value: Utils.literacyToInt(
+                                                LITERACY_TYPE.college),
                                           ),
                                           FormSelectItem(
                                             label: AppLocalizations.of(context)
                                                 .tr('literacy_choice_5'),
-                                            value: Utils.literacyToInt(LITERACY_TYPE.post_graduate),
+                                            value: Utils.literacyToInt(
+                                                LITERACY_TYPE.post_graduate),
                                           ),
                                         ],
                                         hasNext: true,
                                         handleOnChange: _handleChangeLiteracy,
                                       ),
-                                      FormInput(
-                                        label: AppLocalizations.of(context)
-                                            .tr('experience'),
-                                        hint: AppLocalizations.of(context)
-                                            .tr('experience_hint'),
-                                        inputType: TextInputType.multiline,
-                                        validator: (String value) {
-                                          if (value.isEmpty) {
-                                            return AppLocalizations.of(context)
-                                                .tr('exp_required');
-                                          }
-                                          return null;
-                                        },
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          FormLabel(
+                                            AppLocalizations.of(context)
+                                                .tr('experience'),
+                                          ),
+                                          TextFormField(
+                                            maxLines: 4,
+                                            minLines: 4,
+                                            validator: (String value) {
+                                              if (value.isEmpty) {
+                                                return AppLocalizations.of(
+                                                        context)
+                                                    .tr('exp_required');
+                                              }
+                                              if (value.length < 50) {
+                                                return AppLocalizations.of(
+                                                        context)
+                                                    .tr('min_50_characters');
+                                              }
+                                              return null;
+                                            },
+                                            controller: _expController,
+                                            style: TextStyle(
+                                              fontSize: ScreenUtil.instance
+                                                  .setSp(12.0),
+                                              color: Colors.black,
+                                            ),
+                                            decoration: InputDecoration(
+                                              hintText:
+                                                  AppLocalizations.of(context)
+                                                      .tr('experience_hint'),
+                                              hintStyle: TextStyle(),
+                                              enabledBorder: InputBorder.none,
+                                              contentPadding: EdgeInsets.only(
+                                                  top: ScreenUtil.instance
+                                                      .setHeight(10),
+                                                  bottom: ScreenUtil.instance
+                                                      .setHeight(10)),
+                                            ),
+                                            onSaved: (String value) {
+                                              _data.exp = value;
+                                            },
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -296,131 +436,236 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                             .tr('salary'),
                                         values: [
                                           FormSelectItem(
-                                            value: Utils.salaryToInt(SALARY_TYPE.less_one),
+                                            value: Utils.salaryToInt(
+                                                SALARY_TYPE.less_one),
                                             label: AppLocalizations.of(context)
                                                 .tr('salary_choice_1'),
                                           ),
                                           FormSelectItem(
-                                            value: Utils.salaryToInt(SALARY_TYPE.one_to_three),
+                                            value: Utils.salaryToInt(
+                                                SALARY_TYPE.one_to_three),
                                             label: AppLocalizations.of(context)
                                                 .tr('salary_choice_2'),
                                           ),
                                           FormSelectItem(
-                                            value: Utils.salaryToInt(SALARY_TYPE.three_to_five),
+                                            value: Utils.salaryToInt(
+                                                SALARY_TYPE.three_to_five),
                                             label: AppLocalizations.of(context)
                                                 .tr('salary_choice_3'),
                                           ),
                                           FormSelectItem(
-                                            value: Utils.salaryToInt(SALARY_TYPE.five_to_seven),
+                                            value: Utils.salaryToInt(
+                                                SALARY_TYPE.five_to_seven),
                                             label: AppLocalizations.of(context)
                                                 .tr('salary_choice_4'),
                                           ),
                                           FormSelectItem(
-                                            value: Utils.salaryToInt(SALARY_TYPE.more_seven),
+                                            value: Utils.salaryToInt(
+                                                SALARY_TYPE.more_seven),
                                             label: AppLocalizations.of(context)
                                                 .tr('salary_choice_5'),
                                           ),
                                         ],
                                         hasNext: true,
+                                        handleOnChange: _handleChangeSalary,
                                       ),
                                       FormMultiChoice(
+                                        selectedValues: _data.jobTypes,
                                         label: AppLocalizations.of(context)
                                             .tr('work'),
                                         hint: AppLocalizations.of(context)
                                             .tr('work_hint'),
                                         values: services.map((item) {
                                           return FormSelectItem(
-                                            label: AppLocalizations.of(context).tr(item.serviceName),
+                                            label: AppLocalizations.of(context)
+                                                .tr(item.serviceName),
                                             value: item.id,
                                           );
                                         }).toList(),
                                         hasNext: true,
+                                        onChangeHandler: _handleChangeJob,
                                       ),
                                       FormMultiChoice(
+                                        selectedValues: _data.supportAreas,
                                         label: AppLocalizations.of(context)
                                             .tr('support_area'),
                                         hint: AppLocalizations.of(context)
-                                            .tr('support_area_hint'),
+                                            .tr('support_area'),
                                         values: <FormSelectItem>[
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_1'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_2'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_3'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_4'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_5'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_6'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_7'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_8'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_9'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_10'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_11'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_12'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_13'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_14'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_15'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_16'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_17'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_18'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_19'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_20'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_21'),
-                                          // AppLocalizations.of(context)
-                                          //     .tr('support_area_choice_22'),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_1'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_1),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_2'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_2),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_3'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_3),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_4'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_4),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_5'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_5),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_6'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_6),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_7'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_7),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_8'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_8),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_9'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_9),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_10'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_10),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_11'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_11),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_12'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_12),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_13'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA
+                                                    .district_binh_thanh),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_14'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_go_vap),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_15'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA
+                                                    .district_phu_nhuan),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_16'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_tan_binh),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_17'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_thu_duc),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_18'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA
+                                                    .district_binh_chanh),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_19'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_can_gio),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_20'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_cu_chi),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_21'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_hooc_mon),
+                                          ),
+                                          FormSelectItem(
+                                            label: AppLocalizations.of(context)
+                                                .tr('support_area_choice_22'),
+                                            value: Utils.getSupportAreaCode(
+                                                SUPPURT_AREA.district_nha_be),
+                                          ),
                                         ],
+                                        onChangeHandler: _handleChangeArea,
                                       ),
                                     ],
                                   ),
                                 ),
-                                Container(
-                                  width: double.infinity,
-                                  margin: EdgeInsets.only(
-                                    top: ScreenUtil.instance.setHeight(20),
-                                  ),
-                                  color: Colors.white,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Checkbox(
-                                        value: _agree,
-                                        onChanged: (bool value) {
-                                          setState(() {
-                                            _agree = value;
-                                          });
-                                        },
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _agree = !_agree;
-                                          });
-                                        },
-                                        child: Text(
-                                          AppLocalizations.of(context)
-                                              .tr('i_agree'),
+                                isHost
+                                    ? Container()
+                                    : Container(
+                                        width: double.infinity,
+                                        margin: EdgeInsets.only(
+                                          top:
+                                              ScreenUtil.instance.setHeight(20),
+                                        ),
+                                        color: Colors.white,
+                                        child: Row(
+                                          children: <Widget>[
+                                            Checkbox(
+                                              value: _agree,
+                                              onChanged: (bool value) {
+                                                setState(() {
+                                                  _agree = value;
+                                                });
+                                              },
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _agree = !_agree;
+                                                });
+                                              },
+                                              child: Text(
+                                                AppLocalizations.of(context)
+                                                    .tr('i_agree'),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
                                 SizedBox(
                                   height: ScreenUtil.instance.setHeight(20.0),
                                 ),

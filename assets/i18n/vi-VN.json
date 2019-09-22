@@ -104,7 +104,7 @@
     "literacy_choice_3": "Đại học",
     "literacy_choice_4": "Cao đẳng",
     "literacy_choice_5": "Cao học",
-    "support_area": "Vị trí hỗ trợ",
+    "support_area": "Khu vực hỗ trợ",
     "support_area_hint": "Lựa chọn các vị trí làm việc",
     "support_area_choice_1": "Quận 1",
     "support_area_choice_2": "Quận 2",
@@ -166,5 +166,9 @@
     "choose_image_from_camera": "Chụp ảnh mới",
     "edit_collaborator_info": "Sửa thông tin cộng tác viên",
     "update": "Cập nhật",
-    "choose_service": "Chọn dịch vụ"
+    "choose_service": "Chọn dịch vụ",
+    "agree_with_policy": "Vui lòng đồng ý với chính sách và điều khoản sử dụng",
+    "choose_job_type": "Vui lòng chọn loại công việc",
+    "choose_supported_area": "Vui lòng chọn khu vực hỗ trợ",
+    "min_50_characters": "Tối thiểu 50 ký tự"
 }

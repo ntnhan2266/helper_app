@@ -6,7 +6,7 @@ import '../../models/form_select_item.dart';
 class FormMultiChoiceDialog extends StatefulWidget {
   final List<FormSelectItem> values;
   final List<int> selectedValues;
-  final Function(List<int>) onSelectionChanged;
+  final Function onSelectionChanged;
 
   const FormMultiChoiceDialog(
       {Key key,
@@ -16,17 +16,17 @@ class FormMultiChoiceDialog extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _FormMultiChoiceDialogState();
-  }
+  _FormMultiChoiceDialogState createState() => _FormMultiChoiceDialogState();
 }
 
 class _FormMultiChoiceDialogState extends State<FormMultiChoiceDialog> {
-  List<int> _selectedValues = List();
+  List<int> _selectedValues;
+
   @override
   void initState() {
     super.initState();
-    _selectedValues = widget.selectedValues ?? List();
+    _selectedValues =
+        widget.selectedValues.length > 0 ? widget.selectedValues : [];
   }
 
   _buildChoiceList() {
@@ -35,14 +35,18 @@ class _FormMultiChoiceDialogState extends State<FormMultiChoiceDialog> {
               padding: const EdgeInsets.all(2.0),
               child: ChoiceChip(
                 label: Text(item.label),
-                selected: _selectedValues.contains(item),
+                selected: _selectedValues.contains(item.value),
                 onSelected: (selected) {
-                  setState(() {
-                    _selectedValues.contains(item)
-                        ? _selectedValues.remove(item)
-                        : _selectedValues.add(item.value);
-                    widget.onSelectionChanged(_selectedValues);
-                  });
+                  if (selected) {
+                    setState(() {
+                      _selectedValues.add(item.value);
+                    });
+                  } else {
+                    setState(() {
+                      _selectedValues.remove(item.value);
+                    });
+                  }
+                  widget.onSelectionChanged(_selectedValues);
                 },
               ),
             ))

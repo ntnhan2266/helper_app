@@ -8,7 +8,7 @@ import '../utils/utils.dart';
 
 /// An annotation for the code generator to know that this class needs the
 /// JSON serialization logic to be generated.
-/// // Maid model
+/// Maid model
 
 @JsonSerializable()
 class Maid {
@@ -33,8 +33,8 @@ class Maid {
     this.literacyType = json['literacyType'];
     this.exp = json['exp'];
     this.salaryType = json['salaryType'];
-    this.jobTypes = json['jobTypes'];
-    this.supportAreas = json['supportAreas'];
+    this.jobTypes = json['jobTypes'].cast<int>();
+    this.supportAreas = json['supportAreas'].cast<int>();
   }
 
   Map<String, dynamic> toJson() {
@@ -43,7 +43,8 @@ class Maid {
       'literacyType': literacyType,
       'exp': exp,
       'salaryType': salaryType,
-      'jobTypes': 1
+      'jobTypes': jobTypes,
+      'supportAreas': supportAreas
     };
   }
 }
