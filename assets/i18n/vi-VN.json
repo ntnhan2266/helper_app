@@ -178,5 +178,9 @@
     "all": "Tất cả",
     "on-going": "Đang tiến hành",
     "done": "Đã tiến hành",
-    "canceled": "Đã hủy"
+    "canceled": "Đã hủy",
+    "notification": "Thông báo",
+    "service ": "Dịch vụ ",
+    " will-be-done": " sắp diễn ra trong vài tiếng nữa",
+    " has-been-done": " đã hoàn tất vài phút trước"
 }

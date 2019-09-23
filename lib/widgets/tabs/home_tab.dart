@@ -254,7 +254,7 @@ class _HomeTabState extends State<HomeTab> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: ListView.builder(
+            child: ListView.separated(
               primary: false,
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -266,7 +266,6 @@ class _HomeTabState extends State<HomeTab> {
                   padding: const EdgeInsets.only(bottom: 15.0),
                   child: InkWell(
                     child: Container(
-                      height: 70,
                       child: Row(
                         children: <Widget>[
                           Image.asset(
@@ -274,14 +273,12 @@ class _HomeTabState extends State<HomeTab> {
                             width: MediaQuery.of(context).size.width / 4,
                             height: MediaQuery.of(context).size.width / 4,
                           ),
-                          SizedBox(width: 15),
                           Container(
-                            height: 80,
-                            width: MediaQuery.of(context).size.width - 130,
-                            child: ListView(
-                              primary: false,
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
+                            width:
+                                MediaQuery.of(context).size.width * 3 / 4 - 30,
+                            padding: EdgeInsets.only(left: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
                                   alignment: Alignment.centerLeft,
@@ -349,6 +346,11 @@ class _HomeTabState extends State<HomeTab> {
                       // );
                     },
                   ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider(
+                  height: 0,
                 );
               },
             ),
