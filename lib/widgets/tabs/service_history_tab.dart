@@ -90,7 +90,7 @@ class _ServiceHistoryTabState extends State<ServiceHistoryTab> {
           ServiceCategory service =
               categoriesData[new Random().nextInt(categoriesData.length)];
           return Container(
-            margin: EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
+            margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
             padding: EdgeInsets.symmetric(vertical: 5.0),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -98,7 +98,6 @@ class _ServiceHistoryTabState extends State<ServiceHistoryTab> {
             ),
             child: InkWell(
               child: Container(
-                height: 70,
                 child: Row(
                   children: <Widget>[
                     Image.asset(
@@ -106,14 +105,11 @@ class _ServiceHistoryTabState extends State<ServiceHistoryTab> {
                       width: MediaQuery.of(context).size.width / 4,
                       height: MediaQuery.of(context).size.width / 4,
                     ),
-                    SizedBox(width: 15),
                     Container(
-                      height: 80,
-                      width: MediaQuery.of(context).size.width - 130,
-                      child: ListView(
-                        primary: false,
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
+                      width: MediaQuery.of(context).size.width * 3 / 4 - 30,
+                      padding: EdgeInsets.only(left: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
                             alignment: Alignment.centerLeft,
