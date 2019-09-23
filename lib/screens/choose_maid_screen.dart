@@ -51,12 +51,16 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
 
   Widget _buildMaidList() {
     return MaidList(
-        maids: maids, total: total, selectedID: maid!= null ? maid.id : null, handleTap: _handleTap);
+      maids: maids,
+      total: total,
+      selectedID: maid != null ? maid.id : null,
+      handleTap: _handleTap,
+    );
   }
 
   // ServiceDetails _data = ServiceDetails();
   void _onSubmit(ServiceDetails data) {
-    if (maid.id == null) {
+    if (maid == null) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -84,6 +88,8 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
       height: defaultScreenHeight,
       allowFontScaling: true,
     )..init(context);
+
+    var price = maid != null ? _data.endTime.difference(_data.startTime).inHours * maid.salary : 0;
 
     return EasyLocalizationProvider(
       data: data,
@@ -116,6 +122,8 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
           ],
         ),
         bottomNavigationBar: BookingBottomBar(
+          price: price,
+          showPrice: true,
           onSubmit: () {
             _onSubmit(_data);
           },

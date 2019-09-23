@@ -73,7 +73,9 @@
     "introduction_hint": "Mot so dieu ve ban than cua ban",
     "experience": "Kinh nghiệm",
     "experience_hint": "Mot so cong viec da lam",
-    "salary": "Mức lương mong muốn",
+    "salary": "Mức lương mong muốn (VND/giờ)",
+    "salary_hint": "Ví dụ 100,000",
+    "salary_required": "Vui lòng nhập mức lương theo giờ bạn mong muốn",
     "salary_choice_1": "Dưới 1 triệu",
     "salary_choice_2": "Từ 1 đến 2 triệu",
     "salary_choice_3": "Từ 2 đến 3 triệu",
@@ -178,5 +180,7 @@
     "choose_supported_area": "Vui lòng chọn khu vực hỗ trợ",
     "min_50_characters": "Tối thiểu 50 ký tự",
     "experience_months": "tháng kinh nghiệm làm việc",
-    "maid_required": "Vui lòng chọn người giúp việc"
+    "maid_required": "Vui lòng chọn người giúp việc",
+    "maid": "Người giúp việc",
+    "service_price": "Thanh toán:"
 }

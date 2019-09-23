@@ -15,7 +15,7 @@ class Maid {
   String intro = '';
   int literacyType = 1; // LITERACY_TYPE
   String exp = '';
-  int salaryType = 1;   // SALARY_TYPE
+  int salary = 1;   // SALARY_TYPE
   List<int> jobTypes = []; // JOB_TYPE
   List<int> supportAreas = []; // SUPPORT_AREA
 
@@ -23,7 +23,7 @@ class Maid {
     this.intro = '',
     this.literacyType = 1,
     this.exp = '',
-    this.salaryType = 1,
+    this.salary = 1,
     this.jobTypes,
     this.supportAreas
   });
@@ -32,7 +32,7 @@ class Maid {
     this.intro = json['intro'];
     this.literacyType = json['literacyType'];
     this.exp = json['exp'];
-    this.salaryType = json['salaryType'];
+    this.salary = json['salary'];
     this.jobTypes = json['jobTypes'].cast<int>();
     this.supportAreas = json['supportAreas'].cast<int>();
   }
@@ -42,7 +42,7 @@ class Maid {
       'intro': intro,
       'literacyType': literacyType,
       'exp': exp,
-      'salaryType': salaryType,
+      'salary': salary,
       'jobTypes': jobTypes,
       'supportAreas': supportAreas
     };

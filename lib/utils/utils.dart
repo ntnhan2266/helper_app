@@ -36,8 +36,8 @@ class Utils {
     }
   }
 
-  static int salaryToInt(SALARY_TYPE salaryType) {
-    switch (salaryType) {
+  static int salaryToInt(SALARY_TYPE salary) {
+    switch (salary) {
       case SALARY_TYPE.less_one:
         return 1;
       case SALARY_TYPE.one_to_three:

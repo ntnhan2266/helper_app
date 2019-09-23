@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_rabbit/utils/constants.dart';
 import 'package:smart_rabbit/widgets/form/form_multichoice.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ import '../models/maid.dart';
 import '../utils/constants.dart';
 import '../utils/dummy_data.dart';
 import '../utils/utils.dart';
+import '../utils/numeric_text_formatter.dart';
 import '../services/maid.dart';
 
 class HelperRegisterScreen extends StatefulWidget {
@@ -27,11 +29,12 @@ class HelperRegisterScreen extends StatefulWidget {
 class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
   TextEditingController _introController = TextEditingController();
   TextEditingController _expController = TextEditingController();
+  TextEditingController _salaryController = TextEditingController();
   Maid _data = Maid(
     exp: '',
     intro: '',
     literacyType: 1,
-    salaryType: 1,
+    salary: 0,
     jobTypes: [],
     supportAreas: [],
   );
@@ -54,6 +57,7 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
         _data.fromJson(res['maid']);
         _introController.text = _data.intro;
         _expController.text = _data.exp;
+        _salaryController.text = _data.salary.toString();
         loading = false;
       });
     } else {
@@ -67,12 +71,6 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
   void _handleChangeLiteracy(int value) {
     setState(() {
       _data.literacyType = value;
-    });
-  }
-
-  void _handleChangeSalary(int value) {
-    setState(() {
-      _data.salaryType = value;
     });
   }
 
@@ -144,6 +142,7 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
     if (res['isValid']) {
       setState(() {
         _data.fromJson(res['maid']);
+        isHost = true;
       });
       Utils.showSuccessSnackbar(
         context,
@@ -430,44 +429,55 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      FormDropdown(
-                                        value: _data.salaryType,
-                                        label: AppLocalizations.of(context)
-                                            .tr('salary'),
-                                        values: [
-                                          FormSelectItem(
-                                            value: Utils.salaryToInt(
-                                                SALARY_TYPE.less_one),
-                                            label: AppLocalizations.of(context)
-                                                .tr('salary_choice_1'),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          FormLabel(
+                                            AppLocalizations.of(context)
+                                                .tr('salary'),
                                           ),
-                                          FormSelectItem(
-                                            value: Utils.salaryToInt(
-                                                SALARY_TYPE.one_to_three),
-                                            label: AppLocalizations.of(context)
-                                                .tr('salary_choice_2'),
+                                          TextFormField(
+                                            textInputAction: TextInputAction.done,
+                                            validator: (String value) {
+                                              if (value.isEmpty) {
+                                                return AppLocalizations.of(
+                                                        context)
+                                                    .tr('salary_required');
+                                              }
+                                              return null;
+                                            },
+                                            controller: _salaryController,
+                                            style: TextStyle(
+                                              fontSize: ScreenUtil.instance
+                                                  .setSp(12.0),
+                                              color: Colors.black,
+                                            ),
+                                            decoration: InputDecoration(
+                                              hintText:
+                                                  AppLocalizations.of(context)
+                                                      .tr('salary_hint'),
+                                              hintStyle: TextStyle(),
+                                              enabledBorder: InputBorder.none,
+                                              contentPadding: EdgeInsets.only(
+                                                  top: ScreenUtil.instance
+                                                      .setHeight(10),
+                                                  bottom: ScreenUtil.instance
+                                                      .setHeight(10)),
+                                            ),
+                                            onSaved: (String value) {
+                                              _data.salary = int.parse(value);
+                                            },
+                                            keyboardType: TextInputType.number,
+                                            // inputFormatters: <TextInputFormatter>[
+                                            //   NumericTextFormatter(),
+                                            // ]
                                           ),
-                                          FormSelectItem(
-                                            value: Utils.salaryToInt(
-                                                SALARY_TYPE.three_to_five),
-                                            label: AppLocalizations.of(context)
-                                                .tr('salary_choice_3'),
-                                          ),
-                                          FormSelectItem(
-                                            value: Utils.salaryToInt(
-                                                SALARY_TYPE.five_to_seven),
-                                            label: AppLocalizations.of(context)
-                                                .tr('salary_choice_4'),
-                                          ),
-                                          FormSelectItem(
-                                            value: Utils.salaryToInt(
-                                                SALARY_TYPE.more_seven),
-                                            label: AppLocalizations.of(context)
-                                                .tr('salary_choice_5'),
+                                          SizedBox(
+                                            height: ScreenUtil.instance
+                                                .setHeight(20),
                                           ),
                                         ],
-                                        hasNext: true,
-                                        handleOnChange: _handleChangeSalary,
                                       ),
                                       FormMultiChoice(
                                         selectedValues: _data.jobTypes,

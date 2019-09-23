@@ -18,10 +18,28 @@ class ErrorDialog extends StatelessWidget {
     )..init(context);
 
     return AlertDialog(
-      title: Text(
+      title: Row(
+        children: <Widget>[
+          Icon(
+            Icons.error_outline,
+            color: Colors.red,
+          ),
+          SizedBox(
+            width: ScreenUtil.instance.setWidth(10),
+          ),
+          Text(
+            AppLocalizations.of(context).tr('error'),
+            style: TextStyle(
+              fontSize: ScreenUtil.instance.setSp(14.0),
+              color: Colors.red,
+            ),
+          ),
+        ],
+      ),
+      content: Text(
         title,
         style: TextStyle(
-          fontSize: ScreenUtil.instance.setSp(14.0),
+          fontSize: ScreenUtil.instance.setSp(12.0),
           color: Colors.red,
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:intl/intl.dart';
 
 import '../models/user_maid.dart';
 import '../widgets/user_avatar.dart';
@@ -13,6 +14,7 @@ class MaidItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final numericFormatter = new NumberFormat("#,###", "en_US");
     final workedMonths =
         (DateTime.now().difference(maid.createdAt).inDays / 30).round();
     return Container(
@@ -32,9 +34,7 @@ class MaidItem extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          workedMonths.toString() +
-              ' ' +
-              AppLocalizations.of(context).tr('experience_months'),
+          numericFormatter.format(maid.salary) + ' VND/h',
           style: TextStyle(
             color: isSelected ? Colors.white : Colors.black,
           ),

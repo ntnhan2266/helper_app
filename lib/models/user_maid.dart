@@ -5,7 +5,7 @@ class UserMaid {
   String intro = '';
   int literacyType = 1; // LITERACY_TYPE
   String exp = '';
-  int salaryType = 1;   // SALARY_TYPE
+  int salary = 1;   // SALARY_TYPE
   List<int> jobTypes = []; // JOB_TYPE
   List<int> supportAreas = []; // SUPPORT_AREA
   String name;
@@ -21,7 +21,7 @@ class UserMaid {
     @required this.intro,
     @required this.literacyType,
     @required this.exp,
-    @required this.salaryType,
+    @required this.salary,
     @required this.jobTypes,
     @required this.supportAreas,
     @required this.id,

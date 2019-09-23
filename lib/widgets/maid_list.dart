@@ -19,7 +19,7 @@ class MaidList extends StatelessWidget {
         return MaidItem(
           maid: UserMaid(
             address: user['address'],
-            avatar: maids[index]['avatar'],
+            avatar: user['avatar'],
             birthday: DateTime.parse(user['birthday']),
             createdAt: DateTime.parse(maids[index]['createdAt']),
             email: user['email'],
@@ -31,7 +31,7 @@ class MaidList extends StatelessWidget {
             literacyType: maids[index]['literacyType'],
             name: user['name'],
             phoneNumber: user['phoneNumber'],
-            salaryType: maids[index]['salaryType'],
+            salary: maids[index]['salary'],
             supportAreas: maids[index]['supportAreas'].cast<int>(),
           ),
           isSelected: selectedID == maids[index]['_id'],
