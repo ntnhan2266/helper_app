@@ -85,6 +85,8 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
   }
 
   Widget _buildPriceBlock(int price) {
+    final numericFormatter = new NumberFormat("#,###", "en_US");
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -98,11 +100,46 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              'Tiền công'
+              AppLocalizations.of(context).tr('work_fee'),
             ),
-            Text(price.toString()),
+            Text(
+              numericFormatter.format(price.round()),
+            ),
           ],
-        )
+        ),
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(15),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              AppLocalizations.of(context).tr('service_fee'),
+            ),
+            Text(
+              numericFormatter.format((price * 0.1).round()),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(15),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              AppLocalizations.of(context).tr('total'),
+            ),
+            Text(
+              numericFormatter.format((price * 1.1).round()),
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: ScreenUtil.instance.setSp(14),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -186,6 +223,9 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
                       height: ScreenUtil.instance.setHeight(20),
                     ),
                     _buildPriceBlock(serviceFee),
+                    SizedBox(
+                      height: ScreenUtil.instance.setHeight(20),
+                    ),
                   ],
                 ),
               ),

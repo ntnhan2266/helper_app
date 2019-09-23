@@ -182,5 +182,8 @@
     "experience_months": "tháng kinh nghiệm làm việc",
     "maid_required": "Vui lòng chọn người giúp việc",
     "maid": "Người giúp việc",
-    "service_price": "Thanh toán:"
+    "service_price": "Thanh toán:",
+    "work_fee": "Tiền công",
+    "total_service_fee": "Phí dịch vụ",
+    "total": "Tổng cộng"
 }

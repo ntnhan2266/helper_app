@@ -89,7 +89,7 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
       allowFontScaling: true,
     )..init(context);
 
-    var price = maid != null ? _data.endTime.difference(_data.startTime).inHours * maid.salary : 0;
+    var price = maid != null ? _data.endTime.difference(_data.startTime).inMinutes * maid.salary : 0;
 
     return EasyLocalizationProvider(
       data: data,
@@ -122,7 +122,7 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
           ],
         ),
         bottomNavigationBar: BookingBottomBar(
-          price: price,
+          price: (price / 60).round(),
           showPrice: true,
           onSubmit: () {
             _onSubmit(_data);
