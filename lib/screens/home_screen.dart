@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import '../widgets/tabs/home_tab.dart';
 import '../widgets/tabs/service_category_tab.dart';
 import '../widgets/tabs/service_history_tab.dart';
-import '../widgets/tabs/favourite_staff_tab.dart';
+import '../widgets/tabs/notification_tab.dart';
 import '../widgets/tabs/user_profile_tab.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,10 +27,10 @@ class _HomeState extends State<HomeScreen> {
         _pageChanged(index);
       },
       children: <Widget>[
-        HomeTab(),
+        HomeTab(bottomTapped: _bottomTapped),
         ServiceCategoryTab(),
         ServiceHistoryTab(), 
-        FavouriteStaffTab(),
+        NotificationTab(),
         UserProfileTab()
       ],
     );
@@ -113,7 +113,7 @@ class _HomeState extends State<HomeScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.favorite,
+                Icons.notifications,
               ),
               title: new Text('')
             ),
