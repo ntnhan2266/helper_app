@@ -136,7 +136,6 @@ class _ChooseAddressScreenState extends State<ChooseAddressScreen> {
         controller
             .animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 16.0));
         setState(() {
-          print(address[0].toMap());
           _address = address[0].addressLine;
           this._lat = lat;
           this._long = lng;

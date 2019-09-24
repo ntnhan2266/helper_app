@@ -8,12 +8,13 @@ import '../form/form_multichoice_dialog.dart';
 import '../../utils/constants.dart';
 import '../../models/form_select_item.dart';
 
-class FormMultiChoice extends StatefulWidget {
+class FormMultiChoice extends StatelessWidget {
   final String label;
   final String hint;
   final List<FormSelectItem> values;
   final List<int> selectedValues;
   final bool hasNext;
+  final Function onChangeHandler;
 
   const FormMultiChoice(
       {Key key,
@@ -21,39 +22,22 @@ class FormMultiChoice extends StatefulWidget {
       @required this.hint,
       @required this.values,
       this.selectedValues,
+      this.onChangeHandler,
       this.hasNext = false})
       : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() {
-    return _FormMultiChoiceState();
-  }
-}
-
-class _FormMultiChoiceState extends State<FormMultiChoice> {
-  List<int> _selectedValues;
-  @override
-  void initState() {
-    super.initState();
-    _selectedValues = widget.selectedValues ?? List();
-  }
-
-  _showReportDialog() {
+  _showReportDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            AppLocalizations.of(context).tr('choose_service'),
+            hint,
           ),
           content: FormMultiChoiceDialog(
-            values: widget.values,
-            selectedValues: _selectedValues,
-            onSelectionChanged: (selectedValues) {
-              setState(() {
-                _selectedValues = selectedValues;
-              });
-            },
+            values: values,
+            selectedValues: selectedValues,
+            onSelectionChanged: onChangeHandler,
           ),
           actions: <Widget>[
             FlatButton(
@@ -77,25 +61,38 @@ class _FormMultiChoiceState extends State<FormMultiChoice> {
       allowFontScaling: true,
     )..init(context);
 
+    // Render selected data
+    String selectedData = '';
+    if (selectedValues.length > 0) {
+      values.forEach((item) {
+        if (selectedValues.contains(item.value)) {
+          selectedData += item.label + ', ';
+        }
+      });
+      selectedData = selectedData.substring(0, selectedData.length - 2);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        FormLabel(widget.label),
+        FormLabel(label),
         SizedBox(height: ScreenUtil.instance.setHeight(LABEL_MARGIN)),
         GestureDetector(
-          onTap: _showReportDialog,
-          child: Container(
+          onTap: () {
+            _showReportDialog(context);
+          },
+          child: Container( 
             width: double.infinity,
-            child: _selectedValues.isEmpty
+            child: selectedValues.isEmpty
                 ? Text(
-                    widget.hint,
+                    hint,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: ScreenUtil.instance.setSp(12.0),
                     ),
                   )
                 : Text(
-                    _selectedValues.join(", "),
+                    selectedData,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: ScreenUtil.instance.setSp(12.0),
@@ -103,7 +100,7 @@ class _FormMultiChoiceState extends State<FormMultiChoice> {
                   ),
           ),
         ),
-        SizedBox(height: widget.hasNext ? ScreenUtil.instance.setHeight(20) : 0),
+        SizedBox(height: hasNext ? ScreenUtil.instance.setHeight(20) : 0),
       ],
     );
   }
