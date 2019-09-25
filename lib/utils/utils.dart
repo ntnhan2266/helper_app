@@ -155,4 +155,28 @@ class Utils {
       duration: Duration(seconds: 3),
     )..show(context);
   }
+
+  static int calculateIntervalDays(DateTime startDate, DateTime endDate, Map<String, bool> interval) {
+    int days = 0;
+    if (endDate != null) {
+      while (startDate.compareTo(endDate) <= 0) {
+        final currentDay = startDate;
+        // Check every weekday
+        bool isPickedDay =
+          (currentDay.weekday == DateTime.sunday && interval['sun'])
+          || (currentDay.weekday == DateTime.monday && interval['mon'])
+          || (currentDay.weekday == DateTime.tuesday && interval['tue'])
+          || (currentDay.weekday == DateTime.wednesday && interval['wed'])
+          || (currentDay.weekday == DateTime.thursday && interval['thu'])
+          || (currentDay.weekday == DateTime.friday && interval['fri'])
+          || (currentDay.weekday == DateTime.saturday && interval['sat']);
+        if (isPickedDay) {
+          days += 1;
+        }
+        // Go to next day
+        startDate = startDate.add(Duration(days: 1));
+      }
+    }
+    return days;
+  }
 }

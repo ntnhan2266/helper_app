@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_rabbit/utils/utils.dart';
 
 import '../widgets/booking_step_title.dart';
 import '../widgets/booking_bottom_bar.dart';
@@ -78,8 +79,25 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ServiceDetails _data = ModalRoute.of(context).settings.arguments;
     var data = EasyLocalizationProvider.of(context).data;
+
+    final ServiceDetails _data = ModalRoute.of(context).settings.arguments;
+    // Calculate interval days
+    var price = 0;
+    if (_data.endDate != null) {
+      // Calculate price = price per day * days;
+      final startDate = _data.startDate;
+      final endDate = _data.endDate;
+      final interval = _data.interval;
+      int days = Utils.calculateIntervalDays(startDate, endDate, interval);
+      price = maid != null
+          ? _data.endTime.difference(_data.startTime).inMinutes * maid.salary * days
+          : 0;
+    } else {
+      price = maid != null
+          ? _data.endTime.difference(_data.startTime).inMinutes * maid.salary
+          : 0;
+    }
 
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
@@ -88,8 +106,6 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
       height: defaultScreenHeight,
       allowFontScaling: true,
     )..init(context);
-
-    var price = maid != null ? _data.endTime.difference(_data.startTime).inMinutes * maid.salary : 0;
 
     return EasyLocalizationProvider(
       data: data,
