@@ -35,6 +35,15 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
       _data.type = value;
       _data.startDate = null;
       _data.endDate = null;
+      _data.interval = {
+        'mon': false,
+        'tue': false,
+        'wed': false,
+        'thu': false,
+        'fri': false,
+        'sat': false,
+        'sun': false
+      };
     });
     _startDateController.text = '';
     _endDateController.text = '';

@@ -22,7 +22,7 @@ class ServiceDetails {
   DateTime endDate;
   UserMaid maid;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'type': type,
       'address': address,
@@ -32,7 +32,7 @@ class ServiceDetails {
       'note': note,
       'lat': lat,
       'long': long,
-      'interval': interval,
+      'interval': '{"1": 1}',
       'startDate': startDate.toString(),
       'endDate': endDate.toString(),
       'maid': maid,

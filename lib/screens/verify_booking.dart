@@ -8,6 +8,8 @@ import '../widgets/booking_step_title.dart';
 import '../widgets/booking_bottom_bar.dart';
 import '../widgets/user_avatar.dart';
 import '../models/service_details.dart';
+import '../utils/utils.dart';
+import '../services/booking.dart';
 
 class VerifyBookingScreen extends StatefulWidget {
   @override
@@ -144,10 +146,97 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
     );
   }
 
+  Widget _buildIntervalInfo(
+    DateTime startDate,
+    DateTime endDate,
+    Map<String, bool> interval,
+  ) {
+    var intervalText = '';
+    if (interval['mon']) {
+      intervalText += AppLocalizations.of(context).tr('monday') + ', ';
+    }
+    if (interval['tue']) {
+      intervalText += AppLocalizations.of(context).tr('tueday') + ', ';
+    }
+    if (interval['wed']) {
+      intervalText += AppLocalizations.of(context).tr('wednesday') + ', ';
+    }
+    if (interval['thu']) {
+      intervalText += AppLocalizations.of(context).tr('thurday') + ', ';
+    }
+    if (interval['fri']) {
+      intervalText += AppLocalizations.of(context).tr('friday') + ', ';
+    }
+    if (interval['sat']) {
+      intervalText += AppLocalizations.of(context).tr('saturday') + ', ';
+    }
+    if (interval['sun']) {
+      intervalText += AppLocalizations.of(context).tr('sunday') + ', ';
+    }
+    intervalText = intervalText.substring(0, intervalText.length - 2);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          AppLocalizations.of(context).tr('start_date'),
+        ),
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(8),
+        ),
+        Text(
+          DateFormat('dd-MM-yyyy').format(startDate),
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(14),
+        ),
+        Text(
+          AppLocalizations.of(context).tr('end_date'),
+        ),
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(8),
+        ),
+        Text(
+          DateFormat('dd-MM-yyyy').format(endDate),
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(14),
+        ),
+        Text(
+          AppLocalizations.of(context).tr('interval_days'),
+        ),
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(8),
+        ),
+        Text(
+          intervalText,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(14),
+        ),
+      ],
+    );
+  }
+
+  void _onSubmit(ServiceDetails data) async {
+    var res = await BookingService.booking(data);
+    print(res);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ServiceDetails _data = ModalRoute.of(context).settings.arguments;
-
     var data = EasyLocalizationProvider.of(context).data;
 
     double defaultScreenWidth = 400.0;
@@ -158,9 +247,17 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
       allowFontScaling: true,
     )..init(context);
 
-    var serviceFee = _data.maid != null
-        ? _data.endTime.difference(_data.startTime).inHours * _data.maid.salary
+    var serviceFee = 0;
+    if (_data.type == 1) {
+      serviceFee = _data.maid != null
+        ? (_data.endTime.difference(_data.startTime).inMinutes * _data.maid.salary).round()
         : 0;
+    } else {
+      final days = Utils.calculateIntervalDays(_data.startDate, _data.endDate, _data.interval);
+      serviceFee = _data.maid != null
+        ? (_data.endTime.difference(_data.startTime).inMinutes / 60 * _data.maid.salary * days).round()
+        : 0;
+    }
 
     return EasyLocalizationProvider(
       data: data,
@@ -206,10 +303,13 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
                       AppLocalizations.of(context).tr('house_number'),
                       _data.houseNumber,
                     ),
-                    _buildDetailItem(
-                      AppLocalizations.of(context).tr('working_date'),
-                      DateFormat('dd-MM-yyyy').format(_data.startDate),
-                    ),
+                    _data.type == 1
+                        ? _buildDetailItem(
+                            AppLocalizations.of(context).tr('working_date'),
+                            DateFormat('dd-MM-yyyy').format(_data.startDate),
+                          )
+                        : _buildIntervalInfo(
+                            _data.startDate, _data.endDate, _data.interval),
                     _buildDetailItem(
                       AppLocalizations.of(context).tr('start_time'),
                       DateFormat('HH:mm').format(_data.startTime),
@@ -234,7 +334,9 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
         ),
         bottomNavigationBar: BookingBottomBar(
           isVerify: true,
-          onSubmit: () {},
+          onSubmit: () {
+            _onSubmit(_data);
+          },
         ),
       ),
     );

@@ -200,5 +200,6 @@
     "service_price": "Thanh toán:",
     "work_fee": "Tiền công",
     "total_service_fee": "Phí dịch vụ",
-    "total": "Tổng cộng"
+    "total": "Tổng cộng",
+    "interval_days": "Ngày làm việc trong tuần: "
 }

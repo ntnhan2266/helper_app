@@ -91,11 +91,11 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
       final interval = _data.interval;
       int days = Utils.calculateIntervalDays(startDate, endDate, interval);
       price = maid != null
-          ? _data.endTime.difference(_data.startTime).inMinutes * maid.salary * days
+          ? (_data.endTime.difference(_data.startTime).inMinutes / 60 * maid.salary * days).round()
           : 0;
     } else {
       price = maid != null
-          ? _data.endTime.difference(_data.startTime).inMinutes * maid.salary
+          ? (_data.endTime.difference(_data.startTime).inMinutes / 60 * maid.salary).round()
           : 0;
     }
 
@@ -138,7 +138,7 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
           ],
         ),
         bottomNavigationBar: BookingBottomBar(
-          price: (price / 60).round(),
+          price: price,
           showPrice: true,
           onSubmit: () {
             _onSubmit(_data);
