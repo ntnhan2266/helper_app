@@ -61,3 +61,11 @@ enum GENDER {
   other,
 }
 
+const Map<int, String> RATTING = const {
+  0: '',
+  1: 'sentiment_very_dissatisfied',
+  2: 'sentiment_dissatisfied',
+  3: 'sentiment_neutral',
+  4: 'sentiment_satisfied',
+  5: 'sentiment_very_satisfied',
+};

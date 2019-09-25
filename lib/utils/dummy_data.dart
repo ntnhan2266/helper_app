@@ -41,22 +41,27 @@ List services = [
 List users = [
   {
     "name": "Binh An",
+    "ratting": 5.0,
     "img": "assets/images/female_user.jpg",
   },
   {
     "name": "Binh An",
+    "ratting": 5.0,
     "img": "assets/images/female_user.jpg",
   },
   {
     "name": "Binh An",
+    "ratting": 4.5,
     "img": "assets/images/female_user.jpg",
   },
   {
     "name": "Binh An",
+    "ratting": 4.5,
     "img": "assets/images/female_user.jpg",
   },
   {
     "name": "Binh An",
+    "ratting": 4.0,
     "img": "assets/images/female_user.jpg",
   }
 ];
@@ -92,4 +97,27 @@ var categoriesData = [
     serviceName: 'other',
     imgURL: 'assets/images/other.png',
   ),
+];
+
+List reviews = [
+  {
+    'username': 'ngan123',
+    'ratting': 4.0,
+    'content': 'Chăm chỉ \nLàm việc cũng cẩn thận'
+  },
+  {
+    'username': 'anhanhanh',
+    'ratting': 5.0,
+    'content': 'Làm tốt công việc'
+  },
+  {
+    'username': 'binh56',
+    'ratting': 4.5,
+    'content': 'Tốt'
+  },
+  {
+    'username': 'trung874',
+    'ratting': 4.0,
+    'content': 'Cẩn thận và chu đáo'
+  },
 ];
