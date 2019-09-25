@@ -1,3 +1,6 @@
+import 'package:intl/intl.dart';
+import 'package:smart_rabbit/utils/utils.dart';
+
 import '../models/user_maid.dart';
 
 class ServiceDetails {
@@ -22,6 +25,21 @@ class ServiceDetails {
   DateTime endDate;
   UserMaid maid;
 
+  ServiceDetails({
+    this.type,
+    this.address,
+    this.houseNumber,
+    this.startTime,
+    this.endTime,
+    this.note,
+    this.lat,
+    this.long,
+    this.interval,
+    this.startDate,
+    this.endDate,
+    this.maid
+  });
+
   Map<String, dynamic> toJson() {
     return {
       'type': type,
@@ -32,10 +50,12 @@ class ServiceDetails {
       'note': note,
       'lat': lat,
       'long': long,
-      'interval': '{"1": 1}',
-      'startDate': startDate.toString(),
-      'endDate': endDate.toString(),
-      'maid': maid,
+      'interval': Utils.getIntervalDayList(startDate, endDate, interval),
+      'startDate': DateFormat('dd-MM-yyyy').format(startDate),
+      'endDate': DateFormat('dd-MM-yyyy').format(endDate),
+      'maid': maid.id,
     };
   }
+
+
 }

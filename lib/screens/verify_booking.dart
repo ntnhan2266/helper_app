@@ -230,6 +230,7 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
   }
 
   void _onSubmit(ServiceDetails data) async {
+    print(data.toJson());
     var res = await BookingService.booking(data);
     print(res);
   }

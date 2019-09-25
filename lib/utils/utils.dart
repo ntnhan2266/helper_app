@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:intl/intl.dart';
 
 import './constants.dart';
 
@@ -158,6 +159,8 @@ class Utils {
 
   static int calculateIntervalDays(DateTime startDate, DateTime endDate, Map<String, bool> interval) {
     int days = 0;
+    startDate = new DateTime(startDate.year, startDate.month, startDate.day, 0, 0, 0, 0, 0);
+    endDate = new DateTime(endDate.year, endDate.month, endDate.day, 23, 0, 0, 0, 0);
     if (endDate != null) {
       while (startDate.compareTo(endDate) <= 0) {
         final currentDay = startDate;
@@ -179,4 +182,31 @@ class Utils {
     }
     return days;
   }
+
+  static List<String> getIntervalDayList(DateTime startDate, DateTime endDate, Map<String, bool> interval) {
+    final List<String >days = [];
+    startDate = new DateTime(startDate.year, startDate.month, startDate.day, 0, 0, 0, 0, 0);
+    endDate = new DateTime(endDate.year, endDate.month, endDate.day, 23, 0, 0, 0, 0);
+    if (endDate != null) {
+      while (startDate.compareTo(endDate) <= 0) {
+        final currentDay = startDate;
+        // Check every weekday
+        bool isPickedDay =
+          (currentDay.weekday == DateTime.sunday && interval['sun'])
+          || (currentDay.weekday == DateTime.monday && interval['mon'])
+          || (currentDay.weekday == DateTime.tuesday && interval['tue'])
+          || (currentDay.weekday == DateTime.wednesday && interval['wed'])
+          || (currentDay.weekday == DateTime.thursday && interval['thu'])
+          || (currentDay.weekday == DateTime.friday && interval['fri'])
+          || (currentDay.weekday == DateTime.saturday && interval['sat']);
+        if (isPickedDay) {
+          days.add(DateFormat('yyyy-MM-dd').format(startDate));
+        }
+        // Go to next day
+        startDate = startDate.add(Duration(days: 1));
+      }
+    }
+    return days;
+  }
+
 }
