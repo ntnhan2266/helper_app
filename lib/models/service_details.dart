@@ -26,7 +26,7 @@ class ServiceDetails {
   UserMaid maid;
 
   ServiceDetails({
-    this.type,
+    this.type = 1,
     this.address,
     this.houseNumber,
     this.startTime,
@@ -50,9 +50,9 @@ class ServiceDetails {
       'note': note,
       'lat': lat,
       'long': long,
-      'interval': Utils.getIntervalDayList(startDate, endDate, interval),
+      'interval': type == 2 ? Utils.getIntervalDayList(startDate, endDate, interval) : null,
       'startDate': DateFormat('dd-MM-yyyy').format(startDate),
-      'endDate': DateFormat('dd-MM-yyyy').format(endDate),
+      'endDate': endDate != null ? DateFormat('dd-MM-yyyy').format(endDate) : null,
       'maid': maid.id,
     };
   }

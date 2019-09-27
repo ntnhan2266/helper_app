@@ -17,8 +17,15 @@ class BookingService {
       headers: headers,
       body: jsonEncode(booking),
     );
-    print(response.body);
-    completer.complete({'string': 'a'});
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['errorCode'] != null) {
+        completer.complete({'isValid': false, 'maid': null});
+      } else {
+        final booking = data['booking'];
+        completer.complete({'isValid': true, 'data': booking});
+      }
+    }
     return completer.future;
   }
 }

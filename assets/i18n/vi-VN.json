@@ -201,5 +201,6 @@
     "work_fee": "Tiền công",
     "total_service_fee": "Phí dịch vụ",
     "total": "Tổng cộng",
-    "interval_days": "Ngày làm việc trong tuần: "
+    "interval_days": "Ngày làm việc trong tuần: ",
+    "booked_successfully": "Đặt dịch vụ thành công"
 }

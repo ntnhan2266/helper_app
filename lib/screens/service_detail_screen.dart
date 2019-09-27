@@ -384,269 +384,279 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
           ),
           elevation: 0,
         ),
-        body: Form(
-          key: _form,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                BookingStepTitle(
-                  currentStep: 0,
-                ),
-                Divider(),
-                Padding(
-                  padding: EdgeInsets.all(14),
-                  child: Column(
-                    children: <Widget>[
-                      RadioListTile(
-                        title: Text(
-                          AppLocalizations.of(context).tr('retail_use'),
-                        ),
-                        subtitle: Text(
-                          AppLocalizations.of(context).tr('retail_use_content'),
-                        ),
-                        value: 1,
-                        groupValue: _data.type,
-                        onChanged: _handleChangeType,
-                      ),
-                      RadioListTile(
-                        title: Text(
-                          AppLocalizations.of(context).tr('periodic'),
-                        ),
-                        subtitle: Text(
-                          AppLocalizations.of(context).tr('periodic_content'),
-                        ),
-                        value: 2,
-                        groupValue: _data.type,
-                        onChanged: _handleChangeType,
-                      ),
-                      SizedBox(
-                        height: ScreenUtil.instance.setHeight(LABEL_MARGIN),
-                      ),
-                      // -- Common
-                      _buildLabel(
-                        Icons.location_on,
-                        AppLocalizations.of(context).tr('work_location'),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          _getCurrentLocation();
-                        },
-                        child: TextFormField(
-                          controller: _addressController,
-                          enabled: false,
-                          decoration: textFormFieldConfig(
-                            AppLocalizations.of(context).tr('choose_address'),
-                          ),
-                          style: TextStyle(
-                            fontSize: ScreenUtil.instance.setSp(12.0),
-                            color: Colors.black,
-                          ),
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return AppLocalizations.of(context)
-                                  .tr('location_required');
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: ScreenUtil.instance.setHeight(20.0),
-                      ),
-                      _buildLabel(
-                        Icons.home,
-                        AppLocalizations.of(context).tr('house_number'),
-                      ),
-                      TextFormField(
-                        enabled: true,
-                        decoration: textFormFieldConfig(
-                          AppLocalizations.of(context)
-                              .tr('house_number_example'),
-                        ),
-                        style: TextStyle(
-                          fontSize: ScreenUtil.instance.setSp(12.0),
-                          color: Colors.black,
-                        ),
-                        onSaved: (String value) {
-                          _data.houseNumber = value;
-                        },
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return AppLocalizations.of(context)
-                                .tr('house_required');
-                          }
-                          return null;
-                        },
-                      ),
-                      // Depend on type
-                      _data.type == 1
-                          // Fixed time
-                          ? _buildFixedTimeSelector()
-                          // Interval
-                          : _buildIntervalSelector(),
-
-                      SizedBox(
-                        height: ScreenUtil.instance.setHeight(20.0),
-                      ),
-                      _buildLabel(
-                        Icons.timer,
-                        AppLocalizations.of(context).tr('start_time'),
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          final time = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.fromDateTime(
-                                _data.startTime ?? DateTime.now()),
-                          );
-                          if (time != null) {
-                            final format = DateFormat("HH:mm");
-                            final now = DateTime.now();
-                            final currentTime = new DateTime(
-                              now.year,
-                              now.month,
-                              now.day,
-                              time.hour,
-                              time.minute,
-                              0,
-                              0,
-                              0,
-                            );
-                            _startTimeController.text =
-                                format.format(currentTime);
-                            _data.startTime = currentTime;
-                          }
-                        },
-                        child: TextFormField(
-                          controller: _startTimeController,
-                          enabled: false,
-                          decoration: textFormFieldConfig(
-                            AppLocalizations.of(context).tr('choose_time'),
-                          ),
-                          style: TextStyle(
-                            fontSize: ScreenUtil.instance.setSp(12.0),
-                            color: Colors.black,
-                          ),
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return AppLocalizations.of(context)
-                                  .tr('start_time_required');
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: ScreenUtil.instance.setHeight(20.0),
-                      ),
-                      _buildLabel(
-                        Icons.timer_off,
-                        AppLocalizations.of(context).tr('end_time'),
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          final time = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.fromDateTime(
-                                _data.endTime ?? DateTime.now()),
-                          );
-                          if (time != null) {
-                            final format = DateFormat("HH:mm");
-                            final now = DateTime.now();
-                            final currentTime = new DateTime(
-                                now.year,
-                                now.month,
-                                now.day,
-                                time.hour,
-                                time.minute,
-                                0,
-                                0,
-                                0);
-                            _endTimeController.text =
-                                format.format(currentTime);
-                            _data.endTime = currentTime;
-                          }
-                        },
-                        child: TextFormField(
-                          controller: _endTimeController,
-                          enabled: false,
-                          decoration: textFormFieldConfig(
-                            AppLocalizations.of(context).tr('choose_time'),
-                          ),
-                          style: TextStyle(
-                            fontSize: ScreenUtil.instance.setSp(12.0),
-                            color: Colors.black,
-                          ),
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return AppLocalizations.of(context)
-                                  .tr('end_time_required');
-                            }
-                            if (_data.endTime.compareTo(_data.startTime) < 0) {
-                              return AppLocalizations.of(context)
-                                  .tr('end_time_have_to_after_start_time');
-                            }
-                            if (_data.endTime
-                                    .difference(_data.startTime)
-                                    .inHours <
-                                1) {
-                              return AppLocalizations.of(context).tr(
-                                  'end_time_have_to_more_than_start_time_one_hour');
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: ScreenUtil.instance.setHeight(20.0),
-                      ),
-                      _buildLabel(
-                        Icons.edit,
-                        AppLocalizations.of(context).tr('note'),
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          final time = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.fromDateTime(
-                                _data.endTime ?? DateTime.now()),
-                          );
-                          if (time != null) {
-                            final format = DateFormat("HH:mm");
-                            final now = DateTime.now();
-                            final currentTime = new DateTime(
-                                now.year,
-                                now.month,
-                                now.day,
-                                time.hour,
-                                time.minute,
-                                now.second,
-                                now.millisecond,
-                                now.microsecond);
-                            _endTimeController.text =
-                                format.format(currentTime);
-                          }
-                        },
-                        child: TextFormField(
-                          minLines: 4,
-                          maxLines: 4,
-                          decoration: textFormFieldConfig(
-                            AppLocalizations.of(context).tr('note_example'),
-                          ),
-                          style: TextStyle(
-                            fontSize: ScreenUtil.instance.setSp(12.0),
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(
-                        height: ScreenUtil.instance.setHeight(20.0),
-                      ),
-                    ],
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+          child: Form(
+            key: _form,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  BookingStepTitle(
+                    currentStep: 0,
                   ),
-                ),
-              ],
+                  Divider(),
+                  Padding(
+                    padding: EdgeInsets.all(14),
+                    child: Column(
+                      children: <Widget>[
+                        RadioListTile(
+                          title: Text(
+                            AppLocalizations.of(context).tr('retail_use'),
+                          ),
+                          subtitle: Text(
+                            AppLocalizations.of(context)
+                                .tr('retail_use_content'),
+                          ),
+                          value: 1,
+                          groupValue: _data.type,
+                          onChanged: _handleChangeType,
+                        ),
+                        RadioListTile(
+                          title: Text(
+                            AppLocalizations.of(context).tr('periodic'),
+                          ),
+                          subtitle: Text(
+                            AppLocalizations.of(context).tr('periodic_content'),
+                          ),
+                          value: 2,
+                          groupValue: _data.type,
+                          onChanged: _handleChangeType,
+                        ),
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(LABEL_MARGIN),
+                        ),
+                        // -- Common
+                        _buildLabel(
+                          Icons.location_on,
+                          AppLocalizations.of(context).tr('work_location'),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            _getCurrentLocation();
+                          },
+                          child: TextFormField(
+                            controller: _addressController,
+                            enabled: false,
+                            decoration: textFormFieldConfig(
+                              AppLocalizations.of(context).tr('choose_address'),
+                            ),
+                            style: TextStyle(
+                              fontSize: ScreenUtil.instance.setSp(12.0),
+                              color: Colors.black,
+                            ),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return AppLocalizations.of(context)
+                                    .tr('location_required');
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(20.0),
+                        ),
+                        _buildLabel(
+                          Icons.home,
+                          AppLocalizations.of(context).tr('house_number'),
+                        ),
+                        TextFormField(
+                          enabled: true,
+                          decoration: textFormFieldConfig(
+                            AppLocalizations.of(context)
+                                .tr('house_number_example'),
+                          ),
+                          style: TextStyle(
+                            fontSize: ScreenUtil.instance.setSp(12.0),
+                            color: Colors.black,
+                          ),
+                          onSaved: (String value) {
+                            _data.houseNumber = value;
+                          },
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return AppLocalizations.of(context)
+                                  .tr('house_required');
+                            }
+                            return null;
+                          },
+                        ),
+                        // Depend on type
+                        _data.type == 1
+                            // Fixed time
+                            ? _buildFixedTimeSelector()
+                            // Interval
+                            : _buildIntervalSelector(),
+
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(20.0),
+                        ),
+                        _buildLabel(
+                          Icons.timer,
+                          AppLocalizations.of(context).tr('start_time'),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            final time = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.fromDateTime(
+                                  _data.startTime ?? DateTime.now()),
+                            );
+                            if (time != null) {
+                              final format = DateFormat("HH:mm");
+                              final now = DateTime.now();
+                              final currentTime = new DateTime(
+                                now.year,
+                                now.month,
+                                now.day,
+                                time.hour,
+                                time.minute,
+                                0,
+                                0,
+                                0,
+                              );
+                              _startTimeController.text =
+                                  format.format(currentTime);
+                              _data.startTime = currentTime;
+                            }
+                          },
+                          child: TextFormField(
+                            controller: _startTimeController,
+                            enabled: false,
+                            decoration: textFormFieldConfig(
+                              AppLocalizations.of(context).tr('choose_time'),
+                            ),
+                            style: TextStyle(
+                              fontSize: ScreenUtil.instance.setSp(12.0),
+                              color: Colors.black,
+                            ),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return AppLocalizations.of(context)
+                                    .tr('start_time_required');
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(20.0),
+                        ),
+                        _buildLabel(
+                          Icons.timer_off,
+                          AppLocalizations.of(context).tr('end_time'),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            final time = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.fromDateTime(
+                                  _data.endTime ?? DateTime.now()),
+                            );
+                            if (time != null) {
+                              final format = DateFormat("HH:mm");
+                              final now = DateTime.now();
+                              final currentTime = new DateTime(
+                                  now.year,
+                                  now.month,
+                                  now.day,
+                                  time.hour,
+                                  time.minute,
+                                  0,
+                                  0,
+                                  0);
+                              _endTimeController.text =
+                                  format.format(currentTime);
+                              _data.endTime = currentTime;
+                            }
+                          },
+                          child: TextFormField(
+                            controller: _endTimeController,
+                            enabled: false,
+                            decoration: textFormFieldConfig(
+                              AppLocalizations.of(context).tr('choose_time'),
+                            ),
+                            style: TextStyle(
+                              fontSize: ScreenUtil.instance.setSp(12.0),
+                              color: Colors.black,
+                            ),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return AppLocalizations.of(context)
+                                    .tr('end_time_required');
+                              }
+                              if (_data.endTime.compareTo(_data.startTime) <
+                                  0) {
+                                return AppLocalizations.of(context)
+                                    .tr('end_time_have_to_after_start_time');
+                              }
+                              if (_data.endTime
+                                      .difference(_data.startTime)
+                                      .inHours <
+                                  1) {
+                                return AppLocalizations.of(context).tr(
+                                    'end_time_have_to_more_than_start_time_one_hour');
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(20.0),
+                        ),
+                        _buildLabel(
+                          Icons.edit,
+                          AppLocalizations.of(context).tr('note'),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            final time = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.fromDateTime(
+                                  _data.endTime ?? DateTime.now()),
+                            );
+                            if (time != null) {
+                              final format = DateFormat("HH:mm");
+                              final now = DateTime.now();
+                              final currentTime = new DateTime(
+                                  now.year,
+                                  now.month,
+                                  now.day,
+                                  time.hour,
+                                  time.minute,
+                                  now.second,
+                                  now.millisecond,
+                                  now.microsecond);
+                              _endTimeController.text =
+                                  format.format(currentTime);
+                            }
+                          },
+                          child: TextFormField(
+                            minLines: 4,
+                            maxLines: 4,
+                            decoration: textFormFieldConfig(
+                              AppLocalizations.of(context).tr('note_example'),
+                            ),
+                            style: TextStyle(
+                              fontSize: ScreenUtil.instance.setSp(12.0),
+                              color: Colors.black,
+                            ),
+                            onSaved: (String value) {
+                              _data.note = value;
+                            },
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(20.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
