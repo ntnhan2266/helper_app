@@ -2,14 +2,17 @@ import 'package:easy_localization/easy_localization_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:smart_rabbit/models/service_details.dart';
+import '../models/service_details.dart';
+import '../models/user_maid.dart';
+import '../widgets/user_avatar.dart';
+import '../utils/utils.dart';
 
 class ServiceDetailInfo extends StatelessWidget {
   final ServiceDetails _data;
 
   ServiceDetailInfo(this._data);
 
-  Widget _buildDetailItem(String label, String value) {
+  Widget _buildDetailItem(BuildContext context, String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -32,7 +35,7 @@ class ServiceDetailInfo extends StatelessWidget {
     );
   }
 
-  Widget _buildHostInfo(UserMaid maid) {
+  Widget _buildHostInfo(BuildContext context, UserMaid maid) {
     final numericFormatter = new NumberFormat("#,###", "en_US");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +81,7 @@ class ServiceDetailInfo extends StatelessWidget {
     );
   }
 
-  Widget _buildPriceBlock(int price) {
+  Widget _buildPriceBlock(BuildContext context, int price) {
     final numericFormatter = new NumberFormat("#,###", "en_US");
 
     return Column(
@@ -139,6 +142,7 @@ class ServiceDetailInfo extends StatelessWidget {
   }
 
   Widget _buildIntervalInfo(
+    BuildContext context,
     DateTime startDate,
     DateTime endDate,
     Map<String, bool> interval,
@@ -154,7 +158,7 @@ class ServiceDetailInfo extends StatelessWidget {
       intervalText += AppLocalizations.of(context).tr('wednesday') + ', ';
     }
     if (interval['thu']) {
-      intervalText += AppLocalizations.of(context).tr('thurday') + ', ';
+      intervalText += AppLocalizations.of(context).tr('thursday') + ', ';
     }
     if (interval['fri']) {
       intervalText += AppLocalizations.of(context).tr('friday') + ', ';
@@ -223,50 +227,75 @@ class ServiceDetailInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var serviceFee = 0;
+    if (_data.type == 1) {
+      serviceFee = _data.maid != null
+          ? (_data.endTime.difference(_data.startTime).inMinutes /
+                  60 *
+                  _data.maid.salary)
+              .round()
+          : 0;
+    } else {
+      final days = Utils.calculateIntervalDays(
+          _data.startDate, _data.endDate, _data.interval);
+      serviceFee = _data.maid != null
+          ? (_data.endTime.difference(_data.startTime).inMinutes /
+                  60 *
+                  _data.maid.salary *
+                  days)
+              .round()
+          : 0;
+    }
     return Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil.instance.setWidth(18.0),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _buildDetailItem(
-                      AppLocalizations.of(context).tr('work_location'),
-                      _data.address,
-                    ),
-                    _buildDetailItem(
-                      AppLocalizations.of(context).tr('house_number'),
-                      _data.houseNumber,
-                    ),
-                    _data.type == 1
-                        ? _buildDetailItem(
-                            AppLocalizations.of(context).tr('working_date'),
-                            DateFormat('dd-MM-yyyy').format(_data.startDate),
-                          )
-                        : _buildIntervalInfo(
-                            _data.startDate, _data.endDate, _data.interval),
-                    _buildDetailItem(
-                      AppLocalizations.of(context).tr('start_time'),
-                      DateFormat('HH:mm').format(_data.startTime),
-                    ),
-                    _buildDetailItem(
-                      AppLocalizations.of(context).tr('end_time'),
-                      DateFormat('HH:mm').format(_data.endTime),
-                    ),
-                    _buildDetailItem(
-                      AppLocalizations.of(context).tr('note'),
-                      _data.note != null ? _data.note : '--',
-                    ),
-                    _buildHostInfo(_data.maid),
-                    SizedBox(
-                      height: ScreenUtil.instance.setHeight(20),
-                    ),
-                    _buildPriceBlock(serviceFee),
-                    SizedBox(
-                      height: ScreenUtil.instance.setHeight(20),
-                    ),
-                  ],
-                ),
-              );
+      padding: EdgeInsets.symmetric(
+        horizontal: ScreenUtil.instance.setWidth(18.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildDetailItem(
+            context,
+            AppLocalizations.of(context).tr('work_location'),
+            _data.address,
+          ),
+          _buildDetailItem(
+            context,
+            AppLocalizations.of(context).tr('house_number'),
+            _data.houseNumber,
+          ),
+          _data.type == 1
+              ? _buildDetailItem(
+                  context,
+                  AppLocalizations.of(context).tr('working_date'),
+                  DateFormat('dd-MM-yyyy').format(_data.startDate),
+                )
+              : _buildIntervalInfo(
+                  context, _data.startDate, _data.endDate, _data.interval),
+          _buildDetailItem(
+            context,
+            AppLocalizations.of(context).tr('start_time'),
+            DateFormat('HH:mm').format(_data.startTime),
+          ),
+          _buildDetailItem(
+            context,
+            AppLocalizations.of(context).tr('end_time'),
+            DateFormat('HH:mm').format(_data.endTime),
+          ),
+          _buildDetailItem(
+            context,
+            AppLocalizations.of(context).tr('note'),
+            _data.note != null ? _data.note : '--',
+          ),
+          _buildHostInfo(context, _data.maid),
+          SizedBox(
+            height: ScreenUtil.instance.setHeight(20),
+          ),
+          _buildPriceBlock(context, serviceFee),
+          SizedBox(
+            height: ScreenUtil.instance.setHeight(20),
+          ),
+        ],
+      ),
+    );
   }
 }

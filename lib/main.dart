@@ -3,11 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_rabbit/screens/helper_detail_screen.dart';
-import 'package:smart_rabbit/screens/helper_ratting_screen.dart';
-import 'package:smart_rabbit/screens/helper_register_screen.dart';
-import 'package:smart_rabbit/screens/user_detail_screen.dart';
 
+import './screens/helper_detail_screen.dart';
+import './screens/helper_ratting_screen.dart';
+import './screens/helper_register_screen.dart';
+import './screens/service_status_screen.dart';
+import './screens/user_detail_screen.dart';
 import './screens/splash_screen.dart';
 import './screens/home_screen.dart';
 import './screens/intro_screen.dart';
@@ -123,6 +124,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, HelperRattingScreen());
       case helperDetailRoute:
         return _buildRoute(settings, HelperDeatailScreen());
+      case serviceStatusRoute:
+        return _buildRoute(settings, ServiceStatusScreen());
       default:
         return null;
     }

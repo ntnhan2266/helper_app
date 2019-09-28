@@ -2,13 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:smart_rabbit/utils/constants.dart';
 import 'package:smart_rabbit/widgets/form/form_multichoice.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/form/form_dropdown.dart';
-import '../widgets/form/form_input.dart';
 import '../widgets/user_avatar.dart';
 import '../widgets/dialogs/error_dialog.dart';
 import '../widgets/form/form_label.dart';
@@ -18,7 +16,6 @@ import '../models/maid.dart';
 import '../utils/constants.dart';
 import '../utils/dummy_data.dart';
 import '../utils/utils.dart';
-import '../utils/numeric_text_formatter.dart';
 import '../services/maid.dart';
 
 class HelperRegisterScreen extends StatefulWidget {

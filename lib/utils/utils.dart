@@ -105,10 +105,6 @@ class Utils {
     }
   }
 
-  static List<int> listAr(List<SUPPURT_AREA> data) {
-    final data = [];
-  }
-
   static void showErrorSnackbar(BuildContext context) {
     Flushbar(
       titleText: Text(AppLocalizations.of(context).tr('error'),

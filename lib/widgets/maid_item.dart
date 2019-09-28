@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:intl/intl.dart';
 
 import '../models/user_maid.dart';
@@ -15,8 +14,6 @@ class MaidItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final numericFormatter = new NumberFormat("#,###", "en_US");
-    final workedMonths =
-        (DateTime.now().difference(maid.createdAt).inDays / 30).round();
     return Container(
       decoration: BoxDecoration(
         color: isSelected ? Theme.of(context).primaryColor : Colors.white,

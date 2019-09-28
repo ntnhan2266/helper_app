@@ -2,10 +2,6 @@ import 'dart:core';
 
 import 'package:json_annotation/json_annotation.dart';
 
-import '../utils/constants.dart';
-import '../utils/utils.dart';
-
-
 /// An annotation for the code generator to know that this class needs the
 /// JSON serialization logic to be generated.
 /// Maid model
@@ -46,5 +42,16 @@ class Maid {
       'jobTypes': jobTypes,
       'supportAreas': supportAreas
     };
+  }
+
+  factory Maid.maidFromJson(Map<String, dynamic> json) {
+    return Maid(
+    intro: json['intro'],
+    literacyType: json['literacyType'],
+    exp: json['exp'],
+    salary: json['salary'],
+    jobTypes: json['jobTypes'].cast<int>(),
+    supportAreas: json['supportAreas'].cast<int>(),
+    );
   }
 }

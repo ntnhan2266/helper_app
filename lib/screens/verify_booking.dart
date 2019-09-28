@@ -1,16 +1,14 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
-import 'package:smart_rabbit/models/user_maid.dart';
 
 import '../widgets/booking_step_title.dart';
 import '../widgets/booking_bottom_bar.dart';
-import '../widgets/user_avatar.dart';
 import '../models/service_details.dart';
 import '../utils/utils.dart';
 import '../services/booking.dart';
+import '../utils/route_names.dart';
+import '../widgets/service_detail_info.dart';
 
 class VerifyBookingScreen extends StatefulWidget {
   @override
@@ -19,10 +17,18 @@ class VerifyBookingScreen extends StatefulWidget {
 
 class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
   void _onSubmit(ServiceDetails data) async {
+    print(data.toJson());
     var res = await BookingService.booking(data);
+    print(res);
     if (res['isValid']) {
-      Navigator.pushAndRemoveUntil();
-      Utils.showSuccessSnackbar(context, AppLocalizations.of(context).tr('booked_successfully'),);
+      Navigator.of(context).pushNamedAndRemoveUntil(homeScreenRoute, (Route<dynamic> route) => false);
+      Navigator.pushNamed(context,
+          serviceStatusRoute,
+          arguments: res['data']['_id']);
+      Utils.showSuccessSnackbar(
+        context,
+        AppLocalizations.of(context).tr('booked_successfully'),
+      );
     }
   }
 
@@ -38,18 +44,6 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
       height: defaultScreenHeight,
       allowFontScaling: true,
     )..init(context);
-
-    var serviceFee = 0;
-    if (_data.type == 1) {
-      serviceFee = _data.maid != null
-        ? (_data.endTime.difference(_data.startTime).inMinutes / 60 * _data.maid.salary).round()
-        : 0;
-    } else {
-      final days = Utils.calculateIntervalDays(_data.startDate, _data.endDate, _data.interval);
-      serviceFee = _data.maid != null
-        ? (_data.endTime.difference(_data.startTime).inMinutes / 60 * _data.maid.salary * days).round()
-        : 0;
-    }
 
     return EasyLocalizationProvider(
       data: data,
@@ -80,7 +74,7 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
               SizedBox(
                 height: ScreenUtil.instance.setHeight(8.0),
               ),
-              
+              ServiceDetailInfo(_data),
             ],
           ),
         ),

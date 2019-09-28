@@ -69,3 +69,9 @@ const Map<int, String> RATTING = const {
   4: 'sentiment_satisfied',
   5: 'sentiment_very_satisfied',
 };
+
+const int WAITING_APPROVE = 1;
+const int APPROVED = 2;
+const int COMPLETE = 3;
+const int REJECTED = 4;
+const int CANCELLED = 5;

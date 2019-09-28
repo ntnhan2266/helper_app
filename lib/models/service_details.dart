@@ -4,7 +4,9 @@ import 'package:smart_rabbit/utils/utils.dart';
 import '../models/user_maid.dart';
 
 class ServiceDetails {
+  String id;
   int type = 1;
+  int status = 0;
   String address = '';
   String houseNumber = '';
   DateTime startTime = DateTime.now();
@@ -24,25 +26,29 @@ class ServiceDetails {
   DateTime startDate;
   DateTime endDate;
   UserMaid maid;
+  List<DateTime> workingDates = [];
 
-  ServiceDetails({
-    this.type = 1,
-    this.address,
-    this.houseNumber,
-    this.startTime,
-    this.endTime,
-    this.note,
-    this.lat,
-    this.long,
-    this.interval,
-    this.startDate,
-    this.endDate,
-    this.maid
-  });
+  ServiceDetails(
+      {this.type = 1,
+      this.id,
+      this.workingDates,
+      this.status = 0,
+      this.address,
+      this.houseNumber,
+      this.startTime,
+      this.endTime,
+      this.note,
+      this.lat,
+      this.long,
+      this.interval,
+      this.startDate,
+      this.endDate,
+      this.maid});
 
   Map<String, dynamic> toJson() {
     return {
       'type': type,
+      'status': status,
       'address': address,
       'houseNumber': houseNumber,
       'startTime': startTime.toString(),
@@ -50,12 +56,52 @@ class ServiceDetails {
       'note': note,
       'lat': lat,
       'long': long,
-      'interval': type == 2 ? Utils.getIntervalDayList(startDate, endDate, interval) : null,
+      'interval': interval,
       'startDate': DateFormat('dd-MM-yyyy').format(startDate),
-      'endDate': endDate != null ? DateFormat('dd-MM-yyyy').format(endDate) : null,
+      'endDate':
+          endDate != null ? DateFormat('dd-MM-yyyy').format(endDate) : null,
       'maid': maid.id,
+      'workingDates': type == 2
+          ? Utils.getIntervalDayList(startDate, endDate, interval)
+          : null,
     };
   }
 
+  factory ServiceDetails.fromJson(Map<String, dynamic> json) {
+    return ServiceDetails(
+      id: json['_id'],
+      type: json['type'],
+      status: json['status'],
+      address: json['address'],
+      houseNumber: json['houseNumber'],
+      startTime: DateTime.parse(json['startTime']),
+      endTime: DateTime.parse(json['endTime']),
+      note: json['note'],
+      lat: json['lat'],
+      long: json['long'],
+      startDate: DateTime.parse(json['startDate']),
+      endDate: DateTime.parse(json['endDate']),
+      maid: UserMaid.getMaid(json['maid']),
+    );
+  }
 
+  static ServiceDetails getData(Map<String, dynamic> json) {
+    return ServiceDetails(
+      id: json['_id'],
+      type: json['type'],
+      status: json['status'],
+      address: json['address'],
+      houseNumber: json['houseNumber'],
+      startTime: DateTime.parse(json['startTime']),
+      endTime: DateTime.parse(json['endTime']),
+      note: json['note'],
+      lat: json['lat'],
+      long: json['long'],
+      workingDates: json['interval']['days'].cast<DateTime>(),
+      interval: Map<String, bool>.from(json['interval']['options']),
+      startDate: DateTime.parse(json['startDate']),
+      endDate: DateTime.parse(json['endDate']),
+      maid: UserMaid.getMaid(json['maid']),
+    );
+  }
 }
