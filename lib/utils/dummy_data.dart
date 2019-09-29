@@ -1,3 +1,5 @@
+import 'package:smart_rabbit/models/service_details.dart';
+
 import '../models/service_category.dart';
 
 List services = [
@@ -105,19 +107,110 @@ List reviews = [
     'ratting': 4.0,
     'content': 'Chăm chỉ \nLàm việc cũng cẩn thận'
   },
-  {
-    'username': 'anhanhanh',
-    'ratting': 5.0,
-    'content': 'Làm tốt công việc'
-  },
-  {
-    'username': 'binh56',
-    'ratting': 4.5,
-    'content': 'Tốt'
-  },
-  {
-    'username': 'trung874',
-    'ratting': 4.0,
-    'content': 'Cẩn thận và chu đáo'
-  },
+  {'username': 'anhanhanh', 'ratting': 5.0, 'content': 'Làm tốt công việc'},
+  {'username': 'binh56', 'ratting': 4.5, 'content': 'Tốt'},
+  {'username': 'trung874', 'ratting': 4.0, 'content': 'Cẩn thận và chu đáo'},
+];
+
+var serviceHistoty = [
+  ServiceDetails(
+    category: 1,
+    status: 3,
+    address: '123 Thành Thái, Q. 10',
+    startTime: DateTime(2019, 9, 29, 8, 0, 0),
+    endTime: DateTime(2019, 9, 29, 17, 0, 0),
+    startDate: DateTime(2019, 9, 29),
+    endDate: DateTime(2019, 9, 29),
+    amount: 500000,
+  ),
+  ServiceDetails(
+    category: 0,
+    status: 3,
+    address: '20 Sư Vạn Hạnh, Q. 5',
+    startTime: DateTime(2019, 9, 29, 8, 0, 0),
+    endTime: DateTime(2019, 9, 29, 16, 30, 0),
+    startDate: DateTime(2019, 9, 25),
+    endDate: DateTime(2019, 10, 12),
+    amount: 1500000,
+  ),
+  ServiceDetails(
+    category: 0,
+    status: 3,
+    address: '785 Lý Thường Kiệt, Q. 11',
+    startTime: DateTime(2019, 9, 29, 9, 0, 0),
+    endTime: DateTime(2019, 9, 29, 15, 0, 0),
+    startDate: DateTime(2019, 9, 29),
+    endDate: DateTime(2019, 9, 29),
+    amount: 1200000,
+  ),
+  ServiceDetails(
+    category: 4,
+    status: 3,
+    address: '35 Nguyễn Trãi, Q. 10',
+    startTime: DateTime(2019, 9, 29, 8, 30, 0),
+    endTime: DateTime(2019, 9, 29, 15, 0, 0),
+    startDate: DateTime(2019, 9, 10),
+    endDate: DateTime(2019, 9, 29),
+    amount: 1300000,
+  ),
+  ServiceDetails(
+    category: 3,
+    status: 3,
+    address: '10 Nguyễn Tri Phương, Q. 10',
+    startTime: DateTime(2019, 9, 29, 8, 0, 0),
+    endTime: DateTime(2019, 9, 29, 17, 0, 0),
+    startDate: DateTime(2019, 9, 29),
+    endDate: DateTime(2019, 9, 29),
+    amount: 5000000,
+  ),
+  ServiceDetails(
+    category: 1,
+    status: 3,
+    address: '91 Ba Tháng Hai, Q. 10',
+    startTime: DateTime(2019, 9, 29, 8, 0, 0),
+    endTime: DateTime(2019, 9, 29, 17, 0, 0),
+    startDate: DateTime(2019, 9, 29),
+    endDate: DateTime(2019, 9, 29),
+    amount: 300000,
+  ),
+  ServiceDetails(
+    category: 2,
+    status: 3,
+    address: '500 An Dương Vương, Q. 5',
+    startTime: DateTime(2019, 9, 29, 8, 0, 0),
+    endTime: DateTime(2019, 9, 29, 17, 0, 0),
+    startDate: DateTime(2019, 9, 29),
+    endDate: DateTime(2019, 9, 29),
+    amount: 12500000,
+  ),
+  ServiceDetails(
+    category: 4,
+    status: 3,
+    address: '463 Tô Hiến Thành',
+    startTime: DateTime(2019, 9, 29, 8, 0, 0),
+    endTime: DateTime(2019, 9, 29, 17, 0, 0),
+    startDate: DateTime(2019, 9, 29),
+    endDate: DateTime(2019, 9, 29),
+    amount: 7500000,
+  ),
+  ServiceDetails(
+    category: 0,
+    status: 3,
+    address: '26 Lê Lợi, Q. 1',
+    startTime: DateTime(2019, 9, 29, 8, 0, 0),
+    endTime: DateTime(2019, 9, 29, 17, 0, 0),
+    startDate: DateTime(2019, 9, 29),
+    endDate: DateTime(2019, 9, 29),
+    amount: 1400000,
+  ),
+  ServiceDetails(
+    category: 3,
+    status: 3,
+    address: '5 Điện Biên Phủ, Q. 3',
+    startTime: DateTime(2019, 9, 29, 8, 0, 0),
+    endTime: DateTime(2019, 9, 29, 17, 0, 0),
+    startDate: DateTime(2019, 9, 29),
+    endDate: DateTime(2019, 9, 29),
+    amount: 1100000,
+  ),
 ];

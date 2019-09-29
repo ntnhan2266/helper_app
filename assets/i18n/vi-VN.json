@@ -210,5 +210,7 @@
     "rejected": "Người giúp việc đã từ chối dịch vụ",
     "cancelled": "Đã huỷ",
     "updating": "Đang cập nhật",
-    "category": "Loại công việc"
+    "category": "Loại công việc",
+    "repick": "Đặt lại",
+    "view": "Xem"
 }

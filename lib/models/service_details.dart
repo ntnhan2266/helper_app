@@ -28,6 +28,7 @@ class ServiceDetails {
   DateTime endDate;
   UserMaid maid;
   List<DateTime> workingDates = [];
+  int amount;
 
   ServiceDetails(
       {this.type = 1,
@@ -45,7 +46,8 @@ class ServiceDetails {
       this.interval,
       this.startDate,
       this.endDate,
-      this.maid});
+      this.maid,
+      this.amount});
 
   Map<String, dynamic> toJson() {
     return {

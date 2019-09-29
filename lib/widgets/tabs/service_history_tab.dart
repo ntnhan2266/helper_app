@@ -1,11 +1,10 @@
-import 'dart:math';
 
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../models/service_category.dart';
+import '../../models/service_details.dart';
+import '../../widgets/components/service_history_list_item.dart';
 import '../../utils/dummy_data.dart';
 
 class ServiceHistoryTab extends StatefulWidget {
@@ -87,7 +86,8 @@ class _ServiceHistoryTabState extends State<ServiceHistoryTab> {
         shrinkWrap: true,
         itemCount: 10,
         itemBuilder: (BuildContext context, int index) {
-                    
+          ServiceDetails serviceDetail = serviceHistoty.toList()[index];
+          return ServiceHistoryListItem(serviceDetail);
         },
       ),
     );
