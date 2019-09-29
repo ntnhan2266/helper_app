@@ -1,4 +1,5 @@
 import 'package:smart_rabbit/models/service_details.dart';
+import 'package:smart_rabbit/models/user_maid.dart';
 
 import '../models/service_category.dart';
 
@@ -112,6 +113,43 @@ List reviews = [
   {'username': 'trung874', 'ratting': 4.0, 'content': 'Cẩn thận và chu đáo'},
 ];
 
+var userMaid = [
+  UserMaid(
+    intro: 'intro',
+    id: '1',
+    literacyType: 1,
+    exp: 'exp',
+    salary: 1,
+    jobTypes: [],
+    supportAreas: [],
+    name: 'An Binh',
+    email: 'email',
+    gender: 1,
+    birthday: DateTime(1997, 1, 1),
+    phoneNumber: '0123456789',
+    address: 'address',
+    createdAt: DateTime.now(),
+    avatar: 'avatar',
+  ),
+  UserMaid(
+    intro: 'intro',
+    id: '2',
+    literacyType: 1,
+    exp: 'exp',
+    salary: 1,
+    jobTypes: [],
+    supportAreas: [],
+    name: 'Hong Ngoc',
+    email: 'email',
+    gender: 1,
+    birthday: DateTime(1997, 1, 1),
+    phoneNumber: '0123456789',
+    address: 'address',
+    createdAt: DateTime.now(),
+    avatar: 'avatar',
+  ),
+];
+
 var serviceHistoty = [
   ServiceDetails(
     category: 1,
@@ -121,6 +159,8 @@ var serviceHistoty = [
     endTime: DateTime(2019, 9, 29, 17, 0, 0),
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
+    type: 1,
+    maid: userMaid[0],
     amount: 500000,
   ),
   ServiceDetails(
@@ -131,6 +171,8 @@ var serviceHistoty = [
     endTime: DateTime(2019, 9, 29, 16, 30, 0),
     startDate: DateTime(2019, 9, 25),
     endDate: DateTime(2019, 10, 12),
+    type: 2,
+    maid: userMaid[1],
     amount: 1500000,
   ),
   ServiceDetails(
@@ -141,6 +183,8 @@ var serviceHistoty = [
     endTime: DateTime(2019, 9, 29, 15, 0, 0),
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
+    type: 1,
+    maid: userMaid[0],
     amount: 1200000,
   ),
   ServiceDetails(
@@ -151,6 +195,8 @@ var serviceHistoty = [
     endTime: DateTime(2019, 9, 29, 15, 0, 0),
     startDate: DateTime(2019, 9, 10),
     endDate: DateTime(2019, 9, 29),
+    type: 2,
+    maid: userMaid[0],
     amount: 1300000,
   ),
   ServiceDetails(
@@ -161,6 +207,8 @@ var serviceHistoty = [
     endTime: DateTime(2019, 9, 29, 17, 0, 0),
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
+    type: 1,
+    maid: userMaid[1],
     amount: 5000000,
   ),
   ServiceDetails(
@@ -171,6 +219,8 @@ var serviceHistoty = [
     endTime: DateTime(2019, 9, 29, 17, 0, 0),
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
+    type: 1,
+    maid: userMaid[1],
     amount: 300000,
   ),
   ServiceDetails(
@@ -181,6 +231,8 @@ var serviceHistoty = [
     endTime: DateTime(2019, 9, 29, 17, 0, 0),
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
+    type: 1,
+    maid: userMaid[0],
     amount: 12500000,
   ),
   ServiceDetails(
@@ -191,6 +243,8 @@ var serviceHistoty = [
     endTime: DateTime(2019, 9, 29, 17, 0, 0),
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
+    type: 1,
+    maid: userMaid[1],
     amount: 7500000,
   ),
   ServiceDetails(
@@ -201,6 +255,8 @@ var serviceHistoty = [
     endTime: DateTime(2019, 9, 29, 17, 0, 0),
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
+    type: 1,
+    maid: userMaid[0],
     amount: 1400000,
   ),
   ServiceDetails(
@@ -211,6 +267,8 @@ var serviceHistoty = [
     endTime: DateTime(2019, 9, 29, 17, 0, 0),
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
+    type: 1,
+    maid: userMaid[1],
     amount: 1100000,
   ),
 ];

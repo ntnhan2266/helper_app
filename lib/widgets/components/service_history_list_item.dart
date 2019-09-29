@@ -57,7 +57,7 @@ class ServiceHistoryListItem extends StatelessWidget {
 
     Widget _flatButton(IconData icon, String text) {
       return Container(
-        height: 35,
+        height: 25,
         child: FlatButton.icon(
           onPressed: () {},
           icon: Icon(
@@ -76,6 +76,13 @@ class ServiceHistoryListItem extends StatelessWidget {
       );
     }
 
+    String _getType(int type) {
+      if (type == 1)
+        return AppLocalizations.of(context).tr("retail_use");
+      else
+        return AppLocalizations.of(context).tr("periodic");
+    }
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
       padding: EdgeInsets.symmetric(vertical: 5.0),
@@ -84,44 +91,55 @@ class ServiceHistoryListItem extends StatelessWidget {
       child: InkWell(
         child: Container(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Container(
+                height: 25,
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context)
+                          .tr(_serviceCategory.serviceName),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      _getDate(),
+                      style: TextStyle(
+                        fontSize: ScreenUtil.instance.setSp(14.0),
+                        color: Colors.blueGrey[300],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(),
               Row(
                 children: <Widget>[
                   Image.asset(
                     _serviceCategory.imgURL,
                     width: MediaQuery.of(context).size.width / 4,
-                    height: MediaQuery.of(context).size.width / 4,
+                    height: MediaQuery.of(context).size.width / 6,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width * 3 / 4 - 30,
                     padding: EdgeInsets.only(left: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          AppLocalizations.of(context)
-                              .tr(_serviceCategory.serviceName),
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        SizedBox(height: 10),
                         _iconAndText(
                           Icons.location_on,
                           serviceDetail.address,
                         ),
                         _iconAndText(
                           Icons.date_range,
-                          _getDate(),
+                          _getType(serviceDetail.type) + ": " + _getTime(),
                         ),
                         _iconAndText(
-                          Icons.timer,
-                          _getTime(),
-                        ),
-                        _iconAndText(
-                          Icons.attach_money,
-                          NumberFormat.currency(locale: "vi-vn")
-                              .format(serviceDetail.amount),
+                          Icons.person,
+                          serviceDetail.maid.name,
                         ),
                       ],
                     ),
@@ -129,18 +147,32 @@ class ServiceHistoryListItem extends StatelessWidget {
                 ],
               ),
               Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _flatButton(
-                    Icons.history,
-                    AppLocalizations.of(context).tr("repick"),
-                  ),
-                  _flatButton(
-                    Icons.details,
-                    AppLocalizations.of(context).tr("view"),
-                  ),
-                ],
+              Container(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      NumberFormat.currency(locale: "vi-vn")
+                          .format(serviceDetail.amount),
+                      style: TextStyle(
+                        fontSize: ScreenUtil.instance.setSp(14.0),
+                      ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        _flatButton(
+                          Icons.history,
+                          AppLocalizations.of(context).tr("repick"),
+                        ),
+                        _flatButton(
+                          Icons.details,
+                          AppLocalizations.of(context).tr("view"),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
