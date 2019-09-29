@@ -209,5 +209,6 @@
     "completed": "Đã hoàn thành",
     "rejected": "Người giúp việc đã từ chối dịch vụ",
     "cancelled": "Đã huỷ",
-    "updating": "Đang cập nhật"
+    "updating": "Đang cập nhật",
+    "category": "Loại công việc"
 }
