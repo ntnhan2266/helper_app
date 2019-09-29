@@ -5,6 +5,7 @@ import '../models/user_maid.dart';
 
 class ServiceDetails {
   String id;
+  int category = 1;
   int type = 1;
   int status = 0;
   String address = '';
@@ -30,6 +31,7 @@ class ServiceDetails {
 
   ServiceDetails(
       {this.type = 1,
+      this.category,
       this.id,
       this.workingDates,
       this.status = 0,
@@ -48,6 +50,7 @@ class ServiceDetails {
   Map<String, dynamic> toJson() {
     return {
       'type': type,
+      'category': category,
       'status': status,
       'address': address,
       'houseNumber': houseNumber,
@@ -70,6 +73,7 @@ class ServiceDetails {
   factory ServiceDetails.fromJson(Map<String, dynamic> json) {
     return ServiceDetails(
       id: json['_id'],
+      category: json['category'],
       type: json['type'],
       status: json['status'],
       address: json['address'],
@@ -89,6 +93,7 @@ class ServiceDetails {
     return ServiceDetails(
       id: json['_id'],
       type: json['type'],
+      category: json['category'],
       status: json['status'],
       address: json['address'],
       houseNumber: json['houseNumber'],

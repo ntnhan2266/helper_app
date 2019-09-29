@@ -12,7 +12,23 @@ class BookingStatus extends StatelessWidget {
     switch (status) {
       case WAITING_APPROVE:
         return Text(
-          AppLocalizations.of(context).tr('waiting_for_approve')
+          AppLocalizations.of(context).tr('waiting_for_approve'),
+        );
+      case APPROVED:
+        return Text(
+          AppLocalizations.of(context).tr('approved'),
+        );
+      case COMPLETE:
+        return Text(
+          AppLocalizations.of(context).tr('completed'),
+        );
+      case REJECTED:
+        return Text(
+          AppLocalizations.of(context).tr('rejected'),
+        );
+      case CANCELLED:
+        return Text(
+          AppLocalizations.of(context).tr('cancelled'),
         );
       default:
         return Text(

@@ -34,12 +34,6 @@ class _ServiceHistoryTabState extends State<ServiceHistoryTab> {
             tabs: [
               Tab(
                 child: Text(
-                  AppLocalizations.of(context).tr('all'),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Tab(
-                child: Text(
                   AppLocalizations.of(context).tr('on-going'),
                   textAlign: TextAlign.center,
                 ),
@@ -47,6 +41,12 @@ class _ServiceHistoryTabState extends State<ServiceHistoryTab> {
               Tab(
                 child: Text(
                   AppLocalizations.of(context).tr('done'),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Tab(
+                child: Text(
+                  AppLocalizations.of(context).tr('completed'),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -87,88 +87,7 @@ class _ServiceHistoryTabState extends State<ServiceHistoryTab> {
         shrinkWrap: true,
         itemCount: 10,
         itemBuilder: (BuildContext context, int index) {
-          ServiceCategory service =
-              categoriesData[new Random().nextInt(categoriesData.length)];
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-            padding: EdgeInsets.symmetric(vertical: 5.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0)
-            ),
-            child: InkWell(
-              child: Container(
-                child: Row(
-                  children: <Widget>[
-                    Image.asset(
-                      service.imgURL,
-                      width: MediaQuery.of(context).size.width / 4,
-                      height: MediaQuery.of(context).size.width / 4,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 3 / 4 - 30,
-                      padding: EdgeInsets.only(left: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              AppLocalizations.of(context)
-                                  .tr(service.serviceName),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: ScreenUtil.instance.setSp(15.0),
-                              ),
-                              maxLines: 2,
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                          SizedBox(height: 3),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.location_on,
-                                size: 13,
-                                color: Colors.blueGrey[300],
-                              ),
-                              SizedBox(width: 3),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Quận 5, HCM",
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil.instance.setSp(14.0),
-                                    color: Colors.blueGrey[300],
-                                  ),
-                                  maxLines: 1,
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "100\$",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: ScreenUtil.instance.setSp(14.0),
-                              ),
-                              maxLines: 1,
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () {},
-            ),
-          );
+                    
         },
       ),
     );

@@ -2,10 +2,13 @@ import 'package:easy_localization/easy_localization_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+
 import '../models/service_details.dart';
 import '../models/user_maid.dart';
 import '../widgets/user_avatar.dart';
 import '../utils/utils.dart';
+import '../utils/dummy_data.dart';
+import '../models/service_category.dart';
 
 class ServiceDetailInfo extends StatelessWidget {
   final ServiceDetails _data;
@@ -246,13 +249,24 @@ class ServiceDetailInfo extends StatelessWidget {
               .round()
           : 0;
     }
+    final int categoryIndex =
+        categoriesData.indexWhere((item) => item.id == _data.type);
+    final ServiceCategory category = categoriesData[categoryIndex];
+
+    
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: ScreenUtil.instance.setWidth(18.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+
         children: <Widget>[
+          _buildDetailItem(
+            context,
+            AppLocalizations.of(context).tr('category'),
+            AppLocalizations.of(context).tr(category.serviceName),
+          ),
           _buildDetailItem(
             context,
             AppLocalizations.of(context).tr('work_location'),

@@ -9,6 +9,7 @@ import '../utils/utils.dart';
 import '../services/booking.dart';
 import '../utils/route_names.dart';
 import '../widgets/service_detail_info.dart';
+import '../utils/dummy_data.dart';
 
 class VerifyBookingScreen extends StatefulWidget {
   @override
@@ -17,7 +18,6 @@ class VerifyBookingScreen extends StatefulWidget {
 
 class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
   void _onSubmit(ServiceDetails data) async {
-    print(data.toJson());
     var res = await BookingService.booking(data);
     print(res);
     if (res['isValid']) {
@@ -36,7 +36,6 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
   Widget build(BuildContext context) {
     final ServiceDetails _data = ModalRoute.of(context).settings.arguments;
     var data = EasyLocalizationProvider.of(context).data;
-
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
     ScreenUtil.instance = ScreenUtil(
