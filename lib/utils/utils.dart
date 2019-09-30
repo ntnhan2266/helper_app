@@ -20,6 +20,17 @@ class Utils {
     }
   }
 
+  static String intToGender(int gender) {
+    switch (gender) {
+      case 1:
+        return "male";
+      case 2:
+        return "female";
+      default:
+        return "other";
+    }
+  }
+
   static int literacyToInt(LITERACY_TYPE literacyType) {
     switch (literacyType) {
       case LITERACY_TYPE.other:
@@ -37,6 +48,23 @@ class Utils {
     }
   }
 
+  static String intToLiteracy(int literacyType) {
+    switch (literacyType) {
+      case 1:
+        return "other";
+      case 2:
+        return "highschool";
+      case 3:
+        return "university";
+      case 4:
+        return "college";
+      case 5:
+        return "post_graduate";
+      default:
+        return "other";
+    }
+  }
+
   static int salaryToInt(SALARY_TYPE salary) {
     switch (salary) {
       case SALARY_TYPE.less_one:
@@ -51,6 +79,40 @@ class Utils {
         return 5;
       default:
         return 1;
+    }
+  }
+
+  static String intToSalary(int salary) {
+    switch (salary) {
+      case 1:
+        return "less_one";
+      case 2:
+        return "one_to_three";
+      case 3:
+        return "three_to_five";
+      case 4:
+        return "five_to_seven";
+      case 5:
+        return "more_seven";
+      default:
+        return "less_one";
+    }
+  }
+
+  static String intToJob(int salary) {
+    switch (salary) {
+      case 1:
+        return "house_cleaning";
+      case 2:
+        return "garden";
+      case 3:
+        return "go_to_market";
+      case 4:
+        return "child_care";
+      case 5:
+        return "laundry";
+      default:
+        return "other";
     }
   }
 
@@ -100,8 +162,59 @@ class Utils {
         return 21;
       case SUPPURT_AREA.district_nha_be:
         return 22;
-      default: 
+      default:
         return 1;
+    }
+  }
+
+  static String intToSupportArea(int supportArea) {
+    switch (supportArea) {
+      case 1:
+        return "district_1";
+      case 2:
+        return "district_2";
+      case 3:
+        return "district_3";
+      case 4:
+        return "district_4";
+      case 5:
+        return "district_5";
+      case 6:
+        return "district_6";
+      case 7:
+        return "district_7";
+      case 8:
+        return "district_8";
+      case 9:
+        return "district_9";
+      case 10:
+        return "district_10";
+      case 11:
+        return "district_11";
+      case 12:
+        return "district_12";
+      case 13:
+        return "district_binh_thanh";
+      case 14:
+        return "district_go_vap";
+      case 15:
+        return "district_phu_nhuan";
+      case 16:
+        return "district_tan_binh";
+      case 17:
+        return "district_thu_duc";
+      case 18:
+        return "district_binh_chanh";
+      case 19:
+        return "district_can_gio";
+      case 20:
+        return "district_cu_chi";
+      case 21:
+        return "district_hooc_mon";
+      case 22:
+        return "district_nha_be";
+      default:
+        return "district_1";
     }
   }
 
@@ -153,22 +266,25 @@ class Utils {
     )..show(context);
   }
 
-  static int calculateIntervalDays(DateTime startDate, DateTime endDate, Map<String, bool> interval) {
+  static int calculateIntervalDays(
+      DateTime startDate, DateTime endDate, Map<String, bool> interval) {
     int days = 0;
-    startDate = new DateTime(startDate.year, startDate.month, startDate.day, 0, 0, 0, 0, 0);
-    endDate = new DateTime(endDate.year, endDate.month, endDate.day, 23, 0, 0, 0, 0);
+    startDate = new DateTime(
+        startDate.year, startDate.month, startDate.day, 0, 0, 0, 0, 0);
+    endDate =
+        new DateTime(endDate.year, endDate.month, endDate.day, 23, 0, 0, 0, 0);
     if (endDate != null) {
       while (startDate.compareTo(endDate) <= 0) {
         final currentDay = startDate;
         // Check every weekday
         bool isPickedDay =
-          (currentDay.weekday == DateTime.sunday && interval['sun'])
-          || (currentDay.weekday == DateTime.monday && interval['mon'])
-          || (currentDay.weekday == DateTime.tuesday && interval['tue'])
-          || (currentDay.weekday == DateTime.wednesday && interval['wed'])
-          || (currentDay.weekday == DateTime.thursday && interval['thu'])
-          || (currentDay.weekday == DateTime.friday && interval['fri'])
-          || (currentDay.weekday == DateTime.saturday && interval['sat']);
+            (currentDay.weekday == DateTime.sunday && interval['sun']) ||
+                (currentDay.weekday == DateTime.monday && interval['mon']) ||
+                (currentDay.weekday == DateTime.tuesday && interval['tue']) ||
+                (currentDay.weekday == DateTime.wednesday && interval['wed']) ||
+                (currentDay.weekday == DateTime.thursday && interval['thu']) ||
+                (currentDay.weekday == DateTime.friday && interval['fri']) ||
+                (currentDay.weekday == DateTime.saturday && interval['sat']);
         if (isPickedDay) {
           days += 1;
         }
@@ -179,22 +295,25 @@ class Utils {
     return days;
   }
 
-  static List<String> getIntervalDayList(DateTime startDate, DateTime endDate, Map<String, bool> interval) {
-    final List<String >days = [];
-    startDate = new DateTime(startDate.year, startDate.month, startDate.day, 0, 0, 0, 0, 0);
-    endDate = new DateTime(endDate.year, endDate.month, endDate.day, 23, 0, 0, 0, 0);
+  static List<String> getIntervalDayList(
+      DateTime startDate, DateTime endDate, Map<String, bool> interval) {
+    final List<String> days = [];
+    startDate = new DateTime(
+        startDate.year, startDate.month, startDate.day, 0, 0, 0, 0, 0);
+    endDate =
+        new DateTime(endDate.year, endDate.month, endDate.day, 23, 0, 0, 0, 0);
     if (endDate != null) {
       while (startDate.compareTo(endDate) <= 0) {
         final currentDay = startDate;
         // Check every weekday
         bool isPickedDay =
-          (currentDay.weekday == DateTime.sunday && interval['sun'])
-          || (currentDay.weekday == DateTime.monday && interval['mon'])
-          || (currentDay.weekday == DateTime.tuesday && interval['tue'])
-          || (currentDay.weekday == DateTime.wednesday && interval['wed'])
-          || (currentDay.weekday == DateTime.thursday && interval['thu'])
-          || (currentDay.weekday == DateTime.friday && interval['fri'])
-          || (currentDay.weekday == DateTime.saturday && interval['sat']);
+            (currentDay.weekday == DateTime.sunday && interval['sun']) ||
+                (currentDay.weekday == DateTime.monday && interval['mon']) ||
+                (currentDay.weekday == DateTime.tuesday && interval['tue']) ||
+                (currentDay.weekday == DateTime.wednesday && interval['wed']) ||
+                (currentDay.weekday == DateTime.thursday && interval['thu']) ||
+                (currentDay.weekday == DateTime.friday && interval['fri']) ||
+                (currentDay.weekday == DateTime.saturday && interval['sat']);
         if (isPickedDay) {
           days.add(DateFormat('yyyy-MM-dd').format(startDate));
         }
@@ -204,5 +323,4 @@ class Utils {
     }
     return days;
   }
-
 }

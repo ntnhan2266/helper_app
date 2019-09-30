@@ -2,10 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 
-import '../models/user.dart';
+import '../models/user_maid.dart';
+import '../widgets/form/form_input.dart';
+import '../utils/utils.dart';
 import '../utils/dummy_data.dart';
 import '../widgets/review_carousel_slider.dart';
 
@@ -32,7 +34,8 @@ class _HelperDeatailScreenState extends State<HelperDeatailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<User>(context, listen: false);
+    // final userProvider = Provider.of<User>(context, listen: false);
+    UserMaid userMaid = userMaids.toList()[0];
     // Responsive
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
@@ -105,9 +108,7 @@ class _HelperDeatailScreenState extends State<HelperDeatailScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 15),
                                   child: Text(
-                                    userProvider.name != null
-                                        ? userProvider.name
-                                        : '',
+                                    userMaid.name != null ? userMaid.name : '',
                                     style: TextStyle(
                                       fontSize: ScreenUtil.instance.setSp(18.0),
                                       fontWeight: FontWeight.w500,
@@ -117,8 +118,8 @@ class _HelperDeatailScreenState extends State<HelperDeatailScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 5),
                                   child: Text(
-                                    userProvider.email != null
-                                        ? userProvider.email
+                                    userMaid.email != null
+                                        ? userMaid.email
                                         : '',
                                     style: TextStyle(
                                       fontSize: ScreenUtil.instance.setSp(14.0),
@@ -169,11 +170,118 @@ class _HelperDeatailScreenState extends State<HelperDeatailScreen> {
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(
+                              vertical: 15.0,
+                              horizontal: 10.0,
+                            ),
+                            color: Colors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                FormInput(
+                                  label:
+                                      AppLocalizations.of(context).tr("gender"),
+                                  initialValue: AppLocalizations.of(context)
+                                      .tr(Utils.intToGender(userMaid.gender)),
+                                  enabled: false,
+                                  hasNext: true,
+                                ),
+                                FormInput(
+                                  label: AppLocalizations.of(context)
+                                      .tr("birthday"),
+                                  initialValue: DateFormat("dd-MM-yyyy")
+                                      .format(userMaid.birthday),
+                                  enabled: false,
+                                  hasNext: true,
+                                ),
+                                FormInput(
+                                  label: AppLocalizations.of(context)
+                                      .tr("address"),
+                                  initialValue: userMaid.address,
+                                  enabled: false,
+                                  hasNext: false,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: ScreenUtil.instance.setHeight(20.0),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.symmetric(
+                              vertical: 15.0,
+                              horizontal: 10.0,
+                            ),
+                            color: Colors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                FormInput(
+                                  label: AppLocalizations.of(context)
+                                      .tr("introduction"),
+                                  initialValue: userMaid.intro,
+                                  enabled: false,
+                                  hasNext: true,
+                                ),
+                                FormInput(
+                                  label: AppLocalizations.of(context)
+                                      .tr("experience"),
+                                  initialValue: userMaid.exp,
+                                  enabled: false,
+                                  hasNext: true,
+                                ),
+                                FormInput(
+                                  label: AppLocalizations.of(context)
+                                      .tr("literacy"),
+                                  initialValue: AppLocalizations.of(context).tr(
+                                      Utils.intToLiteracy(
+                                          userMaid.literacyType)),
+                                  enabled: false,
+                                  hasNext: true,
+                                ),
+                                FormInput(
+                                  label:
+                                      AppLocalizations.of(context).tr("salary"),
+                                  initialValue: AppLocalizations.of(context)
+                                      .tr(Utils.intToSalary(userMaid.salary)),
+                                  enabled: false,
+                                  hasNext: true,
+                                ),
+                                FormInput(
+                                  label:
+                                      AppLocalizations.of(context).tr("work"),
+                                  initialValue: userMaid.jobTypes
+                                      .map((x) => AppLocalizations.of(context)
+                                          .tr(Utils.intToJob(x)))
+                                      .join(", "),
+                                  enabled: false,
+                                  hasNext: true,
+                                  inputType: TextInputType.multiline,
+                                ),
+                                FormInput(
+                                  label: AppLocalizations.of(context)
+                                      .tr("support_area"),
+                                  initialValue: userMaid.supportAreas
+                                      .map((x) => AppLocalizations.of(context)
+                                          .tr(Utils.intToSupportArea(x)))
+                                      .join(", "),
+                                  enabled: false,
+                                  hasNext: false,
+                                  inputType: TextInputType.multiline,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: ScreenUtil.instance.setHeight(20.0),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.only(bottom: 15.0),
                             color: Colors.white,
                             child: ReviewCarouselSlider(
-                              label: AppLocalizations.of(context)
-                                  .tr('review'),
+                              label: AppLocalizations.of(context).tr('review'),
                               reviews: reviews,
                             ),
                           ),

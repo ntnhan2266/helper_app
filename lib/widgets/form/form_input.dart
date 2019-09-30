@@ -13,6 +13,7 @@ class FormInput extends StatelessWidget {
   final bool hasNext;
   final TextInputType inputType;
   final dynamic validator;
+  final bool enabled;
 
   FormInput({
     @required this.label,
@@ -23,6 +24,7 @@ class FormInput extends StatelessWidget {
     this.hasNext = false,
     this.validator,
     this.inputType = TextInputType.text,
+    this.enabled = true,
   });
 
   @override
@@ -44,6 +46,7 @@ class FormInput extends StatelessWidget {
           validator: validator,
           initialValue: initialValue,
           keyboardType: inputType,
+          enabled: enabled,
           maxLines: inputType == TextInputType.multiline ? null : 1,
           textInputAction: inputType == TextInputType.multiline
               ? TextInputAction.newline
@@ -60,6 +63,7 @@ class FormInput extends StatelessWidget {
             hintText: hint,
             hintStyle: TextStyle(),
             enabledBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
             contentPadding: EdgeInsets.only(
               top: ScreenUtil.instance.setHeight(10),
               bottom: ScreenUtil.instance.setHeight(10),

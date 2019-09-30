@@ -113,17 +113,17 @@ List reviews = [
   {'username': 'trung874', 'ratting': 4.0, 'content': 'Cẩn thận và chu đáo'},
 ];
 
-var userMaid = [
+var userMaids = [
   UserMaid(
     intro: 'intro',
     id: '1',
     literacyType: 1,
     exp: 'exp',
     salary: 1,
-    jobTypes: [],
-    supportAreas: [],
+    jobTypes: [1,2,4],
+    supportAreas: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
     name: 'An Binh',
-    email: 'email',
+    email: 'anbinh123@gmail.com',
     gender: 1,
     birthday: DateTime(1997, 1, 1),
     phoneNumber: '0123456789',
@@ -160,7 +160,7 @@ var serviceHistoty = [
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
     type: 1,
-    maid: userMaid[0],
+    maid: userMaids[0],
     amount: 500000,
   ),
   ServiceDetails(
@@ -172,7 +172,7 @@ var serviceHistoty = [
     startDate: DateTime(2019, 9, 25),
     endDate: DateTime(2019, 10, 12),
     type: 2,
-    maid: userMaid[1],
+    maid: userMaids[1],
     amount: 1500000,
   ),
   ServiceDetails(
@@ -184,7 +184,7 @@ var serviceHistoty = [
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
     type: 1,
-    maid: userMaid[0],
+    maid: userMaids[0],
     amount: 1200000,
   ),
   ServiceDetails(
@@ -196,7 +196,7 @@ var serviceHistoty = [
     startDate: DateTime(2019, 9, 10),
     endDate: DateTime(2019, 9, 29),
     type: 2,
-    maid: userMaid[0],
+    maid: userMaids[0],
     amount: 1300000,
   ),
   ServiceDetails(
@@ -208,7 +208,7 @@ var serviceHistoty = [
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
     type: 1,
-    maid: userMaid[1],
+    maid: userMaids[1],
     amount: 5000000,
   ),
   ServiceDetails(
@@ -220,7 +220,7 @@ var serviceHistoty = [
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
     type: 1,
-    maid: userMaid[1],
+    maid: userMaids[1],
     amount: 300000,
   ),
   ServiceDetails(
@@ -232,7 +232,7 @@ var serviceHistoty = [
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
     type: 1,
-    maid: userMaid[0],
+    maid: userMaids[0],
     amount: 12500000,
   ),
   ServiceDetails(
@@ -244,7 +244,7 @@ var serviceHistoty = [
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
     type: 1,
-    maid: userMaid[1],
+    maid: userMaids[1],
     amount: 7500000,
   ),
   ServiceDetails(
@@ -256,7 +256,7 @@ var serviceHistoty = [
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
     type: 1,
-    maid: userMaid[0],
+    maid: userMaids[0],
     amount: 1400000,
   ),
   ServiceDetails(
@@ -268,7 +268,7 @@ var serviceHistoty = [
     startDate: DateTime(2019, 9, 29),
     endDate: DateTime(2019, 9, 29),
     type: 1,
-    maid: userMaid[1],
+    maid: userMaids[1],
     amount: 1100000,
   ),
 ];
