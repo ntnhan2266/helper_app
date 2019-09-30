@@ -78,7 +78,7 @@ class User with ChangeNotifier {
     this.name = json['name'];
     this.email = json['email'];
     this.gender = json['gender'];
-    this.birthday = DateTime.parse(json['birthday']);
+    this.birthday = DateTime.parse(json['birthday']).toLocal();
     this.phoneNumber = json['phoneNumber'];
     this.long = json['long'];
     this.lat = json['lat'];

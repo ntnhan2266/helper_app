@@ -2,11 +2,9 @@
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_rabbit/utils/constants.dart';
 
-import '../../models/service_details.dart';
-import '../../widgets/service_history_list_item.dart';
-import '../../widgets/history_services/completed_services_tab.dart';
-import '../../utils/dummy_data.dart';
+import '../../widgets/components/service_history_tab.dart';
 
 class ServiceHistoryTab extends StatefulWidget {
   @override
@@ -68,29 +66,14 @@ class _ServiceHistoryTabState extends State<ServiceHistoryTab> {
         ),
         body: TabBarView(
           children: [
-            _dumpData(),
-            CompletedServicesTab(),
-            _dumpData(),
-            _dumpData(),
+            ServiceHistoryData(WAITING_APPROVE),
+            ServiceHistoryData(APPROVED),
+            ServiceHistoryData(COMPLETED),
+            ServiceHistoryData(CANCELLED),
           ],
         ),
       ),
     );
   }
-
-  Widget _dumpData() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 5.0),
-      color: Colors.blueGrey[50],
-      child: ListView.builder(
-        primary: false,
-        shrinkWrap: true,
-        itemCount: 10,
-        itemBuilder: (BuildContext context, int index) {
-          ServiceDetails serviceDetail = serviceHistoty.toList()[index];
-          return ServiceHistoryListItem(serviceDetail);
-        },
-      ),
-    );
-  }
+  
 }

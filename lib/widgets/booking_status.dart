@@ -18,7 +18,7 @@ class BookingStatus extends StatelessWidget {
         return Text(
           AppLocalizations.of(context).tr('approved'),
         );
-      case COMPLETE:
+      case COMPLETED:
         return Text(
           AppLocalizations.of(context).tr('completed'),
         );
