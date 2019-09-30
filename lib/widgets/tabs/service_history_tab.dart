@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/service_details.dart';
 import '../../widgets/service_history_list_item.dart';
+import '../../widgets/history_services/completed_services_tab.dart';
 import '../../utils/dummy_data.dart';
 
 class ServiceHistoryTab extends StatefulWidget {
@@ -33,13 +34,13 @@ class _ServiceHistoryTabState extends State<ServiceHistoryTab> {
             tabs: [
               Tab(
                 child: Text(
-                  AppLocalizations.of(context).tr('on-going'),
+                  AppLocalizations.of(context).tr('waiting'),
                   textAlign: TextAlign.center,
                 ),
               ),
               Tab(
                 child: Text(
-                  AppLocalizations.of(context).tr('done'),
+                  AppLocalizations.of(context).tr('on-going'),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -68,7 +69,7 @@ class _ServiceHistoryTabState extends State<ServiceHistoryTab> {
         body: TabBarView(
           children: [
             _dumpData(),
-            _dumpData(),
+            CompletedServicesTab(),
             _dumpData(),
             _dumpData(),
           ],

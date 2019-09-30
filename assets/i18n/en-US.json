@@ -205,10 +205,14 @@
     "booked_successfully": "Đặt dịch vụ thành công",
     "has_error_when_load_data": "Có lỗi khi tải dữ liệu",
     "waiting_for_approve": "Đang chờ xác nhận",
+    "waiting": "Đang chờ",
     "approved": "Đã xác nhận",
     "completed": "Đã hoàn thành",
     "rejected": "Người giúp việc đã từ chối dịch vụ",
     "cancelled": "Đã huỷ",
     "updating": "Đang cập nhật",
-    "category": "Loại công việc"
+    "category": "Loại công việc",
+    "repick": "Đặt lại",
+    "view": "Xem",
+    "no_data": "Không có dữ liệu"
 }
