@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../models/service_details.dart';
 import '../widgets/service_history_list_item.dart';
@@ -44,8 +41,7 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
   }
 
   void _fetchService(int status) async {
-    print('load data');
-    if (!canLoadMore) {
+    if (!canLoadMore || !mounted) {
       return;
     }
     final res = await BookingService.getBookingsByStatus(

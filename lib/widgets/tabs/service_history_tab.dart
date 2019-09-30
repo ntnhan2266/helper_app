@@ -4,10 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_rabbit/utils/constants.dart';
 
-import '../../models/service_details.dart';
-import '../../widgets/service_history_list_item.dart';
 import '../../widgets/components/service_history_tab.dart';
-import '../../utils/dummy_data.dart';
 
 class ServiceHistoryTab extends StatefulWidget {
   @override
