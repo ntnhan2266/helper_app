@@ -9,7 +9,6 @@ import '../utils/utils.dart';
 import '../services/booking.dart';
 import '../utils/route_names.dart';
 import '../widgets/service_detail_info.dart';
-import '../utils/dummy_data.dart';
 
 class VerifyBookingScreen extends StatefulWidget {
   @override

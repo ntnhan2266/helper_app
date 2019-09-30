@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-import '../../models/service_category.dart';
-import '../../models/service_details.dart';
-import '../../utils/dummy_data.dart';
+import '../models/service_category.dart';
+import '../models/service_details.dart';
+import '../utils/dummy_data.dart';
 
 class ServiceHistoryListItem extends StatelessWidget {
   final ServiceDetails serviceDetail;
