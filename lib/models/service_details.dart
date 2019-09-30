@@ -62,9 +62,9 @@ class ServiceDetails {
       'lat': lat,
       'long': long,
       'interval': interval,
-      'startDate': DateFormat('dd-MM-yyyy').format(startDate),
+      'startDate': DateFormat('MM-dd-yyyy').format(startDate),
       'endDate':
-          endDate != null ? DateFormat('dd-MM-yyyy').format(endDate) : null,
+          endDate != null ? DateFormat('MM-dd-yyyy').format(endDate) : null,
       'maid': maid.id,
       'workingDates': type == 2
           ? Utils.getIntervalDayList(startDate, endDate, interval)
@@ -80,19 +80,20 @@ class ServiceDetails {
       status: json['status'],
       address: json['address'],
       houseNumber: json['houseNumber'],
-      startTime: DateTime.parse(json['startTime']),
-      endTime: DateTime.parse(json['endTime']),
+      startTime: DateTime.parse(json['startTime']).toLocal(),
+      endTime: DateTime.parse(json['endTime']).toLocal(),
       note: json['note'],
       lat: json['lat'],
       long: json['long'],
-      startDate: DateTime.parse(json['startDate']),
-      endDate: DateTime.parse(json['endDate']),
+      startDate: DateTime.parse(json['startDate']).toLocal(),
+      endDate: DateTime.parse(json['endDate']).toLocal(),
       maid: UserMaid.getMaid(json['maid']),
       amount: json['amount'],
     );
   }
 
   static ServiceDetails getData(Map<String, dynamic> json) {
+    print(json['startTime']);
     return ServiceDetails(
       id: json['_id'],
       type: json['type'],
@@ -100,15 +101,15 @@ class ServiceDetails {
       status: json['status'],
       address: json['address'],
       houseNumber: json['houseNumber'],
-      startTime: DateTime.parse(json['startTime']),
-      endTime: DateTime.parse(json['endTime']),
+      startTime: DateTime.parse(json['startTime']).toLocal(),
+      endTime: DateTime.parse(json['endTime']).toLocal(),
       note: json['note'],
       lat: json['lat'],
       long: json['long'],
       workingDates: json['interval'] != null ? json['interval']['days'].cast<DateTime>() : [],
       interval: json['interval'] != null ? Map<String, bool>.from(json['interval']['options']) : null,
-      startDate: DateTime.parse(json['startDate']),
-      endDate: DateTime.parse(json['endDate']),
+      startDate: DateTime.parse(json['startDate']).toLocal(),
+      endDate: DateTime.parse(json['endDate']).toLocal(),
       maid: UserMaid.getMaid(json['maid']),
       amount: json['amount'],
     );

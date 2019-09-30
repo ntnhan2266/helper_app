@@ -84,10 +84,10 @@ class ServiceHistoryListItem extends StatelessWidget {
         return AppLocalizations.of(context).tr("periodic");
     }
 
-    var textContainerWidth = MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width / 4 + 20 + ScreenUtil.instance.setWidth(10) * 2 + 5 + 20);
+    var textContainerWidth = MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width / 4 + 34 + ScreenUtil.instance.setWidth(10) * 2 + 5 + 20);
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
+      margin: EdgeInsets.symmetric(vertical: ScreenUtil.instance.setHeight(8), horizontal: 12.0),
       padding: EdgeInsets.symmetric(vertical: 5.0),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10.0)),

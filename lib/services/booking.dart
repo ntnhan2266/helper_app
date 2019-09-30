@@ -52,7 +52,7 @@ class BookingService {
     return completer.future;
   }
 
-  static Future<Map<String, dynamic>> getBookingsByStatus(int status) async {
+  static Future<Map<String, dynamic>> getBookingsByStatus(int status, {int pageSize = 10, int pageIndex = 1}) async {
     var completer = new Completer<Map<String, dynamic>>();
     var headers = await API.getAuthToken();
     var response =  await http.get(

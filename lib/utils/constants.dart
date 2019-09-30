@@ -72,6 +72,6 @@ const Map<int, String> RATTING = const {
 
 const int WAITING_APPROVE = 1;
 const int APPROVED = 2;
-const int COMPLETE = 3;
+const int COMPLETED = 3;
 const int REJECTED = 4;
 const int CANCELLED = 5;
