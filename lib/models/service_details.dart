@@ -88,6 +88,7 @@ class ServiceDetails {
       startDate: DateTime.parse(json['startDate']),
       endDate: DateTime.parse(json['endDate']),
       maid: UserMaid.getMaid(json['maid']),
+      amount: json['amount'],
     );
   }
 
@@ -104,11 +105,12 @@ class ServiceDetails {
       note: json['note'],
       lat: json['lat'],
       long: json['long'],
-      workingDates: json['interval']['days'].cast<DateTime>(),
-      interval: Map<String, bool>.from(json['interval']['options']),
+      workingDates: json['interval'] != null ? json['interval']['days'].cast<DateTime>() : [],
+      interval: json['interval'] != null ? Map<String, bool>.from(json['interval']['options']) : null,
       startDate: DateTime.parse(json['startDate']),
       endDate: DateTime.parse(json['endDate']),
       maid: UserMaid.getMaid(json['maid']),
+      amount: json['amount'],
     );
   }
 }

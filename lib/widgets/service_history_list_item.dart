@@ -33,16 +33,17 @@ class ServiceHistoryListItem extends StatelessWidget {
           DateFormat('HH:mm').format(serviceDetail.endTime);
     }
 
-    Widget _iconAndText(IconData icon, String text) {
+    Widget _iconAndText(IconData icon, String text, double width) {
       return Row(
         children: <Widget>[
           Icon(
             icon,
-            size: 13,
+            size: ScreenUtil.instance.setSp(13.0),
             color: Colors.blueGrey[300],
           ),
           Container(
-            padding: EdgeInsets.only(left: 5.0),
+            width: width,
+            padding: EdgeInsets.only(left: ScreenUtil.instance.setWidth(5),),
             child: Text(
               text,
               style: TextStyle(
@@ -57,12 +58,12 @@ class ServiceHistoryListItem extends StatelessWidget {
 
     Widget _flatButton(IconData icon, String text) {
       return Container(
-        height: 25,
+        height: ScreenUtil.instance.setHeight(25),
         child: FlatButton.icon(
           onPressed: () {},
           icon: Icon(
             icon,
-            size: 15,
+            size: ScreenUtil.instance.setSp(15),
             color: Theme.of(context).primaryColor,
           ),
           label: Text(
@@ -83,6 +84,8 @@ class ServiceHistoryListItem extends StatelessWidget {
         return AppLocalizations.of(context).tr("periodic");
     }
 
+    var textContainerWidth = MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width / 4 + 20 + ScreenUtil.instance.setWidth(10) * 2 + 5 + 20);
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
       padding: EdgeInsets.symmetric(vertical: 5.0),
@@ -94,8 +97,8 @@ class ServiceHistoryListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                height: 25,
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                height: ScreenUtil.instance.setHeight(25),
+                padding: EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setWidth(10),),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -132,14 +135,19 @@ class ServiceHistoryListItem extends StatelessWidget {
                         _iconAndText(
                           Icons.location_on,
                           serviceDetail.address,
+                          textContainerWidth,
                         ),
+                        SizedBox(height: ScreenUtil.instance.setHeight(10,),),
                         _iconAndText(
                           Icons.date_range,
                           _getType(serviceDetail.type) + ": " + _getTime(),
+                          textContainerWidth,
                         ),
+                        SizedBox(height: ScreenUtil.instance.setHeight(10,),),
                         _iconAndText(
                           Icons.person,
                           serviceDetail.maid.name,
+                          textContainerWidth,
                         ),
                       ],
                     ),
