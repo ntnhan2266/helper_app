@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/service_details.dart';
-import '../../widgets/components/service_history_list_item.dart';
+import '../../widgets/service_history_list_item.dart';
 import '../../utils/dummy_data.dart';
 
 class ServiceHistoryTab extends StatefulWidget {
