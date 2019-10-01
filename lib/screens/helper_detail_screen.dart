@@ -11,12 +11,12 @@ import '../utils/utils.dart';
 import '../utils/dummy_data.dart';
 import '../widgets/review_carousel_slider.dart';
 
-class HelperDeatailScreen extends StatefulWidget {
+class HelperDetailScreen extends StatefulWidget {
   @override
-  _HelperDeatailScreenState createState() => _HelperDeatailScreenState();
+  _HelperDetailScreenState createState() => _HelperDetailScreenState();
 }
 
-class _HelperDeatailScreenState extends State<HelperDeatailScreen> {
+class _HelperDetailScreenState extends State<HelperDetailScreen> {
   final _form = GlobalKey<FormState>();
   double _rating;
 

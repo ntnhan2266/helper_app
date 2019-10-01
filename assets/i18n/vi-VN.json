@@ -245,5 +245,6 @@
     "category": "Loại công việc",
     "repick": "Đặt lại",
     "view": "Xem",
-    "no_data": "Không có dữ liệu"
+    "no_data": "Không có dữ liệu",
+    "loading": "Đang tải"
 }

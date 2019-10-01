@@ -18,3 +18,4 @@ const String helperRegisterRoute = '/helper-register';
 const String helperRattingRoute = '/helper-ratting';
 const String helperDetailRoute = '/helper-detail';
 const String serviceStatusRoute = '/service-status';
+const String helperReviewsRoute = '/helper-reviews';

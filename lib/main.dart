@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_rabbit/screens/helper_reviews_screen.dart';
 
 import './screens/helper_detail_screen.dart';
 import './screens/helper_ratting_screen.dart';
@@ -66,8 +67,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         ),
       ],
       child: EasyLocalizationProvider(
-      data: data,
-      child: MaterialApp(
+        data: data,
+        child: MaterialApp(
           title: APP_NAME,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -81,14 +82,11 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
               primarySwatch: colorCustom,
               primaryColor: Color.fromRGBO(42, 77, 108, 1),
               textTheme: Theme.of(context).textTheme.copyWith(
-                title: TextStyle(
-                  color: Color.fromRGBO(42, 77, 108, 1),
-                  fontFamily: 'Pacifico-Regular'
-                )
-              ),
+                  title: TextStyle(
+                      color: Color.fromRGBO(42, 77, 108, 1),
+                      fontFamily: 'Pacifico-Regular')),
               fontFamily: 'Roboto',
-              scaffoldBackgroundColor: Colors.white
-          ),
+              scaffoldBackgroundColor: Colors.white),
           home: SplashScreen(),
           onGenerateRoute: _getRoute,
         ),
@@ -123,9 +121,11 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
       case helperRattingRoute:
         return _buildRoute(settings, HelperRattingScreen());
       case helperDetailRoute:
-        return _buildRoute(settings, HelperDeatailScreen());
+        return _buildRoute(settings, HelperDetailScreen());
       case serviceStatusRoute:
         return _buildRoute(settings, ServiceStatusScreen());
+      case helperReviewsRoute:
+        return _buildRoute(settings, HelperReviewsScreen());
       default:
         return null;
     }
