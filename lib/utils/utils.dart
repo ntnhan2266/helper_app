@@ -323,4 +323,27 @@ class Utils {
     }
     return days;
   }
+
+  static String getServiceDate(DateTime startDate, DateTime endDate) {
+    if (endDate.compareTo(startDate) == 0) {
+      return DateFormat('dd/MM/yyyy').format(startDate);
+    } else {
+      return DateFormat('dd/MM/yyyy').format(startDate) +
+          " - " +
+          DateFormat('dd/MM/yyyy').format(endDate);
+    }
+  }
+
+  static String getServiceTime(DateTime startTime, DateTime endTime) {
+    return DateFormat('HH:mm').format(startTime) +
+        " - " +
+        DateFormat('HH:mm').format(endTime);
+  }
+
+  static String getServiceType(int type, BuildContext context) {
+    if (type == 1)
+      return AppLocalizations.of(context).tr("retail_use");
+    else
+      return AppLocalizations.of(context).tr("periodic");
+  }
 }

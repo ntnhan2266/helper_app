@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../models/service_category.dart';
 import '../models/service_details.dart';
 import '../utils/dummy_data.dart';
+import '../utils/utils.dart';
 
 class ServiceHistoryListItem extends StatelessWidget {
   final ServiceDetails serviceDetail;
@@ -16,22 +17,6 @@ class ServiceHistoryListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ServiceCategory _serviceCategory = categoriesData[serviceDetail.category];
-
-    String _getDate() {
-      if (serviceDetail.endDate.compareTo(serviceDetail.startDate) == 0) {
-        return DateFormat('dd/MM/yyyy').format(serviceDetail.startDate);
-      } else {
-        return DateFormat('dd/MM/yyyy').format(serviceDetail.startDate) +
-            " - " +
-            DateFormat('dd/MM/yyyy').format(serviceDetail.endDate);
-      }
-    }
-
-    String _getTime() {
-      return DateFormat('HH:mm').format(serviceDetail.startTime) +
-          " - " +
-          DateFormat('HH:mm').format(serviceDetail.endTime);
-    }
 
     Widget _iconAndText(IconData icon, String text, double width) {
       return Row(
@@ -43,7 +28,9 @@ class ServiceHistoryListItem extends StatelessWidget {
           ),
           Container(
             width: width,
-            padding: EdgeInsets.only(left: ScreenUtil.instance.setWidth(5),),
+            padding: EdgeInsets.only(
+              left: ScreenUtil.instance.setWidth(5),
+            ),
             child: Text(
               text,
               style: TextStyle(
@@ -77,17 +64,16 @@ class ServiceHistoryListItem extends StatelessWidget {
       );
     }
 
-    String _getType(int type) {
-      if (type == 1)
-        return AppLocalizations.of(context).tr("retail_use");
-      else
-        return AppLocalizations.of(context).tr("periodic");
-    }
-
-    var textContainerWidth = MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width / 4 + 34 + ScreenUtil.instance.setWidth(10) * 2 + 5 + 20);
+    var textContainerWidth = MediaQuery.of(context).size.width -
+        (MediaQuery.of(context).size.width / 4 +
+            34 +
+            ScreenUtil.instance.setWidth(10) * 2 +
+            5 +
+            20);
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: ScreenUtil.instance.setHeight(8), horizontal: 12.0),
+      margin: EdgeInsets.symmetric(
+          vertical: ScreenUtil.instance.setHeight(8), horizontal: 12.0),
       padding: EdgeInsets.symmetric(vertical: 5.0),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
@@ -98,7 +84,9 @@ class ServiceHistoryListItem extends StatelessWidget {
             children: <Widget>[
               Container(
                 height: ScreenUtil.instance.setHeight(25),
-                padding: EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setWidth(10),),
+                padding: EdgeInsets.symmetric(
+                  horizontal: ScreenUtil.instance.setWidth(10),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -110,7 +98,8 @@ class ServiceHistoryListItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      _getDate(),
+                      Utils.getServiceDate(
+                          serviceDetail.startDate, serviceDetail.endDate),
                       style: TextStyle(
                         fontSize: ScreenUtil.instance.setSp(14.0),
                         color: Colors.blueGrey[300],
@@ -137,13 +126,24 @@ class ServiceHistoryListItem extends StatelessWidget {
                           serviceDetail.address,
                           textContainerWidth,
                         ),
-                        SizedBox(height: ScreenUtil.instance.setHeight(10,),),
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(
+                            10,
+                          ),
+                        ),
                         _iconAndText(
                           Icons.date_range,
-                          _getType(serviceDetail.type) + ": " + _getTime(),
+                          Utils.getServiceType(serviceDetail.type, context) +
+                              ": " +
+                              Utils.getServiceTime(serviceDetail.startTime,
+                                  serviceDetail.endTime),
                           textContainerWidth,
                         ),
-                        SizedBox(height: ScreenUtil.instance.setHeight(10,),),
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(
+                            10,
+                          ),
+                        ),
                         _iconAndText(
                           Icons.person,
                           serviceDetail.maid.name,

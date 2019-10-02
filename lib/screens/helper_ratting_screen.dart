@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_rabbit/utils/constants.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+import '../models/service_category.dart';
+import '../utils/utils.dart';
+import '../models/service_details.dart';
+import '../models/user_maid.dart';
 import '../widgets/form/form_input.dart';
-import '../models/user.dart';
 import '../utils/constants.dart';
 import '../utils/dummy_data.dart';
 import '../widgets/review_carousel_slider.dart';
@@ -38,7 +39,10 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<User>(context, listen: false);
+    // final userProvider = Provider.of<User>(context, listen: false);
+    ServiceDetails serviceDetail = serviceHistoty.toList()[0];
+    UserMaid _userMaid = serviceDetail.maid;
+    ServiceCategory _serviceCategory = categoriesData[serviceDetail.category];
     // Responsive
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
@@ -111,8 +115,8 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 15),
                                   child: Text(
-                                    userProvider.name != null
-                                        ? userProvider.name
+                                    _userMaid.name != null
+                                        ? _userMaid.name
                                         : '',
                                     style: TextStyle(
                                       fontSize: ScreenUtil.instance.setSp(18.0),
@@ -123,8 +127,8 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 5),
                                   child: Text(
-                                    userProvider.email != null
-                                        ? userProvider.email
+                                    _userMaid.email != null
+                                        ? _userMaid.email
                                         : '',
                                     style: TextStyle(
                                       fontSize: ScreenUtil.instance.setSp(14.0),
@@ -179,6 +183,61 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                                       .tr('review_hint'),
                                   hasNext: false,
                                   inputType: TextInputType.multiline,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: ScreenUtil.instance.setHeight(20.0),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.all(15.0),
+                            color: Colors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                FormInput(
+                                  label: AppLocalizations.of(context)
+                                      .tr("category"),
+                                  initialValue: AppLocalizations.of(context)
+                                      .tr(_serviceCategory.serviceName),
+                                  enabled: false,
+                                  hasNext: true,
+                                ),
+                                FormInput(
+                                  label: AppLocalizations.of(context)
+                                      .tr("address"),
+                                  initialValue: AppLocalizations.of(context)
+                                      .tr(serviceDetail.address),
+                                  enabled: false,
+                                  hasNext: true,
+                                ),
+                                FormInput(
+                                  label:
+                                      AppLocalizations.of(context).tr("type"),
+                                  initialValue: Utils.getServiceType(
+                                      serviceDetail.type, context),
+                                  enabled: false,
+                                  hasNext: true,
+                                ),
+                                FormInput(
+                                  label:
+                                      AppLocalizations.of(context).tr("date"),
+                                  initialValue: Utils.getServiceDate(
+                                      serviceDetail.startDate,
+                                      serviceDetail.endDate),
+                                  enabled: false,
+                                  hasNext: true,
+                                ),
+                                FormInput(
+                                  label:
+                                      AppLocalizations.of(context).tr("time"),
+                                  initialValue: Utils.getServiceTime(
+                                      serviceDetail.startTime,
+                                      serviceDetail.endTime),
+                                  enabled: false,
+                                  hasNext: false,
                                 ),
                               ],
                             ),

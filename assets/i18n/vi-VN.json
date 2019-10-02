@@ -246,5 +246,9 @@
     "repick": "Đặt lại",
     "view": "Xem",
     "no_data": "Không có dữ liệu",
-    "loading": "Đang tải"
+    "loading": "Đang tải",
+    "date": "Ngày",
+    "time": "Giờ",
+    "address": "Địa chỉ",
+    "type": "Loại dịch vụ"
 }
