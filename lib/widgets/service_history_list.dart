@@ -41,7 +41,7 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
   }
 
   void _fetchService(int status) async {
-    if (!canLoadMore || !mounted) {
+    if (!canLoadMore) {
       return;
     }
     final res = await BookingService.getBookingsByStatus(
@@ -49,13 +49,15 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
       pageIndex: pageIndex,
     );
     if (res['isValid']) {
-      setState(() {
-        serviceHistoty..addAll(res['data']);
-        if (serviceHistoty.length == res['total']) {
-          canLoadMore = false;
-        }
-        pageIndex++;
-      });
+      if (mounted) {
+        setState(() {
+          serviceHistoty..addAll(res['data']);
+          if (serviceHistoty.length == res['total']) {
+            canLoadMore = false;
+          }
+          pageIndex++;
+        });
+      }
     }
   }
 
