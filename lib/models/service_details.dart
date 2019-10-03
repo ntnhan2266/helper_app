@@ -93,7 +93,6 @@ class ServiceDetails {
   }
 
   static ServiceDetails getData(Map<String, dynamic> json) {
-    print(json['startTime']);
     return ServiceDetails(
       id: json['_id'],
       type: json['type'],
