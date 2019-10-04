@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 // Global constant for app
 
 const String APP_NAME = 'Smart Rabbit';
@@ -75,3 +77,7 @@ const int APPROVED = 2;
 const int COMPLETED = 3;
 const int REJECTED = 4;
 const int CANCELLED = 5;
+final themeColor = Color(0xfff5a623);
+final primaryColor = Color(0xff203152);
+final greyColor = Color(0xffaeaeae);
+final greyColor2 = Color(0xffE8E8E8);

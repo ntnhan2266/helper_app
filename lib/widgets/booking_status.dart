@@ -74,9 +74,24 @@ class BookingStatus extends StatelessWidget {
       padding: EdgeInsets.symmetric(
         horizontal: ScreenUtil.instance.setWidth(18),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildTitle(context),
+          Row(children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.message),
+              onPressed: () {
+
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.call),
+              onPressed: () {
+                  
+              },
+            ),
+          ],)
         ],
       ),
     );
