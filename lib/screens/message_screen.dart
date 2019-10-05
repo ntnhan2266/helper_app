@@ -1,77 +1,108 @@
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/chat_item.dart';
 
-class ChatScreen extends StatefulWidget {
+class MessageScreen extends StatefulWidget {
   @override
-  State createState() => new ChatScreenState();
+  State createState() => MessageScreenState();
 }
 
-class ChatScreenState extends State<ChatScreen> {
-  final TextEditingController _chatController = new TextEditingController();
+class MessageScreenState extends State<MessageScreen> {
+  final TextEditingController _chatController = TextEditingController();
   final List<ChatMessage> _messages = <ChatMessage>[];
 
   void _handleSubmit(String text) {
     _chatController.clear();
-      ChatMessage message = new ChatMessage(
-        text: text
-    );
-      
-    setState(() {
-       _messages.insert(0, message);
-    });
-}
+    ChatMessage message = ChatMessage(text: text);
 
-  Widget _chatEnvironment (){
+    setState(() {
+      _messages.insert(0, message);
+    });
+  }
+
+  Widget _chatEnvironment() {
     return IconTheme(
-      data: new IconThemeData(color: Colors.blue),
-          child: new Container(
-        margin: const EdgeInsets.symmetric(horizontal:8.0),
-        child: new Row(
+      data: IconThemeData(color: Colors.blue),
+      child: Container(
+        margin: EdgeInsets.symmetric(
+          horizontal: ScreenUtil.instance.setWidth(8),
+        ),
+        child: Row(
           children: <Widget>[
-            new Flexible(
-              child: new TextField(
-                decoration: new InputDecoration.collapsed(hintText: "Start typing ..."),
+            Flexible(
+              child: TextField(
+                decoration: InputDecoration.collapsed(
+                    hintText: AppLocalizations.of(context).tr('message_content'),
+                    hintStyle: TextStyle(
+                      fontSize: ScreenUtil.instance.setSp(12),
+                      fontWeight: FontWeight.w300,
+                    )),
                 controller: _chatController,
                 onSubmitted: _handleSubmit,
               ),
             ),
-            new Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: new IconButton(
-                icon: new Icon(Icons.send),
-                
-                onPressed: ()=> _handleSubmit(_chatController.text),
-                 
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: ScreenUtil.instance.setWidth(8),
+              ),
+              child: IconButton(
+                icon: Icon(Icons.send),
+                onPressed: () => _handleSubmit(_chatController.text),
               ),
             )
           ],
         ),
-
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
-        children: <Widget>[
-          new Flexible(
-            child: ListView.builder(
-              padding: new EdgeInsets.all(8.0),
-              reverse: true,
-              itemBuilder: (_, int index) => _messages[index],
-              itemCount: _messages.length,
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          AppLocalizations.of(context).tr('message'),
+        ),
+        centerTitle: true,
+      ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Column(
+          children: <Widget>[
+            Flexible(
+              child: ListView.builder(
+                padding: EdgeInsets.all(
+                  ScreenUtil.instance.setWidth(12),
+                ),
+                reverse: true,
+                itemBuilder: (_, int index) => _messages[index],
+                itemCount: _messages.length,
+              ),
             ),
-          ),
-          new Divider(
-            height: 1.0,
-          ),
-          new Container(decoration: new BoxDecoration(
-            color: Theme.of(context).cardColor,
-          ),
-          child: _chatEnvironment(),)
-        ],
-      );
+            Divider(
+              height: 1.0,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+              ),
+              child: _chatEnvironment(),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
