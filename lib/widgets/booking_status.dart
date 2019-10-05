@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/constants.dart';
+import '../utils/route_names.dart';
 
 class BookingStatus extends StatelessWidget {
   final int status;
@@ -74,24 +75,58 @@ class BookingStatus extends StatelessWidget {
       padding: EdgeInsets.symmetric(
         horizontal: ScreenUtil.instance.setWidth(18),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           _buildTitle(context),
-          Row(children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.message),
-              onPressed: () {
-
-              },
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                InkWell(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: ScreenUtil.instance.setWidth(10),
+                      vertical: ScreenUtil.instance.setWidth(5),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: Icon(
+                      Icons.message,
+                      size: ScreenUtil.instance.setSp(16),
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, messageRoute);
+                  },
+                ),
+                SizedBox(
+                  width: ScreenUtil.instance.setWidth(15),
+                ),
+                InkWell(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: ScreenUtil.instance.setWidth(10),
+                      vertical: ScreenUtil.instance.setWidth(5),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: Icon(
+                      Icons.call,
+                      color: Colors.white,  
+                      size: ScreenUtil.instance.setSp(16),
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.call),
-              onPressed: () {
-                  
-              },
-            ),
-          ],)
+          )
         ],
       ),
     );

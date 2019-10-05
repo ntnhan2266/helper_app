@@ -250,5 +250,7 @@
     "date": "Ngày",
     "time": "Giờ",
     "address": "Địa chỉ",
-    "type": "Loại dịch vụ"
+    "type": "Loại dịch vụ",
+    "message": "Tin nhắn",
+    "message_content": "Nội dung tin nhắn"
 }

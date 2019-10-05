@@ -20,6 +20,7 @@ import './screens/verify_code_screen.dart';
 import './screens/service_detail_screen.dart';
 import './screens/choose_maid_screen.dart';
 import './screens/verify_booking.dart';
+import './screens/message_screen.dart';
 import './models/user.dart';
 
 import './utils/constants.dart';
@@ -126,6 +127,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, ServiceStatusScreen());
       case helperReviewsRoute:
         return _buildRoute(settings, HelperReviewsScreen());
+      case messageRoute:
+        return _buildRoute(settings, MessageScreen());
       default:
         return null;
     }

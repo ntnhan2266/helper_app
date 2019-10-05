@@ -214,5 +214,7 @@
     "category": "Loại công việc",
     "repick": "Đặt lại",
     "view": "Xem",
-    "no_data": "Không có dữ liệu"
+    "no_data": "Không có dữ liệu",
+    "message": "Tin nhắn",
+    "message_content": "Nội dung tin nhắn"
 }
