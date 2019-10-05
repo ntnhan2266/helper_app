@@ -13,6 +13,39 @@ class UserProfileTab extends StatefulWidget {
 }
 
 class _UserProfileTabState extends State<UserProfileTab> {
+  Widget _menuItem(
+      {@required String title,
+      @required IconData leadingIcon,
+      @required IconData trailingIcon,
+      GestureTapCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.only(left: 7.0),
+        decoration: new BoxDecoration(
+          color: Colors.white,
+          border:
+              new Border(bottom: BorderSide(color: Colors.black12, width: 1.0)),
+        ),
+        child: ListTile(
+          title: Text(AppLocalizations.of(context).tr(title)),
+          leading: Icon(
+            leadingIcon,
+            color: Colors.black,
+          ),
+          trailing: Icon(trailingIcon),
+        ),
+      ),
+    );
+  }
+
+  Widget _menuSpace() {
+    return Container(
+      color: Colors.blueGrey[50],
+      height: 10,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,12 +62,12 @@ class _UserProfileTabState extends State<UserProfileTab> {
               child: ListTile(
                 title: Consumer<User>(
                   builder: (ctx, user, _) => Text(
-                    user.name != null ? user.name : '--',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                        user.name != null ? user.name : '--',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                 ),
                 leading: Consumer<User>(
                     builder: (ctx, user, _) => UserAvatar(user.avatar)),
@@ -56,9 +89,11 @@ class _UserProfileTabState extends State<UserProfileTab> {
               ),
             ),
           ),
-          Container(
-            color: Colors.blueGrey[50],
-            height: 10,
+          _menuSpace(),
+          _menuItem(
+            title: 'history',
+            leadingIcon: Icons.history,
+            trailingIcon: Icons.chevron_right,
           ),
           InkWell(
             onTap: () {},
@@ -120,10 +155,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
               ),
             ),
           ),
-          Container(
-            color: Colors.blueGrey[50],
-            height: 10,
-          ),
+          _menuSpace(),
           InkWell(
             onTap: () {},
             child: Container(
@@ -159,10 +191,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
               ),
             ),
           ),
-          Container(
-            color: Colors.blueGrey[50],
-            height: 10,
-          ),
+          _menuSpace(),
           InkWell(
             onTap: () {},
             child: Container(
@@ -201,10 +230,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
               ),
             ),
           ),
-          Container(
-            color: Colors.blueGrey[50],
-            height: 10,
-          ),
+          _menuSpace(),
           InkWell(
             onTap: () {
               final userProvider = Provider.of<User>(context, listen: false);
