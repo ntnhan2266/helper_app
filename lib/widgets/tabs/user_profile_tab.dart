@@ -16,6 +16,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
   Widget _menuItem(
       {@required String title,
       @required IconData leadingIcon,
+      Color leadingIconColor,
       @required IconData trailingIcon,
       GestureTapCallback onTap}) {
     return InkWell(
@@ -31,7 +32,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
           title: Text(AppLocalizations.of(context).tr(title)),
           leading: Icon(
             leadingIcon,
-            color: Colors.black,
+            color: leadingIconColor ?? Colors.black,
           ),
           trailing: Icon(trailingIcon),
         ),
@@ -93,142 +94,56 @@ class _UserProfileTabState extends State<UserProfileTab> {
           _menuItem(
             title: 'history',
             leadingIcon: Icons.history,
+            leadingIconColor: Theme.of(context).primaryColor,
             trailingIcon: Icons.chevron_right,
           ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.only(left: 7.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: new Border(
-                    bottom: BorderSide(color: Colors.black12, width: 1.0)),
-              ),
-              child: ListTile(
-                title: Text(AppLocalizations.of(context).tr('history')),
-                leading: Icon(
-                  Icons.history,
-                  color: Color.fromRGBO(42, 77, 108, 1),
-                ),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            ),
+          _menuItem(
+            title: 'location',
+            leadingIcon: Icons.room,
+            leadingIconColor: Theme.of(context).primaryColor,
+            trailingIcon: Icons.chevron_right,
           ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.only(left: 7.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: new Border(
-                    bottom: BorderSide(color: Colors.black12, width: 1.0)),
-              ),
-              child: ListTile(
-                title: Text(AppLocalizations.of(context).tr('location')),
-                leading: Icon(
-                  Icons.room,
-                  color: Color.fromRGBO(42, 77, 108, 1),
-                ),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            ),
-          ),
-          InkWell(
+          _menuItem(
+            title: 'register_to_helperer',
+            leadingIcon: Icons.receipt,
+            leadingIconColor: Theme.of(context).primaryColor,
+            trailingIcon: Icons.chevron_right,
             onTap: () {
               Navigator.of(context).pushNamed(helperRegisterRoute);
             },
-            child: Container(
-              padding: const EdgeInsets.only(left: 7.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: new Border(
-                    bottom: BorderSide(color: Colors.black12, width: 1.0)),
-              ),
-              child: ListTile(
-                title: Text(
-                    AppLocalizations.of(context).tr('register_to_helperer')),
-                leading: Icon(
-                  Icons.receipt,
-                  color: Color.fromRGBO(42, 77, 108, 1),
-                ),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            ),
+          ),
+          _menuItem(
+            title: 'helper_management',
+            leadingIcon: Icons.library_books,
+            leadingIconColor: Theme.of(context).primaryColor,
+            trailingIcon: Icons.chevron_right,
+            onTap: () {
+              Navigator.of(context).pushNamed(helperManagementRoute);
+            },
           ),
           _menuSpace(),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.only(left: 7.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: new Border(
-                    bottom: BorderSide(color: Colors.black12, width: 1.0)),
-              ),
-              child: ListTile(
-                title: Text(AppLocalizations.of(context).tr('review')),
-                leading: Icon(
-                  Icons.rate_review,
-                  color: Colors.green,
-                ),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            ),
+          _menuItem(
+            title: 'review',
+            leadingIcon: Icons.rate_review,
+            leadingIconColor: Colors.green,
+            trailingIcon: Icons.chevron_right,
           ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.only(left: 7.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: new Border(
-                    bottom: BorderSide(color: Colors.black12, width: 1.0)),
-              ),
-              child: ListTile(
-                title: Text(AppLocalizations.of(context).tr('invite_friend')),
-                leading: Icon(Icons.people, color: Colors.green),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            ),
+          _menuItem(
+            title: 'invite_friend',
+            leadingIcon: Icons.people,
+            leadingIconColor: Colors.green,
+            trailingIcon: Icons.chevron_right,
           ),
           _menuSpace(),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.only(left: 7.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: new Border(
-                    bottom: BorderSide(color: Colors.black12, width: 1.0)),
-              ),
-              child: ListTile(
-                title: Text(AppLocalizations.of(context).tr('settings')),
-                leading: Icon(
-                  Icons.settings,
-                  color: Colors.black,
-                ),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            ),
+          _menuItem(
+            title: 'settings',
+            leadingIcon: Icons.settings,
+            trailingIcon: Icons.chevron_right,
           ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.only(left: 7.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: new Border(
-                    bottom: BorderSide(color: Colors.black12, width: 1.0)),
-              ),
-              child: ListTile(
-                title: Text(AppLocalizations.of(context).tr('about_app')),
-                leading: Icon(
-                  Icons.info,
-                  color: Colors.black,
-                ),
-                trailing: Icon(Icons.chevron_right),
-              ),
-            ),
+          _menuItem(
+            title: 'about_app',
+            leadingIcon: Icons.info,
+            trailingIcon: Icons.chevron_right,
           ),
           _menuSpace(),
           InkWell(

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_rabbit/screens/helper_management_screen.dart';
 import 'package:smart_rabbit/screens/helper_reviews_screen.dart';
 
 import './screens/helper_detail_screen.dart';
@@ -129,6 +130,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, HelperReviewsScreen());
       case messageRoute:
         return _buildRoute(settings, MessageScreen());
+      case helperManagementRoute:
+        return _buildRoute(settings, HelperManagementScreen());
       default:
         return null;
     }

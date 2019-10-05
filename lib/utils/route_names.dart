@@ -20,3 +20,4 @@ const String helperDetailRoute = '/helper-detail';
 const String serviceStatusRoute = '/service-status';
 const String helperReviewsRoute = '/helper-reviews';
 const String messageRoute = '/message';
+const String helperManagementRoute = '/helper-management';

@@ -252,5 +252,6 @@
     "address": "Địa chỉ",
     "type": "Loại dịch vụ",
     "message": "Tin nhắn",
-    "message_content": "Nội dung tin nhắn"
+    "message_content": "Nội dung tin nhắn",
+    "helper_management": "Quản lý người giúp việc"
 }
