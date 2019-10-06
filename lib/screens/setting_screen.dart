@@ -61,33 +61,36 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
           centerTitle: true,
         ),
-        body: ListView(
-          children: <Widget>[
-            FormLabel(
-              AppLocalizations.of(context).tr('language'),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                languageButton(
-                  label: AppLocalizations.of(context).tr('vi'),
-                  width: screenWidth * 0.4,
-                  locale: Locale('vi', 'VN'),
-                  onPressed: () {
-                    data.changeLocale(Locale("vi", "VN"));
-                  },
-                ),
-                languageButton(
-                  label: AppLocalizations.of(context).tr('en'),
-                  width: screenWidth * 0.4,
-                  locale: Locale('en', 'US'),
-                  onPressed: () {
-                    data.changeLocale(Locale("en", "US"));
-                  },
-                ),
-              ],
-            )
-          ],
+        body: Container(
+          padding: EdgeInsets.all(20.0),
+          child: ListView(
+            children: <Widget>[
+              FormLabel(
+                AppLocalizations.of(context).tr('language'),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  languageButton(
+                    label: AppLocalizations.of(context).tr('vi'),
+                    width: screenWidth * 0.4,
+                    locale: Locale('vi', 'VN'),
+                    onPressed: () {
+                      data.changeLocale(Locale("vi", "VN"));
+                    },
+                  ),
+                  languageButton(
+                    label: AppLocalizations.of(context).tr('en'),
+                    width: screenWidth * 0.4,
+                    locale: Locale('en', 'US'),
+                    onPressed: () {
+                      data.changeLocale(Locale("en", "US"));
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
