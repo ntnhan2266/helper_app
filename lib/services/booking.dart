@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/service_details.dart';
 import '../configs/api.dart';
@@ -8,13 +9,15 @@ import './api.dart';
 
 class BookingService {
   static const String _bookingRouter = APIConfig.baseURL + '/booking';
-  static const String _getBookingByIdRouter = APIConfig.baseURL + '/booking?id=';
-  static const String _getBookingByStatus = APIConfig.baseURL + '/bookings?status=';
+  static const String _getBookingByIdRouter =
+      APIConfig.baseURL + '/booking?id=';
+  static const String _getBookingByStatus =
+      APIConfig.baseURL + '/bookings?status=';
 
   static Future<Map<String, dynamic>> booking(ServiceDetails booking) async {
     var completer = new Completer<Map<String, dynamic>>();
     var headers = await API.getAuthToken();
-    var response =  await http.post(
+    var response = await http.post(
       _bookingRouter,
       headers: headers,
       body: jsonEncode(booking),
@@ -25,6 +28,19 @@ class BookingService {
         completer.complete({'isValid': false, 'data': null});
       } else {
         final booking = data['booking'];
+        Firestore.instance.collection('conversations').document().setData({
+          'bookingId': booking['_id'],
+          'host': booking['maid'],
+          'customer': booking['createdBy'],
+          'messages': [
+            {
+              'from': booking['maid'],
+              'to': booking['createdBy'],
+              'content': 'Cảm ơn bạn đã chọn dịch vụ của chúng tôi, dịch vụ của bạn đang được xác nhận',
+              'timestamp': DateTime.now().millisecondsSinceEpoch
+            }
+          ],
+        });
         completer.complete({'isValid': true, 'data': booking});
       }
     }
@@ -34,9 +50,9 @@ class BookingService {
   static Future<Map<String, dynamic>> getBookingById(String id) async {
     var completer = new Completer<Map<String, dynamic>>();
     var headers = await API.getAuthToken();
-    var response =  await http.get(
+    var response = await http.get(
       _getBookingByIdRouter + id,
-      headers: headers, 
+      headers: headers,
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -52,12 +68,13 @@ class BookingService {
     return completer.future;
   }
 
-  static Future<Map<String, dynamic>> getBookingsByStatus(int status, {int pageSize = 10, int pageIndex = 1}) async {
+  static Future<Map<String, dynamic>> getBookingsByStatus(int status,
+      {int pageSize = 10, int pageIndex = 1}) async {
     var completer = new Completer<Map<String, dynamic>>();
     var headers = await API.getAuthToken();
-    var response =  await http.get(
+    var response = await http.get(
       _getBookingByStatus + status.toString(),
-      headers: headers, 
+      headers: headers,
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);

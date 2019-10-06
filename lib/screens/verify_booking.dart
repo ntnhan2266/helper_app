@@ -18,7 +18,6 @@ class VerifyBookingScreen extends StatefulWidget {
 class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
   void _onSubmit(ServiceDetails data) async {
     var res = await BookingService.booking(data);
-    print(res);
     if (res['isValid']) {
       Navigator.of(context).pushNamedAndRemoveUntil(homeScreenRoute, (Route<dynamic> route) => false);
       Navigator.pushNamed(context,

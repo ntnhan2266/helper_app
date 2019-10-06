@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../widgets/chat_item.dart';
 
 class MessageScreen extends StatefulWidget {
@@ -23,7 +25,7 @@ class MessageScreenState extends State<MessageScreen> {
 
   Widget _chatEnvironment() {
     return IconTheme(
-      data: IconThemeData(color: Colors.blue),
+      data: IconThemeData(color: Theme.of(context).primaryColor,),
       child: Container(
         margin: EdgeInsets.symmetric(
           horizontal: ScreenUtil.instance.setWidth(8),
@@ -43,8 +45,8 @@ class MessageScreenState extends State<MessageScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: ScreenUtil.instance.setWidth(8),
+              margin: EdgeInsets.only(
+                left: ScreenUtil.instance.setWidth(8),
               ),
               child: IconButton(
                 icon: Icon(Icons.send),
