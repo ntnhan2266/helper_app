@@ -257,5 +257,7 @@
     "setting": "Cài đặt",
     "language": "Ngôn ngữ",
     "vi": "Tiếng Việt",
-    "en": "Tiếng Anh"
+    "en": "Tiếng Anh",
+    "accept": "Đồng ý",
+    "deny": "Từ chối"
 }

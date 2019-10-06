@@ -12,8 +12,9 @@ import '../utils/route_names.dart';
 
 class ServiceHistoryListItem extends StatelessWidget {
   final ServiceDetails serviceDetail;
+  final bool isHelper;
 
-  const ServiceHistoryListItem(this.serviceDetail, {Key key}) : super(key: key);
+  const ServiceHistoryListItem(this.serviceDetail, {this.isHelper = false});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class ServiceHistoryListItem extends StatelessWidget {
       );
     }
 
-    Widget _flatButton(IconData icon, String text, Function onPressed) {
+    Widget _flatButton({IconData icon, String text, Function onPressed}) {
       return Container(
         height: ScreenUtil.instance.setHeight(25),
         child: FlatButton.icon(
@@ -168,24 +169,39 @@ class ServiceHistoryListItem extends StatelessWidget {
                           fontSize: ScreenUtil.instance.setSp(14.0),
                         ),
                       ),
-                      Row(
-                        children: <Widget>[
-                          _flatButton(Icons.history,
-                              AppLocalizations.of(context).tr("repick"), () {}),
-                          _flatButton(
-                            Icons.details,
-                            AppLocalizations.of(context).tr("view"),
-                            () {
-                              print(serviceDetail.id);
-                              Navigator.pushNamed(
-                                context,
-                                serviceStatusRoute,
-                                arguments: serviceDetail.id,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                      isHelper
+                          ? Row(
+                              children: <Widget>[
+                                _flatButton(
+                                    icon: Icons.history,
+                                    text: AppLocalizations.of(context)
+                                        .tr("repick")),
+                                _flatButton(
+                                  icon: Icons.details,
+                                  text: AppLocalizations.of(context).tr("view"),
+                                  onPressed: () {
+                                    print(serviceDetail.id);
+                                    Navigator.pushNamed(
+                                      context,
+                                      serviceStatusRoute,
+                                      arguments: serviceDetail.id,
+                                    );
+                                  },
+                                ),
+                              ],
+                            )
+                          : Row(
+                              children: <Widget>[
+                                _flatButton(
+                                    icon: Icons.history,
+                                    text: AppLocalizations.of(context)
+                                        .tr("accept")),
+                                _flatButton(
+                                  icon: Icons.details,
+                                  text: AppLocalizations.of(context).tr("deny"),
+                                ),
+                              ],
+                            ),
                     ],
                   ),
                 ),
