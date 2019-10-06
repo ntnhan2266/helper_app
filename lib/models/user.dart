@@ -73,7 +73,7 @@ class User with ChangeNotifier {
   }
 
   void fromJson(Map<String, dynamic> json) {
-    this.id = json['id'];
+    this.id = json['_id'];
     this.uid = json['uid'];
     this.name = json['name'];
     this.email = json['email'];
@@ -115,5 +115,21 @@ class User with ChangeNotifier {
     this.lat = null;
     this.address = null;
     notifyListeners();
+  }
+
+  User getData(Map<String, dynamic> json) {
+    return User(
+      id: json['_id'],
+      uid: json['uid'],
+      name: json['name'],
+      email: json['email'],
+      gender: json['gender'],
+      birthday: DateTime.parse(json['birthday']).toLocal(),
+      phoneNumber: json['phoneNumber'],
+      long: json['long'],
+      lat: json['lat'],
+      address: json['address'],
+      avatar: json['avatar']
+    );
   }
 }

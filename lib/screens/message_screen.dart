@@ -2,8 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/chat_item.dart';
+import '../models/user.dart';
+import '../models/service_details.dart';
 
 class MessageScreen extends StatefulWidget {
   @override
@@ -12,20 +15,43 @@ class MessageScreen extends StatefulWidget {
 
 class MessageScreenState extends State<MessageScreen> {
   final TextEditingController _chatController = TextEditingController();
-  final List<ChatMessage> _messages = <ChatMessage>[];
+  final ScrollController listScrollController = new ScrollController();
+  final FocusNode focusNode = new FocusNode();
 
-  void _handleSubmit(String text) {
-    _chatController.clear();
-    ChatMessage message = ChatMessage(text: text);
-
-    setState(() {
-      _messages.insert(0, message);
-    });
+  @override
+  void initState() {
+    super.initState();
   }
 
-  Widget _chatEnvironment() {
+  void _handleSubmit(String text, ServiceDetails booking) {
+    final userProvider = Provider.of<User>(context, listen: false);
+    if (text.trim() != '') {
+      _chatController.clear();
+    }
+    var documentReference = Firestore.instance
+        .collection('conversations')
+        .document(booking.id)
+        .collection(booking.id)
+        .document(DateTime.now().millisecondsSinceEpoch.toString());
+    Firestore.instance.runTransaction((transaction) async {
+      await transaction.set(documentReference, {
+        'from': userProvider.id,
+        'to': userProvider.id == booking.maid.id
+            ? userProvider.id
+            : booking.createdBy.id,
+        'content': text,
+        'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+      });
+    });
+    listScrollController.animateTo(0.0,
+        duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+  }
+
+  Widget _chatEnvironment(ServiceDetails data) {
     return IconTheme(
-      data: IconThemeData(color: Theme.of(context).primaryColor,),
+      data: IconThemeData(
+        color: Theme.of(context).primaryColor,
+      ),
       child: Container(
         margin: EdgeInsets.symmetric(
           horizontal: ScreenUtil.instance.setWidth(8),
@@ -35,13 +61,16 @@ class MessageScreenState extends State<MessageScreen> {
             Flexible(
               child: TextField(
                 decoration: InputDecoration.collapsed(
-                    hintText: AppLocalizations.of(context).tr('message_content'),
+                    hintText:
+                        AppLocalizations.of(context).tr('message_content'),
                     hintStyle: TextStyle(
                       fontSize: ScreenUtil.instance.setSp(12),
                       fontWeight: FontWeight.w300,
                     )),
                 controller: _chatController,
-                onSubmitted: _handleSubmit,
+                onSubmitted: (String content) {
+                  _handleSubmit(content, data);
+                },
               ),
             ),
             Container(
@@ -50,7 +79,9 @@ class MessageScreenState extends State<MessageScreen> {
               ),
               child: IconButton(
                 icon: Icon(Icons.send),
-                onPressed: () => _handleSubmit(_chatController.text),
+                onPressed: () {
+                  _handleSubmit(_chatController.text, data);
+                },
               ),
             )
           ],
@@ -59,8 +90,29 @@ class MessageScreenState extends State<MessageScreen> {
     );
   }
 
+  Widget _buildItem(
+      int index, DocumentSnapshot document, ServiceDetails booking) {
+    final userProvider = Provider.of<User>(context, listen: false);
+    print(userProvider.id);
+    var userName = booking.maid.name;
+    var avatar = booking.maid.avatar;
+    if (document['from'] == userProvider.id) {
+      userName = booking.createdBy.name;
+      avatar = booking.createdBy.avatar;
+    }
+    return ChatMessage(
+      isLeftMessage: document['from'] == userProvider.id,
+      avatar: avatar,
+      userName: userName,
+      text: document['content'],
+      timeStamp: int.parse(document['timestamp']),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ServiceDetails data = ModalRoute.of(context).settings.arguments;
+
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
     ScreenUtil.instance = ScreenUtil(
@@ -84,14 +136,38 @@ class MessageScreenState extends State<MessageScreen> {
         child: Column(
           children: <Widget>[
             Flexible(
-              child: ListView.builder(
-                padding: EdgeInsets.all(
-                  ScreenUtil.instance.setWidth(12),
-                ),
-                reverse: true,
-                itemBuilder: (_, int index) => _messages[index],
-                itemCount: _messages.length,
-              ),
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: Firestore.instance
+                      .collection('conversations')
+                      .document(data.id)
+                      .collection(data.id)
+                      .orderBy('timestamp', descending: true)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    }
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      default:
+                        return ListView.builder(
+                          padding: EdgeInsets.all(
+                            ScreenUtil.instance.setWidth(12),
+                          ),
+                          reverse: true,
+                          itemBuilder: (_, int index) => _buildItem(
+                              index, snapshot.data.documents[index], data),
+                          itemCount: snapshot.data.documents.length,
+                          controller: listScrollController,
+                        );
+                    }
+                  }),
             ),
             Divider(
               height: 1.0,
@@ -100,7 +176,7 @@ class MessageScreenState extends State<MessageScreen> {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
               ),
-              child: _chatEnvironment(),
+              child: _chatEnvironment(data),
             )
           ],
         ),

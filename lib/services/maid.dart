@@ -88,7 +88,6 @@ class MaidService {
     };
     var response = await http.get(_getMaidListRoute, headers: headers);
     final data = jsonDecode(response.body);
-    print(data['errorCode']);
     if (data['errorCode'] == null) {
       final maids = data['maids'];
       final total = data['total'];

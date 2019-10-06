@@ -4,14 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/constants.dart';
 import '../utils/route_names.dart';
+import '../models/service_details.dart';
 
 class BookingStatus extends StatelessWidget {
-  final int status;
+  final ServiceDetails data;
 
-  BookingStatus({this.status});
+  BookingStatus({this.data});
 
   Widget _buildTitle(BuildContext context) {
-    switch (status) {
+    switch (data.status) {
       case WAITING_APPROVE:
         return Text(
           AppLocalizations.of(context).tr('waiting_for_approve'),
@@ -100,7 +101,7 @@ class BookingStatus extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    Navigator.pushNamed(context, messageRoute);
+                    Navigator.pushNamed(context, messageRoute, arguments: data);
                   },
                 ),
                 SizedBox(

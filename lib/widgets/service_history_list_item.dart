@@ -176,7 +176,6 @@ class ServiceHistoryListItem extends StatelessWidget {
                             Icons.details,
                             AppLocalizations.of(context).tr("view"),
                             () {
-                              print(serviceDetail.id);
                               Navigator.pushNamed(
                                 context,
                                 serviceStatusRoute,

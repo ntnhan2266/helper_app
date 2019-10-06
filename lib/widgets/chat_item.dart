@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+
+import '../configs/api.dart';
 
 class ChatMessage extends StatelessWidget {
   final String text;
@@ -77,14 +80,13 @@ class ChatMessage extends StatelessWidget {
                       right: ScreenUtil.instance.setWidth(16),
                     ),
                     child: CircleAvatar(
-                      child: Image.network(
-                        'https://images2.minutemediacdn.com/image/upload/c_crop,h_1193,w_2121,x_0,y_64/f_auto,q_auto,w_1100/v1565279671/shape/mentalfloss/578211-gettyimages-542930526.jpg',
-                        width: ScreenUtil.instance.setWidth(100),
-                      ),
+                      radius: ScreenUtil.instance.setWidth(25),
+                      backgroundImage: avatar != null ? NetworkImage(APIConfig.hostURL + avatar) : AssetImage('assets/images/avt_default.png'),
+                      backgroundColor: Colors.transparent,
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(ScreenUtil.instance.setWidth(8)),
+                    padding: EdgeInsets.all(ScreenUtil.instance.setWidth(8)), 
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(0, 0, 0, 0.2),
                       borderRadius: BorderRadius.circular(3),
@@ -113,7 +115,7 @@ class ChatMessage extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.only(top: 5.0),
                           child: Text(
-                            '20:10 22/10/2019',
+                            DateFormat('HH:mm dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(timeStamp).toLocal(),),
                             style: TextStyle(
                               fontSize: ScreenUtil.instance.setSp(9),
                               fontWeight: FontWeight.w400,

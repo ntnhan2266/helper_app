@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:smart_rabbit/utils/utils.dart';
 
 import '../models/user_maid.dart';
+import '../models/user.dart';
 
 class ServiceDetails {
   String id;
@@ -29,6 +30,7 @@ class ServiceDetails {
   UserMaid maid;
   List<DateTime> workingDates = [];
   int amount;
+  User createdBy;
 
   ServiceDetails(
       {this.type = 1,
@@ -47,7 +49,9 @@ class ServiceDetails {
       this.startDate,
       this.endDate,
       this.maid,
-      this.amount});
+      this.amount,
+      this.createdBy
+    });
 
   Map<String, dynamic> toJson() {
     return {
@@ -111,6 +115,7 @@ class ServiceDetails {
       endDate: DateTime.parse(json['endDate']).toLocal(),
       maid: UserMaid.getMaid(json['maid']),
       amount: json['amount'],
+      createdBy: User().getData(json['createdBy'])
     );
   }
 }

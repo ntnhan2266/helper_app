@@ -28,18 +28,20 @@ class BookingService {
         completer.complete({'isValid': false, 'data': null});
       } else {
         final booking = data['booking'];
-        Firestore.instance.collection('conversations').document().setData({
-          'bookingId': booking['_id'],
-          'host': booking['maid'],
-          'customer': booking['createdBy'],
-          'messages': [
+        var documentReference = Firestore.instance
+            .collection('conversations')
+            .document(booking['_id'])
+            .collection(booking['_id'])
+            .document(DateTime.now().millisecondsSinceEpoch.toString());
+        Firestore.instance.runTransaction((transaction) async {
+          await transaction.set(documentReference, 
             {
               'from': booking['maid'],
               'to': booking['createdBy'],
-              'content': 'Cảm ơn bạn đã chọn dịch vụ của chúng tôi, dịch vụ của bạn đang được xác nhận',
-              'timestamp': DateTime.now().millisecondsSinceEpoch
-            }
-          ],
+              'content':
+                  'Cảm ơn bạn đã chọn dịch vụ của chúng tôi, dịch vụ của bạn đang được xác nhận',
+              'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+          });
         });
         completer.complete({'isValid': true, 'data': booking});
       }

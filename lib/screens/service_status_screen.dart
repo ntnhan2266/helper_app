@@ -24,14 +24,16 @@ class ServiceStatusScreen extends StatelessWidget {
     final String id = ModalRoute.of(context).settings.arguments;
     return ServiceStatus(
       service: fetchData(id),
+      id: id,
     );
   }
 }
 
 class ServiceStatus extends StatelessWidget {
   final Future<ServiceDetails> service;
+  final String id;
 
-  ServiceStatus({Key key, this.service}) : super(key: key);
+  ServiceStatus({Key key, this.service, this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +68,12 @@ class ServiceStatus extends StatelessWidget {
           future: service,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              print(snapshot.data.status);
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // Status
-                    BookingStatus(status: snapshot.data.status,),
+                    BookingStatus(data: snapshot.data),
                     SizedBox(
                       height: ScreenUtil.instance.setHeight(8.0),
                     ),
