@@ -71,7 +71,7 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
               SizedBox(
                 height: ScreenUtil.instance.setHeight(8.0),
               ),
-              ServiceDetailInfo(_data),
+              ServiceDetailInfo(_data, false),
             ],
           ),
         ),

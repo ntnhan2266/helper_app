@@ -93,6 +93,7 @@ class ServiceDetails {
       endDate: DateTime.parse(json['endDate']).toLocal(),
       maid: UserMaid.getMaid(json['maid']),
       amount: json['amount'],
+      createdBy: json['createdBy'] != null ? User().getData(json['createdBy']) : null
     );
   }
 

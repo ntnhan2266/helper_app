@@ -19,12 +19,16 @@ Future<ServiceDetails> fetchData(String id) async {
 }
 
 class ServiceStatusScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    final String id = ModalRoute.of(context).settings.arguments;
+    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    final String id = args['id'];
+    final bool isHelper = args['isHelper'];
     return ServiceStatus(
       service: fetchData(id),
       id: id,
+      isHelper: isHelper
     );
   }
 }
@@ -32,8 +36,9 @@ class ServiceStatusScreen extends StatelessWidget {
 class ServiceStatus extends StatelessWidget {
   final Future<ServiceDetails> service;
   final String id;
+  final bool isHelper;
 
-  ServiceStatus({Key key, this.service, this.id}) : super(key: key);
+  ServiceStatus({Key key, this.service, this.id, this.isHelper = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +78,7 @@ class ServiceStatus extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // Status
-                    BookingStatus(data: snapshot.data),
+                    BookingStatus(data: snapshot.data, isHelper: isHelper),
                     SizedBox(
                       height: ScreenUtil.instance.setHeight(8.0),
                     ),
@@ -81,7 +86,7 @@ class ServiceStatus extends StatelessWidget {
                     SizedBox(
                       height: ScreenUtil.instance.setHeight(8.0),
                     ),
-                    ServiceDetailInfo(snapshot.data),
+                    ServiceDetailInfo(snapshot.data, isHelper),
                   ],
                 ),
               );

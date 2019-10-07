@@ -32,7 +32,7 @@
     "uid_duplicated": "Số điện thoại này đã có người sử dụng",
     "you_have_not_registered": "Số điện thoại này chưa được đăng ký. Vui lòng đăng ký trước khi đăng nhập",
     "error": "Lỗi",
-    "history": "Lịch sử",
+    "history": "History",
     "log_out": "Đăng xuất",
     "location": "Địa chỉ",
     "review": "Đánh giá",
@@ -216,5 +216,14 @@
     "view": "Xem",
     "no_data": "Không có dữ liệu",
     "message": "Tin nhắn",
-    "message_content": "Nội dung tin nhắn"
+    "message_content": "Nội dung tin nhắn",
+    "helper_management": "Quản lý người giúp việc",
+    "setting": "Cài đặt",
+    "language": "Ngôn ngữ",
+    "vi": "Tiếng Việt",
+    "en": "Tiếng Anh",
+    "accept": "Đồng ý",
+    "deny": "Từ chối",
+    "booking_management": "Quản lý dịch vụ",
+    "no_phone_number": "Chưa có SĐT"
 }

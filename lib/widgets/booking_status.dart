@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../utils/constants.dart';
 import '../utils/route_names.dart';
@@ -8,8 +10,9 @@ import '../models/service_details.dart';
 
 class BookingStatus extends StatelessWidget {
   final ServiceDetails data;
+  final bool isHelper;
 
-  BookingStatus({this.data});
+  BookingStatus({this.data, this.isHelper = false});
 
   Widget _buildTitle(BuildContext context) {
     switch (data.status) {
@@ -119,11 +122,45 @@ class BookingStatus extends StatelessWidget {
                     ),
                     child: Icon(
                       Icons.call,
-                      color: Colors.white,  
+                      color: Colors.white,
                       size: ScreenUtil.instance.setSp(16),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    // Make call
+                    print(isHelper);
+                    if (isHelper) {
+                      if (data.createdBy.phoneNumber != null) {
+                        // Call customer
+                        launch('tel://${data.createdBy.phoneNumber}');
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: AppLocalizations.of(context).tr('no_phone_number'),
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIos: 1,
+                          backgroundColor: Color.fromRGBO(165, 0, 0, 1),
+                          textColor: Colors.white,
+                          fontSize: 14.0,
+                        );
+                      }
+                    } else {
+                      if (data.maid.phoneNumber != null) {
+                        // Call customer
+                        launch('tel://${data.maid.phoneNumber}');
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: AppLocalizations.of(context).tr('no_phone_number'),
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIos: 1,
+                          backgroundColor: Color.fromRGBO(165, 0, 0, 1),
+                          textColor: Colors.white,
+                          fontSize: 14.0,
+                        );
+                      }
+                    }
+                  },
                 ),
               ],
             ),

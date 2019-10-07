@@ -25,8 +25,8 @@ class _HelperManagementScreenState extends State<HelperManagementScreen> {
               tabBarIndicatorSize: TabBarIndicatorSize.tab,
             ),
             labelColor: Theme.of(context).primaryColor,
-            labelStyle: TextStyle(fontWeight: FontWeight.w500),
-            unselectedLabelColor: Colors.black,
+            labelStyle: TextStyle(fontWeight: FontWeight.w500, color: Colors.white,),
+            unselectedLabelColor: Colors.white,
             unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
             tabs: [
               Tab(
@@ -57,11 +57,8 @@ class _HelperManagementScreenState extends State<HelperManagementScreen> {
           ),
           centerTitle: true,
           title: Text(
-            AppLocalizations.of(context).tr('history'),
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
+            AppLocalizations.of(context).tr('booking_management'),
           ),
-          backgroundColor: Colors.white,
-          elevation: 0,
         ),
         body: TabBarView(
           children: [

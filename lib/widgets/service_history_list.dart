@@ -29,10 +29,10 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        _fetchService(widget.status);
+        _fetchService(widget.status, isHelper: widget.isHelper);
       }
     });
-    _fetchService(widget.status);
+    _fetchService(widget.status, isHelper: widget.isHelper);
   }
 
   @override
@@ -41,14 +41,22 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
     super.dispose();
   }
 
-  void _fetchService(int status) async {
+  void _fetchService(int status, {bool isHelper = false}) async {
     if (!canLoadMore) {
       return;
     }
-    final res = await BookingService.getBookingsByStatus(
-      status,
-      pageIndex: pageIndex,
-    );
+    var res;
+    if (isHelper) {
+      res = await BookingService.getHostBookingsByStatus(
+        status,
+        pageIndex: pageIndex,
+      );
+    } else {
+      res = await BookingService.getBookingsByStatus(
+        status,
+        pageIndex: pageIndex,
+      );
+    }
     if (res['isValid']) {
       if (mounted) {
         setState(() {
@@ -77,6 +85,7 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
                 ServiceDetails serviceDetail = serviceHistoty.toList()[index];
                 return ServiceHistoryListItem(
                   serviceDetail,
+                  isHelper: widget.isHelper,
                 );
               },
             )

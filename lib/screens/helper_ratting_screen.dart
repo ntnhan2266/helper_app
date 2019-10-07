@@ -225,6 +225,7 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                                   label:
                                       AppLocalizations.of(context).tr("date"),
                                   initialValue: Utils.getServiceDate(
+                                      serviceDetail.type,
                                       serviceDetail.startDate,
                                       serviceDetail.endDate),
                                   enabled: false,

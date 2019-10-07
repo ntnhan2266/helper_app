@@ -324,8 +324,8 @@ class Utils {
     return days;
   }
 
-  static String getServiceDate(DateTime startDate, DateTime endDate) {
-    if (endDate.compareTo(startDate) == 0) {
+  static String getServiceDate(int type, DateTime startDate, DateTime endDate) {
+    if (type == 1) {
       return DateFormat('dd/MM/yyyy').format(startDate);
     } else {
       return DateFormat('dd/MM/yyyy').format(startDate) +

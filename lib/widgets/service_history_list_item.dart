@@ -80,135 +80,135 @@ class ServiceHistoryListItem extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
       child: InkWell(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  height: ScreenUtil.instance.setHeight(25),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil.instance.setWidth(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context)
-                            .tr(_serviceCategory.serviceName),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        Utils.getServiceDate(
-                            serviceDetail.startDate, serviceDetail.endDate),
-                        style: TextStyle(
-                          fontSize: ScreenUtil.instance.setSp(14.0),
-                          color: Colors.blueGrey[300],
-                        ),
-                      ),
-                    ],
-                  ),
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                height: ScreenUtil.instance.setHeight(25),
+                padding: EdgeInsets.symmetric(
+                  horizontal: ScreenUtil.instance.setWidth(10),
                 ),
-                Divider(),
-                Row(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Image.asset(
-                      _serviceCategory.imgURL,
-                      width: MediaQuery.of(context).size.width / 4,
-                      height: MediaQuery.of(context).size.width / 6,
+                    Text(
+                      AppLocalizations.of(context)
+                          .tr(_serviceCategory.serviceName),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                    Container(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _iconAndText(
-                            Icons.location_on,
-                            serviceDetail.address,
-                            textContainerWidth,
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.instance.setHeight(
-                              10,
-                            ),
-                          ),
-                          _iconAndText(
-                            Icons.date_range,
-                            Utils.getServiceType(serviceDetail.type, context) +
-                                ": " +
-                                Utils.getServiceTime(serviceDetail.startTime,
-                                    serviceDetail.endTime),
-                            textContainerWidth,
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.instance.setHeight(
-                              10,
-                            ),
-                          ),
-                          _iconAndText(
-                            Icons.person,
-                            serviceDetail.maid.name,
-                            textContainerWidth,
-                          ),
-                        ],
+                    Text(
+                      Utils.getServiceDate(serviceDetail.type,
+                          serviceDetail.startDate, serviceDetail.endDate),
+                      style: TextStyle(
+                        fontSize: ScreenUtil.instance.setSp(14.0),
+                        color: Colors.blueGrey[300],
                       ),
                     ),
                   ],
                 ),
-                Divider(),
-                Container(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        NumberFormat.currency(locale: "vi-vn")
-                            .format(serviceDetail.amount),
-                        style: TextStyle(
-                          fontSize: ScreenUtil.instance.setSp(14.0),
-                        ),
-                      ),
-                      isHelper
-                          ? Row(
-                              children: <Widget>[
-                                _flatButton(
-                                    icon: Icons.history,
-                                    text: AppLocalizations.of(context)
-                                        .tr("repick")),
-                                _flatButton(
-                                  icon: Icons.details,
-                                  text: AppLocalizations.of(context).tr("view"),
-                                  onPressed: () {
-                                    print(serviceDetail.id);
-                                    Navigator.pushNamed(
-                                      context,
-                                      serviceStatusRoute,
-                                      arguments: serviceDetail.id,
-                                    );
-                                  },
-                                ),
-                              ],
-                            )
-                          : Row(
-                              children: <Widget>[
-                                _flatButton(
-                                    icon: Icons.history,
-                                    text: AppLocalizations.of(context)
-                                        .tr("accept")),
-                                _flatButton(
-                                  icon: Icons.details,
-                                  text: AppLocalizations.of(context).tr("deny"),
-                                ),
-                              ],
-                            ),
-                    ],
+              ),
+              Divider(),
+              Row(
+                children: <Widget>[
+                  Image.asset(
+                    _serviceCategory.imgURL,
+                    width: MediaQuery.of(context).size.width / 4,
+                    height: MediaQuery.of(context).size.width / 6,
                   ),
+                  Container(
+                    padding: EdgeInsets.only(left: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _iconAndText(
+                          Icons.location_on,
+                          serviceDetail.address,
+                          textContainerWidth,
+                        ),
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(
+                            10,
+                          ),
+                        ),
+                        _iconAndText(
+                          Icons.date_range,
+                          Utils.getServiceType(serviceDetail.type, context) +
+                              ": " +
+                              Utils.getServiceTime(serviceDetail.startTime,
+                                  serviceDetail.endTime),
+                          textContainerWidth,
+                        ),
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(
+                            10,
+                          ),
+                        ),
+                        _iconAndText(
+                          Icons.person,
+                          isHelper
+                              ? serviceDetail.createdBy.name
+                              : serviceDetail.maid.name,
+                          textContainerWidth,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Divider(),
+              Container(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      NumberFormat.currency(locale: "vi-vn")
+                          .format(serviceDetail.amount),
+                      style: TextStyle(
+                        fontSize: ScreenUtil.instance.setSp(14.0),
+                      ),
+                    ),
+                    isHelper
+                        ? Row(
+                            children: <Widget>[
+                              _flatButton(
+                                  icon: Icons.check,
+                                  text: AppLocalizations.of(context)
+                                      .tr("accept")),
+                              _flatButton(
+                                icon: Icons.close,
+                                text: AppLocalizations.of(context).tr("deny"),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            children: <Widget>[
+                              _flatButton(
+                                  icon: Icons.history,
+                                  text: AppLocalizations.of(context)
+                                      .tr("repick")),
+                            ],
+                          ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          onTap: () {}),
+        ),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            serviceStatusRoute,
+            arguments: {
+              'id': serviceDetail.id,
+              'isHelper': isHelper,
+            },
+          );
+        },
+      ),
     );
   }
 }

@@ -259,5 +259,7 @@
     "vi": "Tiếng Việt",
     "en": "Tiếng Anh",
     "accept": "Đồng ý",
-    "deny": "Từ chối"
+    "deny": "Từ chối",
+    "booking_management": "Quản lý dịch vụ",
+    "no_phone_number": "Chưa có SĐT"
 }

@@ -12,8 +12,9 @@ import '../models/service_category.dart';
 
 class ServiceDetailInfo extends StatelessWidget {
   final ServiceDetails _data;
+  final bool isHelper;
 
-  ServiceDetailInfo(this._data);
+  ServiceDetailInfo(this._data, this.isHelper);
 
   Widget _buildDetailItem(BuildContext context, String label, String value) {
     return Column(
