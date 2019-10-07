@@ -10,7 +10,7 @@ import '../models/maid.dart';
 
 class MaidService {
   static const String _getMaidRoute = APIConfig.baseURL + '/maid';
-  static const String _getMaidListRoute = APIConfig.baseURL + '/maid-list';
+  static const String _getMaidListRoute = APIConfig.baseURL + '/maids';
   static const String _registerMaidRoute = APIConfig.baseURL + '/maid';
   static const String _editMaidRoute = APIConfig.baseURL + '/maid/edit';
 
