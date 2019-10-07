@@ -169,25 +169,6 @@ class ServiceHistoryListItem extends StatelessWidget {
                           fontSize: ScreenUtil.instance.setSp(14.0),
                         ),
                       ),
-<<<<<<< HEAD
-                      Row(
-                        children: <Widget>[
-                          _flatButton(Icons.history,
-                              AppLocalizations.of(context).tr("repick"), () {}),
-                          _flatButton(
-                            Icons.details,
-                            AppLocalizations.of(context).tr("view"),
-                            () {
-                              Navigator.pushNamed(
-                                context,
-                                serviceStatusRoute,
-                                arguments: serviceDetail.id,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-=======
                       isHelper
                           ? Row(
                               children: <Widget>[
@@ -221,7 +202,6 @@ class ServiceHistoryListItem extends StatelessWidget {
                                 ),
                               ],
                             ),
->>>>>>> origin/multi_lang
                     ],
                   ),
                 ),
