@@ -253,5 +253,11 @@
     "type": "Loại dịch vụ",
     "message": "Tin nhắn",
     "message_content": "Nội dung tin nhắn",
-    "helper_management": "Quản lý người giúp việc"
+    "helper_management": "Quản lý người giúp việc",
+    "setting": "Cài đặt",
+    "language": "Ngôn ngữ",
+    "vi": "Tiếng Việt",
+    "en": "Tiếng Anh",
+    "accept": "Đồng ý",
+    "deny": "Từ chối"
 }

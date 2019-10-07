@@ -1,4 +1,3 @@
-
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -66,14 +65,25 @@ class _HelperManagementScreenState extends State<HelperManagementScreen> {
         ),
         body: TabBarView(
           children: [
-            ServiceHistoryData(WAITING_APPROVE),
-            ServiceHistoryData(APPROVED),
-            ServiceHistoryData(COMPLETED),
-            ServiceHistoryData(CANCELLED),
+            ServiceHistoryData(
+              WAITING_APPROVE,
+              isHelper: true,
+            ),
+            ServiceHistoryData(
+              APPROVED,
+              isHelper: true,
+            ),
+            ServiceHistoryData(
+              COMPLETED,
+              isHelper: true,
+            ),
+            ServiceHistoryData(
+              CANCELLED,
+              isHelper: true,
+            ),
           ],
         ),
       ),
     );
   }
-  
 }

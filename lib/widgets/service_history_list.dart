@@ -7,8 +7,9 @@ import '../services/booking.dart';
 
 class ServiceHistoryList extends StatefulWidget {
   final int status;
+  final bool isHelper;
 
-  ServiceHistoryList(this.status);
+  ServiceHistoryList(this.status, {this.isHelper = false});
 
   @override
   _ServiceHistoryListState createState() => _ServiceHistoryListState();

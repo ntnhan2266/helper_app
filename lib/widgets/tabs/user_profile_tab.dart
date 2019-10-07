@@ -139,6 +139,9 @@ class _UserProfileTabState extends State<UserProfileTab> {
             title: 'settings',
             leadingIcon: Icons.settings,
             trailingIcon: Icons.chevron_right,
+            onTap: () {
+              Navigator.of(context).pushNamed(settingRoute);
+            },
           ),
           _menuItem(
             title: 'about_app',
