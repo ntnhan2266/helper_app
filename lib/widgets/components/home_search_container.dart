@@ -16,9 +16,11 @@ class HomeSearchContainer extends StatefulWidget {
 
 class _HomeSearchContainerState extends State<HomeSearchContainer> {
   final TextEditingController _searchControl = new TextEditingController();
-  String search = "";
-  List<int> searchServices = [];
-  List<int> searchAreas = [];
+  String _search = "";
+  List<int> _searchServices = [];
+  List<int> _searchAreas = [];
+  int _minSalary = 0;
+  int _maxSalary = 20;
 
   Widget _inputSearch() {
     return Container(
@@ -29,6 +31,11 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
         ),
       ),
       child: TextField(
+        onChanged: (value) {
+          setState(() {
+            _search = value;
+          });
+        },
         autofocus: true,
         style: TextStyle(
           fontSize: ScreenUtil.instance.setSp(16.0),
@@ -116,6 +123,15 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
               ),
             ),
             _inputSearch(),
+            RaisedButton(
+              color: Theme.of(context).primaryColor,
+              textTheme: ButtonTextTheme.primary,
+              child: Text("Search"),
+              onPressed: () {
+                FocusScope.of(context).requestFocus(new FocusNode());
+                print(_search);
+              },
+            ),
             Expanded(
               child: ListView(
                 children: <Widget>[
@@ -129,15 +145,15 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                           label: Text(
                             AppLocalizations.of(context).tr(item.serviceName),
                           ),
-                          selected: searchServices.contains(item.id),
+                          selected: _searchServices.contains(item.id),
                           onSelected: (selected) {
                             if (selected) {
                               setState(() {
-                                searchServices.add(item.id);
+                                _searchServices.add(item.id);
                               });
                             } else {
                               setState(() {
-                                searchServices.remove(item.id);
+                                _searchServices.remove(item.id);
                               });
                             }
                             FocusScope.of(context)
@@ -158,15 +174,15 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                             AppLocalizations.of(context)
                                 .tr(Utils.intToSupportArea(i)),
                           ),
-                          selected: searchAreas.contains(i),
+                          selected: _searchAreas.contains(i),
                           onSelected: (selected) {
                             if (selected) {
                               setState(() {
-                                searchAreas.add(i);
+                                _searchAreas.add(i);
                               });
                             } else {
                               setState(() {
-                                searchAreas.remove(i);
+                                _searchAreas.remove(i);
                               });
                             }
                             FocusScope.of(context)
@@ -177,10 +193,27 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                     }).toList(),
                   ),
                   _searchLabel(AppLocalizations.of(context).tr('salary')),
-                  // RangeSlider(
-                  //   value: 0.0,
-                  //   onChanged: (double value) {},
-                  // ),
+                  Center(
+                    child: Text(_minSalary.toString() +
+                        ".000.000" +
+                        " ~ " +
+                        _maxSalary.toString() +
+                        ".000.000"),
+                  ),
+                  RangeSlider(
+                    min: 0,
+                    max: 20,
+                    activeColor: Theme.of(context).primaryColor,
+                    inactiveColor: Colors.blueGrey[100],
+                    values: RangeValues(
+                        _minSalary.toDouble(), _maxSalary.toDouble()),
+                    onChanged: (RangeValues value) {
+                      setState(() {
+                        _minSalary = value.start.round();
+                        _maxSalary = value.end.round();
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
