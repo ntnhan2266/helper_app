@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_rabbit/models/service_category.dart';
 
+import '../../models/service_category.dart';
+import '../../widgets/components/home_search_container.dart';
 import '../../utils/dummy_data.dart';
 import '../../utils/route_names.dart';
 
@@ -21,8 +22,177 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
-  final TextEditingController _searchControl = new TextEditingController();
   var _categories = categoriesData.sublist(0, 4);
+  bool _isShowModalBottomSheet = false;
+
+  Widget _inputSearch() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blueGrey[50],
+        borderRadius: BorderRadius.all(
+          Radius.circular(5.0),
+        ),
+      ),
+      child: TextField(
+        focusNode: AlwaysDisabledFocusNode(),
+        onTap: () {
+          if (!_isShowModalBottomSheet) {
+            setState(() {
+              _isShowModalBottomSheet = true;
+            });
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(25.0),
+                ),
+              ),
+              builder: (builder) {
+                return HomeSearchContainer();
+              },
+            ).whenComplete(() {
+              setState(() {
+                _isShowModalBottomSheet = false;
+              });
+            });
+          }
+        },
+        style: TextStyle(
+          fontSize: ScreenUtil.instance.setSp(16.0),
+          color: Colors.blueGrey[300],
+        ),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(10.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          hintText: AppLocalizations.of(context).tr('home_tab_search_hint'),
+          prefixIcon: Icon(
+            Icons.search,
+            color: Colors.blueGrey[300],
+          ),
+          hintStyle: TextStyle(
+            fontSize: ScreenUtil.instance.setSp(16.0),
+            color: Colors.blueGrey[300],
+          ),
+        ),
+        maxLines: 1,
+      ),
+    );
+  }
+
+  // Widget _searchLabel(String label) {
+  //   return Container(
+  //     alignment: Alignment.center,
+  //     padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+  //     child: Text(label.toUpperCase()),
+  //   );
+  // }
+
+  // Widget _search() {
+  //   final screenHeight = MediaQuery.of(context).size.height;
+  //   return StatefulBuilder(
+  //     builder: (BuildContext context, StateSetter setState) {
+  //       return AnimatedContainer(
+  //         height: screenHeight * 0.95,
+  //         padding: EdgeInsets.symmetric(horizontal: 10.0),
+  //         child: Column(
+  //           children: <Widget>[
+  //             Padding(
+  //               padding: const EdgeInsets.symmetric(vertical: 20.0),
+  //               child: Text(
+  //                 AppLocalizations.of(context).tr('search').toUpperCase(),
+  //                 style: TextStyle(
+  //                   fontWeight: FontWeight.bold,
+  //                   fontSize: ScreenUtil.instance.setSp(20.0),
+  //                 ),
+  //               ),
+  //             ),
+  //             _inputSearch(),
+  //             Expanded(
+  //               child: ListView(
+  //                 children: <Widget>[
+  //                   _searchLabel(AppLocalizations.of(context).tr('service')),
+  //                   Wrap(
+  //                     alignment: WrapAlignment.center,
+  //                     children: categoriesData.map((item) {
+  //                       return Padding(
+  //                         padding: EdgeInsets.symmetric(horizontal: 2.0),
+  //                         child: ChoiceChip(
+  //                           label: Text(
+  //                             AppLocalizations.of(context).tr(item.serviceName),
+  //                           ),
+  //                           selected: searchServices.contains(item.id),
+  //                           onSelected: (selected) {
+  //                             if (selected) {
+  //                               setState(() {
+  //                                 searchServices.add(item.id);
+  //                               });
+  //                             } else {
+  //                               setState(() {
+  //                                 searchServices.remove(item.id);
+  //                               });
+  //                             }
+  //                           },
+  //                         ),
+  //                       );
+  //                     }).toList(),
+  //                   ),
+  //                   _searchLabel(
+  //                       AppLocalizations.of(context).tr('support_area')),
+  //                   Wrap(
+  //                     alignment: WrapAlignment.center,
+  //                     children:
+  //                         Iterable<int>.generate(22, (i) => i + 1).map((i) {
+  //                       return Padding(
+  //                         padding: EdgeInsets.symmetric(horizontal: 2.0),
+  //                         child: ChoiceChip(
+  //                           label: Text(
+  //                             AppLocalizations.of(context)
+  //                                 .tr(Utils.intToSupportArea(i)),
+  //                           ),
+  //                           selected: searchAreas.contains(i),
+  //                           onSelected: (selected) {
+  //                             if (selected) {
+  //                               setState(() {
+  //                                 searchAreas.add(i);
+  //                               });
+  //                             } else {
+  //                               setState(() {
+  //                                 searchAreas.remove(i);
+  //                               });
+  //                             }
+  //                           },
+  //                         ),
+  //                       );
+  //                     }).toList(),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         duration: Duration(microseconds: 5000),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,47 +211,7 @@ class _HomeTabState extends State<HomeTab> {
           ),
           Padding(
             padding: EdgeInsets.all(20),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blueGrey[50],
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
-              ),
-              child: TextField(
-                style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(16.0),
-                  color: Colors.blueGrey[300],
-                ),
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  hintText:
-                      AppLocalizations.of(context).tr('home_tab_search_hint'),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.blueGrey[300],
-                  ),
-                  hintStyle: TextStyle(
-                    fontSize: ScreenUtil.instance.setSp(16.0),
-                    color: Colors.blueGrey[300],
-                  ),
-                ),
-                maxLines: 1,
-                controller: _searchControl,
-              ),
-            ),
+            child: _inputSearch(),
           ),
           Container(
             color: Colors.blueGrey[50],
@@ -359,4 +489,9 @@ class _HomeTabState extends State<HomeTab> {
       ),
     );
   }
+}
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }
