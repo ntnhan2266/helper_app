@@ -22,7 +22,10 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
       Navigator.of(context).pushNamedAndRemoveUntil(homeScreenRoute, (Route<dynamic> route) => false);
       Navigator.pushNamed(context,
           serviceStatusRoute,
-          arguments: res['data']['_id']);
+          arguments: {
+            'id':res['data']['_id'],
+            'isHelper': false
+          });
       Utils.showSuccessSnackbar(
         context,
         AppLocalizations.of(context).tr('booked_successfully'),

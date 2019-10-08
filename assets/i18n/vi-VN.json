@@ -265,5 +265,8 @@
     "customer": "Khách hàng",
     "approved_successfully": "Đã duyệt dịch vụ thành công",
     "service": "Dịch vụ",
-    "search": "Tìm kiếm"
+    "search": "Tìm kiếm",
+    "cancel": "Huỷ",
+    "cancel_confirm": "Xác nhận huỷ dịch vụ",
+    "choose_reason": "Lý do huỷ dịch vụ"
 }
