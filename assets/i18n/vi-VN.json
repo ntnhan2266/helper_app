@@ -261,5 +261,7 @@
     "accept": "Đồng ý",
     "deny": "Từ chối",
     "booking_management": "Quản lý dịch vụ",
-    "no_phone_number": "Chưa có SĐT"
+    "no_phone_number": "Chưa có SĐT",
+    "customer": "Khách hàng",
+    "approved_successfully": "Đã duyệt dịch vụ thành công"
 }

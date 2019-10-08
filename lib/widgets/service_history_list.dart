@@ -35,6 +35,15 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
     _fetchService(widget.status, isHelper: widget.isHelper);
   }
 
+  void _itemCallback() {
+    setState(() {
+      isLoading = true;
+      serviceHistoty = [];
+      pageIndex = 1;
+    });
+    _fetchService(widget.status, isHelper: widget.isHelper);
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();
@@ -64,10 +73,35 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
           if (serviceHistoty.length == res['total']) {
             canLoadMore = false;
           }
+          isLoading = false;
           pageIndex++;
         });
       }
     }
+  }
+
+  Widget _buildHistoryData() {
+    return serviceHistoty.length > 0
+        ? ListView.builder(
+            primary: false,
+            controller: _scrollController,
+            shrinkWrap: true,
+            itemCount: serviceHistoty.length,
+            itemBuilder: (BuildContext context, int index) {
+              ServiceDetails serviceDetail = serviceHistoty.toList()[index];
+              return ServiceHistoryListItem(
+                serviceDetail,
+                isHelper: widget.isHelper,
+                callback: _itemCallback,
+              );
+            },
+          )
+        : Center(
+            child: Text(
+              AppLocalizations.of(context).tr('no_data'),
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+          );
   }
 
   @override
@@ -75,26 +109,11 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5.0),
       color: Colors.blueGrey[50],
-      child: serviceHistoty.length > 0
-          ? ListView.builder(
-              primary: false,
-              controller: _scrollController,
-              shrinkWrap: true,
-              itemCount: serviceHistoty.length,
-              itemBuilder: (BuildContext context, int index) {
-                ServiceDetails serviceDetail = serviceHistoty.toList()[index];
-                return ServiceHistoryListItem(
-                  serviceDetail,
-                  isHelper: widget.isHelper,
-                );
-              },
+      child: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
             )
-          : Center(
-              child: Text(
-                AppLocalizations.of(context).tr('no_data'),
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ),
+          : _buildHistoryData(),
     );
   }
 }

@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../models/service_category.dart';
 import '../models/service_details.dart';
+import '../services/booking.dart';
 import '../utils/dummy_data.dart';
 import '../utils/utils.dart';
 import '../utils/route_names.dart';
@@ -13,8 +15,25 @@ import '../utils/route_names.dart';
 class ServiceHistoryListItem extends StatelessWidget {
   final ServiceDetails serviceDetail;
   final bool isHelper;
+  final Function callback;
 
-  const ServiceHistoryListItem(this.serviceDetail, {this.isHelper = false});
+  const ServiceHistoryListItem(this.serviceDetail, {this.isHelper = false, this.callback});
+
+  void _approveBooking(BuildContext context) async {
+    var res = await BookingService.approve(serviceDetail.id);
+    if (res['isValid']) {
+      Fluttertoast.showToast(
+        msg: AppLocalizations.of(context).tr('approved_successfully'),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Color.fromRGBO(75, 181, 67, 1),
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      callback();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +66,8 @@ class ServiceHistoryListItem extends StatelessWidget {
 
     Widget _flatButton({IconData icon, String text, Function onPressed}) {
       return Container(
-        height: ScreenUtil.instance.setHeight(25),
         child: FlatButton.icon(
+          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(5)),
           onPressed: onPressed,
           icon: Icon(
             icon,
@@ -75,8 +94,10 @@ class ServiceHistoryListItem extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(
-          vertical: ScreenUtil.instance.setHeight(8), horizontal: 12.0),
-      padding: EdgeInsets.symmetric(vertical: 5.0),
+        vertical: ScreenUtil.instance.setHeight(8),
+        horizontal: ScreenUtil.instance.setWidth(12),
+      ),
+      padding: EdgeInsets.symmetric(vertical: ScreenUtil.instance.setHeight(5)),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
       child: InkWell(
@@ -85,8 +106,8 @@ class ServiceHistoryListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                height: ScreenUtil.instance.setHeight(25),
                 padding: EdgeInsets.symmetric(
+                  vertical: ScreenUtil.instance.setHeight(10),
                   horizontal: ScreenUtil.instance.setWidth(10),
                 ),
                 child: Row(
@@ -160,7 +181,8 @@ class ServiceHistoryListItem extends StatelessWidget {
               ),
               Divider(),
               Container(
-                padding: const EdgeInsets.only(left: 10.0),
+                padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil.instance.setWidth(12)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -176,8 +198,11 @@ class ServiceHistoryListItem extends StatelessWidget {
                             children: <Widget>[
                               _flatButton(
                                   icon: Icons.check,
-                                  text: AppLocalizations.of(context)
-                                      .tr("accept")),
+                                  text:
+                                      AppLocalizations.of(context).tr("accept"),
+                                  onPressed: () {
+                                    _approveBooking(context);
+                                  }),
                               _flatButton(
                                 icon: Icons.close,
                                 text: AppLocalizations.of(context).tr("deny"),

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../models/service_details.dart';
 import '../models/user_maid.dart';
+import '../models/user.dart';
 import '../widgets/user_avatar.dart';
 import '../utils/utils.dart';
 import '../utils/dummy_data.dart';
@@ -75,6 +76,46 @@ class ServiceDetailInfo extends StatelessWidget {
                   ),
                   Text(
                     numericFormatter.format(maid.salary) + ' VND/h',
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCustomerInfo(BuildContext context, User user) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          AppLocalizations.of(context).tr('customer'),
+        ),
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(10),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: ScreenUtil.instance.setWidth(50),
+              height: ScreenUtil.instance.setWidth(50),
+              child: UserAvatar(user.avatar),
+            ),
+            SizedBox(
+              width: ScreenUtil.instance.setWidth(20),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    user.name,
+                    style: TextStyle(fontSize: ScreenUtil.instance.setSp(14)),
                   ),
                 ],
               ),
@@ -301,7 +342,7 @@ class ServiceDetailInfo extends StatelessWidget {
             AppLocalizations.of(context).tr('note'),
             _data.note != null ? _data.note : '--',
           ),
-          _buildHostInfo(context, _data.maid),
+          isHelper ? _buildCustomerInfo(context, _data.createdBy) : _buildHostInfo(context, _data.maid),
           SizedBox(
             height: ScreenUtil.instance.setHeight(20),
           ),
