@@ -31,6 +31,8 @@ class ServiceDetails {
   List<DateTime> workingDates = [];
   int amount;
   User createdBy;
+  int reason;
+  String content = '';
 
   ServiceDetails(
       {this.type = 1,
@@ -50,7 +52,9 @@ class ServiceDetails {
       this.endDate,
       this.maid,
       this.amount,
-      this.createdBy
+      this.createdBy,
+      this.reason,
+      this.content,
     });
 
   Map<String, dynamic> toJson() {
@@ -93,7 +97,9 @@ class ServiceDetails {
       endDate: DateTime.parse(json['endDate']).toLocal(),
       maid: UserMaid.getMaid(json['maid']),
       amount: json['amount'],
-      createdBy: json['createdBy'] != null ? User().getData(json['createdBy']) : null
+      createdBy: json['createdBy'] != null ? User().getData(json['createdBy']) : null,
+      reason: json['reason'],
+      content: json['content'],
     );
   }
 
@@ -116,7 +122,9 @@ class ServiceDetails {
       endDate: DateTime.parse(json['endDate']).toLocal(),
       maid: UserMaid.getMaid(json['maid']),
       amount: json['amount'],
-      createdBy: User().getData(json['createdBy'])
+      createdBy: User().getData(json['createdBy']),
+      reason: json['reason'],
+      content: json['content'],
     );
   }
 }

@@ -40,6 +40,7 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
       isLoading = true;
       serviceHistoty = [];
       pageIndex = 1;
+      canLoadMore = true;
     });
     _fetchService(widget.status, isHelper: widget.isHelper);
   }

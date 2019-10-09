@@ -7,6 +7,7 @@ import '../widgets/service_detail_info.dart';
 import '../models/service_details.dart';
 import '../services/booking.dart';
 import '../widgets/booking_status.dart';
+import '../widgets/dialogs/cancel_booking_dialog.dart';
 import '../utils/constants.dart';
 
 Future<ServiceDetails> fetchData(String id) async {
@@ -37,115 +38,102 @@ class ServiceStatus extends StatelessWidget {
   ServiceStatus({Key key, this.service, this.id, this.isHelper = false})
       : super(key: key);
 
+  void _handleCancelBooking() {
+    return;
+  }
+
   void _handleCustomerCancel(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context).tr('cancel_confirm'),
-            ),
-            content: Text(
-              AppLocalizations.of(context).tr('choose_reason'),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                  onPressed: () {
-                       Navigator.pop(context);
-                  },
-                  child: Text('Close')),
-              FlatButton(
-                onPressed: () {
-                  print('HelloWorld!');
-                },
-                child: Text('Print HelloWorld!'),
-              )
-            ],
-          );
-        });
+      context: context,
+      builder: (context) {
+        return CancelBookingDialog(_handleCancelBooking);
+      },
+    );
   }
 
   Widget _buildAction(BuildContext context, int status) {
     if (status == WAITING_APPROVE) {
-    // Customer
-    if (!isHelper) {
-      return InkWell(
-        onTap: () {
-          _handleCustomerCancel(context);
-        },
-        child: Container(
-          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-          margin: EdgeInsets.symmetric(
-              horizontal: ScreenUtil.instance.setWidth(12)),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              width: 1,
-              color: Color.fromRGBO(165, 0, 0, 1),
+      // Customer
+      if (!isHelper) {
+        return InkWell(
+          onTap: () {
+            _handleCustomerCancel(context);
+          },
+          child: Container(
+            padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
+            margin: EdgeInsets.symmetric(
+                horizontal: ScreenUtil.instance.setWidth(12)),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                width: 1,
+                color: Color.fromRGBO(165, 0, 0, 1),
+              ),
+              borderRadius: BorderRadius.circular(3),
             ),
-            borderRadius: BorderRadius.circular(3),
-          ),
-          child: Text(AppLocalizations.of(context).tr('cancel').toUpperCase(),
+            child: Text(
+              AppLocalizations.of(context).tr('cancel').toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Color.fromRGBO(165, 0, 0, 1),
-              ),),
-        ),
-      );
-    } else {
-      return Column(
-        children: <Widget>[
-          InkWell(
-            child: Container(
-              padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-              margin: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil.instance.setWidth(12)),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(75, 181, 67, 1),
-                border: Border.all(
-                  width: 1,
+              ),
+            ),
+          ),
+        );
+      } else {
+        return Column(
+          children: <Widget>[
+            InkWell(
+              child: Container(
+                padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
+                margin: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil.instance.setWidth(12)),
+                width: double.infinity,
+                decoration: BoxDecoration(
                   color: Color.fromRGBO(75, 181, 67, 1),
+                  border: Border.all(
+                    width: 1,
+                    color: Color.fromRGBO(75, 181, 67, 1),
+                  ),
+                  borderRadius: BorderRadius.circular(3),
                 ),
-                borderRadius: BorderRadius.circular(3),
+                child: Text(
+                  AppLocalizations.of(context).tr('approve').toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               ),
-              child: Text(
-                AppLocalizations.of(context).tr('approve').toUpperCase(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
+            ),
+            SizedBox(
+              height: ScreenUtil.instance.setHeight(20),
+            ),
+            InkWell(
+              child: Container(
+                padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
+                margin: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil.instance.setWidth(12)),
+                width: double.infinity,
+                decoration: BoxDecoration(
                   color: Colors.white,
+                  border:
+                      Border.all(width: 1, color: Color.fromRGBO(165, 0, 0, 1)),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                child: Text(
+                  AppLocalizations.of(context).tr('cancel').toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromRGBO(165, 0, 0, 1),
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: ScreenUtil.instance.setHeight(20),
-          ),
-          InkWell(
-            child: Container(
-              padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-              margin: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil.instance.setWidth(12)),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border:
-                    Border.all(width: 1, color: Color.fromRGBO(165, 0, 0, 1)),
-                borderRadius: BorderRadius.circular(3),
-              ),
-              child: Text(
-                AppLocalizations.of(context).tr('cancel').toUpperCase(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color.fromRGBO(165, 0, 0, 1),
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    }
+          ],
+        );
+      }
     } else {
       return Container();
     }

@@ -11,13 +11,15 @@ import '../services/booking.dart';
 import '../utils/dummy_data.dart';
 import '../utils/utils.dart';
 import '../utils/route_names.dart';
+import '../widgets/dialogs/reject_booking_dialog.dart';
 
 class ServiceHistoryListItem extends StatelessWidget {
   final ServiceDetails serviceDetail;
   final bool isHelper;
   final Function callback;
 
-  const ServiceHistoryListItem(this.serviceDetail, {this.isHelper = false, this.callback});
+  const ServiceHistoryListItem(this.serviceDetail,
+      {this.isHelper = false, this.callback});
 
   void _approveBooking(BuildContext context) async {
     var res = await BookingService.approve(serviceDetail.id);
@@ -29,10 +31,34 @@ class ServiceHistoryListItem extends StatelessWidget {
         timeInSecForIos: 1,
         backgroundColor: Color.fromRGBO(75, 181, 67, 1),
         textColor: Colors.white,
-        fontSize: 14.0,
+        fontSize: ScreenUtil.instance.setSp(14),
       );
       callback();
     }
+  }
+
+  void _denyBooking(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return RejectBookingDialog((reason, content) async {
+          var res =
+              await BookingService.deny(serviceDetail.id, reason, content,);
+          if (res['isValid']) {
+            Fluttertoast.showToast(
+              msg: AppLocalizations.of(context).tr('deny_successfully'),
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIos: 1,
+              backgroundColor: Color.fromRGBO(75, 181, 67, 1),
+              textColor: Colors.white,
+              fontSize: ScreenUtil.instance.setSp(14),
+            );
+            callback();
+          }
+        });
+      },
+    );
   }
 
   @override
@@ -204,9 +230,11 @@ class ServiceHistoryListItem extends StatelessWidget {
                                     _approveBooking(context);
                                   }),
                               _flatButton(
-                                icon: Icons.close,
-                                text: AppLocalizations.of(context).tr("deny"),
-                              ),
+                                  icon: Icons.close,
+                                  text: AppLocalizations.of(context).tr("deny"),
+                                  onPressed: () {
+                                    _denyBooking(context);
+                                  }),
                             ],
                           )
                         : Row(

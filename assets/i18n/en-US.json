@@ -268,5 +268,17 @@
     "search": "Tìm kiếm",
     "cancel": "Huỷ",
     "cancel_confirm": "Xác nhận huỷ dịch vụ",
-    "choose_reason": "Lý do huỷ dịch vụ"
+    "choose_reason": "Chọn lý do huỷ dịch vụ",
+    "close": "Đóng",
+    "cancel_reason_1": "Tôi cần thay đổi thông tin dịch vụ",
+    "cancel_reason_2": "Tôi cần tìm thấy người giúp việc phù hợp hơn",
+    "cancel_reason_3": "Tôi có bận việc đột xuất",
+    "cancel_reason_4": "Lý do khác",
+    "description": "Mô tả",
+    "reject_reason_1": "Tôi bận vào ngày này",
+    "reject_reason_2": "Địa điểm quá xa",
+    "reject_reason_3": "Nội dung công việc không phù hợp",
+    "reject_reason_4": "Lý do khác",
+    "reject_confirm": "Bạn thực sự muốn từ chối dịch vụ này?",
+    "deny_successfully": "Từ chối dịch vụ thành công"
 }
