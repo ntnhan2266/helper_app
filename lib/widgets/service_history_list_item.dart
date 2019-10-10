@@ -42,8 +42,11 @@ class ServiceHistoryListItem extends StatelessWidget {
       context: context,
       builder: (context) {
         return RejectBookingDialog((reason, content) async {
-          var res =
-              await BookingService.deny(serviceDetail.id, reason, content,);
+          var res = await BookingService.deny(
+            serviceDetail.id,
+            reason,
+            content,
+          );
           if (res['isValid']) {
             Fluttertoast.showToast(
               msg: AppLocalizations.of(context).tr('deny_successfully'),
@@ -109,6 +112,29 @@ class ServiceHistoryListItem extends StatelessWidget {
           ),
         ),
       );
+    }
+
+    Widget _buildHelperAction() {
+      if (serviceDetail.status == 1) {
+        return Row(
+          children: <Widget>[
+            _flatButton(
+                icon: Icons.check,
+                text: AppLocalizations.of(context).tr("accept"),
+                onPressed: () {
+                  _approveBooking(context);
+                }),
+            _flatButton(
+                icon: Icons.close,
+                text: AppLocalizations.of(context).tr("deny"),
+                onPressed: () {
+                  _denyBooking(context);
+                }),
+          ],
+        );
+      } else {
+        return Container();
+      }
     }
 
     var textContainerWidth = MediaQuery.of(context).size.width -
@@ -212,31 +238,18 @@ class ServiceHistoryListItem extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      NumberFormat.currency(locale: "vi-vn")
-                          .format(serviceDetail.amount),
-                      style: TextStyle(
-                        fontSize: ScreenUtil.instance.setSp(14.0),
+                    Padding(
+                      padding: EdgeInsets.all(ScreenUtil.instance.setWidth(8.0)),
+                      child: Text(
+                        NumberFormat.currency(locale: "vi-vn")
+                            .format(serviceDetail.amount),
+                        style: TextStyle(
+                          fontSize: ScreenUtil.instance.setSp(14.0),
+                        ),
                       ),
                     ),
                     isHelper
-                        ? Row(
-                            children: <Widget>[
-                              _flatButton(
-                                  icon: Icons.check,
-                                  text:
-                                      AppLocalizations.of(context).tr("accept"),
-                                  onPressed: () {
-                                    _approveBooking(context);
-                                  }),
-                              _flatButton(
-                                  icon: Icons.close,
-                                  text: AppLocalizations.of(context).tr("deny"),
-                                  onPressed: () {
-                                    _denyBooking(context);
-                                  }),
-                            ],
-                          )
+                        ? _buildHelperAction()
                         : Row(
                             children: <Widget>[
                               _flatButton(

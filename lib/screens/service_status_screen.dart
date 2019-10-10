@@ -2,13 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/easy_localization_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../widgets/service_detail_info.dart';
 import '../models/service_details.dart';
 import '../services/booking.dart';
 import '../widgets/booking_status.dart';
 import '../widgets/dialogs/cancel_booking_dialog.dart';
+import '../widgets/dialogs/reject_booking_dialog.dart';
 import '../utils/constants.dart';
+import '../utils/route_names.dart';
 
 Future<ServiceDetails> fetchData(String id) async {
   final res = await BookingService.getBookingById(id);
@@ -51,6 +54,47 @@ class ServiceStatus extends StatelessWidget {
     );
   }
 
+  void _denyBooking(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return RejectBookingDialog((reason, content) async {
+          var res =
+              await BookingService.deny(id, reason, content,);
+          if (res['isValid']) {
+            Fluttertoast.showToast(
+              msg: AppLocalizations.of(context).tr('deny_successfully'),
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIos: 1,
+              backgroundColor: Color.fromRGBO(75, 181, 67, 1),
+              textColor: Colors.white,
+              fontSize: ScreenUtil.instance.setSp(14),
+            );
+            Navigator.of(context).pushReplacementNamed(helperManagementRoute);
+          }
+        });
+      },
+    );
+  }
+
+  void _approveBooking(BuildContext context) async {
+    var res = await BookingService.approve(id);
+    if (res['isValid']) {
+      Fluttertoast.showToast(
+        msg: AppLocalizations.of(context).tr('approved_successfully'),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Color.fromRGBO(75, 181, 67, 1),
+        textColor: Colors.white,
+        fontSize: ScreenUtil.instance.setSp(14),
+      );
+      Navigator.of(context).pushReplacementNamed(helperManagementRoute);
+    }
+  }
+
+
   Widget _buildAction(BuildContext context, int status) {
     if (status == WAITING_APPROVE) {
       // Customer
@@ -85,6 +129,9 @@ class ServiceStatus extends StatelessWidget {
         return Column(
           children: <Widget>[
             InkWell(
+              onTap: () {
+                _approveBooking(context);
+              },
               child: Container(
                 padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
                 margin: EdgeInsets.symmetric(
@@ -111,6 +158,9 @@ class ServiceStatus extends StatelessWidget {
               height: ScreenUtil.instance.setHeight(20),
             ),
             InkWell(
+              onTap: () {
+                _denyBooking(context);
+              },
               child: Container(
                 padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
                 margin: EdgeInsets.symmetric(

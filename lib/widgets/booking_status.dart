@@ -73,98 +73,104 @@ class BookingStatus extends StatelessWidget {
     }
   }
 
+  Widget _buildCancelInfo() {
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: ScreenUtil.instance.setWidth(18),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
         children: <Widget>[
-          _buildTitle(context),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                InkWell(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil.instance.setWidth(10),
-                      vertical: ScreenUtil.instance.setWidth(5),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              _buildTitle(context),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    InkWell(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil.instance.setWidth(10),
+                          vertical: ScreenUtil.instance.setWidth(5),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        child: Icon(
+                          Icons.message,
+                          size: ScreenUtil.instance.setSp(16),
+                          color: Colors.white,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, messageRoute, arguments: data);
+                      },
                     ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(3),
+                    SizedBox(
+                      width: ScreenUtil.instance.setWidth(15),
                     ),
-                    child: Icon(
-                      Icons.message,
-                      size: ScreenUtil.instance.setSp(16),
-                      color: Colors.white,
+                    InkWell(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil.instance.setWidth(10),
+                          vertical: ScreenUtil.instance.setWidth(5),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        child: Icon(
+                          Icons.call,
+                          color: Colors.white,
+                          size: ScreenUtil.instance.setSp(16),
+                        ),
+                      ),
+                      onTap: () {
+                        if (isHelper) {
+                          if (data.createdBy.phoneNumber != null) {
+                            // Call customer
+                            launch('tel://${data.createdBy.phoneNumber}');
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: AppLocalizations.of(context).tr('no_phone_number'),
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIos: 1,
+                              backgroundColor: Color.fromRGBO(165, 0, 0, 1),
+                              textColor: Colors.white,
+                              fontSize: 14.0,
+                            );
+                          }
+                        } else {
+                          if (data.maid.phoneNumber != null) {
+                            // Call customer
+                            launch('tel://${data.maid.phoneNumber}');
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: AppLocalizations.of(context).tr('no_phone_number'),
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIos: 1,
+                              backgroundColor: Color.fromRGBO(165, 0, 0, 1),
+                              textColor: Colors.white,
+                              fontSize: 14.0,
+                            );
+                          }
+                        }
+                      },
                     ),
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(context, messageRoute, arguments: data);
-                  },
+                  ],
                 ),
-                SizedBox(
-                  width: ScreenUtil.instance.setWidth(15),
-                ),
-                InkWell(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil.instance.setWidth(10),
-                      vertical: ScreenUtil.instance.setWidth(5),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    child: Icon(
-                      Icons.call,
-                      color: Colors.white,
-                      size: ScreenUtil.instance.setSp(16),
-                    ),
-                  ),
-                  onTap: () {
-                    // Make call
-                    print(isHelper);
-                    if (isHelper) {
-                      if (data.createdBy.phoneNumber != null) {
-                        // Call customer
-                        launch('tel://${data.createdBy.phoneNumber}');
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: AppLocalizations.of(context).tr('no_phone_number'),
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIos: 1,
-                          backgroundColor: Color.fromRGBO(165, 0, 0, 1),
-                          textColor: Colors.white,
-                          fontSize: 14.0,
-                        );
-                      }
-                    } else {
-                      if (data.maid.phoneNumber != null) {
-                        // Call customer
-                        launch('tel://${data.maid.phoneNumber}');
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: AppLocalizations.of(context).tr('no_phone_number'),
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIos: 1,
-                          backgroundColor: Color.fromRGBO(165, 0, 0, 1),
-                          textColor: Colors.white,
-                          fontSize: 14.0,
-                        );
-                      }
-                    }
-                  },
-                ),
-              ],
-            ),
-          )
+              )
+            ],
+          ),
         ],
       ),
     );
