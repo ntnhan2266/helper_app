@@ -82,20 +82,32 @@ class BookingStatus extends StatelessWidget {
       reason = AppLocalizations.of(context)
           .tr('cancel_reason_' + data.reason.toString());
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          AppLocalizations.of(context).tr('reason') + ': ' + reason,
-        ),
-        SizedBox(
-          height: ScreenUtil.instance.setHeight(18),
-        ),
-        Text(
-          AppLocalizations.of(context).tr('description') + ': ' + data.content,
-        ),
-      ],
-    );
+    if (data.status == REJECTED || data.status == CANCELLED) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            height: ScreenUtil.instance.setHeight(12),
+          ),
+          Text(
+            AppLocalizations.of(context).tr('reason') + ': ' + reason,
+          ),
+          SizedBox(
+            height: ScreenUtil.instance.setHeight(12),
+          ),
+          Text(
+            AppLocalizations.of(context).tr('description') +
+                ': ' +
+                data.content,
+          ),
+          SizedBox(
+            height: ScreenUtil.instance.setHeight(12),
+          ),
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 
   @override
@@ -196,7 +208,6 @@ class BookingStatus extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: ScreenUtil.instance.setHeight(12),),
           _buildCancelInfo(context),
         ],
       ),
