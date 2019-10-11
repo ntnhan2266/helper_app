@@ -73,8 +73,25 @@ class BookingStatus extends StatelessWidget {
     }
   }
 
-  Widget _buildCancelInfo() {
-    
+  Widget _buildCancelInfo(BuildContext context) {
+    var reason = '';
+    if (data.status == REJECTED) {
+      reason = AppLocalizations.of(context)
+          .tr('reject_reason_' + data.reason.toString());
+    } else if (data.status == CANCELLED) {
+      reason = AppLocalizations.of(context)
+          .tr('cancel_reason_' + data.reason.toString());
+    }
+    return Column(
+      children: <Widget>[
+        Text(
+          AppLocalizations.of(context).tr('reason') + ': ' + reason,
+        ),
+        SizedBox(
+          height: ScreenUtil.instance.setHeight(18),
+        ),
+      ],
+    );
   }
 
   @override
@@ -110,7 +127,8 @@ class BookingStatus extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, messageRoute, arguments: data);
+                        Navigator.pushNamed(context, messageRoute,
+                            arguments: data);
                       },
                     ),
                     SizedBox(
@@ -139,7 +157,8 @@ class BookingStatus extends StatelessWidget {
                             launch('tel://${data.createdBy.phoneNumber}');
                           } else {
                             Fluttertoast.showToast(
-                              msg: AppLocalizations.of(context).tr('no_phone_number'),
+                              msg: AppLocalizations.of(context)
+                                  .tr('no_phone_number'),
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
                               timeInSecForIos: 1,
@@ -154,7 +173,8 @@ class BookingStatus extends StatelessWidget {
                             launch('tel://${data.maid.phoneNumber}');
                           } else {
                             Fluttertoast.showToast(
-                              msg: AppLocalizations.of(context).tr('no_phone_number'),
+                              msg: AppLocalizations.of(context)
+                                  .tr('no_phone_number'),
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
                               timeInSecForIos: 1,
