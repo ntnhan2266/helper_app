@@ -83,12 +83,16 @@ class BookingStatus extends StatelessWidget {
           .tr('cancel_reason_' + data.reason.toString());
     }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           AppLocalizations.of(context).tr('reason') + ': ' + reason,
         ),
         SizedBox(
           height: ScreenUtil.instance.setHeight(18),
+        ),
+        Text(
+          AppLocalizations.of(context).tr('description') + ': ' + data.content,
         ),
       ],
     );
@@ -101,6 +105,7 @@ class BookingStatus extends StatelessWidget {
         horizontal: ScreenUtil.instance.setWidth(18),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -191,6 +196,8 @@ class BookingStatus extends StatelessWidget {
               )
             ],
           ),
+          SizedBox(height: ScreenUtil.instance.setHeight(12),),
+          _buildCancelInfo(context),
         ],
       ),
     );
