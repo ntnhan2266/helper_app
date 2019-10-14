@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import '../widgets/components/review_container.dart';
 import '../utils/route_names.dart';
 import '../widgets/form/form_label.dart';
+import '../models/maid_review.dart';
 
 class ReviewCarouselSlider extends StatelessWidget {
   final String label;
-  final List reviews;
+  final List<MaidReview> reviews;
 
   const ReviewCarouselSlider(
       {Key key, @required this.label, @required this.reviews})

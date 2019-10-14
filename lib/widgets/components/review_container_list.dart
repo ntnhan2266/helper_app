@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/dummy_data.dart';
 import '../../models/maid_review.dart';
 import '../review_carousel_slider.dart';
 
@@ -14,7 +15,7 @@ class ReviewContainerList extends StatefulWidget {
 }
 
 class _ReviewContainerListState extends State<ReviewContainerList> {
-  List<MaidReview> _reviews = List();
+  List<MaidReview> _reviews = reviews.map((review) => MaidReview.fromJson(review)).toList();
 
   @override
   Widget build(BuildContext context) {
