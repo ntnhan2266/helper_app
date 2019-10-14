@@ -8,6 +8,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../models/service_category.dart';
+import '../../models/user_maid.dart';
 import '../../widgets/components/home_search_container.dart';
 import '../../utils/dummy_data.dart';
 import '../../utils/route_names.dart';
@@ -24,6 +25,7 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   var _categories = categoriesData.sublist(0, 4);
   bool _isShowModalBottomSheet = false;
+  List<UserMaid> users = [];
 
   Widget _inputSearch() {
     return Container(
@@ -195,6 +197,16 @@ class _HomeTabState extends State<HomeTab> {
   // }
 
   @override
+  void initState() {
+    super.initState();
+    getTopMaid();
+  }
+
+  void getTopMaid() {
+    
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
@@ -312,7 +324,7 @@ class _HomeTabState extends State<HomeTab> {
               primary: false,
               itemCount: users == null ? 0 : users.length,
               itemBuilder: (BuildContext context, int index) {
-                Map user = users.toList()[index];
+                UserMaid user = users.toList()[index];
                 return Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: InkWell(
@@ -325,7 +337,7 @@ class _HomeTabState extends State<HomeTab> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
-                              "${user["img"]}",
+                              "${user.avatar}",
                               height: 178,
                               width: 140,
                               fit: BoxFit.cover,
@@ -333,7 +345,7 @@ class _HomeTabState extends State<HomeTab> {
                           ),
                           SizedBox(height: 7),
                           Text(
-                            "${user["name"]}",
+                            "${user.name}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: ScreenUtil.instance.setSp(15.0),
@@ -343,7 +355,7 @@ class _HomeTabState extends State<HomeTab> {
                           ),
                           SizedBox(height: 3),
                           RatingBar(
-                            initialRating: user['ratting'],
+                            initialRating: 5, // TODO Remove hard code
                             allowHalfRating: true,
                             itemSize: ScreenUtil.instance.setSp(20),
                             itemCount: 5,
