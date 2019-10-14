@@ -5,11 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 
+import '../widgets/components/review_container_list.dart';
 import '../models/user_maid.dart';
 import '../widgets/form/form_input.dart';
 import '../utils/utils.dart';
 import '../utils/dummy_data.dart';
-import '../widgets/review_carousel_slider.dart';
 
 class HelperDetailScreen extends StatefulWidget {
   @override
@@ -276,15 +276,7 @@ class _HelperDetailScreenState extends State<HelperDetailScreen> {
                           SizedBox(
                             height: ScreenUtil.instance.setHeight(20.0),
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(bottom: 15.0),
-                            color: Colors.white,
-                            child: ReviewCarouselSlider(
-                              label: AppLocalizations.of(context).tr('review'),
-                              reviews: reviews,
-                            ),
-                          ),
+                          ReviewContainerList(userMaid.id),
                         ],
                       ),
                     ),
