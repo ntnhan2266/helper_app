@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/maid_review.dart';
 import '../configs/api.dart';
 import '../utils/constants.dart';
 import '../models/maid.dart';
@@ -13,6 +14,8 @@ class MaidService {
   static const String _getMaidListRoute = APIConfig.baseURL + '/maids';
   static const String _registerMaidRoute = APIConfig.baseURL + '/maid';
   static const String _editMaidRoute = APIConfig.baseURL + '/maid/edit';
+  static const String _getMaidReviewsRoute =
+      APIConfig.baseURL + '/maid/reviews';
 
   static Future<Map<String, dynamic>> getMaid() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -102,6 +105,38 @@ class MaidService {
         'total': null,
         'hasError': true,
       });
+    }
+    return completer.future;
+  }
+
+  static Future<Map<String, dynamic>> getMaidReviews(
+      String id, int page, int size) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(X_TOKEN);
+    var completer = new Completer<Map<String, dynamic>>();
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: "application/json", // or whatever
+      HttpHeaders.authorizationHeader: "Bearer $token",
+      "page": page.toString(),
+      "size": size.toString(),
+    };
+    var response = await http.get("$_getMaidReviewsRoute?page=$page&size=$size",
+        headers: headers);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['errorCode'] != null) {
+        completer.complete({'isValid': false, 'data': null});
+      } else {
+        final json = data['reviews'];
+        final List<MaidReview> reviews = [];
+        for (var i = 0; i < json.length; i++) {
+          reviews.add(MaidReview.fromJson(json[i]));
+        }
+        final total = data['total'];
+        completer.complete({'isValid': true, 'data': reviews, 'total': total});
+      }
+    } else {
+      completer.complete({'isValid': false, 'data': null});
     }
     return completer.future;
   }
