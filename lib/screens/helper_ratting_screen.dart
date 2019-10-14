@@ -13,6 +13,7 @@ import '../widgets/form/form_input.dart';
 import '../utils/constants.dart';
 import '../utils/dummy_data.dart';
 import '../widgets/review_carousel_slider.dart';
+import '../widgets/form/form_label.dart';
 
 class HelperRattingScreen extends StatefulWidget {
   @override
@@ -21,15 +22,16 @@ class HelperRattingScreen extends StatefulWidget {
 
 class _HelperRattingScreenState extends State<HelperRattingScreen> {
   final _form = GlobalKey<FormState>();
-  double _rating;
-  String _rattingComment;
+  double _rating = 0.0;
+  String _rattingComment = '';
 
   @override
   void initState() {
     super.initState();
-    _rating = 0.0;
-    _rattingComment = '';
+    getMaidInfo();
   }
+
+  void getMaidInfo() {}
 
   void _onSubmit() {
     if (_form.currentState.validate()) {
@@ -158,9 +160,9 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                                     itemPadding:
                                         EdgeInsets.symmetric(horizontal: 4.0),
                                     itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
                                     onRatingUpdate: (rating) {
                                       setState(() {
                                         _rating = rating;
@@ -170,90 +172,53 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                                     },
                                   ),
                                 ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.only(bottom: 30, top: 10),
-                                  child: Text(AppLocalizations.of(context)
-                                      .tr(_rattingComment)),
-                                ),
-                                FormInput(
-                                  label:
+                                _rattingComment != ''
+                                    ? Container(
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.only(
+                                            bottom: 30, top: 10),
+                                        child: Text(
+                                            AppLocalizations.of(context)
+                                                .tr(_rattingComment),
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                      )
+                                    : SizedBox(
+                                        height:
+                                            ScreenUtil.instance.setHeight(20),
+                                      ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    FormLabel(
                                       AppLocalizations.of(context).tr('review'),
-                                  hint: AppLocalizations.of(context)
-                                      .tr('review_hint'),
-                                  hasNext: false,
-                                  inputType: TextInputType.multiline,
+                                    ),
+                                    TextFormField(
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: 4,
+                                      textInputAction: TextInputAction.newline,
+                                      style: TextStyle(
+                                        fontSize:
+                                            ScreenUtil.instance.setSp(12.0),
+                                        color: Colors.black,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: AppLocalizations.of(context)
+                                            .tr('review_hint'),
+                                        hintStyle: TextStyle(),
+                                        enabledBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        contentPadding: EdgeInsets.only(
+                                          top:
+                                              ScreenUtil.instance.setHeight(10),
+                                          bottom:
+                                              ScreenUtil.instance.setHeight(10),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.instance.setHeight(20.0),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.all(15.0),
-                            color: Colors.white,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                FormInput(
-                                  label: AppLocalizations.of(context)
-                                      .tr("category"),
-                                  initialValue: AppLocalizations.of(context)
-                                      .tr(_serviceCategory.serviceName),
-                                  enabled: false,
-                                  hasNext: true,
-                                ),
-                                FormInput(
-                                  label: AppLocalizations.of(context)
-                                      .tr("address"),
-                                  initialValue: AppLocalizations.of(context)
-                                      .tr(serviceDetail.address),
-                                  enabled: false,
-                                  hasNext: true,
-                                ),
-                                FormInput(
-                                  label:
-                                      AppLocalizations.of(context).tr("type"),
-                                  initialValue: Utils.getServiceType(
-                                      serviceDetail.type, context),
-                                  enabled: false,
-                                  hasNext: true,
-                                ),
-                                FormInput(
-                                  label:
-                                      AppLocalizations.of(context).tr("date"),
-                                  initialValue: Utils.getServiceDate(
-                                      serviceDetail.type,
-                                      serviceDetail.startDate,
-                                      serviceDetail.endDate),
-                                  enabled: false,
-                                  hasNext: true,
-                                ),
-                                FormInput(
-                                  label:
-                                      AppLocalizations.of(context).tr("time"),
-                                  initialValue: Utils.getServiceTime(
-                                      serviceDetail.startTime,
-                                      serviceDetail.endTime),
-                                  enabled: false,
-                                  hasNext: false,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.instance.setHeight(20.0),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(bottom: 15.0),
-                            color: Colors.white,
-                            child: ReviewCarouselSlider(
-                              label: AppLocalizations.of(context)
-                                  .tr('other_review'),
-                              reviews: reviews,
                             ),
                           ),
                         ],
