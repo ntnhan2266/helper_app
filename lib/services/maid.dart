@@ -16,8 +16,9 @@ class MaidService {
   static const String _editMaidRoute = APIConfig.baseURL + '/maid/edit';
   static const String _getMaidReviewsRoute =
       APIConfig.baseURL + '/maid/reviews';
+  static const String _getTopRatingMaids = APIConfig.baseURL + '/maids/top-rating';
 
-  static Future<Map<String, dynamic>> getMaid() async {
+  static Future<Map<String, dynamic>> getMaid({String id}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(X_TOKEN);
     var completer = new Completer<Map<String, dynamic>>();
@@ -25,7 +26,11 @@ class MaidService {
       HttpHeaders.contentTypeHeader: "application/json", // or whatever
       HttpHeaders.authorizationHeader: "Bearer $token",
     };
-    var response = await http.get(_getMaidRoute, headers: headers);
+    var query = _getMaidRoute;
+    if (id != null) {
+      query = _getMaidRoute + '?id=' + id;
+    }
+    var response = await http.get(query, headers: headers);
     final data = jsonDecode(response.body);
     final maid = data['maid'];
     if (maid != null) {
@@ -85,11 +90,42 @@ class MaidService {
   }
 
   static Future<Map<String, dynamic>> getMaidList() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(X_TOKEN);
     var completer = new Completer<Map<String, dynamic>>();
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: "application/json", // or whatever
+      HttpHeaders.authorizationHeader: "Bearer $token",
     };
     var response = await http.get(_getMaidListRoute, headers: headers);
+    final data = jsonDecode(response.body);
+    if (data['errorCode'] == null) {
+      final maids = data['maids'];
+      final total = data['total'];
+      completer.complete({
+        'maids': maids,
+        'total': total,
+        'hasError': false,
+      });
+    } else {
+      completer.complete({
+        'maids': null,
+        'total': null,
+        'hasError': true,
+      });
+    }
+    return completer.future;
+  }
+
+  static Future<Map<String, dynamic>> getTopRatingMaids() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(X_TOKEN);
+    var completer = new Completer<Map<String, dynamic>>();
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: "application/json", // or whatever
+      HttpHeaders.authorizationHeader: "Bearer $token",
+    };
+    var response = await http.get(_getTopRatingMaids, headers: headers);
     final data = jsonDecode(response.body);
     if (data['errorCode'] == null) {
       final maids = data['maids'];
@@ -117,8 +153,6 @@ class MaidService {
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: "application/json", // or whatever
       HttpHeaders.authorizationHeader: "Bearer $token",
-      "page": page.toString(),
-      "size": size.toString(),
     };
     var response = await http.get("$_getMaidReviewsRoute?page=$page&size=$size",
         headers: headers);

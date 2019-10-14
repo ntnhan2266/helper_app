@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_rabbit/services/maid.dart';
 
 import '../../models/service_category.dart';
 import '../../models/user_maid.dart';
 import '../../widgets/components/home_search_container.dart';
 import '../../utils/dummy_data.dart';
 import '../../utils/route_names.dart';
+import '../../configs/api.dart';
 
 class HomeTab extends StatefulWidget {
   final Function bottomTapped;
@@ -202,8 +204,19 @@ class _HomeTabState extends State<HomeTab> {
     getTopMaid();
   }
 
-  void getTopMaid() {
-    
+  void getTopMaid() async {
+    final res = await MaidService.getTopRatingMaids();
+    if (!res['hasError']) {
+      final List<UserMaid> data = [];
+      final maids = res['maids'];
+      for (var i = 0; i < maids.length; i++) {
+        final maid = maids[i];
+        data.add(UserMaid.getMaid(maid));
+      }
+      setState(() {
+        users = data;
+      });
+    }
   }
 
   @override
@@ -336,8 +349,8 @@ class _HomeTabState extends State<HomeTab> {
                         children: <Widget>[
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              "${user.avatar}",
+                            child: Image.network(
+                              "${APIConfig.hostURL + user.avatar}",
                               height: 178,
                               width: 140,
                               fit: BoxFit.cover,
@@ -361,19 +374,19 @@ class _HomeTabState extends State<HomeTab> {
                             itemCount: 5,
                             itemPadding: EdgeInsets.only(right: 2.0),
                             itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
                             onRatingUpdate: (rating) {},
                           ),
                         ],
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pushNamed(helperDetailRoute);
+                      Navigator.of(context).pushNamed(helperDetailRoute, arguments: user.id);
                     },
                     onDoubleTap: () {
-                      Navigator.of(context).pushNamed(helperRattingRoute);
+                      Navigator.of(context).pushNamed(helperRattingRoute, arguments: user.id);
                     },
                   ),
                 );
