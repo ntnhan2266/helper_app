@@ -8,7 +8,6 @@ import 'package:smart_rabbit/screens/helper_reviews_screen.dart';
 import 'package:smart_rabbit/screens/setting_screen.dart';
 
 import './screens/helper_detail_screen.dart';
-import './screens/helper_ratting_screen.dart';
 import './screens/helper_register_screen.dart';
 import './screens/service_status_screen.dart';
 import './screens/user_detail_screen.dart';
@@ -121,8 +120,6 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, UserDetailScreen());
       case helperRegisterRoute:
         return _buildRoute(settings, HelperRegisterScreen());
-      case helperRattingRoute:
-        return _buildRoute(settings, HelperRattingScreen());
       case helperDetailRoute:
         return _buildRoute(settings, HelperDetailScreen());
       case serviceStatusRoute:

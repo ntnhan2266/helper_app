@@ -285,5 +285,8 @@
     "no_email_info": "Chưa có thông tin email",
     "complete_confirm": "Đã hoàn thành công việc",
     "complete_confirm_hint": "Bạn đã hoàn thành công việc từ khách hàng?",
-    "complete_successfully": "Xác nhận hoàn thành dịch vụ thành công"
+    "complete_successfully": "Xác nhận hoàn thành dịch vụ thành công",
+    "review_content_required": "Vui lòng nhập nhận xét",
+    "review_content_minlength": "Vui lòng nhập ít nhất 50 ký tự",
+    "rating_required": "Vui lòng đánh giá từ 1 đến 5 sao"
 }

@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../utils/constants.dart';
 import '../utils/route_names.dart';
 import '../models/service_details.dart';
+import '../screens/helper_ratting_screen.dart';
 
 class BookingStatus extends StatelessWidget {
   final ServiceDetails data;
@@ -133,7 +134,10 @@ class BookingStatus extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    Navigator.pushNamed(context, helperRattingRoute, arguments: data);
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HelperRattingScreen(data)),
+                  );
                   },
                 )
               : SizedBox(

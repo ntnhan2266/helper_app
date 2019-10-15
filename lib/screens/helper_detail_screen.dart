@@ -8,9 +8,7 @@ import 'package:intl/intl.dart';
 import '../widgets/components/review_container_list.dart';
 import '../models/user_maid.dart';
 import '../widgets/form/form_input.dart';
-import '../widgets/review_carousel_slider.dart';
 import '../utils/utils.dart';
-import '../utils/dummy_data.dart';
 import '../services/maid.dart';
 import '../widgets/user_avatar.dart';
 

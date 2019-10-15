@@ -358,7 +358,7 @@ class _HomeTabState extends State<HomeTab> {
                                     fit: BoxFit.cover,
                                   )
                                 : Image.asset(
-                                    'assets/images/retangle_avatar.png',
+                                    'assets/images/avt_default.png',
                                     height: 178,
                                     width: 140,
                                     fit: BoxFit.cover,

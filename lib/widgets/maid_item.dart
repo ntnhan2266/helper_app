@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../models/user_maid.dart';
 import '../widgets/user_avatar.dart';
+import '../utils/route_names.dart';
 
 class MaidItem extends StatelessWidget {
   final UserMaid maid;
@@ -42,7 +43,8 @@ class MaidItem extends StatelessWidget {
             color: isSelected ? Colors.white : Colors.black,
           ),
           onPressed: () {
-            // TODO Go to user's details page
+           Navigator.of(context)
+                          .pushNamed(helperDetailRoute, arguments: maid.id);
           },
         ),
       ),
