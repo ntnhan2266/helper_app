@@ -19,6 +19,8 @@ class BookingService {
       APIConfig.baseURL + '/booking/approve?id=';
   static const String _denyBooking =
       APIConfig.baseURL + '/booking/reject';
+  static const String _completeBooking =
+      APIConfig.baseURL + '/booking/complete?id=';
 
   static Future<Map<String, dynamic>> booking(ServiceDetails booking) async {
     var completer = new Completer<Map<String, dynamic>>();
@@ -162,6 +164,26 @@ class BookingService {
       _denyBooking,
       headers: headers,
       body: jsonEncode(body)
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['completed']) {
+        completer.complete({'isValid': true,});
+      } else {
+        completer.complete({'isValid': false,});
+      }
+    } else {
+        completer.complete({'isValid': false,});
+    }
+    return completer.future;
+  }
+
+  static Future<Map<String, dynamic>> complete(String id) async {
+    var completer = new Completer<Map<String, dynamic>>();
+    var headers = await API.getAuthToken();
+    var response = await http.put(
+      _completeBooking + id,
+      headers: headers,
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);

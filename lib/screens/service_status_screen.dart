@@ -59,8 +59,11 @@ class ServiceStatus extends StatelessWidget {
       context: context,
       builder: (context) {
         return RejectBookingDialog((reason, content) async {
-          var res =
-              await BookingService.deny(id, reason, content,);
+          var res = await BookingService.deny(
+            id,
+            reason,
+            content,
+          );
           if (res['isValid']) {
             Fluttertoast.showToast(
               msg: AppLocalizations.of(context).tr('deny_successfully'),
@@ -72,6 +75,16 @@ class ServiceStatus extends StatelessWidget {
               fontSize: ScreenUtil.instance.setSp(14),
             );
             Navigator.of(context).pushReplacementNamed(helperManagementRoute);
+          } else {
+            Fluttertoast.showToast(
+              msg: AppLocalizations.of(context).tr('error'),
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIos: 1,
+              backgroundColor: Color.fromRGBO(165, 0, 0, 1),
+              textColor: Colors.white,
+              fontSize: ScreenUtil.instance.setSp(14),
+            );
           }
         });
       },
@@ -91,99 +104,202 @@ class ServiceStatus extends StatelessWidget {
         fontSize: ScreenUtil.instance.setSp(14),
       );
       Navigator.of(context).pushReplacementNamed(helperManagementRoute);
+    } else {
+      Fluttertoast.showToast(
+        msg: AppLocalizations.of(context).tr('error'),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Color.fromRGBO(165, 0, 0, 1),
+        textColor: Colors.white,
+        fontSize: ScreenUtil.instance.setSp(14),
+      );
     }
   }
 
+  void _completeBooking(BuildContext context) async {
+    var res = await BookingService.complete(id);
+    if (res['isValid']) {
+      Fluttertoast.showToast(
+        msg: AppLocalizations.of(context).tr('complete_successfully'),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Color.fromRGBO(75, 181, 67, 1),
+        textColor: Colors.white,
+        fontSize: ScreenUtil.instance.setSp(14),
+      );
+      Navigator.of(context).pushReplacementNamed(helperManagementRoute);
+    } else {
+      Fluttertoast.showToast(
+        msg: AppLocalizations.of(context).tr('error'),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Color.fromRGBO(165, 0, 0, 1),
+        textColor: Colors.white,
+        fontSize: ScreenUtil.instance.setSp(14),
+      );
+    }
+  }
 
-  Widget _buildAction(BuildContext context, int status) {
-    if (status == WAITING_APPROVE) {
-      // Customer
-      if (!isHelper) {
-        return InkWell(
-          onTap: () {
-            _handleCustomerCancel(context);
-          },
-          child: Container(
-            padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-            margin: EdgeInsets.symmetric(
-                horizontal: ScreenUtil.instance.setWidth(12)),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                width: 1,
-                color: Color.fromRGBO(165, 0, 0, 1),
-              ),
-              borderRadius: BorderRadius.circular(3),
+  Widget _buildWatingApproveAction(BuildContext context, int status) {
+    // Customer
+    if (!isHelper) {
+      return InkWell(
+        onTap: () {
+          _handleCustomerCancel(context);
+        },
+        child: Container(
+          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
+          margin: EdgeInsets.symmetric(
+              horizontal: ScreenUtil.instance.setWidth(12)),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              width: 1,
+              color: Color.fromRGBO(165, 0, 0, 1),
             ),
-            child: Text(
-              AppLocalizations.of(context).tr('cancel').toUpperCase(),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromRGBO(165, 0, 0, 1),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Text(
+            AppLocalizations.of(context).tr('cancel').toUpperCase(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color.fromRGBO(165, 0, 0, 1),
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Column(
+        children: <Widget>[
+          InkWell(
+            onTap: () {
+              _approveBooking(context);
+            },
+            child: Container(
+              padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
+              margin: EdgeInsets.symmetric(
+                  horizontal: ScreenUtil.instance.setWidth(12)),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(75, 181, 67, 1),
+                border: Border.all(
+                  width: 1,
+                  color: Color.fromRGBO(75, 181, 67, 1),
+                ),
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Text(
+                AppLocalizations.of(context).tr('approve').toUpperCase(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
-        );
-      } else {
-        return Column(
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                _approveBooking(context);
-              },
-              child: Container(
-                padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-                margin: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil.instance.setWidth(12)),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(75, 181, 67, 1),
-                  border: Border.all(
-                    width: 1,
-                    color: Color.fromRGBO(75, 181, 67, 1),
-                  ),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Text(
-                  AppLocalizations.of(context).tr('approve').toUpperCase(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+          SizedBox(
+            height: ScreenUtil.instance.setHeight(20),
+          ),
+          InkWell(
+            onTap: () {
+              _denyBooking(context);
+            },
+            child: Container(
+              padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
+              margin: EdgeInsets.symmetric(
+                  horizontal: ScreenUtil.instance.setWidth(12)),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border:
+                    Border.all(width: 1, color: Color.fromRGBO(165, 0, 0, 1)),
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Text(
+                AppLocalizations.of(context).tr('cancel').toUpperCase(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromRGBO(165, 0, 0, 1),
                 ),
               ),
             ),
-            SizedBox(
-              height: ScreenUtil.instance.setHeight(20),
-            ),
-            InkWell(
-              onTap: () {
-                _denyBooking(context);
-              },
-              child: Container(
-                padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-                margin: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil.instance.setWidth(12)),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border:
-                      Border.all(width: 1, color: Color.fromRGBO(165, 0, 0, 1)),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Text(
-                  AppLocalizations.of(context).tr('cancel').toUpperCase(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromRGBO(165, 0, 0, 1),
-                  ),
-                ),
+          ),
+        ],
+      );
+    }
+  }
+
+  void _handlePaidConfirm(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            AppLocalizations.of(context).tr('confirm'),
+          ),
+          content: Text(
+            AppLocalizations.of(context).tr('complete_confirm_hint'),
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            FlatButton(
+              child: Text(
+                AppLocalizations.of(context).tr('close'),
               ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text(
+                AppLocalizations.of(context).tr('confirm'),
+              ),
+              onPressed: () {
+                _completeBooking(context);
+              },
             ),
           ],
         );
-      }
+      },
+    );
+  }
+
+  Widget _buildApproveAction(BuildContext context, int status) {
+    if (isHelper) {
+      return InkWell(
+        onTap: () {
+          _handlePaidConfirm(context);
+        },
+        child: Container(
+          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
+          margin: EdgeInsets.symmetric(
+              horizontal: ScreenUtil.instance.setWidth(12)),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(75, 181, 67, 1),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Text(
+            AppLocalizations.of(context).tr('complete_confirm').toUpperCase(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget _buildAction(BuildContext context, int status) {
+    if (status == WAITING_APPROVE) {
+      return _buildWatingApproveAction(context, status);
+    } else if (status == APPROVED) {
+      return _buildApproveAction(context, status);
     } else {
       return Container();
     }

@@ -368,7 +368,7 @@ class _HomeTabState extends State<HomeTab> {
                           ),
                           SizedBox(height: 3),
                           RatingBar(
-                            initialRating: 5, // TODO Remove hard code
+                            initialRating: user.rating,
                             allowHalfRating: true,
                             itemSize: ScreenUtil.instance.setSp(20),
                             itemCount: 5,
@@ -384,9 +384,6 @@ class _HomeTabState extends State<HomeTab> {
                     ),
                     onTap: () {
                       Navigator.of(context).pushNamed(helperDetailRoute, arguments: user.id);
-                    },
-                    onDoubleTap: () {
-                      Navigator.of(context).pushNamed(helperRattingRoute, arguments: user.id);
                     },
                   ),
                 );
