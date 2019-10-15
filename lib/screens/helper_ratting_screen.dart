@@ -5,14 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+import '../widgets/components/review_container_list.dart';
 import '../models/service_category.dart';
-import '../utils/utils.dart';
 import '../models/service_details.dart';
 import '../models/user_maid.dart';
-import '../widgets/form/form_input.dart';
 import '../utils/constants.dart';
 import '../utils/dummy_data.dart';
-import '../widgets/review_carousel_slider.dart';
 import '../widgets/form/form_label.dart';
 
 class HelperRattingScreen extends StatefulWidget {
@@ -221,6 +219,10 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                               ],
                             ),
                           ),
+                          SizedBox(
+                            height: ScreenUtil.instance.setHeight(20.0),
+                          ),
+                          ReviewContainerList(serviceDetail.maid.id),
                         ],
                       ),
                     ),

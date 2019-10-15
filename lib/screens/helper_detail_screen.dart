@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 
+import '../widgets/components/review_container_list.dart';
 import '../models/user_maid.dart';
 import '../widgets/form/form_input.dart';
 import '../widgets/review_carousel_slider.dart';
@@ -308,6 +309,10 @@ class HelperDetailScreenData extends StatelessWidget {
                               ],
                             ),
                           ),
+                          SizedBox(
+                            height: ScreenUtil.instance.setHeight(20.0),
+                          ),
+                          ReviewContainerList(userMaid.id),
                         ],
                       ),
                     ],
