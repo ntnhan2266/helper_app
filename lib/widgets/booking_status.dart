@@ -115,28 +115,30 @@ class BookingStatus extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          data.status == COMPLETED 
-          ? InkWell(
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: ScreenUtil.instance.setWidth(10),
-                vertical: ScreenUtil.instance.setWidth(5),
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(3),
-              ),
-              child: Icon(
-                Icons.rate_review,
-                size: ScreenUtil.instance.setSp(16),
-                color: Colors.white,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, messageRoute, arguments: data);
-            },
-          )
-          : SizedBox(width: 0,),
+          data.status == COMPLETED
+              ? InkWell(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: ScreenUtil.instance.setWidth(10),
+                      vertical: ScreenUtil.instance.setWidth(5),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: Icon(
+                      Icons.rate_review,
+                      size: ScreenUtil.instance.setSp(16),
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, helperRattingRoute, arguments: data);
+                  },
+                )
+              : SizedBox(
+                  width: 0,
+                ),
           SizedBox(
             width: ScreenUtil.instance.setWidth(15),
           ),

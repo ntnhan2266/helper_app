@@ -9,6 +9,7 @@ import '../models/user.dart';
 import '../widgets/user_avatar.dart';
 import '../utils/utils.dart';
 import '../utils/dummy_data.dart';
+import '../utils/route_names.dart';
 import '../models/service_category.dart';
 
 class ServiceDetailInfo extends StatelessWidget {
@@ -42,47 +43,52 @@ class ServiceDetailInfo extends StatelessWidget {
 
   Widget _buildHostInfo(BuildContext context, UserMaid maid) {
     final numericFormatter = new NumberFormat("#,###", "en_US");
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          AppLocalizations.of(context).tr('maid'),
-        ),
-        SizedBox(
-          height: ScreenUtil.instance.setHeight(10),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: ScreenUtil.instance.setWidth(50),
-              height: ScreenUtil.instance.setWidth(50),
-              child: UserAvatar(maid.avatar),
-            ),
-            SizedBox(
-              width: ScreenUtil.instance.setWidth(20),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    maid.name,
-                    style: TextStyle(fontSize: ScreenUtil.instance.setSp(14)),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil.instance.setHeight(12),
-                  ),
-                  Text(
-                    numericFormatter.format(maid.salary) + ' VND/h',
-                  ),
-                ],
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed(helperDetailRoute, arguments: maid.id);
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            AppLocalizations.of(context).tr('maid'),
+          ),
+          SizedBox(
+            height: ScreenUtil.instance.setHeight(10),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: ScreenUtil.instance.setWidth(50),
+                height: ScreenUtil.instance.setWidth(50),
+                child: UserAvatar(maid.avatar),
               ),
-            )
-          ],
-        ),
-      ],
+              SizedBox(
+                width: ScreenUtil.instance.setWidth(20),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      maid.name,
+                      style: TextStyle(fontSize: ScreenUtil.instance.setSp(14)),
+                    ),
+                    SizedBox(
+                      height: ScreenUtil.instance.setHeight(12),
+                    ),
+                    Text(
+                      numericFormatter.format(maid.salary) + ' VND/h',
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -295,14 +301,12 @@ class ServiceDetailInfo extends StatelessWidget {
         categoriesData.indexWhere((item) => item.id == _data.type);
     final ServiceCategory category = categoriesData[categoryIndex];
 
-    
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: ScreenUtil.instance.setWidth(18.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-
         children: <Widget>[
           _buildDetailItem(
             context,
@@ -342,7 +346,9 @@ class ServiceDetailInfo extends StatelessWidget {
             AppLocalizations.of(context).tr('note'),
             _data.note != null ? _data.note : '--',
           ),
-          isHelper ? _buildCustomerInfo(context, _data.createdBy) : _buildHostInfo(context, _data.maid),
+          isHelper
+              ? _buildCustomerInfo(context, _data.createdBy)
+              : _buildHostInfo(context, _data.maid),
           SizedBox(
             height: ScreenUtil.instance.setHeight(20),
           ),

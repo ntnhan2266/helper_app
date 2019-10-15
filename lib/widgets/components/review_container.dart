@@ -32,7 +32,7 @@ class _ReviewContainerState extends State<ReviewContainer> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                widget.review.createdBy.name,
+                widget.review.createdBy != null ? widget.review.createdBy.name : 'user_name',
                 style: TextStyle(
                     fontSize: ScreenUtil.instance.setSp(16),
                     fontWeight: FontWeight.w500),
@@ -65,9 +65,10 @@ class _ReviewContainerState extends State<ReviewContainer> {
                   child: Row(
                     children: <Widget>[
                       Text("50"),
-                      Text(" "),
+                      SizedBox(width: ScreenUtil.instance.setWidth(5),),
                       Icon(
-                        Icons.thumb_down,
+                        Icons.thumb_up,
+                        size: ScreenUtil.instance.setSp(16),
                         color: _like > 0 ? Theme.of(context).primaryColor : Colors.grey,
                       ),
                     ],
@@ -75,24 +76,6 @@ class _ReviewContainerState extends State<ReviewContainer> {
                   onTap: () {
                     setState(() {
                       _like = _like == 1 ? 0 : 1;
-                    });
-                  },
-                ),
-                SizedBox(width: 10),
-                InkWell(
-                  child: Row(
-                    children: <Widget>[
-                      Text("5"),
-                      Text(" "),
-                      Icon(
-                        Icons.thumb_up,
-                        color: _like < 0 ? Theme.of(context).primaryColor : Colors.grey,
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _like = _like == -1 ? 0 : -1;
                     });
                   },
                 ),

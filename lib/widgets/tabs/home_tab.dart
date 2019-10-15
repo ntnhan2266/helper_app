@@ -206,6 +206,7 @@ class _HomeTabState extends State<HomeTab> {
 
   void getTopMaid() async {
     final res = await MaidService.getTopRatingMaids();
+    print(res);
     if (!res['hasError']) {
       final List<UserMaid> data = [];
       final maids = res['maids'];
@@ -349,12 +350,19 @@ class _HomeTabState extends State<HomeTab> {
                         children: <Widget>[
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              "${APIConfig.hostURL + user.avatar}",
-                              height: 178,
-                              width: 140,
-                              fit: BoxFit.cover,
-                            ),
+                            child: user.avatar != null
+                                ? Image.network(
+                                    "${APIConfig.hostURL + user.avatar}",
+                                    height: 178,
+                                    width: 140,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.asset(
+                                    'assets/images/retangle_avatar.png',
+                                    height: 178,
+                                    width: 140,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                           SizedBox(height: 7),
                           Text(
@@ -383,7 +391,8 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).pushNamed(helperDetailRoute, arguments: user.id);
+                      Navigator.of(context)
+                          .pushNamed(helperDetailRoute, arguments: user.id);
                     },
                   ),
                 );

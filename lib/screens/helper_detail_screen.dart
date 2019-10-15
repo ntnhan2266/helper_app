@@ -17,7 +17,6 @@ import '../widgets/user_avatar.dart';
 Future<UserMaid> fetchMaidInfo(String maidId) async {
   final res = await MaidService.getMaid(id: maidId);
   if (res['isHost']) {
-    print((res['maid']));
     return UserMaid.fromJson(res['maid']);
   } else {
     throw Exception('Failed to load data');
@@ -300,10 +299,8 @@ class HelperDetailScreenData extends StatelessWidget {
                                   width: MediaQuery.of(context).size.width,
                                   padding: EdgeInsets.only(bottom: 15.0),
                                   color: Colors.white,
-                                  child: ReviewCarouselSlider(
-                                    label: AppLocalizations.of(context)
-                                        .tr('review'),
-                                    reviews: reviews,
+                                  child: ReviewContainerList(
+                                    userMaid.id,
                                   ),
                                 ),
                               ],
@@ -312,7 +309,6 @@ class HelperDetailScreenData extends StatelessWidget {
                           SizedBox(
                             height: ScreenUtil.instance.setHeight(20.0),
                           ),
-                          ReviewContainerList(userMaid.id),
                         ],
                       ),
                     ],
