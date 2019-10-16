@@ -295,13 +295,7 @@ class HelperDetailScreenData extends StatelessWidget {
                                     userMaid.id,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: ScreenUtil.instance.setHeight(20.0),
-                                ),
                                 _basicInfo(context, userMaid),
-                                SizedBox(
-                                  height: ScreenUtil.instance.setHeight(20.0),
-                                ),
                                 _jobInfo(context, userMaid),
                               ],
                             ),
