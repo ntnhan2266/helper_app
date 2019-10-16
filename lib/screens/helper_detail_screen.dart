@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 
+import '../widgets/form/form_label.dart';
 import '../widgets/components/review_container_list.dart';
 import '../models/user_maid.dart';
 import '../widgets/form/form_input.dart';
@@ -30,6 +31,114 @@ class _HelperDetailScreenState extends State<HelperDetailScreen> {
     if (_form.currentState.validate()) {
       print('ok');
     }
+  }
+
+  Widget _basicInfo(UserMaid userMaid) {
+    return ExpansionTile(
+      title: FormLabel(AppLocalizations.of(context).tr("basic_info")),
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(
+            vertical: 15.0,
+            horizontal: 10.0,
+          ),
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              FormInput(
+                label: AppLocalizations.of(context).tr("gender"),
+                initialValue: AppLocalizations.of(context)
+                    .tr(Utils.intToGender(userMaid.gender)),
+                enabled: false,
+                hasNext: true,
+              ),
+              FormInput(
+                label: AppLocalizations.of(context).tr("birthday"),
+                initialValue:
+                    DateFormat("dd-MM-yyyy").format(userMaid.birthday),
+                enabled: false,
+                hasNext: true,
+              ),
+              FormInput(
+                label: AppLocalizations.of(context).tr("address"),
+                initialValue: userMaid.address,
+                enabled: false,
+                hasNext: false,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _jobInfo(UserMaid userMaid) {
+    return ExpansionTile(
+      title: FormLabel(AppLocalizations.of(context).tr("job_info")),
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(
+            vertical: 15.0,
+            horizontal: 10.0,
+          ),
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              FormInput(
+                label: AppLocalizations.of(context).tr("introduction"),
+                initialValue: userMaid.intro,
+                enabled: false,
+                hasNext: true,
+              ),
+              FormInput(
+                label: AppLocalizations.of(context).tr("experience"),
+                initialValue: userMaid.exp,
+                enabled: false,
+                hasNext: true,
+              ),
+              FormInput(
+                label: AppLocalizations.of(context).tr("literacy"),
+                initialValue: AppLocalizations.of(context)
+                    .tr(Utils.intToLiteracy(userMaid.literacyType)),
+                enabled: false,
+                hasNext: true,
+              ),
+              FormInput(
+                label: AppLocalizations.of(context).tr("salary"),
+                initialValue: AppLocalizations.of(context)
+                    .tr(Utils.intToSalary(userMaid.salary)),
+                enabled: false,
+                hasNext: true,
+              ),
+              FormInput(
+                label: AppLocalizations.of(context).tr("work"),
+                initialValue: userMaid.jobTypes
+                    .map((x) =>
+                        AppLocalizations.of(context).tr(Utils.intToJob(x)))
+                    .join(", "),
+                enabled: false,
+                hasNext: true,
+                inputType: TextInputType.multiline,
+              ),
+              FormInput(
+                label: AppLocalizations.of(context).tr("support_area"),
+                initialValue: userMaid.supportAreas
+                    .map((x) => AppLocalizations.of(context)
+                        .tr(Utils.intToSupportArea(x)))
+                    .join(", "),
+                enabled: false,
+                hasNext: false,
+                inputType: TextInputType.multiline,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -150,9 +259,9 @@ class _HelperDetailScreenState extends State<HelperDetailScreen> {
                                     itemPadding:
                                         EdgeInsets.symmetric(horizontal: 4.0),
                                     itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
                                     onRatingUpdate: (rating) {},
                                   ),
                                 ),
@@ -168,115 +277,15 @@ class _HelperDetailScreenState extends State<HelperDetailScreen> {
                           SizedBox(
                             height: ScreenUtil.instance.setHeight(20.0),
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 15.0,
-                              horizontal: 10.0,
-                            ),
-                            color: Colors.white,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                FormInput(
-                                  label:
-                                      AppLocalizations.of(context).tr("gender"),
-                                  initialValue: AppLocalizations.of(context)
-                                      .tr(Utils.intToGender(userMaid.gender)),
-                                  enabled: false,
-                                  hasNext: true,
-                                ),
-                                FormInput(
-                                  label: AppLocalizations.of(context)
-                                      .tr("birthday"),
-                                  initialValue: DateFormat("dd-MM-yyyy")
-                                      .format(userMaid.birthday),
-                                  enabled: false,
-                                  hasNext: true,
-                                ),
-                                FormInput(
-                                  label: AppLocalizations.of(context)
-                                      .tr("address"),
-                                  initialValue: userMaid.address,
-                                  enabled: false,
-                                  hasNext: false,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.instance.setHeight(20.0),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 15.0,
-                              horizontal: 10.0,
-                            ),
-                            color: Colors.white,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                FormInput(
-                                  label: AppLocalizations.of(context)
-                                      .tr("introduction"),
-                                  initialValue: userMaid.intro,
-                                  enabled: false,
-                                  hasNext: true,
-                                ),
-                                FormInput(
-                                  label: AppLocalizations.of(context)
-                                      .tr("experience"),
-                                  initialValue: userMaid.exp,
-                                  enabled: false,
-                                  hasNext: true,
-                                ),
-                                FormInput(
-                                  label: AppLocalizations.of(context)
-                                      .tr("literacy"),
-                                  initialValue: AppLocalizations.of(context).tr(
-                                      Utils.intToLiteracy(
-                                          userMaid.literacyType)),
-                                  enabled: false,
-                                  hasNext: true,
-                                ),
-                                FormInput(
-                                  label:
-                                      AppLocalizations.of(context).tr("salary"),
-                                  initialValue: AppLocalizations.of(context)
-                                      .tr(Utils.intToSalary(userMaid.salary)),
-                                  enabled: false,
-                                  hasNext: true,
-                                ),
-                                FormInput(
-                                  label:
-                                      AppLocalizations.of(context).tr("work"),
-                                  initialValue: userMaid.jobTypes
-                                      .map((x) => AppLocalizations.of(context)
-                                          .tr(Utils.intToJob(x)))
-                                      .join(", "),
-                                  enabled: false,
-                                  hasNext: true,
-                                  inputType: TextInputType.multiline,
-                                ),
-                                FormInput(
-                                  label: AppLocalizations.of(context)
-                                      .tr("support_area"),
-                                  initialValue: userMaid.supportAreas
-                                      .map((x) => AppLocalizations.of(context)
-                                          .tr(Utils.intToSupportArea(x)))
-                                      .join(", "),
-                                  enabled: false,
-                                  hasNext: false,
-                                  inputType: TextInputType.multiline,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.instance.setHeight(20.0),
-                          ),
                           ReviewContainerList(userMaid.id),
+                          SizedBox(
+                            height: ScreenUtil.instance.setHeight(20.0),
+                          ),
+                          _basicInfo(userMaid),
+                          SizedBox(
+                            height: ScreenUtil.instance.setHeight(20.0),
+                          ),
+                          _jobInfo(userMaid),
                         ],
                       ),
                     ),
