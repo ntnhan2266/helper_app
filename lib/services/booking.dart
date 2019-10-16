@@ -79,11 +79,11 @@ class BookingService {
   }
 
   static Future<Map<String, dynamic>> getBookingsByStatus(int status,
-      {int pageSize = 10, int pageIndex = 1}) async {
+      {int pageSize = 10, int pageIndex = 0}) async {
     var completer = new Completer<Map<String, dynamic>>();
     var headers = await API.getAuthToken();
     var response = await http.get(
-      _getBookingByStatus + status.toString(),
+      _getBookingByStatus + status.toString() + '&pageSize=$pageSize&pageIndex=$pageIndex',
       headers: headers,
     );
     if (response.statusCode == 200) {
