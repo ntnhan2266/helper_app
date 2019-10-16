@@ -93,7 +93,6 @@ class MessageScreenState extends State<MessageScreen> {
   Widget _buildItem(
       int index, DocumentSnapshot document, ServiceDetails booking) {
     final userProvider = Provider.of<User>(context, listen: false);
-    print(userProvider.id);
     var userName = booking.maid.name;
     var avatar = booking.maid.avatar;
     if (document['from'] == userProvider.id) {

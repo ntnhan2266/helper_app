@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../widgets/service_detail_info.dart';
 import '../models/service_details.dart';
 import '../services/booking.dart';
+import '../widgets/service_detail_info.dart';
 import '../widgets/booking_status.dart';
 import '../widgets/dialogs/cancel_booking_dialog.dart';
 import '../widgets/dialogs/reject_booking_dialog.dart';

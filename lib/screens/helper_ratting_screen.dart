@@ -6,12 +6,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../widgets/components/review_container_list.dart';
+import '../widgets/form/form_label.dart';
 import '../models/service_details.dart';
-import '../services/maid.dart';
 import '../models/user_maid.dart';
 import '../utils/constants.dart';
-import '../widgets/form/form_label.dart';
 import '../configs/api.dart';
+import '../services/maid.dart';
+import '../services/review.dart';
+import '../utils/route_names.dart';
+import '../utils/utils.dart';
 
 class HelperRattingScreen extends StatefulWidget {
   final ServiceDetails data;
@@ -32,6 +35,7 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
   final _form = GlobalKey<FormState>();
   String _rattingComment = '';
   bool loading = true;
+  bool submitting = false;
   bool error = false;
   UserMaid maid;
   ReviewData reviewData = ReviewData();
@@ -56,7 +60,10 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
     }
   }
 
-  void _onSubmit() {
+  void _onSubmit() async {
+    if (submitting) {
+      return;
+    }
     if (reviewData.rating == 0) {
       setState(() {
        error = true; 
@@ -88,10 +95,20 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
         },
       );
     } else if (_form.currentState.validate()) {
-      print(reviewData.rating);
-      print(reviewData.content);
-      print(reviewData.bookingId);
-      print(reviewData.maidId);
+      _form.currentState.save();
+      setState(() {
+       submitting = true; 
+      });
+      final res = await ReviewService.review(rating: reviewData.rating, bookingId: reviewData.bookingId, content: reviewData.content, maidId: reviewData.maidId);
+      setState(() {
+       submitting = false; 
+      });
+      if (res['isValid']) {
+        Navigator.of(context).pushReplacementNamed(helperManagementRoute);
+        Utils.showSuccessSnackbar(context, AppLocalizations.of(context).tr('review_successfully'));
+      } else {
+        Utils.showSuccessSnackbar(context, AppLocalizations.of(context).tr('review_error'));
+      }
     }
   }
 
@@ -311,7 +328,7 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                                                     .setHeight(10),
                                               ),
                                             ),
-                                            onFieldSubmitted: (String val) {
+                                            onSaved: (String val) {
                                               setState(() {
                                                 reviewData.content = val;
                                               });
@@ -336,7 +353,7 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
                 ),
         ),
         bottomNavigationBar: Container(
-          color: Theme.of(context).primaryColor,
+          color: submitting ? Colors.grey : Theme.of(context).primaryColor,
           padding: EdgeInsets.all(ScreenUtil.instance.setWidth(12.0)),
           child: InkWell(
             onTap: _onSubmit,

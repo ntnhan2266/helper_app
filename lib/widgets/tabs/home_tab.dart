@@ -206,7 +206,6 @@ class _HomeTabState extends State<HomeTab> {
 
   void getTopMaid() async {
     final res = await MaidService.getTopRatingMaids();
-    print(res);
     if (!res['hasError']) {
       final List<UserMaid> data = [];
       final maids = res['maids'];

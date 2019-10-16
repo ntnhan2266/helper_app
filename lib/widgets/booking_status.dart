@@ -116,7 +116,7 @@ class BookingStatus extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          data.status == COMPLETED
+          (data.status == COMPLETED && data.canReview) 
               ? InkWell(
                   child: Container(
                     padding: EdgeInsets.symmetric(

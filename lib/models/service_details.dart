@@ -33,6 +33,7 @@ class ServiceDetails {
   User createdBy;
   int reason;
   String content = '';
+  bool canReview = false;
 
   ServiceDetails(
       {this.type = 1,
@@ -55,6 +56,7 @@ class ServiceDetails {
       this.createdBy,
       this.reason,
       this.content,
+      this.canReview,
     });
 
   Map<String, dynamic> toJson() {
@@ -100,6 +102,7 @@ class ServiceDetails {
       createdBy: json['createdBy'] != null ? User().getData(json['createdBy']) : null,
       reason: json['reason'],
       content: json['content'],
+      canReview: json['canReview']
     );
   }
 
@@ -125,6 +128,7 @@ class ServiceDetails {
       createdBy: User().getData(json['createdBy']),
       reason: json['reason'],
       content: json['content'],
+      canReview: json['canReview']
     );
   }
 }

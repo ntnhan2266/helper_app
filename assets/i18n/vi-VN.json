@@ -288,5 +288,7 @@
     "complete_successfully": "Xác nhận hoàn thành dịch vụ thành công",
     "review_content_required": "Vui lòng nhập nhận xét",
     "review_content_minlength": "Vui lòng nhập ít nhất 50 ký tự",
-    "rating_required": "Vui lòng đánh giá từ 1 đến 5 sao"
+    "rating_required": "Vui lòng đánh giá từ 1 đến 5 sao",
+    "review_successfully": "Đánh giá thành công",
+    "review_error": "Đánh giá thất bại, vui lòng thử lại"
 }

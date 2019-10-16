@@ -127,7 +127,6 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
               child: Text("Search"),
               onPressed: () {
                 FocusScope.of(context).requestFocus(new FocusNode());
-                print(_search);
               },
             ),
             Expanded(
