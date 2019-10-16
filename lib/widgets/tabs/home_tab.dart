@@ -1,19 +1,20 @@
-import 'dart:math';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_rabbit/services/maid.dart';
+import 'package:provider/provider.dart';
 
-import '../../models/service_category.dart';
+import '../../models/service_details.dart';
+import '../../models/user.dart';
+import '../../services/maid.dart';
 import '../../models/user_maid.dart';
 import '../../widgets/components/home_search_container.dart';
 import '../../utils/dummy_data.dart';
 import '../../utils/route_names.dart';
 import '../../configs/api.dart';
+import '../service_history_list_item.dart';
 
 class HomeTab extends StatefulWidget {
   final Function bottomTapped;
@@ -101,103 +102,6 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-  // Widget _searchLabel(String label) {
-  //   return Container(
-  //     alignment: Alignment.center,
-  //     padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-  //     child: Text(label.toUpperCase()),
-  //   );
-  // }
-
-  // Widget _search() {
-  //   final screenHeight = MediaQuery.of(context).size.height;
-  //   return StatefulBuilder(
-  //     builder: (BuildContext context, StateSetter setState) {
-  //       return AnimatedContainer(
-  //         height: screenHeight * 0.95,
-  //         padding: EdgeInsets.symmetric(horizontal: 10.0),
-  //         child: Column(
-  //           children: <Widget>[
-  //             Padding(
-  //               padding: const EdgeInsets.symmetric(vertical: 20.0),
-  //               child: Text(
-  //                 AppLocalizations.of(context).tr('search').toUpperCase(),
-  //                 style: TextStyle(
-  //                   fontWeight: FontWeight.bold,
-  //                   fontSize: ScreenUtil.instance.setSp(20.0),
-  //                 ),
-  //               ),
-  //             ),
-  //             _inputSearch(),
-  //             Expanded(
-  //               child: ListView(
-  //                 children: <Widget>[
-  //                   _searchLabel(AppLocalizations.of(context).tr('service')),
-  //                   Wrap(
-  //                     alignment: WrapAlignment.center,
-  //                     children: categoriesData.map((item) {
-  //                       return Padding(
-  //                         padding: EdgeInsets.symmetric(horizontal: 2.0),
-  //                         child: ChoiceChip(
-  //                           label: Text(
-  //                             AppLocalizations.of(context).tr(item.serviceName),
-  //                           ),
-  //                           selected: searchServices.contains(item.id),
-  //                           onSelected: (selected) {
-  //                             if (selected) {
-  //                               setState(() {
-  //                                 searchServices.add(item.id);
-  //                               });
-  //                             } else {
-  //                               setState(() {
-  //                                 searchServices.remove(item.id);
-  //                               });
-  //                             }
-  //                           },
-  //                         ),
-  //                       );
-  //                     }).toList(),
-  //                   ),
-  //                   _searchLabel(
-  //                       AppLocalizations.of(context).tr('support_area')),
-  //                   Wrap(
-  //                     alignment: WrapAlignment.center,
-  //                     children:
-  //                         Iterable<int>.generate(22, (i) => i + 1).map((i) {
-  //                       return Padding(
-  //                         padding: EdgeInsets.symmetric(horizontal: 2.0),
-  //                         child: ChoiceChip(
-  //                           label: Text(
-  //                             AppLocalizations.of(context)
-  //                                 .tr(Utils.intToSupportArea(i)),
-  //                           ),
-  //                           selected: searchAreas.contains(i),
-  //                           onSelected: (selected) {
-  //                             if (selected) {
-  //                               setState(() {
-  //                                 searchAreas.add(i);
-  //                               });
-  //                             } else {
-  //                               setState(() {
-  //                                 searchAreas.remove(i);
-  //                               });
-  //                             }
-  //                           },
-  //                         ),
-  //                       );
-  //                     }).toList(),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         duration: Duration(microseconds: 5000),
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -226,11 +130,14 @@ class _HomeTabState extends State<HomeTab> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(20),
-            child: Text(
-              AppLocalizations.of(context).tr('home_tab_welcome_title'),
-              style: TextStyle(
-                fontSize: ScreenUtil.instance.setSp(32.0),
-                fontWeight: FontWeight.w600,
+            child: Consumer<User>(
+              builder: (ctx, user, _) => Text(
+                AppLocalizations.of(context).tr('home_tab_welcome_title',
+                    args: [user.name != null ? user.name : '--']),
+                style: TextStyle(
+                  fontSize: ScreenUtil.instance.setSp(32.0),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
@@ -412,108 +319,21 @@ class _HomeTabState extends State<HomeTab> {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: ListView.separated(
-              primary: false,
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int index) {
-                ServiceCategory service =
-                    categoriesData[new Random().nextInt(categoriesData.length)];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
-                  child: InkWell(
-                    child: Container(
-                      child: Row(
-                        children: <Widget>[
-                          Image.asset(
-                            service.imgURL,
-                            width: MediaQuery.of(context).size.width / 4,
-                            height: MediaQuery.of(context).size.width / 4,
-                          ),
-                          Container(
-                            width:
-                                MediaQuery.of(context).size.width * 3 / 4 - 30,
-                            padding: EdgeInsets.only(left: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    AppLocalizations.of(context)
-                                        .tr(service.serviceName),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: ScreenUtil.instance.setSp(15.0),
-                                    ),
-                                    maxLines: 2,
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                                SizedBox(height: 3),
-                                Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.location_on,
-                                      size: 13,
-                                      color: Colors.blueGrey[300],
-                                    ),
-                                    SizedBox(width: 3),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Quận 5, HCM",
-                                        style: TextStyle(
-                                          fontSize:
-                                              ScreenUtil.instance.setSp(14.0),
-                                          color: Colors.blueGrey[300],
-                                        ),
-                                        maxLines: 1,
-                                        textAlign: TextAlign.left,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "100\$",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: ScreenUtil.instance.setSp(14.0),
-                                    ),
-                                    maxLines: 1,
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    onTap: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (BuildContext context) {
-                      //       return Details();
-                      //     },
-                      //   ),
-                      // );
-                    },
-                  ),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return Divider(
-                  height: 0,
-                );
-              },
-            ),
+          ListView.builder(
+            primary: false,
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: 5,
+            itemBuilder: (BuildContext context, int index) {
+              ServiceDetails serviceDetail = serviceHistoty[index];
+              return Card(
+                elevation: 3.0,
+                margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                child: ServiceHistoryListItem(
+                  serviceDetail,
+                ),
+              );
+            },
           ),
         ],
       ),

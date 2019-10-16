@@ -62,7 +62,7 @@
     "note": "Ghi chú",
     "choose_address": "Chọn địa chỉ",
     "address_example": "Richmond City apartment, Nguyễn Xí, Phường 26, Bình Thạnh, Ho Chi Minh City",
-    "home_tab_welcome_title": "Chào buổi chiều, \nbạn cần gì?",
+    "home_tab_welcome_title": "Chào {}, \nbạn cần gì?",
     "home_tab_search_hint": "dịch vụ, người giúp việc...",
     "home_tab_title_highest_ratting_users": "Người giúp việc được đánh giá cao nhất",
     "home_tab_title_recent_service": "Những dịch vụ được sử dụng gần đây",
