@@ -3,18 +3,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/components/review_container.dart';
-import '../utils/route_names.dart';
 import '../widgets/form/form_label.dart';
 import '../models/maid_review.dart';
+import '../screens/helper_reviews_screen.dart';
 
 class ReviewCarouselSlider extends StatelessWidget {
   final String label;
+  final String maidId;
   final List<MaidReview> reviews;
 
   const ReviewCarouselSlider(
-      {Key key, @required this.label, @required this.reviews})
-      : assert(reviews != null),
-        super(key: key);
+      {Key key, @required this.label, @required this.reviews, @required this.maidId})
+      : super(key: key);
 
   List<Widget> _getReviews(BuildContext context) {
     return reviews
@@ -23,12 +23,15 @@ class ReviewCarouselSlider extends StatelessWidget {
   }
 
   List<Widget> _getReviewsAndMore(BuildContext context) {
-    List<Widget> reviews = _getReviews(context);
-    reviews.add(
+    List<Widget> listReviewWidget = _getReviews(context);
+    listReviewWidget.add(
       Container(
         child: GestureDetector(
           onTap: () {
-            Navigator.of(context).pushNamed(helperReviewsRoute);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HelperReviewsScreen(reviews[0].maid)),
+            );
           },
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -56,7 +59,7 @@ class ReviewCarouselSlider extends StatelessWidget {
         ),
       ),
     );
-    return reviews;
+    return listReviewWidget;
   }
 
   @override

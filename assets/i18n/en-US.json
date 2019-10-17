@@ -292,5 +292,6 @@
     "review_successfully": "Đánh giá thành công",
     "review_error": "Đánh giá thất bại, vui lòng thử lại",
     "basic_info": "Thông tin cá nhân",
-    "job_info": "Thông tin về công việc"
+    "job_info": "Thông tin về công việc",
+    "no_review": "Chưa có đánh giá"
 }

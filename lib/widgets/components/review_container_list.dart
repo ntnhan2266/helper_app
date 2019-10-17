@@ -45,9 +45,12 @@ class _ReviewContainerListState extends State<ReviewContainerList> {
         ? ReviewCarouselSlider(
             label: AppLocalizations.of(context).tr('review'),
             reviews: _reviews,
+            maidId: widget.maidId,
           )
         : Center(
-            child: Text('Chua co review'),
+            child: Text(
+              AppLocalizations.of(context).tr('no_review')
+            ),
           );
   }
 

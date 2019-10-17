@@ -6,9 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/components/review_container.dart';
 import '../widgets/form/form_label.dart';
 import '../models/user_maid.dart';
-import '../utils/dummy_data.dart';
+import '../services/review.dart';
+import '../configs/api.dart';
 
 class HelperReviewsScreen extends StatefulWidget {
+  final UserMaid maid;
+
+  HelperReviewsScreen(this.maid);
+
   @override
   _HelperReviewsScreenState createState() => _HelperReviewsScreenState();
 }
@@ -41,19 +46,22 @@ class _HelperReviewsScreenState extends State<HelperReviewsScreen> {
     setState(() {
       isLoading = true;
     });
-    Future.delayed(Duration(seconds: 2), () {
-      if (pageIndex < 20) {
-        setState(() {
-          reviewList.addAll(reviews);
-          pageIndex = reviewList.length;
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    });
+    final res = await ReviewService.getReviewsByMaidId(
+      widget.maid.id,
+      pageIndex: pageIndex,
+      pageSize: 12,
+    );
+    if (res['isValid']) {
+      setState(() {
+        reviewList..addAll(res['data']);
+        pageIndex++;
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Widget _getReviews() {
@@ -91,8 +99,6 @@ class _HelperReviewsScreenState extends State<HelperReviewsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final userProvider = Provider.of<User>(context, listen: false);
-    UserMaid userMaid = userMaids.toList()[0];
     // Responsive
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
@@ -157,14 +163,19 @@ class _HelperReviewsScreenState extends State<HelperReviewsScreen> {
                                 width: ScreenUtil.instance.setWidth(70),
                                 height: ScreenUtil.instance.setWidth(70),
                                 child: CircleAvatar(
-                                  backgroundImage: AssetImage(
-                                      "assets/images/female_user.jpg"),
+                                  backgroundImage: widget.maid.avatar != null
+                                      ? NetworkImage(APIConfig.hostURL +
+                                          widget.maid.avatar)
+                                      : AssetImage(
+                                          'assets/images/avt_default.png'),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 15),
                                 child: Text(
-                                  userMaid.name != null ? userMaid.name : '',
+                                  widget.maid.name != null
+                                      ? widget.maid.name
+                                      : '',
                                   style: TextStyle(
                                     fontSize: ScreenUtil.instance.setSp(18.0),
                                     fontWeight: FontWeight.w500,
@@ -174,7 +185,9 @@ class _HelperReviewsScreenState extends State<HelperReviewsScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 5),
                                 child: Text(
-                                  userMaid.email != null ? userMaid.email : '',
+                                  widget.maid.email != null
+                                      ? widget.maid.email
+                                      : '',
                                   style: TextStyle(
                                     fontSize: ScreenUtil.instance.setSp(14.0),
                                     color: Colors.black45,

@@ -18,7 +18,6 @@ class _ReviewContainerState extends State<ReviewContainer> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.review.toJson());
     return Container(
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(horizontal: 10.0),
@@ -65,7 +64,9 @@ class _ReviewContainerState extends State<ReviewContainer> {
                 InkWell(
                   child: Row(
                     children: <Widget>[
-                      Text("50"),
+                      Text(
+                        widget.review.helpful.toString()
+                      ),
                       SizedBox(width: ScreenUtil.instance.setWidth(5),),
                       Icon(
                         Icons.thumb_up,
