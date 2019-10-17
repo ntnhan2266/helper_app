@@ -18,6 +18,7 @@ class _ReviewContainerState extends State<ReviewContainer> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.review.toJson());
     return Container(
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(horizontal: 10.0),

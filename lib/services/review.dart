@@ -8,7 +8,7 @@ import './api.dart';
 
 class ReviewService {
   static const String _reviewRoute = APIConfig.baseURL + '/review';
-  static const String _getReviewsByMaidId = APIConfig.baseURL + '/reviews';
+  static const String _getReviewsByMaidId = APIConfig.baseURL + '/reviews?maidId=';
 
   static Future<Map<String, dynamic>> review(
       {double rating, String content, String maidId, String bookingId}) async {
@@ -40,7 +40,7 @@ class ReviewService {
   }
 
   static Future<Map<String, dynamic>> getReviewsByMaidId(String maidId,
-      {int pageSize = 10, int pageIndex = 1}) async {
+      {int pageSize = 10, int pageIndex = 0}) async {
     var completer = new Completer<Map<String, dynamic>>();
     var headers = await API.getAuthToken();
     var response = await http.get(

@@ -97,7 +97,7 @@ class ServiceDetails {
       long: json['long'],
       startDate: DateTime.parse(json['startDate']).toLocal(),
       endDate: DateTime.parse(json['endDate']).toLocal(),
-      maid: UserMaid.getMaid(json['maid']),
+      maid: json['maid'] != null ? UserMaid.getMaid(json['maid']) : null,
       amount: json['amount'],
       createdBy: json['createdBy'] != null ? User().getData(json['createdBy']) : null,
       reason: json['reason'],

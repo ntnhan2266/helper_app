@@ -31,7 +31,7 @@ class MaidReview {
     return {
       'ratting': ratting,
       'content': content,
-      'booking': booking.id,
+      'booking': booking != null ? booking.id : null,
       'maid': maid.id,
     };
   }
@@ -39,13 +39,14 @@ class MaidReview {
   factory MaidReview.fromJson(Map<String, dynamic> json) {
     return MaidReview(
       id: json['_id'],
-      ratting: json['ratting'],
+      ratting: double.parse(json['rating'].toString()),
       content: json['content'],
       createdBy:
           json['createdBy'] != null ? User().getData(json['createdBy']) : null,
       createdAt: DateTime.parse(json['createdAt']).toLocal(),
       updatedAt: DateTime.parse(json['updatedAt']).toLocal(),
-      maid: json['maid'] != null ? UserMaid.fromJson(json['createdBy']) : null,
+      maid: json['maid'] != null ? UserMaid.fromJson(json['maid']) : null,
+      helpful: json['helpful'],
     );
   }
 }
