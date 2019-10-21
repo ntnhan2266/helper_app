@@ -15,6 +15,8 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  Locale locale;
+
   Widget _buildLogo(BuildContext context) {
     return Column(
       children: <Widget>[
@@ -120,6 +122,9 @@ class _AuthScreenState extends State<AuthScreen> {
     )..init(context);
     // Localization
     var data = EasyLocalizationProvider.of(context).data;
+    setState(() {
+      locale = data.savedLocale;
+    });
     // Get screen width
     final screenWidth = MediaQuery.of(context).size.width;
     return EasyLocalizationProvider(
@@ -131,7 +136,10 @@ class _AuthScreenState extends State<AuthScreen> {
               actions: <Widget>[
                 InkWell(
                   onTap: () {
-                    data.changeLocale(Locale("vi", "VN"));
+                    if (data.savedLocale != Locale("vi", "VN"))
+                      data.changeLocale(Locale("vi", "VN"));
+                    else
+                      data.changeLocale(Locale("en", "US"));
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 10.0),
