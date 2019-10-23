@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../utils/utils.dart';
 import '../../utils/dummy_data.dart';
@@ -18,11 +19,12 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
   List<int> _searchServices = [];
   List<int> _searchAreas = [];
   int _minSalary = 0;
-  int _maxSalary = 20;
+  int _maxSalary = 10000000;
   List<int> _tempSearchAreas = [];
 
   Widget _inputSearch() {
     return Container(
+      margin: EdgeInsets.only(bottom: 5.0),
       decoration: BoxDecoration(
         color: Colors.blueGrey[50],
         borderRadius: BorderRadius.all(
@@ -235,6 +237,10 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
             Expanded(
               child: ListView(
                 children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: Divider(),
+                  ),
                   _searchLabel(AppLocalizations.of(context).tr('service')),
                   Wrap(
                     alignment: WrapAlignment.center,
@@ -263,6 +269,10 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                       );
                     }).toList(),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: Divider(),
+                  ),
                   _searchLabel(AppLocalizations.of(context).tr('support_area')),
                   GestureDetector(
                     child: Container(
@@ -277,25 +287,31 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                       _showSupportedArea();
                     },
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: Divider(),
+                  ),
                   _searchLabel(AppLocalizations.of(context).tr('salary')),
                   Center(
-                    child: Text(_minSalary.toString() +
-                        ".000.000" +
-                        " ~ " +
-                        _maxSalary.toString() +
-                        ".000.000"),
+                    child: Text(
+                      NumberFormat("#,###").format(_minSalary) +
+                          " ~ " +
+                          NumberFormat("#,###").format(_maxSalary),
+                    ),
                   ),
                   RangeSlider(
                     min: 0,
-                    max: 20,
+                    max: 10000000,
                     activeColor: Theme.of(context).primaryColor,
                     inactiveColor: Colors.blueGrey[100],
                     values: RangeValues(
                         _minSalary.toDouble(), _maxSalary.toDouble()),
                     onChanged: (RangeValues value) {
                       setState(() {
-                        _minSalary = value.start.round();
-                        _maxSalary = value.end.round();
+                        _minSalary =
+                            (value.start.round() / 50000).round() * 50000;
+                        _maxSalary =
+                            (value.end.round() / 50000).round() * 50000;
                       });
                     },
                   ),
