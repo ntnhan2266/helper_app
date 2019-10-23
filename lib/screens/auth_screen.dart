@@ -147,12 +147,13 @@ class _AuthScreenState extends State<AuthScreen> {
                 width: ScreenUtil.instance.setWidth(25.0),
                 height: ScreenUtil.instance.setHeight(25.0),
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green,
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/easy.png'),
-                      fit: BoxFit.cover,
-                    )),
+                  shape: BoxShape.circle,
+                  color: Colors.green,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/easy.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             )
           ],
@@ -175,17 +176,18 @@ class _AuthScreenState extends State<AuthScreen> {
                     Row(
                       children: <Widget>[
                         _buildButton(
-                            width: (screenWidth -
-                                    ScreenUtil.instance
-                                        .setWidth(MAIN_MARGIN * 2)) *
-                                0.48,
-                            label: AppLocalizations.of(context).tr('login'),
-                            backgroundColor: Colors.white,
-                            borderColor: Color.fromRGBO(42, 77, 108, 1),
-                            textColor: Color.fromRGBO(42, 77, 108, 1),
-                            onTapHandler: () {
-                              _navigateToSigninScreen(context);
-                            }),
+                          width: (screenWidth -
+                                  ScreenUtil.instance
+                                      .setWidth(MAIN_MARGIN * 2)) *
+                              0.48,
+                          label: AppLocalizations.of(context).tr('login'),
+                          backgroundColor: Colors.white,
+                          borderColor: Color.fromRGBO(42, 77, 108, 1),
+                          textColor: Color.fromRGBO(42, 77, 108, 1),
+                          onTapHandler: () {
+                            _navigateToSigninScreen(context);
+                          },
+                        ),
                         SizedBox(
                           width: (screenWidth -
                                   ScreenUtil.instance
@@ -193,17 +195,18 @@ class _AuthScreenState extends State<AuthScreen> {
                               0.04,
                         ),
                         _buildButton(
-                            width: (screenWidth -
-                                    ScreenUtil.instance
-                                        .setWidth(MAIN_MARGIN * 2)) *
-                                0.48,
-                            label: AppLocalizations.of(context).tr('register'),
-                            backgroundColor: Colors.white,
-                            borderColor: Color.fromRGBO(42, 77, 108, 1),
-                            textColor: Color.fromRGBO(42, 77, 108, 1),
-                            onTapHandler: () {
-                              _navigateToRegisterScreen(context);
-                            }),
+                          width: (screenWidth -
+                                  ScreenUtil.instance
+                                      .setWidth(MAIN_MARGIN * 2)) *
+                              0.48,
+                          label: AppLocalizations.of(context).tr('register'),
+                          backgroundColor: Colors.white,
+                          borderColor: Color.fromRGBO(42, 77, 108, 1),
+                          textColor: Color.fromRGBO(42, 77, 108, 1),
+                          onTapHandler: () {
+                            _navigateToRegisterScreen(context);
+                          },
+                        ),
                       ],
                     )
                   ],
@@ -214,16 +217,16 @@ class _AuthScreenState extends State<AuthScreen> {
                     horizontal: ScreenUtil.instance.setWidth(MAIN_MARGIN),
                     vertical: ScreenUtil.instance.setHeight(10)),
                 child: _buildButton(
-                    width: (screenWidth -
-                        ScreenUtil.instance.setWidth(MAIN_MARGIN * 2)),
-                    label:
-                        AppLocalizations.of(context).tr('login_with_facebook'),
-                    backgroundColor: Color.fromRGBO(59, 89, 152, 1),
-                    borderColor: Color.fromRGBO(59, 89, 152, 1),
-                    textColor: Colors.white,
-                    onTapHandler: () {
-                      _loginWithFacebook(context);
-                    }),
+                  width: (screenWidth -
+                      ScreenUtil.instance.setWidth(MAIN_MARGIN * 2)),
+                  label: AppLocalizations.of(context).tr('login_with_facebook'),
+                  backgroundColor: Color.fromRGBO(59, 89, 152, 1),
+                  borderColor: Color.fromRGBO(59, 89, 152, 1),
+                  textColor: Colors.white,
+                  onTapHandler: () {
+                    _loginWithFacebook(context);
+                  },
+                ),
               ),
             ],
           ),

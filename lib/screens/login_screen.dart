@@ -22,19 +22,41 @@ class _LoginScreenState extends State<LoginScreen> {
   final _form = GlobalKey<FormState>();
   _LoginData _data = _LoginData();
 
+  void _showErrorDialog(String content) {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context).tr('error')),
+          content: Text(content),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(AppLocalizations.of(context).tr('ok')),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _verifyPhoneNumber(String phoneNumber) async {
     final PhoneVerificationCompleted verificationCompleted =
         (AuthCredential phoneAuthCredential) {
       _auth.signInWithCredential(phoneAuthCredential);
       print('Received phone auth credential: $phoneAuthCredential');
+      Navigator.pop(context);
     };
 
     final PhoneVerificationFailed verificationFailed =
         (AuthException authException) {
       print(
           'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
-
-      // Handle error
+      _showErrorDialog(
+          AppLocalizations.of(context).tr('phone_verification_failed'));
     };
 
     final PhoneCodeSent codeSent =
@@ -42,11 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
       print('Please check your phone for the verification code');
       // _verificationId = verificationId;
       // Navigate to verify code screen
-      Navigator.pushNamed(context, verificationCodeRoute, arguments: {
-        'isLogin': true,
-        'verificationId': verificationId,
-        'phoneNumber': _data.phoneNumber
-      });
+      Navigator.pushReplacementNamed(context, verificationCodeRoute,
+          arguments: {
+            'isLogin': true,
+            'verificationId': verificationId,
+            'phoneNumber': _data.phoneNumber
+          });
     };
 
     final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
@@ -81,7 +104,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       _form.currentState.save();
       _verifyPhoneNumber('+84' + _data.phoneNumber);
-      Navigator.pop(context);
     }
   }
 
