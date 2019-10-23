@@ -19,6 +19,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
   List<int> _searchAreas = [];
   int _minSalary = 0;
   int _maxSalary = 20;
+  List<int> _tempSearchAreas = [];
 
   Widget _inputSearch() {
     return Container(
@@ -79,6 +80,108 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
       alignment: Alignment.center,
       padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
       child: Text(label.toUpperCase()),
+    );
+  }
+
+  void _showSupportedArea() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context).tr('support_area')),
+              content: Wrap(
+                alignment: WrapAlignment.center,
+                children: Iterable<int>.generate(22, (i) => i + 1).map((i) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2.0),
+                    child: ChoiceChip(
+                      label: Text(
+                        AppLocalizations.of(context)
+                            .tr(Utils.intToSupportArea(i)),
+                      ),
+                      selected: _tempSearchAreas.contains(i),
+                      onSelected: (selected) {
+                        if (selected) {
+                          setState(() {
+                            _tempSearchAreas.add(i);
+                          });
+                        } else {
+                          setState(() {
+                            _tempSearchAreas.remove(i);
+                          });
+                        }
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                      },
+                    ),
+                  );
+                }).toList(),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(AppLocalizations.of(context).tr('cancel')),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _tempSearchAreas = _searchAreas;
+                    });
+                  },
+                ),
+                FlatButton(
+                  child: Text(AppLocalizations.of(context).tr('ok')),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _searchAreas = _tempSearchAreas;
+                      _searchAreas.sort();
+                    });
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    ).then((value) {
+      setState(() {});
+    });
+  }
+
+  List<Widget> _supportedAreas() {
+    int limit = 5;
+    if (_searchAreas.isEmpty) {
+      return [
+        Center(
+          child: Text("All area"),
+        )
+      ];
+    } else if (_searchAreas.length <= limit) {
+      return _searchAreas.map((area) => _supportedArea(area)).toList();
+    } else {
+      List<Widget> areas = _searchAreas
+          .sublist(0, limit)
+          .map((area) => _supportedArea(area))
+          .toList();
+      areas.add(_supportedArea(_searchAreas.length - limit, more: true));
+      return areas;
+    }
+  }
+
+  Widget _supportedArea(int i, {bool more = false}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 2.0),
+      child: ChoiceChip(
+        label: Text(
+          more
+              ? "+$i"
+              : AppLocalizations.of(context).tr(Utils.intToSupportArea(i)),
+        ),
+        selected: true,
+        onSelected: (selected) {
+          _showSupportedArea();
+        },
+      ),
     );
   }
 
@@ -161,33 +264,18 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                     }).toList(),
                   ),
                   _searchLabel(AppLocalizations.of(context).tr('support_area')),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    children: Iterable<int>.generate(22, (i) => i + 1).map((i) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 2.0),
-                        child: ChoiceChip(
-                          label: Text(
-                            AppLocalizations.of(context)
-                                .tr(Utils.intToSupportArea(i)),
-                          ),
-                          selected: _searchAreas.contains(i),
-                          onSelected: (selected) {
-                            if (selected) {
-                              setState(() {
-                                _searchAreas.add(i);
-                              });
-                            } else {
-                              setState(() {
-                                _searchAreas.remove(i);
-                              });
-                            }
-                            FocusScope.of(context)
-                                .requestFocus(new FocusNode());
-                          },
-                        ),
-                      );
-                    }).toList(),
+                  GestureDetector(
+                    child: Container(
+                      width: double.infinity,
+                      color: Colors.transparent,
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        children: _supportedAreas(),
+                      ),
+                    ),
+                    onTap: () {
+                      _showSupportedArea();
+                    },
                   ),
                   _searchLabel(AppLocalizations.of(context).tr('salary')),
                   Center(

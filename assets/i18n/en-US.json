@@ -62,7 +62,7 @@
     "note": "Note",
     "choose_address": "Select address",
     "address_example": "Richmond City apartment, Nguyễn Xí, Phường 26, Bình Thạnh, Ho Chi Minh City",
-    "home_tab_welcome_title": "Welcome {}, \nwhat do you need?",
+    "home_tab_welcome_title": "Welcome {}, \nwhat are you looking for?",
     "home_tab_search_hint": "service, helper...",
     "home_tab_title_highest_ratting_users": "Highest ratting users",
     "home_tab_title_recent_service": "Recently used services",
@@ -293,5 +293,6 @@
     "review_error": "Review fail, please try again",
     "basic_info": "Basic information",
     "job_info": "Job information",
-    "no_review": "No reviews"
+    "no_review": "No reviews",
+    "phone_verification_failed": "Phone number verification failed"
 }

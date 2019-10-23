@@ -135,7 +135,7 @@ class _HomeTabState extends State<HomeTab> {
                 AppLocalizations.of(context).tr('home_tab_welcome_title',
                     args: [user.name != null ? user.name : '--']),
                 style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(32.0),
+                  fontSize: ScreenUtil.instance.setSp(25.0),
                   fontWeight: FontWeight.w600,
                 ),
               ),
