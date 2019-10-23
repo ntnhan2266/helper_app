@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../widgets/components/color_loader.dart';
 import '../utils/constants.dart';
 import '../utils/route_names.dart';
 
@@ -18,37 +19,34 @@ class _LoginData {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final _form = GlobalKey<FormState>();
   _LoginData _data = _LoginData();
 
   void _verifyPhoneNumber(String phoneNumber) async {
     final PhoneVerificationCompleted verificationCompleted =
-      (AuthCredential phoneAuthCredential) {
+        (AuthCredential phoneAuthCredential) {
       _auth.signInWithCredential(phoneAuthCredential);
       print('Received phone auth credential: $phoneAuthCredential');
     };
 
     final PhoneVerificationFailed verificationFailed =
         (AuthException authException) {
-        print('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
+      print(
+          'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
 
-        // Handle error
+      // Handle error
     };
 
     final PhoneCodeSent codeSent =
-      (String verificationId, [int forceResendingToken]) async {
-        print('Please check your phone for the verification code');
+        (String verificationId, [int forceResendingToken]) async {
+      print('Please check your phone for the verification code');
       // _verificationId = verificationId;
       // Navigate to verify code screen
-      Navigator.pushNamed(context, 
-        verificationCodeRoute, 
-        arguments: {
-          'isLogin': true,
-          'verificationId': verificationId,
-          'phoneNumber': _data.phoneNumber
-        }
-      );
+      Navigator.pushNamed(context, verificationCodeRoute, arguments: {
+        'isLogin': true,
+        'verificationId': verificationId,
+        'phoneNumber': _data.phoneNumber
+      });
     };
 
     final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
@@ -69,10 +67,21 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() {
     if (_form.currentState.validate()) {
       // If the form is valid, display a Snackbar.
-      
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: ColorLoader(
+              colors: [Colors.red, Colors.blue, Colors.green],
+              duration: Duration(seconds: 1),
+            ),
+          );
+        },
+      );
       _form.currentState.save();
-
       _verifyPhoneNumber('+84' + _data.phoneNumber);
+      Navigator.pop(context);
     }
   }
 
@@ -90,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var data = EasyLocalizationProvider.of(context).data;
     // Build slide list
     return EasyLocalizationProvider(
-      data: data, 
+      data: data,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -112,27 +121,26 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
-                children: <Widget>[ 
+                children: <Widget>[
                   Column(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.symmetric(
-                          vertical: ScreenUtil.instance.setWidth(MAIN_MARGIN),
-                        ),
-                        child: Image.asset('assets/images/login_banner.png')
-                      ),
+                          margin: EdgeInsets.symmetric(
+                            vertical: ScreenUtil.instance.setWidth(MAIN_MARGIN),
+                          ),
+                          child: Image.asset('assets/images/login_banner.png')),
                       SizedBox(height: ScreenUtil.instance.setHeight(20.0)),
                       Container(
                         margin: EdgeInsets.symmetric(
                           vertical: ScreenUtil.instance.setWidth(MAIN_MARGIN),
                         ),
                         child: Text(
-                          AppLocalizations.of(context).tr('enter_registered_phone_number_to_login'),
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: ScreenUtil.instance.setSp(16.0),
-                          )
-                        ),
+                            AppLocalizations.of(context)
+                                .tr('enter_registered_phone_number_to_login'),
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: ScreenUtil.instance.setSp(16.0),
+                            )),
                       ),
                     ],
                   ),
@@ -140,26 +148,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     margin: EdgeInsets.only(
                       bottom: ScreenUtil.instance.setWidth(LABEL_MARGIN),
                     ),
-                    child: Text(
-                      AppLocalizations.of(context).tr('phone_number'),
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: ScreenUtil.instance.setSp(12.0),
-                      )
-                    ),
+                    child: Text(AppLocalizations.of(context).tr('phone_number'),
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: ScreenUtil.instance.setSp(12.0),
+                        )),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(right: ScreenUtil.instance.setWidth(10), top: ScreenUtil.instance.setHeight(6)),
+                        margin: EdgeInsets.only(
+                            right: ScreenUtil.instance.setWidth(10),
+                            top: ScreenUtil.instance.setHeight(6)),
                         width: ScreenUtil.instance.setWidth(66),
                         height: ScreenUtil.instance.setWidth(32),
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.grey
-                          ),
+                          border: Border.all(width: 1, color: Colors.grey),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Row(
@@ -172,7 +177,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: ScreenUtil.instance.setWidth(30),
                               height: ScreenUtil.instance.setWidth(20),
                             ),
-                            SizedBox(width: ScreenUtil.instance.setWidth(4),),
+                            SizedBox(
+                              width: ScreenUtil.instance.setWidth(4),
+                            ),
                             Text(
                               '+84',
                               style: TextStyle(
@@ -187,16 +194,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextFormField(
                           validator: (value) {
                             if (value.isEmpty) {
-                              return AppLocalizations.of(context).tr('please_enter_phone_number');
+                              return AppLocalizations.of(context)
+                                  .tr('please_enter_phone_number');
                             } else if (value.length < 8) {
-                              return AppLocalizations.of(context).tr('invalid_phone_number');
+                              return AppLocalizations.of(context)
+                                  .tr('invalid_phone_number');
                             }
                             return null;
                           },
                           keyboardType: TextInputType.phone,
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context).tr('phone_number_example'),
+                            hintText: AppLocalizations.of(context)
+                                .tr('phone_number_example'),
                           ),
                           style: TextStyle(
                             fontFamily: 'Roboto',
@@ -221,24 +231,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Text(
-                          AppLocalizations.of(context).tr('login').toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: ScreenUtil.instance.setSp(12.0),
-                            color: Colors.white,
-                          )
-                        ),
+                            AppLocalizations.of(context)
+                                .tr('login')
+                                .toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: ScreenUtil.instance.setSp(12.0),
+                              color: Colors.white,
+                            )),
                       ),
                     ),
                   ),
-                  SizedBox(height: ScreenUtil.instance.setHeight(20.0),),
+                  SizedBox(
+                    height: ScreenUtil.instance.setHeight(20.0),
+                  ),
                 ],
               ),
             ),
           ),
-        )
-      )
+        ),
+      ),
     );
   }
 }

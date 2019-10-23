@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
-
+import '../widgets/components/color_loader.dart';
 import '../utils/constants.dart';
 import '../services/auth.dart';
 import '../utils/route_names.dart';
@@ -29,7 +29,6 @@ class VerifyData {
 }
 
 class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
-
   final _form = GlobalKey<FormState>();
 
   int pinLength = 6;
@@ -40,12 +39,17 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
   VerifyData _data = VerifyData();
 
   void _register(BuildContext context, IdTokenResult idTokenResult) async {
-    Map<String, dynamic> res = await AuthService.register(email: _data.email, name: _data.name, phoneNumber: '+84' + _data.phoneNumber, token: idTokenResult.token);
+    Map<String, dynamic> res = await AuthService.register(
+        email: _data.email,
+        name: _data.name,
+        phoneNumber: '+84' + _data.phoneNumber,
+        token: idTokenResult.token);
     _processAuthData(context, res);
   }
 
   void _login(BuildContext context, IdTokenResult idTokenResult) async {
-    Map<String, dynamic> res = await AuthService.login(token: idTokenResult.token);
+    Map<String, dynamic> res =
+        await AuthService.login(token: idTokenResult.token);
     _processAuthData(context, res);
   }
 
@@ -55,18 +59,21 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
       case NO_ERROR:
         // Set state
         userProvider.fromJson(res['user']);
-        Navigator.of(context).pushNamedAndRemoveUntil(homeScreenRoute, (Route<dynamic> route) => false);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            homeScreenRoute, (Route<dynamic> route) => false);
         break;
       case NOT_REGISTERED_PHONE_NUMBER:
         setState(() {
           hasError = true;
-          errorMessage = AppLocalizations.of(context).tr('you_have_not_registered');
+          errorMessage =
+              AppLocalizations.of(context).tr('you_have_not_registered');
         });
         break;
       default:
         setState(() {
           hasError = true;
-          errorMessage = AppLocalizations.of(context).tr('something_went_wrong');
+          errorMessage =
+              AppLocalizations.of(context).tr('something_went_wrong');
         });
         break;
     }
@@ -74,13 +81,25 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
   void _signInWithPhone(BuildContext context) async {
     if (_form.currentState.validate()) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: ColorLoader(
+              colors: [Colors.red, Colors.blue, Colors.green],
+              duration: Duration(seconds: 1),
+            ),
+          );
+        },
+      );
       // If the form is valid, display a Snackbar.
       _form.currentState.save();
       print(_data.otpCode);
 
       final AuthCredential credential = PhoneAuthProvider.getCredential(
-      verificationId: _data.verificationId,
-      smsCode: _data.otpCode,
+        verificationId: _data.verificationId,
+        smsCode: _data.otpCode,
       );
       try {
         final FirebaseUser user =
@@ -90,7 +109,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
         if (user != null) {
           final IdTokenResult idTokenResult = await currentUser.getIdToken();
           setState(() {
-            hasError = false; 
+            hasError = false;
           });
           if (_data.isLogin) {
             // Call API to login
@@ -109,9 +128,12 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
       } catch (err) {
         print(err);
         setState(() {
-          hasError = true; 
-          errorMessage = AppLocalizations.of(context).tr('something_went_wrong');
+          hasError = true;
+          errorMessage =
+              AppLocalizations.of(context).tr('something_went_wrong');
         });
+      } finally {
+        Navigator.pop(context);
       }
     }
   }
@@ -137,7 +159,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
     var data = EasyLocalizationProvider.of(context).data;
     // Build slide list
     return EasyLocalizationProvider(
-      data: data, 
+      data: data,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -161,30 +183,31 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[ 
+                    children: <Widget>[
                       Column(
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.symmetric(
-                              vertical: ScreenUtil.instance.setWidth(MAIN_MARGIN),
-                            ),
-                            child: Image.asset(
-                              'assets/images/send_message.png',
-                              height: ScreenUtil.instance.setHeight(120.0),
-                            )
-                          ),
+                              margin: EdgeInsets.symmetric(
+                                vertical:
+                                    ScreenUtil.instance.setWidth(MAIN_MARGIN),
+                              ),
+                              child: Image.asset(
+                                'assets/images/send_message.png',
+                                height: ScreenUtil.instance.setHeight(120.0),
+                              )),
                           SizedBox(height: ScreenUtil.instance.setHeight(20.0)),
                           Container(
                             margin: EdgeInsets.symmetric(
-                              vertical: ScreenUtil.instance.setWidth(MAIN_MARGIN),
+                              vertical:
+                                  ScreenUtil.instance.setWidth(MAIN_MARGIN),
                             ),
                             child: Text(
-                              AppLocalizations.of(context).tr('one_more_step'),
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: ScreenUtil.instance.setSp(16.0),
-                              )
-                            ),
+                                AppLocalizations.of(context)
+                                    .tr('one_more_step'),
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: ScreenUtil.instance.setSp(16.0),
+                                )),
                           ),
                         ],
                       ),
@@ -193,13 +216,11 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                           bottom: ScreenUtil.instance.setWidth(LABEL_MARGIN),
                         ),
                         child: Text(
-                          '${AppLocalizations.of(context).tr('enter_otp')} +84 ${_data.phoneNumber}',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: ScreenUtil.instance.setSp(12.0),
-                            height: 1.4
-                          )
-                        ),
+                            '${AppLocalizations.of(context).tr('enter_otp')} +84 ${_data.phoneNumber}',
+                            style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: ScreenUtil.instance.setSp(12.0),
+                                height: 1.4)),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -222,12 +243,16 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                             onDone: (otpCode) {
                               _data.otpCode = otpCode;
                             },
-                            pinCodeTextFieldLayoutType: PinCodeTextFieldLayoutType.AUTO_ADJUST_WIDTH,
+                            pinCodeTextFieldLayoutType:
+                                PinCodeTextFieldLayoutType.AUTO_ADJUST_WIDTH,
                             wrapAlignment: WrapAlignment.start,
-                            pinBoxDecoration: ProvidedPinBoxDecoration.underlinedPinBoxDecoration,
+                            pinBoxDecoration: ProvidedPinBoxDecoration
+                                .underlinedPinBoxDecoration,
                             pinTextStyle: TextStyle(fontSize: 20.0),
-                            pinTextAnimatedSwitcherTransition: ProvidedPinBoxTextAnimation.scalingTransition,
-                            pinTextAnimatedSwitcherDuration: Duration(milliseconds: 200),
+                            pinTextAnimatedSwitcherTransition:
+                                ProvidedPinBoxTextAnimation.scalingTransition,
+                            pinTextAnimatedSwitcherDuration:
+                                Duration(milliseconds: 200),
                           ),
                           SizedBox(height: ScreenUtil.instance.setHeight(10.0)),
                           Visibility(
@@ -257,26 +282,29 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Text(
-                              AppLocalizations.of(context).tr('confirm').toUpperCase(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: ScreenUtil.instance.setSp(12.0),
-                                color: Colors.white,
-                              )
-                            ),
+                                AppLocalizations.of(context)
+                                    .tr('confirm')
+                                    .toUpperCase(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: ScreenUtil.instance.setSp(12.0),
+                                  color: Colors.white,
+                                )),
                           ),
                         ),
                       ),
-                      SizedBox(height: ScreenUtil.instance.setHeight(20.0),),
+                      SizedBox(
+                        height: ScreenUtil.instance.setHeight(20.0),
+                      ),
                     ],
                   ),
                 ),
               ),
             );
-          }
+          },
         ),
-      )
+      ),
     );
   }
 }
