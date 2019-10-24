@@ -296,5 +296,6 @@
     "no_review": "No reviews",
     "phone_verification_failed": "Phone number verification failed",
     "custom": "Custom",
-    "select_area": "Select area"
+    "select_area": "Select area",
+    "select_service": "Select service"
 }

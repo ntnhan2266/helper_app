@@ -8,11 +8,12 @@ import 'package:intl/intl.dart';
 import '../../utils/utils.dart';
 import '../../utils/dummy_data.dart';
 
-enum SalaryType { all, custom }
+enum SalaryTypeEnum { all, custom }
 const MIN_SALARY = 0;
 const MAX_SALARY = 10000000;
 const STEP_SALARY = 50000;
-enum AreaType { all, custom }
+enum AreaTypeEnum { all, custom }
+enum ServiceTypeEnum { all, custom }
 
 class HomeSearchContainer extends StatefulWidget {
   @override
@@ -22,15 +23,17 @@ class HomeSearchContainer extends StatefulWidget {
 class _HomeSearchContainerState extends State<HomeSearchContainer> {
   final TextEditingController _searchControl = new TextEditingController();
   String _search = "";
-  List<int> _searchServices = [];
-  List<int> _searchAreas = [];
+  List<int> _searchServices = List();
+  List<int> _searchAreas = List();
   int _minSalary = MIN_SALARY;
   int _maxSalary = MAX_SALARY;
 
   //temp
-  List<int> _tempSearchAreas = [];
-  SalaryType _salaryType = SalaryType.all;
-  AreaType _areaType = AreaType.all;
+  List<int> _tempSearchServices = List();
+  ServiceTypeEnum _serviceType = ServiceTypeEnum.all;
+  List<int> _tempSearchAreas = List();
+  SalaryTypeEnum _salaryType = SalaryTypeEnum.all;
+  AreaTypeEnum _areaType = AreaTypeEnum.all;
 
   Widget _inputSearch() {
     return Container(
@@ -95,7 +98,136 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
     );
   }
 
-  void _showSupportedAreas() {
+  void _showServiceDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context).tr('service')),
+              content: Wrap(
+                alignment: WrapAlignment.center,
+                children: categoriesData.map((i) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2.0),
+                    child: ChoiceChip(
+                      label: Text(
+                        AppLocalizations.of(context).tr(i.serviceName),
+                      ),
+                      selected: _tempSearchServices.contains(i.id),
+                      onSelected: (selected) {
+                        if (selected) {
+                          setState(() {
+                            _tempSearchServices.add(i.id);
+                          });
+                        } else {
+                          setState(() {
+                            _tempSearchServices.remove(i.id);
+                          });
+                        }
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                      },
+                    ),
+                  );
+                }).toList(),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(AppLocalizations.of(context).tr('cancel')),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _tempSearchServices = List();
+                      _tempSearchServices.addAll(_searchServices);
+                    });
+                  },
+                ),
+                FlatButton(
+                  child: Text(AppLocalizations.of(context).tr('ok')),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _searchServices = List();
+                      _searchServices.addAll(_tempSearchServices);
+                      _searchServices.sort();
+                    });
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    ).then((value) {
+      setState(() {});
+    });
+  }
+
+  Widget _serviceRadioGroup(dynamic groupValue, dynamic value, String title) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _serviceType = value;
+        });
+        if (value == ServiceTypeEnum.custom) {
+          _showServiceDialog();
+        }
+      },
+      child: Row(
+        children: <Widget>[
+          Radio(
+            groupValue: groupValue,
+            value: value,
+            onChanged: (value) {
+              setState(() {
+                _serviceType = value;
+                _searchServices = [];
+              });
+              if (value == ServiceTypeEnum.custom) {
+                _showServiceDialog();
+              }
+            },
+          ),
+          Text(AppLocalizations.of(context).tr(title)),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _serviceList() {
+    if (_serviceType == ServiceTypeEnum.all) {
+      return [];
+    } else if (_searchServices.isEmpty) {
+      return [
+        Center(
+          child: Text(AppLocalizations.of(context).tr('select_service')),
+        )
+      ];
+    } else {
+      return categoriesData
+          .where((service) => _searchServices.contains(service.id))
+          .map((service) => _serviceChoiceChip(service.serviceName))
+          .toList();
+    }
+  }
+
+  Widget _serviceChoiceChip(String name) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 2.0),
+      child: ChoiceChip(
+        label: Text(
+          AppLocalizations.of(context).tr(name),
+        ),
+        selected: true,
+        onSelected: (selected) {
+          _showServiceDialog();
+        },
+      ),
+    );
+  }
+
+  void _showSupportedAreaDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -136,7 +268,8 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                   onPressed: () {
                     Navigator.pop(context);
                     setState(() {
-                      _tempSearchAreas = _searchAreas;
+                      _tempSearchAreas = List();
+                      _tempSearchAreas.addAll(_searchAreas);
                     });
                   },
                 ),
@@ -145,7 +278,8 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                   onPressed: () {
                     Navigator.pop(context);
                     setState(() {
-                      _searchAreas = _tempSearchAreas;
+                      _searchAreas = List();
+                      _searchAreas.addAll(_tempSearchAreas);
                       _searchAreas.sort();
                     });
                   },
@@ -160,53 +294,14 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
     });
   }
 
-  List<Widget> _supportedAreas() {
-    int limit = 5;
-    if (_areaType == AreaType.all) {
-      return [];
-    } else if (_searchAreas.isEmpty) {
-      return [
-        Center(
-          child: Text(AppLocalizations.of(context).tr('select_area')),
-        )
-      ];
-    } else if (_searchAreas.length <= limit) {
-      return _searchAreas.map((area) => _supportedArea(area)).toList();
-    } else {
-      List<Widget> areas = _searchAreas
-          .sublist(0, limit)
-          .map((area) => _supportedArea(area))
-          .toList();
-      areas.add(_supportedArea(_searchAreas.length - limit, more: true));
-      return areas;
-    }
-  }
-
-  Widget _supportedArea(int i, {bool more = false}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2.0),
-      child: ChoiceChip(
-        label: Text(
-          more
-              ? "+$i"
-              : AppLocalizations.of(context).tr(Utils.intToSupportArea(i)),
-        ),
-        selected: true,
-        onSelected: (selected) {
-          _showSupportedAreas();
-        },
-      ),
-    );
-  }
-
   Widget _areaRadioGroup(dynamic groupValue, dynamic value, String title) {
     return GestureDetector(
       onTap: () {
         setState(() {
           _areaType = value;
         });
-        if (value == AreaType.custom) {
-          _showSupportedAreas();
+        if (value == AreaTypeEnum.custom) {
+          _showSupportedAreaDialog();
         }
       },
       child: Row(
@@ -219,13 +314,55 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                 _areaType = value;
                 _searchAreas = [];
               });
-              if (value == AreaType.custom) {
-                _showSupportedAreas();
+              if (value == AreaTypeEnum.custom) {
+                _showSupportedAreaDialog();
               }
             },
           ),
           Text(AppLocalizations.of(context).tr(title)),
         ],
+      ),
+    );
+  }
+
+  List<Widget> _supportedAreaList() {
+    int limit = 5;
+    if (_areaType == AreaTypeEnum.all) {
+      return [];
+    } else if (_searchAreas.isEmpty) {
+      return [
+        Center(
+          child: Text(AppLocalizations.of(context).tr('select_area')),
+        )
+      ];
+    } else if (_searchAreas.length <= limit) {
+      return _searchAreas
+          .map((area) => _supportedAreaChoiceChip(area))
+          .toList();
+    } else {
+      List<Widget> areas = _searchAreas
+          .sublist(0, limit)
+          .map((area) => _supportedAreaChoiceChip(area))
+          .toList();
+      areas.add(
+          _supportedAreaChoiceChip(_searchAreas.length - limit, more: true));
+      return areas;
+    }
+  }
+
+  Widget _supportedAreaChoiceChip(int i, {bool more = false}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 2.0),
+      child: ChoiceChip(
+        label: Text(
+          more
+              ? "+$i"
+              : AppLocalizations.of(context).tr(Utils.intToSupportArea(i)),
+        ),
+        selected: true,
+        onSelected: (selected) {
+          _showSupportedAreaDialog();
+        },
       ),
     );
   }
@@ -258,7 +395,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
 
   Widget _salaryDetail() {
     return Column(
-      children: _salaryType == SalaryType.all
+      children: _salaryType == SalaryTypeEnum.all
           ? []
           : [
               Center(
@@ -343,32 +480,54 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                     child: Divider(),
                   ),
                   _searchLabel(AppLocalizations.of(context).tr('service')),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    children: categoriesData.map((item) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 2.0),
-                        child: ChoiceChip(
-                          label: Text(
-                            AppLocalizations.of(context).tr(item.serviceName),
-                          ),
-                          selected: _searchServices.contains(item.id),
-                          onSelected: (selected) {
-                            if (selected) {
-                              setState(() {
-                                _searchServices.add(item.id);
-                              });
-                            } else {
-                              setState(() {
-                                _searchServices.remove(item.id);
-                              });
-                            }
-                            FocusScope.of(context)
-                                .requestFocus(new FocusNode());
-                          },
-                        ),
-                      );
-                    }).toList(),
+                  // Wrap(
+                  //   alignment: WrapAlignment.center,
+                  //   children: categoriesData.map((item) {
+                  //     return Padding(
+                  //       padding: EdgeInsets.symmetric(horizontal: 2.0),
+                  //       child: ChoiceChip(
+                  //         label: Text(
+                  //           AppLocalizations.of(context).tr(item.serviceName),
+                  //         ),
+                  //         selected: _searchServices.contains(item.id),
+                  //         onSelected: (selected) {
+                  //           if (selected) {
+                  //             setState(() {
+                  //               _searchServices.add(item.id);
+                  //             });
+                  //           } else {
+                  //             setState(() {
+                  //               _searchServices.remove(item.id);
+                  //             });
+                  //           }
+                  //           FocusScope.of(context)
+                  //               .requestFocus(new FocusNode());
+                  //         },
+                  //       ),
+                  //     );
+                  //   }).toList(),
+                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _serviceRadioGroup(
+                          _serviceType, ServiceTypeEnum.all, "all"),
+                      _serviceRadioGroup(
+                          _serviceType, ServiceTypeEnum.custom, "custom"),
+                    ],
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      width: double.infinity,
+                      color: Colors.transparent,
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        children: _serviceList(),
+                      ),
+                    ),
+                    onTap: () {
+                      _showServiceDialog();
+                    },
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 10.0),
@@ -378,8 +537,8 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      _areaRadioGroup(_areaType, AreaType.all, "all"),
-                      _areaRadioGroup(_areaType, AreaType.custom, "custom"),
+                      _areaRadioGroup(_areaType, AreaTypeEnum.all, "all"),
+                      _areaRadioGroup(_areaType, AreaTypeEnum.custom, "custom"),
                     ],
                   ),
                   GestureDetector(
@@ -388,11 +547,11 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                       color: Colors.transparent,
                       child: Wrap(
                         alignment: WrapAlignment.center,
-                        children: _supportedAreas(),
+                        children: _supportedAreaList(),
                       ),
                     ),
                     onTap: () {
-                      _showSupportedAreas();
+                      _showSupportedAreaDialog();
                     },
                   ),
                   Padding(
@@ -403,9 +562,9 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      _salaryRadioGroup(_salaryType, SalaryType.all, "all"),
+                      _salaryRadioGroup(_salaryType, SalaryTypeEnum.all, "all"),
                       _salaryRadioGroup(
-                          _salaryType, SalaryType.custom, "custom"),
+                          _salaryType, SalaryTypeEnum.custom, "custom"),
                     ],
                   ),
                   _salaryDetail(),

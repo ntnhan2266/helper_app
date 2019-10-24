@@ -296,5 +296,6 @@
     "no_review": "Chưa có đánh giá",
     "phone_verification_failed": "Xác thực số điện thoại thất bại",
     "custom": "Tuỳ chỉnh",
-    "select_area": "Chọn khu vực"
+    "select_area": "Chọn khu vực",
+    "select_service": "Chọn dịch vụ"
 }
