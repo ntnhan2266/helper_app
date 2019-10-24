@@ -425,6 +425,14 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
     );
   }
 
+  void _onSearch() {
+    if (_serviceType == ServiceTypeEnum.custom && _searchServices.isEmpty) {
+      Utils.showErrorDialog(context, "select_service_required");
+    } else if (_areaType == AreaTypeEnum.custom && _searchAreas.isEmpty) {
+      Utils.showErrorDialog(context, "select_area_required");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -470,43 +478,19 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
               child: Text("Search"),
               onPressed: () {
                 FocusScope.of(context).requestFocus(new FocusNode());
+                _onSearch();
               },
             ),
             Expanded(
               child: ListView(
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(top: 10.0),
                     child: Divider(),
                   ),
                   _searchLabel(AppLocalizations.of(context).tr('service')),
-                  // Wrap(
-                  //   alignment: WrapAlignment.center,
-                  //   children: categoriesData.map((item) {
-                  //     return Padding(
-                  //       padding: EdgeInsets.symmetric(horizontal: 2.0),
-                  //       child: ChoiceChip(
-                  //         label: Text(
-                  //           AppLocalizations.of(context).tr(item.serviceName),
-                  //         ),
-                  //         selected: _searchServices.contains(item.id),
-                  //         onSelected: (selected) {
-                  //           if (selected) {
-                  //             setState(() {
-                  //               _searchServices.add(item.id);
-                  //             });
-                  //           } else {
-                  //             setState(() {
-                  //               _searchServices.remove(item.id);
-                  //             });
-                  //           }
-                  //           FocusScope.of(context)
-                  //               .requestFocus(new FocusNode());
-                  //         },
-                  //       ),
-                  //     );
-                  //   }).toList(),
-                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

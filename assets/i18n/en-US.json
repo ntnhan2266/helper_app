@@ -297,5 +297,7 @@
     "phone_verification_failed": "Phone number verification failed",
     "custom": "Custom",
     "select_area": "Select area",
-    "select_service": "Select service"
+    "select_service": "Select service",
+    "select_service_required": "Please select services",
+    "select_area_required": "Please select supported areas"
 }

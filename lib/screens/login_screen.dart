@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../utils/utils.dart';
 import '../widgets/components/color_loader.dart';
 import '../utils/constants.dart';
 import '../utils/route_names.dart';
@@ -22,27 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _form = GlobalKey<FormState>();
   _LoginData _data = _LoginData();
 
-  void _showErrorDialog(String content) {
-    Navigator.pop(context);
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context).tr('error')),
-          content: Text(content),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(AppLocalizations.of(context).tr('ok')),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _verifyPhoneNumber(String phoneNumber) async {
     final PhoneVerificationCompleted verificationCompleted =
         (AuthCredential phoneAuthCredential) {
@@ -55,8 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
         (AuthException authException) {
       print(
           'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
-      _showErrorDialog(
-          AppLocalizations.of(context).tr('phone_verification_failed'));
+      Navigator.pop(context);
+      Utils.showErrorDialog(context, 'phone_verification_failed');
     };
 
     final PhoneCodeSent codeSent =

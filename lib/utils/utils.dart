@@ -346,4 +346,24 @@ class Utils {
     else
       return AppLocalizations.of(context).tr("periodic");
   }
+
+  static void showErrorDialog(BuildContext context, String content) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context).tr('error')),
+          content: Text(AppLocalizations.of(context).tr(content)),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(AppLocalizations.of(context).tr('ok')),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
