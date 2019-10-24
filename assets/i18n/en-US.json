@@ -294,5 +294,7 @@
     "basic_info": "Basic information",
     "job_info": "Job information",
     "no_review": "No reviews",
-    "phone_verification_failed": "Phone number verification failed"
+    "phone_verification_failed": "Phone number verification failed",
+    "custom": "Custom",
+    "select_area": "Select area"
 }

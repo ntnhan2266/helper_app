@@ -8,6 +8,12 @@ import 'package:intl/intl.dart';
 import '../../utils/utils.dart';
 import '../../utils/dummy_data.dart';
 
+enum SalaryType { all, custom }
+const MIN_SALARY = 0;
+const MAX_SALARY = 10000000;
+const STEP_SALARY = 50000;
+enum AreaType { all, custom }
+
 class HomeSearchContainer extends StatefulWidget {
   @override
   _HomeSearchContainerState createState() => _HomeSearchContainerState();
@@ -18,9 +24,13 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
   String _search = "";
   List<int> _searchServices = [];
   List<int> _searchAreas = [];
-  int _minSalary = 0;
-  int _maxSalary = 10000000;
+  int _minSalary = MIN_SALARY;
+  int _maxSalary = MAX_SALARY;
+
+  //temp
   List<int> _tempSearchAreas = [];
+  SalaryType _salaryType = SalaryType.all;
+  AreaType _areaType = AreaType.all;
 
   Widget _inputSearch() {
     return Container(
@@ -85,7 +95,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
     );
   }
 
-  void _showSupportedArea() {
+  void _showSupportedAreas() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -152,10 +162,12 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
 
   List<Widget> _supportedAreas() {
     int limit = 5;
-    if (_searchAreas.isEmpty) {
+    if (_areaType == AreaType.all) {
+      return [];
+    } else if (_searchAreas.isEmpty) {
       return [
         Center(
-          child: Text("All area"),
+          child: Text(AppLocalizations.of(context).tr('select_area')),
         )
       ];
     } else if (_searchAreas.length <= limit) {
@@ -181,9 +193,98 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
         ),
         selected: true,
         onSelected: (selected) {
-          _showSupportedArea();
+          _showSupportedAreas();
         },
       ),
+    );
+  }
+
+  Widget _areaRadioGroup(dynamic groupValue, dynamic value, String title) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _areaType = value;
+        });
+        if (value == AreaType.custom) {
+          _showSupportedAreas();
+        }
+      },
+      child: Row(
+        children: <Widget>[
+          Radio(
+            groupValue: groupValue,
+            value: value,
+            onChanged: (value) {
+              setState(() {
+                _areaType = value;
+                _searchAreas = [];
+              });
+              if (value == AreaType.custom) {
+                _showSupportedAreas();
+              }
+            },
+          ),
+          Text(AppLocalizations.of(context).tr(title)),
+        ],
+      ),
+    );
+  }
+
+  Widget _salaryRadioGroup(dynamic groupValue, dynamic value, String title) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _salaryType = value;
+        });
+      },
+      child: Row(
+        children: <Widget>[
+          Radio(
+            groupValue: groupValue,
+            value: value,
+            onChanged: (value) {
+              setState(() {
+                _salaryType = value;
+                _minSalary = MIN_SALARY;
+                _maxSalary = MAX_SALARY;
+              });
+            },
+          ),
+          Text(AppLocalizations.of(context).tr(title)),
+        ],
+      ),
+    );
+  }
+
+  Widget _salaryDetail() {
+    return Column(
+      children: _salaryType == SalaryType.all
+          ? []
+          : [
+              Center(
+                child: Text(
+                  NumberFormat("#,###").format(_minSalary) +
+                      " ~ " +
+                      NumberFormat("#,###").format(_maxSalary),
+                ),
+              ),
+              RangeSlider(
+                min: MIN_SALARY.toDouble(),
+                max: MAX_SALARY.toDouble(),
+                activeColor: Theme.of(context).primaryColor,
+                inactiveColor: Colors.blueGrey[100],
+                values:
+                    RangeValues(_minSalary.toDouble(), _maxSalary.toDouble()),
+                onChanged: (RangeValues value) {
+                  setState(() {
+                    _minSalary = (value.start.round() / STEP_SALARY).round() *
+                        STEP_SALARY;
+                    _maxSalary =
+                        (value.end.round() / STEP_SALARY).round() * STEP_SALARY;
+                  });
+                },
+              ),
+            ],
     );
   }
 
@@ -274,6 +375,13 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                     child: Divider(),
                   ),
                   _searchLabel(AppLocalizations.of(context).tr('support_area')),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _areaRadioGroup(_areaType, AreaType.all, "all"),
+                      _areaRadioGroup(_areaType, AreaType.custom, "custom"),
+                    ],
+                  ),
                   GestureDetector(
                     child: Container(
                       width: double.infinity,
@@ -284,7 +392,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                       ),
                     ),
                     onTap: () {
-                      _showSupportedArea();
+                      _showSupportedAreas();
                     },
                   ),
                   Padding(
@@ -292,29 +400,15 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                     child: Divider(),
                   ),
                   _searchLabel(AppLocalizations.of(context).tr('salary')),
-                  Center(
-                    child: Text(
-                      NumberFormat("#,###").format(_minSalary) +
-                          " ~ " +
-                          NumberFormat("#,###").format(_maxSalary),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _salaryRadioGroup(_salaryType, SalaryType.all, "all"),
+                      _salaryRadioGroup(
+                          _salaryType, SalaryType.custom, "custom"),
+                    ],
                   ),
-                  RangeSlider(
-                    min: 0,
-                    max: 10000000,
-                    activeColor: Theme.of(context).primaryColor,
-                    inactiveColor: Colors.blueGrey[100],
-                    values: RangeValues(
-                        _minSalary.toDouble(), _maxSalary.toDouble()),
-                    onChanged: (RangeValues value) {
-                      setState(() {
-                        _minSalary =
-                            (value.start.round() / 50000).round() * 50000;
-                        _maxSalary =
-                            (value.end.round() / 50000).round() * 50000;
-                      });
-                    },
-                  ),
+                  _salaryDetail(),
                 ],
               ),
             ),

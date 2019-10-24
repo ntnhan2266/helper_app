@@ -294,5 +294,7 @@
     "basic_info": "Thông tin cá nhân",
     "job_info": "Thông tin về công việc",
     "no_review": "Chưa có đánh giá",
-    "phone_verification_failed": "Xác thực số điện thoại thất bại"
+    "phone_verification_failed": "Xác thực số điện thoại thất bại",
+    "custom": "Tuỳ chỉnh",
+    "select_area": "Chọn khu vực"
 }
