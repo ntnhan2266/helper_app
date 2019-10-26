@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:intl/intl.dart';
 
+import '../widgets/components/color_loader.dart';
 import './constants.dart';
 
 class Utils {
@@ -362,6 +363,21 @@ class Utils {
               },
             ),
           ],
+        );
+      },
+    );
+  }
+
+  static void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: ColorLoader(
+            colors: [Colors.red, Colors.blue, Colors.green],
+            duration: Duration(seconds: 1),
+          ),
         );
       },
     );

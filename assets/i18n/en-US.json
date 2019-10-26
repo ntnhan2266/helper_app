@@ -299,5 +299,6 @@
     "select_area": "Select area",
     "select_service": "Select service",
     "select_service_required": "Please select services",
-    "select_area_required": "Please select supported areas"
+    "select_area_required": "Please select supported areas",
+    "no_content": "No content"
 }

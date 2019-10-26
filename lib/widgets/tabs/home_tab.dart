@@ -5,7 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:pk_skeleton/pk_skeleton.dart';
 
+import '../../services/booking.dart';
+import '../../utils/constants.dart';
 import '../../models/service_details.dart';
 import '../../models/user.dart';
 import '../../services/maid.dart';
@@ -28,7 +31,10 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   var _categories = categoriesData.sublist(0, 4);
   bool _isShowModalBottomSheet = false;
-  List<UserMaid> users = [];
+  List<UserMaid> _topUsers = List();
+  bool _isLoadingTopUsers = true;
+  List<ServiceDetails> _recentServices = List();
+  bool _isLoadingRecentServices = true;
 
   Widget _inputSearch() {
     return Container(
@@ -105,10 +111,11 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void initState() {
     super.initState();
-    getTopMaid();
+    _getTopMaid();
+    _getBooking();
   }
 
-  void getTopMaid() async {
+  void _getTopMaid() async {
     final res = await MaidService.getTopRatingMaids();
     if (!res['hasError']) {
       final List<UserMaid> data = [];
@@ -118,9 +125,73 @@ class _HomeTabState extends State<HomeTab> {
         data.add(UserMaid.getMaid(maid));
       }
       setState(() {
-        users = data;
+        _topUsers = data;
+        _isLoadingTopUsers = false;
       });
     }
+  }
+
+  void _getBooking() async {
+    final res =
+        await BookingService.getBookingsByStatus(COMPLETED, pageSize: 5);
+    if (res['isValid']) {
+      setState(() {
+        _recentServices.addAll(res['data']);
+        _isLoadingRecentServices = false;
+      });
+    }
+  }
+
+  Widget _homeComponent(
+      {@required String title,
+      Widget action,
+      @required Widget content,
+      bool isLoading = true,
+      bool isEmpty = false,
+      bool hasNext = true}) {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                AppLocalizations.of(context).tr(title),
+                style: TextStyle(
+                  fontSize: ScreenUtil.instance.setSp(17.0),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              action != null ? action : Container(),
+            ],
+          ),
+        ),
+        isLoading
+            ? PKCardPageSkeleton(totalLines: 1)
+            : (isEmpty
+                ? Column(
+                    children: <Widget>[
+                      Image.asset(
+                        'assets/images/not_found.jpg',
+                        width: MediaQuery.of(context).size.width * 0.5,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 20.0),
+                        child:
+                            Text(AppLocalizations.of(context).tr('no_content')),
+                      )
+                    ],
+                  )
+                : content),
+        hasNext
+            ? Container(
+                color: Colors.blueGrey[50],
+                height: 10,
+              )
+            : Container(),
+      ],
+    );
   }
 
   @override
@@ -149,191 +220,169 @@ class _HomeTabState extends State<HomeTab> {
             color: Colors.blueGrey[50],
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  AppLocalizations.of(context).tr('suggested_services'),
-                  style: TextStyle(
-                    fontSize: ScreenUtil.instance.setSp(17.0),
-                    fontWeight: FontWeight.w500,
-                  ),
+          _homeComponent(
+            title: 'suggested_services',
+            isLoading: false,
+            action: GestureDetector(
+              onTap: () {
+                widget.bottomTapped(1);
+              },
+              child: Text(
+                AppLocalizations.of(context).tr('more'),
+                style: TextStyle(
+                  fontSize: ScreenUtil.instance.setSp(15.0),
+                  color: Theme.of(context).primaryColor,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    widget.bottomTapped(1);
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).tr('more'),
-                    style: TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(15.0),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _categories.map((category) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    serviceDetailRoute,
-                    arguments: {'id': category.id},
-                  );
-                },
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width / 4 - 20.0,
-                  child: Column(
-                    children: <Widget>[
-                      Card(
-                        elevation: 3.0,
-                        shape: CircleBorder(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(
-                            category.imgURL,
-                            width: MediaQuery.of(context).size.width / 8,
-                            height: MediaQuery.of(context).size.width / 8,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20.0),
-                        child: Text(
-                          AppLocalizations.of(context).tr(category.serviceName),
-                          style: TextStyle(
-                            fontSize: ScreenUtil.instance.setSp(13.0),
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-          Container(
-            color: Colors.blueGrey[50],
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Text(
-              AppLocalizations.of(context)
-                  .tr('home_tab_title_highest_ratting_users'),
-              style: TextStyle(
-                fontSize: ScreenUtil.instance.setSp(17.0),
-                fontWeight: FontWeight.w500,
               ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 10, left: 20),
-            height: 250,
-            width: MediaQuery.of(context).size.width,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              primary: false,
-              itemCount: users == null ? 0 : users.length,
-              itemBuilder: (BuildContext context, int index) {
-                UserMaid user = users.toList()[index];
-                return Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: InkWell(
-                    child: Container(
-                      height: 250,
-                      width: 140,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: user.avatar != null
-                                ? Image.network(
-                                    "${APIConfig.hostURL + user.avatar}",
-                                    height: 178,
-                                    width: 140,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.asset(
-                                    'assets/images/avt_default.png',
-                                    height: 178,
-                                    width: 140,
-                                    fit: BoxFit.cover,
-                                  ),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: _categories.map((category) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      serviceDetailRoute,
+                      arguments: {'id': category.id},
+                    );
+                  },
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 4 - 20.0,
+                    child: Column(
+                      children: <Widget>[
+                        Card(
+                          elevation: 3.0,
+                          shape: CircleBorder(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.asset(
+                              category.imgURL,
+                              width: MediaQuery.of(context).size.width / 8,
+                              height: MediaQuery.of(context).size.width / 8,
+                            ),
                           ),
-                          SizedBox(height: 7),
-                          Text(
-                            "${user.name}",
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .tr(category.serviceName),
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ScreenUtil.instance.setSp(15.0),
+                              fontSize: ScreenUtil.instance.setSp(13.0),
                             ),
-                            maxLines: 2,
-                            textAlign: TextAlign.left,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(height: 3),
-                          RatingBar(
-                            initialRating: user.rating,
-                            allowHalfRating: true,
-                            itemSize: ScreenUtil.instance.setSp(20),
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.only(right: 2.0),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                            onRatingUpdate: (rating) {},
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed(helperDetailRoute, arguments: user.id);
-                    },
                   ),
                 );
-              },
+              }).toList(),
             ),
           ),
-          Container(
-            color: Colors.blueGrey[50],
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Text(
-              AppLocalizations.of(context).tr('home_tab_title_recent_service'),
-              style: TextStyle(
-                fontSize: ScreenUtil.instance.setSp(17.0),
-                fontWeight: FontWeight.w500,
+          _homeComponent(
+            title: 'home_tab_title_highest_ratting_users',
+            isLoading: _isLoadingTopUsers,
+            isEmpty: _topUsers == null || _topUsers.length == 0,
+            content: Container(
+              padding: EdgeInsets.only(top: 10, left: 20),
+              height: 250,
+              width: MediaQuery.of(context).size.width,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                primary: false,
+                itemCount: _topUsers == null ? 0 : _topUsers.length,
+                itemBuilder: (BuildContext context, int index) {
+                  UserMaid user = _topUsers.toList()[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: InkWell(
+                      child: Container(
+                        height: 250,
+                        width: 140,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: user.avatar != null
+                                  ? Image.network(
+                                      "${APIConfig.hostURL + user.avatar}",
+                                      height: 178,
+                                      width: 140,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      'assets/images/avt_default.png',
+                                      height: 178,
+                                      width: 140,
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
+                            SizedBox(height: 7),
+                            Text(
+                              "${user.name}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil.instance.setSp(15.0),
+                              ),
+                              maxLines: 2,
+                              textAlign: TextAlign.left,
+                            ),
+                            SizedBox(height: 3),
+                            RatingBar(
+                              initialRating: user.rating,
+                              allowHalfRating: true,
+                              itemSize: ScreenUtil.instance.setSp(20),
+                              itemCount: 5,
+                              itemPadding: EdgeInsets.only(right: 2.0),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (rating) {},
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(helperDetailRoute, arguments: user.id);
+                      },
+                    ),
+                  );
+                },
               ),
             ),
           ),
-          ListView.builder(
-            primary: false,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 5,
-            itemBuilder: (BuildContext context, int index) {
-              ServiceDetails serviceDetail = serviceHistoty[index];
-              return Card(
-                elevation: 3.0,
-                margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                child: ServiceHistoryListItem(
-                  serviceDetail,
+          _homeComponent(
+            title: 'home_tab_title_recent_service',
+            isLoading: _isLoadingRecentServices,
+            isEmpty: _recentServices == null || _recentServices.length == 0,
+            action: GestureDetector(
+              onTap: () {
+                widget.bottomTapped(2);
+              },
+              child: Text(
+                AppLocalizations.of(context).tr('more'),
+                style: TextStyle(
+                  fontSize: ScreenUtil.instance.setSp(15.0),
+                  color: Theme.of(context).primaryColor,
                 ),
-              );
-            },
+              ),
+            ),
+            content: Column(
+              children: _recentServices.map((service) {
+                return Card(
+                  elevation: 3.0,
+                  margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                  child: ServiceHistoryListItem(
+                    service,
+                  ),
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),

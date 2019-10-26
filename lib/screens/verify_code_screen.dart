@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/components/color_loader.dart';
+import '../utils/utils.dart';
 import '../utils/constants.dart';
 import '../services/auth.dart';
 import '../utils/route_names.dart';
@@ -81,18 +81,8 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
   void _signInWithPhone(BuildContext context) async {
     if (_form.currentState.validate()) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return Dialog(
-            child: ColorLoader(
-              colors: [Colors.red, Colors.blue, Colors.green],
-              duration: Duration(seconds: 1),
-            ),
-          );
-        },
-      );
+      Utils.showLoadingDialog(context);
+
       // If the form is valid, display a Snackbar.
       _form.currentState.save();
       print(_data.otpCode);

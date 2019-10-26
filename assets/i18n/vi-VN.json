@@ -299,5 +299,6 @@
     "select_area": "Chọn khu vực",
     "select_service": "Chọn dịch vụ",
     "select_service_required": "Vui lòng chọn dịch vụ",
-    "select_area_required": "Vui lòng chọn khu vực hỗ trợ"
+    "select_area_required": "Vui lòng chọn khu vực hỗ trợ",
+    "no_content": "Không có nội dung"
 }
