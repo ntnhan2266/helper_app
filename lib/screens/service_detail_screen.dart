@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:smart_rabbit/models/service_category.dart';
 
 import '../widgets/booking_step_title.dart';
 import '../screens/choose_address_screen.dart';
@@ -359,8 +360,8 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
-    final int id = args['id'];
-    _data.category = id;
+    final ServiceCategory serviceCategory = args['serviceCategory'];
+    _data.category = serviceCategory.id;
     var data = EasyLocalizationProvider.of(context).data;
 
     double defaultScreenWidth = 400.0;
@@ -371,12 +372,17 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
       allowFontScaling: true,
     )..init(context);
 
+    // Get screen width
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.of(context).tr('service_details'),
+            AppLocalizations.of(context).tr(serviceCategory == null
+                ? 'service_details'
+                : serviceCategory.serviceName),
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
           ),
           centerTitle: true,
@@ -395,6 +401,12 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
+                  serviceCategory == null
+                      ? Container()
+                      : Image.asset(
+                          serviceCategory.imgURL,
+                          width: screenWidth * 0.5,
+                        ),
                   BookingStepTitle(
                     currentStep: 0,
                   ),

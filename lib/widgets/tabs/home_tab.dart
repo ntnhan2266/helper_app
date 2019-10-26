@@ -128,15 +128,24 @@ class _HomeTabState extends State<HomeTab> {
         _topUsers = data;
         _isLoadingTopUsers = false;
       });
+    } else {
+      setState(() {
+        _isLoadingTopUsers = false;
+      });
     }
   }
 
   void _getBooking() async {
     final res =
         await BookingService.getBookingsByStatus(COMPLETED, pageSize: 5);
+    print(res);
     if (res['isValid']) {
       setState(() {
         _recentServices.addAll(res['data']);
+        _isLoadingRecentServices = false;
+      });
+    } else {
+      setState(() {
         _isLoadingRecentServices = false;
       });
     }
@@ -243,7 +252,7 @@ class _HomeTabState extends State<HomeTab> {
                     Navigator.pushNamed(
                       context,
                       serviceDetailRoute,
-                      arguments: {'id': category.id},
+                      arguments: {'serviceCategory': category},
                     );
                   },
                   child: SizedBox(
@@ -334,6 +343,7 @@ class _HomeTabState extends State<HomeTab> {
                             RatingBar(
                               initialRating: user.rating,
                               allowHalfRating: true,
+                              ignoreGestures: true,
                               itemSize: ScreenUtil.instance.setSp(20),
                               itemCount: 5,
                               itemPadding: EdgeInsets.only(right: 2.0),

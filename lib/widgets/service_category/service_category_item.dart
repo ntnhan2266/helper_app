@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_rabbit/models/service_category.dart';
 
 import '../../utils/route_names.dart';
 
@@ -30,7 +31,10 @@ class ServiceCategoryItem extends StatelessWidget {
           Navigator.pushNamed(
             context,
             serviceDetailRoute,
-            arguments: {'id': id},
+            arguments: {
+              'serviceCategory': ServiceCategory(
+                  id: id, serviceName: serviceName, imgURL: imgURL),
+            },
           );
         },
         child: new Card(
