@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:pk_skeleton/pk_skeleton.dart';
 
 import '../models/service_details.dart';
 import '../widgets/service_history_list_item.dart';
@@ -55,18 +56,15 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
     if (!canLoadMore) {
       return;
     }
-    var res;
-    if (isHelper) {
-      res = await BookingService.getHostBookingsByStatus(
-        status,
-        pageIndex: pageIndex,
-      );
-    } else {
-      res = await BookingService.getBookingsByStatus(
-        status,
-        pageIndex: pageIndex,
-      );
-    }
+    var res = isHelper
+        ? await BookingService.getHostBookingsByStatus(
+            status,
+            pageIndex: pageIndex,
+          )
+        : await BookingService.getBookingsByStatus(
+            status,
+            pageIndex: pageIndex,
+          );
     if (res['isValid']) {
       if (mounted) {
         setState(() {
@@ -97,10 +95,22 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
               );
             },
           )
-        : Center(
-            child: Text(
-              AppLocalizations.of(context).tr('no_data'),
-              style: TextStyle(fontWeight: FontWeight.w600),
+        : Container(
+            color: Colors.white,
+            margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Image.asset(
+                  'assets/images/not_found.jpg',
+                  width: MediaQuery.of(context).size.width * 0.5,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20.0),
+                  child: Text(AppLocalizations.of(context).tr('no_content')),
+                )
+              ],
             ),
           );
   }
@@ -110,11 +120,7 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5.0),
       color: Colors.blueGrey[50],
-      child: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : _buildHistoryData(),
+      child: isLoading ? PKCardPageSkeleton() : _buildHistoryData(),
     );
   }
 }
