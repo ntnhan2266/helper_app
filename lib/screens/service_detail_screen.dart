@@ -3,8 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:smart_rabbit/models/service_category.dart';
 
+import '../models/service_category.dart';
 import '../widgets/booking_step_title.dart';
 import '../screens/choose_address_screen.dart';
 import '../utils/constants.dart';
@@ -662,7 +662,6 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                             },
                           ),
                         ),
-
                         SizedBox(
                           height: ScreenUtil.instance.setHeight(20.0),
                         ),

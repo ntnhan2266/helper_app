@@ -138,7 +138,6 @@ class _HomeTabState extends State<HomeTab> {
   void _getBooking() async {
     final res =
         await BookingService.getBookingsByStatus(COMPLETED, pageSize: 5);
-    print(res);
     if (res['isValid']) {
       setState(() {
         _recentServices.addAll(res['data']);

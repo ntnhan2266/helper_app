@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_rabbit/utils/utils.dart';
 
+import '../utils/utils.dart';
 import '../widgets/booking_step_title.dart';
 import '../widgets/booking_bottom_bar.dart';
 import '../widgets/maid_list.dart';
