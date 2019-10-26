@@ -374,10 +374,7 @@ class Utils {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
-          child: ColorLoader(
-            colors: [Colors.red, Colors.blue, Colors.green],
-            duration: Duration(seconds: 1),
-          ),
+          child: ColorLoader(),
         );
       },
     );
