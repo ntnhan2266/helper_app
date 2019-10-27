@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization_delegate.dart';
 import 'package:flutter/material.dart';
 
 import '../services/booking.dart';
@@ -58,5 +59,44 @@ class Booking {
     } else {
       Utils.showSuccessDialog(context, 'something_went_wrong');
     }
+  }
+
+  static void doneBooking(BuildContext context, String id,
+      {Function callback}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context).tr('confirm')),
+          content:
+              Text(AppLocalizations.of(context).tr('complete_confirm_hint')),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(AppLocalizations.of(context).tr('close')),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text(AppLocalizations.of(context).tr('confirm')),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                var res = await BookingService.complete(id);
+                if (res['isValid']) {
+                  Utils.showSuccessDialog(
+                    context,
+                    'complete_successfully',
+                    newScreen: callback == null ? helperManagementRoute : null,
+                    callback: callback,
+                  );
+                } else {
+                  Utils.showSuccessDialog(context, 'something_went_wrong');
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

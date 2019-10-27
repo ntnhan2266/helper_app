@@ -94,6 +94,25 @@ class ServiceHistoryListItem extends StatelessWidget {
                 }),
           ],
         );
+      } else if (serviceDetail.status == 2) {
+        return Row(
+          children: <Widget>[
+            _flatButton(
+                icon: Icons.check,
+                text: AppLocalizations.of(context).tr("completed"),
+                onPressed: () {
+                  Booking.doneBooking(context, serviceDetail.id,
+                      callback: callback);
+                }),
+            _flatButton(
+                icon: Icons.close,
+                text: AppLocalizations.of(context).tr("cancel"),
+                onPressed: () {
+                  Booking.denyBooking(context, serviceDetail.id,
+                      callback: callback);
+                }),
+          ],
+        );
       } else {
         return Container();
       }

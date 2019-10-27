@@ -373,21 +373,31 @@ class Utils {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context).tr('success')),
-          content: Text(AppLocalizations.of(context).tr(content)),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(AppLocalizations.of(context).tr('ok')),
-              onPressed: () {
-                Navigator.pop(context);
-                if (callback != null)
-                  callback();
-                else if (newScreen != null)
-                  Navigator.of(context).pushReplacementNamed(newScreen);
-              },
-            ),
-          ],
+        return WillPopScope(
+          onWillPop: () async {
+            // return false;
+            if (callback != null)
+              callback();
+            else if (newScreen != null)
+              Navigator.of(context).pushReplacementNamed(newScreen);
+            return true;
+          },
+          child: AlertDialog(
+            title: Text(AppLocalizations.of(context).tr('success')),
+            content: Text(AppLocalizations.of(context).tr(content)),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(AppLocalizations.of(context).tr('ok')),
+                onPressed: () {
+                  Navigator.pop(context);
+                  if (callback != null)
+                    callback();
+                  else if (newScreen != null)
+                    Navigator.of(context).pushReplacementNamed(newScreen);
+                },
+              ),
+            ],
+          ),
         );
       },
     );
