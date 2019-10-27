@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pk_skeleton/pk_skeleton.dart';
 
 import '../models/service_details.dart';
@@ -97,7 +98,10 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
           )
         : Container(
             color: Colors.white,
-            margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            margin: EdgeInsets.symmetric(
+              vertical: ScreenUtil.instance.setHeight(2.0),
+              horizontal: ScreenUtil.instance.setWidth(5.0),
+            ),
             alignment: Alignment.center,
             child: Column(
               mainAxisSize: MainAxisSize.min,

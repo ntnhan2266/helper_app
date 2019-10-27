@@ -384,7 +384,7 @@ class _HomeTabState extends State<HomeTab> {
             content: Column(
               children: _recentServices.map((service) {
                 return Container(
-                  margin: EdgeInsets.symmetric(vertical: 5.0),
+                  margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                   padding: EdgeInsets.zero,
                   child: ServiceHistoryListItem(
                     service,

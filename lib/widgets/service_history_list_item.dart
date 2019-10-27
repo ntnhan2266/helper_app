@@ -144,8 +144,8 @@ class ServiceHistoryListItem extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: ScreenUtil.instance.setHeight(8),
-        horizontal: ScreenUtil.instance.setWidth(12),
+        vertical: ScreenUtil.instance.setHeight(2.0),
+        horizontal: ScreenUtil.instance.setWidth(5.0),
       ),
       padding: EdgeInsets.only(
         top: ScreenUtil.instance.setHeight(5),
