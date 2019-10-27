@@ -386,9 +386,7 @@ class _HomeTabState extends State<HomeTab> {
                 return Container(
                   margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                   padding: EdgeInsets.zero,
-                  child: ServiceHistoryListItem(
-                    service,
-                  ),
+                  child: ServiceHistoryListItem(service),
                 );
               }).toList(),
             ),
