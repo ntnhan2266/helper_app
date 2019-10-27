@@ -3,15 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
+import '../utils/booking.dart';
 import '../models/service_category.dart';
 import '../models/service_details.dart';
-import '../services/booking.dart';
 import '../utils/dummy_data.dart';
 import '../utils/utils.dart';
 import '../utils/route_names.dart';
-import '../widgets/dialogs/reject_booking_dialog.dart';
 
 class ServiceHistoryListItem extends StatelessWidget {
   final ServiceDetails serviceDetail;
@@ -20,49 +18,6 @@ class ServiceHistoryListItem extends StatelessWidget {
 
   const ServiceHistoryListItem(this.serviceDetail,
       {this.isHelper = false, this.callback});
-
-  void _approveBooking(BuildContext context) async {
-    var res = await BookingService.approve(serviceDetail.id);
-    if (res['isValid']) {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context).tr('approved_successfully'),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Color.fromRGBO(75, 181, 67, 1),
-        textColor: Colors.white,
-        fontSize: ScreenUtil.instance.setSp(14),
-      );
-      callback();
-    }
-  }
-
-  void _denyBooking(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return RejectBookingDialog((reason, content) async {
-          var res = await BookingService.deny(
-            serviceDetail.id,
-            reason,
-            content,
-          );
-          if (res['isValid']) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context).tr('deny_successfully'),
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIos: 1,
-              backgroundColor: Color.fromRGBO(75, 181, 67, 1),
-              textColor: Colors.white,
-              fontSize: ScreenUtil.instance.setSp(14),
-            );
-            callback();
-          }
-        });
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,13 +82,15 @@ class ServiceHistoryListItem extends StatelessWidget {
                 icon: Icons.check,
                 text: AppLocalizations.of(context).tr("accept"),
                 onPressed: () {
-                  _approveBooking(context);
+                  Booking.approveBooking(context, serviceDetail.id,
+                      callback: callback);
                 }),
             _flatButton(
                 icon: Icons.close,
                 text: AppLocalizations.of(context).tr("deny"),
                 onPressed: () {
-                  _denyBooking(context);
+                  Booking.denyBooking(context, serviceDetail.id,
+                      callback: callback);
                 }),
           ],
         );
