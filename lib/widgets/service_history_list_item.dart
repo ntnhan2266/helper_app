@@ -197,30 +197,27 @@ class ServiceHistoryListItem extends StatelessWidget {
                     height: MediaQuery.of(context).size.width / 6,
                   ),
                   Flexible(
-                    child: Container(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _iconAndText(
-                            Icons.location_on,
-                            serviceDetail.address,
-                          ),
-                          _iconAndText(
-                            Icons.date_range,
-                            Utils.getServiceType(serviceDetail.type, context) +
-                                ": " +
-                                Utils.getServiceTime(serviceDetail.startTime,
-                                    serviceDetail.endTime),
-                          ),
-                          _iconAndText(
-                            Icons.person,
-                            isHelper
-                                ? serviceDetail.createdBy.name
-                                : serviceDetail.maid.name,
-                          ),
-                        ],
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _iconAndText(
+                          Icons.location_on,
+                          serviceDetail.address,
+                        ),
+                        _iconAndText(
+                          Icons.date_range,
+                          Utils.getServiceType(serviceDetail.type, context) +
+                              ": " +
+                              Utils.getServiceTime(serviceDetail.startTime,
+                                  serviceDetail.endTime),
+                        ),
+                        _iconAndText(
+                          Icons.person,
+                          isHelper
+                              ? serviceDetail.createdBy.name
+                              : serviceDetail.maid.name,
+                        ),
+                      ],
                     ),
                   ),
                 ],
