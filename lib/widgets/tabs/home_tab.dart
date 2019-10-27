@@ -238,7 +238,7 @@ class _HomeTabState extends State<HomeTab> {
               child: Text(
                 AppLocalizations.of(context).tr('more'),
                 style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(15.0),
+                  fontSize: ScreenUtil.instance.setSp(13.0),
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -376,16 +376,16 @@ class _HomeTabState extends State<HomeTab> {
               child: Text(
                 AppLocalizations.of(context).tr('more'),
                 style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(15.0),
+                  fontSize: ScreenUtil.instance.setSp(13.0),
                   color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
             content: Column(
               children: _recentServices.map((service) {
-                return Card(
-                  elevation: 3.0,
-                  margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 5.0),
+                  padding: EdgeInsets.zero,
                   child: ServiceHistoryListItem(
                     service,
                   ),

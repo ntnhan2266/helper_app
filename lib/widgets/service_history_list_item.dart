@@ -68,7 +68,7 @@ class ServiceHistoryListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     ServiceCategory _serviceCategory = categoriesData[serviceDetail.category];
 
-    Widget _iconAndText(IconData icon, String text, double width) {
+    Widget _iconAndText(IconData icon, String text) {
       return Row(
         children: <Widget>[
           Icon(
@@ -76,16 +76,21 @@ class ServiceHistoryListItem extends StatelessWidget {
             size: ScreenUtil.instance.setSp(13.0),
             color: Colors.blueGrey[300],
           ),
-          Container(
-            width: width,
-            padding: EdgeInsets.only(
-              left: ScreenUtil.instance.setWidth(5),
-            ),
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: ScreenUtil.instance.setSp(14.0),
-                color: Colors.blueGrey[300],
+          Flexible(
+            child: Container(
+              padding: EdgeInsets.only(
+                left: ScreenUtil.instance.setWidth(5),
+                top: ScreenUtil.instance.setWidth(2),
+                bottom: ScreenUtil.instance.setWidth(2),
+              ),
+              child: Text(
+                text,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: ScreenUtil.instance.setSp(14.0),
+                  color: Colors.blueGrey[300],
+                ),
               ),
             ),
           ),
@@ -137,21 +142,21 @@ class ServiceHistoryListItem extends StatelessWidget {
       }
     }
 
-    var textContainerWidth = MediaQuery.of(context).size.width -
-        (MediaQuery.of(context).size.width / 4 +
-            34 +
-            ScreenUtil.instance.setWidth(10) * 2 +
-            5 +
-            20);
-
     return Container(
       margin: EdgeInsets.symmetric(
         vertical: ScreenUtil.instance.setHeight(8),
         horizontal: ScreenUtil.instance.setWidth(12),
       ),
-      padding: EdgeInsets.symmetric(vertical: ScreenUtil.instance.setHeight(5)),
+      padding: EdgeInsets.only(
+        top: ScreenUtil.instance.setHeight(5),
+        left: ScreenUtil.instance.setHeight(5),
+        right: ScreenUtil.instance.setHeight(5),
+      ),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(color: Colors.blueGrey[50]),
+      ),
       child: InkWell(
         child: Container(
           child: Column(
@@ -191,42 +196,31 @@ class ServiceHistoryListItem extends StatelessWidget {
                     width: MediaQuery.of(context).size.width / 4,
                     height: MediaQuery.of(context).size.width / 6,
                   ),
-                  Container(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _iconAndText(
-                          Icons.location_on,
-                          serviceDetail.address,
-                          textContainerWidth,
-                        ),
-                        SizedBox(
-                          height: ScreenUtil.instance.setHeight(
-                            10,
+                  Flexible(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _iconAndText(
+                            Icons.location_on,
+                            serviceDetail.address,
                           ),
-                        ),
-                        _iconAndText(
-                          Icons.date_range,
-                          Utils.getServiceType(serviceDetail.type, context) +
-                              ": " +
-                              Utils.getServiceTime(serviceDetail.startTime,
-                                  serviceDetail.endTime),
-                          textContainerWidth,
-                        ),
-                        SizedBox(
-                          height: ScreenUtil.instance.setHeight(
-                            10,
+                          _iconAndText(
+                            Icons.date_range,
+                            Utils.getServiceType(serviceDetail.type, context) +
+                                ": " +
+                                Utils.getServiceTime(serviceDetail.startTime,
+                                    serviceDetail.endTime),
                           ),
-                        ),
-                        _iconAndText(
-                          Icons.person,
-                          isHelper
-                              ? serviceDetail.createdBy.name
-                              : serviceDetail.maid.name,
-                          textContainerWidth,
-                        ),
-                      ],
+                          _iconAndText(
+                            Icons.person,
+                            isHelper
+                                ? serviceDetail.createdBy.name
+                                : serviceDetail.maid.name,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -239,7 +233,8 @@ class ServiceHistoryListItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(ScreenUtil.instance.setWidth(8.0)),
+                      padding:
+                          EdgeInsets.all(ScreenUtil.instance.setWidth(8.0)),
                       child: Text(
                         NumberFormat.currency(locale: "vi-vn")
                             .format(serviceDetail.amount),
