@@ -14,7 +14,9 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class AuthService {
   // Config API routers
-  static const Map<String, String> headers = {"Content-type": "application/json"};
+  static const Map<String, String> headers = {
+    "Content-type": "application/json"
+  };
   static const String _registerRoute = APIConfig.baseURL + '/register';
   static const String _loginRoute = APIConfig.baseURL + '/login';
   static const String _loginWithFbRoute = APIConfig.baseURL + '/login-with-fb';
@@ -26,70 +28,59 @@ class AuthService {
       'phoneNumber': phoneNumber,
       'email': email
     };
-    var response = await http.post(_registerRoute, headers: headers, body: jsonEncode(body));
+    var response = await http.post(_registerRoute,
+        headers: headers, body: jsonEncode(body));
     var completer = new Completer();
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['errorCode'] != null) {
-        completer.complete({
-          'responseCode': data['errorCode'],
-          'user': null
-        });
-      } else {
-        final user = data['user'];        
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString(USER_ID, user['_id']);
-        await prefs.setString(X_TOKEN, data['token']);
-        completer.complete({
-          'responseCode': NO_ERROR,
-          'user': user
-        });
-      }
-    } else {
-      completer.complete({
-        'responseCode': COMMON_ERROR,
-        'user': null
-      });
-    }
-    return completer.future;
-  }
-
-  static Future<dynamic> login({token, phoneNumber}) async {
-    Map<String, String> body = {
-      'token': token
-    };
-    var response = await http.post(_loginRoute, headers: headers, body: jsonEncode(body));
-    var completer = new Completer();
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (data['errorCode'] != null) {
-        completer.complete({
-          'responseCode': data['errorCode'],
-          'user': null
-        });
+        completer.complete({'responseCode': data['errorCode'], 'user': null});
       } else {
         final user = data['user'];
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString(USER_ID, user['_id']);
         await prefs.setString(X_TOKEN, data['token']);
-        completer.complete({
-          'responseCode': NO_ERROR,
-          'user': user
-        });
+        completer.complete({'responseCode': NO_ERROR, 'user': user});
       }
     } else {
-      completer.complete({
-        'responseCode': COMMON_ERROR,
-        'user': null
-      });
+      completer.complete({'responseCode': COMMON_ERROR, 'user': null});
     }
+    return completer.future;
+  }
+
+  static Future<dynamic> login({token, phoneNumber}) async {
+    Map<String, String> body = {'token': token};
+    var completer = new Completer();
+
+    try {
+      var response = await http.post(_loginRoute,
+          headers: headers, body: jsonEncode(body));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['errorCode'] != null) {
+          completer.complete({'responseCode': data['errorCode'], 'user': null});
+        } else {
+          final user = data['user'];
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString(USER_ID, user['_id']);
+          await prefs.setString(X_TOKEN, data['token']);
+          completer.complete({'responseCode': NO_ERROR, 'user': user});
+        }
+      } else {
+        completer.complete({'responseCode': COMMON_ERROR, 'user': null});
+      }
+    } catch (e) {
+      completer.complete({'responseCode': COMMON_ERROR, 'user': null});
+    }
+
     return completer.future;
   }
 
   static Future<dynamic> loginWithFacebook() async {
     var completer = new Completer();
     final facebookLogin = FacebookLogin();
-    final result = await facebookLogin.logInWithReadPermissions(['email', 'public_profile']);
+    final result = await facebookLogin
+        .logInWithReadPermissions(['email', 'public_profile']);
 
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
@@ -97,8 +88,7 @@ class AuthService {
         // _showLoggedInUI();
         // Create user with access token
         final AuthCredential credential = FacebookAuthProvider.getCredential(
-          accessToken: result.accessToken.token
-        );
+            accessToken: result.accessToken.token);
         final FirebaseUser user =
             (await _auth.signInWithCredential(credential)).user;
         final FirebaseUser currentUser = await _auth.currentUser();
@@ -108,7 +98,7 @@ class AuthService {
           final IdTokenResult idTokenResult = await currentUser.getIdToken();
           final token = idTokenResult.token;
           final graphResponse = await http.get(
-            'https://graph.facebook.com/v4.0/me?fields=name,email&access_token=${result.accessToken.token}');
+              'https://graph.facebook.com/v4.0/me?fields=name,email&access_token=${result.accessToken.token}');
           final profile = jsonDecode(graphResponse.body);
           Map<String, String> body = {
             'token': token,
@@ -116,39 +106,29 @@ class AuthService {
             'email': profile['email']
           };
           // Send token. and data fetch from FB to API
-          var response = await http.post(_loginWithFbRoute, headers: headers, body: jsonEncode(body));
+          var response = await http.post(_loginWithFbRoute,
+              headers: headers, body: jsonEncode(body));
           if (response.statusCode == 200) {
             final data = jsonDecode(response.body);
             if (data['errorCode'] != null) {
-              completer.complete({
-                'responseCode': data['errorCode'],
-                'user': null
-              });
+              completer
+                  .complete({'responseCode': data['errorCode'], 'user': null});
             } else {
               final user = data['user'];
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.setString(USER_ID, user['_id']);
               await prefs.setString(X_TOKEN, data['token']);
-              completer.complete({
-                'responseCode': NO_ERROR,
-                'user': user
-              });
+              completer.complete({'responseCode': NO_ERROR, 'user': user});
             }
           }
         }
         break;
       case FacebookLoginStatus.cancelledByUser:
-        completer.complete({
-          'responseCode': FB_LOGIN_FAILED,
-          'user': null
-        });
+        completer.complete({'responseCode': FB_LOGIN_FAILED, 'user': null});
         print('Cancel message');
         break;
       case FacebookLoginStatus.error:
-        completer.complete({
-          'responseCode': FB_LOGIN_FAILED,
-          'user': null
-        });
+        completer.complete({'responseCode': FB_LOGIN_FAILED, 'user': null});
         print('Error');
         break;
     }
@@ -159,6 +139,7 @@ class AuthService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(USER_ID);
     prefs.remove(X_TOKEN);
-    Navigator.of(context).pushNamedAndRemoveUntil(authScreenRoute, (Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        authScreenRoute, (Route<dynamic> route) => false);
   }
 }

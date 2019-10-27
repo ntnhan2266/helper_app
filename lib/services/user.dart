@@ -18,20 +18,20 @@ class UserService {
       HttpHeaders.contentTypeHeader: "application/json", // or whatever
       HttpHeaders.authorizationHeader: "Bearer $token",
     };
-    var response = await http.get(_getUserRoute, headers: headers);
-    final data = jsonDecode(response.body);
-    final user = data['user'];
-    if (user != null) {
-      completer.complete({
-        'user': user,
-        'isValid': true
-      });
-    } else {
-      completer.complete({
-        'user': null,
-        'isValid': false
-      });
+    
+    try {
+      var response = await http.get(_getUserRoute, headers: headers);
+      final data = jsonDecode(response.body);
+      final user = data['user'];
+      if (user != null) {
+        completer.complete({'user': user, 'isValid': true});
+      } else {
+        completer.complete({'user': null, 'isValid': false});
+      }
+    } catch (e) {
+      completer.complete({'user': null, 'isValid': false});
     }
+
     return completer.future;
   }
 
@@ -43,19 +43,14 @@ class UserService {
       HttpHeaders.contentTypeHeader: "application/json", // or whatever
       HttpHeaders.authorizationHeader: "Bearer $token",
     };
-    var response = await http.post(_editUserRoute, headers: headers, body: jsonEncode(data));
+    var response = await http.post(_editUserRoute,
+        headers: headers, body: jsonEncode(data));
     final body = jsonDecode(response.body);
     final user = body['user'];
     if (user != null) {
-      completer.complete({
-        'user': user,
-        'isValid': true
-      });
+      completer.complete({'user': user, 'isValid': true});
     } else {
-      completer.complete({
-        'user': null,
-        'isValid': false
-      });
+      completer.complete({'user': null, 'isValid': false});
     }
     return completer.future;
   }
