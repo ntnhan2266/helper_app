@@ -76,8 +76,7 @@ class _ColorLoaderState extends State<ColorLoader>
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100.0,
-      height: 150.0,
+      height: 70.0,
       child: new Center(
         child: new RotationTransition(
           turns: animation_rotation,

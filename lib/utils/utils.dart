@@ -409,7 +409,17 @@ class Utils {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
-          child: ColorLoader(),
+          child: Container(
+            width: 50.0,
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ColorLoader(),
+                Text(AppLocalizations.of(context).tr('loading')),
+              ],
+            ),
+          ),
         );
       },
     );

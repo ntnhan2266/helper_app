@@ -281,6 +281,7 @@
     "reject_reason_4": "Lý do khác",
     "reject_confirm": "Bạn thực sự muốn từ chối dịch vụ này?",
     "deny_successfully": "Từ chối dịch vụ thành công",
+    "cancel_successfully": "Huỷ dịch vụ thành công",
     "reason": "Lý do",
     "no_email_info": "Chưa có thông tin email",
     "complete_confirm": "Đã hoàn thành công việc",

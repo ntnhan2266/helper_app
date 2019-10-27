@@ -4,8 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CancelBookingDialog extends StatefulWidget {
   final Function handleCancel;
+  final bool isHelper;
 
-  CancelBookingDialog(this.handleCancel);
+  CancelBookingDialog({this.handleCancel, this.isHelper = false});
 
   @override
   _CancelBookingDialogState createState() => _CancelBookingDialogState();
@@ -21,7 +22,7 @@ class _CancelBookingDialogState extends State<CancelBookingDialog> {
       options.add(
         RadioListTile<int>(
           groupValue: _reason,
-          title: Text(AppLocalizations.of(context).tr('cancel_reason_$i')),
+          title: Text(AppLocalizations.of(context).tr(widget.isHelper ? 'reject_reason_$i' : 'cancel_reason_$i')),
           value: i,
           onChanged: (int value) {
             setState(() {
@@ -64,8 +65,8 @@ class _CancelBookingDialogState extends State<CancelBookingDialog> {
             ),
             _buildCancelOptions(),
             TextField(
-              minLines: 4,
-              maxLines: 6,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context).tr('description'),
               ),
@@ -83,7 +84,8 @@ class _CancelBookingDialogState extends State<CancelBookingDialog> {
         ),
         FlatButton(
           onPressed: () {
-            widget.handleCancel();
+            Navigator.pop(context);
+            widget.handleCancel(_reason, _contentController.text);
           },
           child: Text(AppLocalizations.of(context).tr('ok')),
         )

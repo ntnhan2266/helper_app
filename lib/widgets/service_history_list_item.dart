@@ -21,7 +21,7 @@ class ServiceHistoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ServiceCategory _serviceCategory = categoriesData[serviceDetail.category];
+    ServiceCategory _serviceCategory = categoriesData.firstWhere((category) => category.id == serviceDetail.category);
 
     Widget _iconAndText(IconData icon, String text) {
       return Row(
@@ -89,8 +89,8 @@ class ServiceHistoryListItem extends StatelessWidget {
                 icon: Icons.close,
                 text: AppLocalizations.of(context).tr("deny"),
                 onPressed: () {
-                  Booking.denyBooking(context, serviceDetail.id,
-                      callback: callback);
+                  Booking.cancelBooking(context, serviceDetail.id,
+                      callback: callback, isHelper: true);
                 }),
           ],
         );
@@ -98,19 +98,40 @@ class ServiceHistoryListItem extends StatelessWidget {
         return Row(
           children: <Widget>[
             _flatButton(
-                icon: Icons.check,
-                text: AppLocalizations.of(context).tr("completed"),
-                onPressed: () {
-                  Booking.doneBooking(context, serviceDetail.id,
-                      callback: callback);
-                }),
+              icon: Icons.check,
+              text: AppLocalizations.of(context).tr("completed"),
+              onPressed: () {
+                Booking.doneBooking(context, serviceDetail.id,
+                    callback: callback);
+              },
+            ),
             _flatButton(
-                icon: Icons.close,
-                text: AppLocalizations.of(context).tr("cancel"),
-                onPressed: () {
-                  Booking.denyBooking(context, serviceDetail.id,
-                      callback: callback);
-                }),
+              icon: Icons.close,
+              text: AppLocalizations.of(context).tr("cancel"),
+              onPressed: () {
+                Booking.cancelBooking(context, serviceDetail.id,
+                    callback: callback, isHelper: true);
+              },
+            ),
+          ],
+        );
+      } else {
+        return Container();
+      }
+    }
+
+    Widget _buildUserAction() {
+      if (serviceDetail.status == 1 || serviceDetail.status == 2) {
+        return Row(
+          children: <Widget>[
+            _flatButton(
+              icon: Icons.close,
+              text: AppLocalizations.of(context).tr("cancel"),
+              onPressed: () {
+                Booking.cancelBooking(context, serviceDetail.id,
+                    callback: callback, isHelper: false);
+              },
+            ),
           ],
         );
       } else {
@@ -216,16 +237,7 @@ class ServiceHistoryListItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    isHelper
-                        ? _buildHelperAction()
-                        : Row(
-                            children: <Widget>[
-                              _flatButton(
-                                  icon: Icons.history,
-                                  text: AppLocalizations.of(context)
-                                      .tr("repick")),
-                            ],
-                          ),
+                    isHelper ? _buildHelperAction() : _buildUserAction(),
                   ],
                 ),
               ),

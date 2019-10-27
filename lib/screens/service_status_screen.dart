@@ -9,7 +9,6 @@ import '../services/booking.dart';
 import '../widgets/service_detail_info.dart';
 import '../widgets/booking_status.dart';
 import '../widgets/dialogs/cancel_booking_dialog.dart';
-import '../widgets/dialogs/reject_booking_dialog.dart';
 import '../utils/constants.dart';
 import '../utils/route_names.dart';
 
@@ -41,15 +40,15 @@ class ServiceStatus extends StatelessWidget {
   ServiceStatus({Key key, this.service, this.id, this.isHelper = false})
       : super(key: key);
 
-  void _handleCancelBooking() {
-    return;
-  }
+  // void _handleCancelBooking() {
+  //   return;
+  // }
 
   void _handleCustomerCancel(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
-        return CancelBookingDialog(_handleCancelBooking);
+        return CancelBookingDialog();
       },
     );
   }
@@ -58,35 +57,38 @@ class ServiceStatus extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return RejectBookingDialog((reason, content) async {
-          var res = await BookingService.deny(
-            id,
-            reason,
-            content,
-          );
-          if (res['isValid']) {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context).tr('deny_successfully'),
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIos: 1,
-              backgroundColor: Color.fromRGBO(75, 181, 67, 1),
-              textColor: Colors.white,
-              fontSize: ScreenUtil.instance.setSp(14),
+        return CancelBookingDialog(
+          handleCancel: (reason, content) async {
+            var res = await BookingService.cancel(
+              id,
+              reason,
+              content,
+              isHelper,
             );
-            Navigator.of(context).pushReplacementNamed(helperManagementRoute);
-          } else {
-            Fluttertoast.showToast(
-              msg: AppLocalizations.of(context).tr('error'),
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIos: 1,
-              backgroundColor: Color.fromRGBO(165, 0, 0, 1),
-              textColor: Colors.white,
-              fontSize: ScreenUtil.instance.setSp(14),
-            );
-          }
-        });
+            if (res['isValid']) {
+              Fluttertoast.showToast(
+                msg: AppLocalizations.of(context).tr('deny_successfully'),
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Color.fromRGBO(75, 181, 67, 1),
+                textColor: Colors.white,
+                fontSize: ScreenUtil.instance.setSp(14),
+              );
+              Navigator.of(context).pushReplacementNamed(helperManagementRoute);
+            } else {
+              Fluttertoast.showToast(
+                msg: AppLocalizations.of(context).tr('error'),
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Color.fromRGBO(165, 0, 0, 1),
+                textColor: Colors.white,
+                fontSize: ScreenUtil.instance.setSp(14),
+              );
+            }
+          },
+        );
       },
     );
   }

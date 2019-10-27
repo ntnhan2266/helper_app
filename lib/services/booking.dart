@@ -17,8 +17,8 @@ class BookingService {
       APIConfig.baseURL + '/bookings/host?status=';
   static const String _approveBooking =
       APIConfig.baseURL + '/booking/approve?id=';
-  static const String _denyBooking =
-      APIConfig.baseURL + '/booking/reject';
+  static const String _rejectBooking = APIConfig.baseURL + '/booking/reject';
+  static const String _cancelBooking = APIConfig.baseURL + '/booking/cancel';
   static const String _completeBooking =
       APIConfig.baseURL + '/booking/complete?id=';
 
@@ -42,13 +42,12 @@ class BookingService {
             .collection(booking['_id'])
             .document(DateTime.now().millisecondsSinceEpoch.toString());
         Firestore.instance.runTransaction((transaction) async {
-          await transaction.set(documentReference, 
-            {
-              'from': booking['maid'],
-              'to': booking['createdBy'],
-              'content':
-                  'Cảm ơn bạn đã chọn dịch vụ của chúng tôi, dịch vụ của bạn đang được xác nhận',
-              'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+          await transaction.set(documentReference, {
+            'from': booking['maid'],
+            'to': booking['createdBy'],
+            'content':
+                'Cảm ơn bạn đã chọn dịch vụ của chúng tôi, dịch vụ của bạn đang được xác nhận',
+            'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
           });
         });
         completer.complete({'isValid': true, 'data': booking});
@@ -83,7 +82,9 @@ class BookingService {
     var completer = new Completer<Map<String, dynamic>>();
     var headers = await API.getAuthToken();
     var response = await http.get(
-      _getBookingByStatus + status.toString() + '&pageSize=$pageSize&pageIndex=$pageIndex',
+      _getBookingByStatus +
+          status.toString() +
+          '&pageSize=$pageSize&pageIndex=$pageIndex',
       headers: headers,
     );
     if (response.statusCode == 200) {
@@ -142,38 +143,44 @@ class BookingService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['completed']) {
-        completer.complete({'isValid': true,});
+        completer.complete({
+          'isValid': true,
+        });
       } else {
-        completer.complete({'isValid': false,});
+        completer.complete({
+          'isValid': false,
+        });
       }
     } else {
-        completer.complete({'isValid': false,});
+      completer.complete({
+        'isValid': false,
+      });
     }
     return completer.future;
   }
 
-  static Future<Map<String, dynamic>> deny(String id, int reason, String content) async {
+  static Future<Map<String, dynamic>> cancel(
+      String id, int reason, String content, bool isHelper) async {
     var completer = new Completer<Map<String, dynamic>>();
     var headers = await API.getAuthToken();
-    var body = {
-      'id': id,
-      'reason': reason,
-      'content': content
-    };
-    var response = await http.post(
-      _denyBooking,
-      headers: headers,
-      body: jsonEncode(body)
-    );
+    var body = {'id': id, 'reason': reason, 'content': content};
+    var response =
+        await http.post(isHelper ? _rejectBooking : _cancelBooking, headers: headers, body: jsonEncode(body));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['completed']) {
-        completer.complete({'isValid': true,});
+        completer.complete({
+          'isValid': true,
+        });
       } else {
-        completer.complete({'isValid': false,});
+        completer.complete({
+          'isValid': false,
+        });
       }
     } else {
-        completer.complete({'isValid': false,});
+      completer.complete({
+        'isValid': false,
+      });
     }
     return completer.future;
   }
@@ -188,14 +195,19 @@ class BookingService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['completed']) {
-        completer.complete({'isValid': true,});
+        completer.complete({
+          'isValid': true,
+        });
       } else {
-        completer.complete({'isValid': false,});
+        completer.complete({
+          'isValid': false,
+        });
       }
     } else {
-        completer.complete({'isValid': false,});
+      completer.complete({
+        'isValid': false,
+      });
     }
     return completer.future;
   }
-
 }

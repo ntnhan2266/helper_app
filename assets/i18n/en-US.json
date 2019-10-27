@@ -281,6 +281,7 @@
     "reject_reason_4": "Other reason",
     "reject_confirm": "Do you want to deny this service?",
     "deny_successfully": "Deny service successfully",
+    "cancel_successfully": "Cancel service successfully",
     "reason": "Reason",
     "no_email_info": "No email available",
     "complete_confirm": "Finish service",

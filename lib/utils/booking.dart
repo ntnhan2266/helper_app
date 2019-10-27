@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization_delegate.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/dialogs/cancel_booking_dialog.dart';
 import '../services/booking.dart';
 import '../utils/route_names.dart';
 import '../utils/utils.dart';
-import '../widgets/dialogs/reject_booking_dialog.dart';
 import '../widgets/components/color_loader.dart';
 
 class Booking {
@@ -20,28 +20,32 @@ class Booking {
     );
   }
 
-  static void denyBooking(BuildContext context, String id,
-      {Function callback}) {
+  static void cancelBooking(BuildContext context, String id,
+      {Function callback, bool isHelper = false}) {
     showDialog(
       context: context,
       builder: (context) {
-        return RejectBookingDialog((reason, content) async {
-          var res = await BookingService.deny(
-            id,
-            reason,
-            content,
-          );
-          if (res['isValid']) {
-            Utils.showSuccessDialog(
-              context,
-              'deny_successfully',
-              newScreen: callback == null ? helperManagementRoute : null,
-              callback: callback,
+        return CancelBookingDialog(
+          isHelper: isHelper,
+          handleCancel: (reason, content) async {
+            var res = await BookingService.cancel(
+              id,
+              reason,
+              content,
+              isHelper,
             );
-          } else {
-            Utils.showSuccessDialog(context, 'something_went_wrong');
-          }
-        });
+            if (res['isValid']) {
+              Utils.showSuccessDialog(
+                context,
+                'cancel_successfully',
+                newScreen: callback == null ? helperManagementRoute : null,
+                callback: callback,
+              );
+            } else {
+              Utils.showErrorDialog(context, 'something_went_wrong');
+            }
+          },
+        );
       },
     );
   }
@@ -57,7 +61,7 @@ class Booking {
         callback: callback,
       );
     } else {
-      Utils.showSuccessDialog(context, 'something_went_wrong');
+      Utils.showErrorDialog(context, 'something_went_wrong');
     }
   }
 
@@ -90,7 +94,7 @@ class Booking {
                     callback: callback,
                   );
                 } else {
-                  Utils.showSuccessDialog(context, 'something_went_wrong');
+                  Utils.showErrorDialog(context, 'something_went_wrong');
                 }
               },
             ),
