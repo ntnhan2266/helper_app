@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,6 +42,30 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
   VerifyData _data = VerifyData();
 
+  // Firebase messaging
+  final Firestore _db = Firestore.instance;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  _saveDeviceToken(String uid) async {
+    // Get the token for this device
+    String fcmToken = await _firebaseMessaging.getToken();
+
+    // Save it to Firestore
+    if (fcmToken != null) {
+      var tokens = _db
+          .collection('users')
+          .document(uid)
+          .collection('tokens')
+          .document(fcmToken);
+
+      await tokens.setData({
+        'token': fcmToken,
+        'createdAt': FieldValue.serverTimestamp(), // optional
+        'platform': Platform.operatingSystem // optional
+      });
+    }
+  }
+
   void _register(BuildContext context, IdTokenResult idTokenResult) async {
     Map<String, dynamic> res = await AuthService.register(
         email: _data.email,
@@ -59,6 +87,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
       case NO_ERROR:
         // Set state
         userProvider.fromJson(res['user']);
+        _saveDeviceToken(userProvider.id);
         Navigator.of(context).pushNamedAndRemoveUntil(
             homeScreenRoute, (Route<dynamic> route) => false);
         break;

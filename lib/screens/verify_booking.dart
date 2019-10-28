@@ -26,10 +26,7 @@ class _VerifyBookingScreenState extends State<VerifyBookingScreen> {
             'id':res['data']['_id'],
             'isHelper': false
           });
-      Utils.showSuccessSnackbar(
-        context,
-        AppLocalizations.of(context).tr('booked_successfully'),
-      );
+      Utils.showSuccessDialog(context, 'booked_successfully');
     }
   }
 

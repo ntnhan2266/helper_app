@@ -124,7 +124,7 @@ class User with ChangeNotifier {
       name: json['name'],
       email: json['email'],
       gender: json['gender'],
-      birthday: DateTime.parse(json['birthday']).toLocal(),
+      birthday: json['birthday'] == null ? null : DateTime.parse(json['birthday']).toLocal(),
       phoneNumber: json['phoneNumber'],
       long: json['long'],
       lat: json['lat'],

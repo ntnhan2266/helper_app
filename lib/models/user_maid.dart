@@ -19,21 +19,21 @@ class UserMaid {
   double rating;
 
   UserMaid({
-    @required this.intro,
-    @required this.literacyType,
-    @required this.exp,
-    @required this.salary,
-    @required this.jobTypes,
-    @required this.supportAreas,
-    @required this.id,
-    @required this.name,
-    @required this.email,
-    @required this.gender,
-    @required this.birthday,
-    @required this.phoneNumber,
-    @required this.address,
-    @required this.avatar,
-    @required this.createdAt,
+    this.intro,
+    this.literacyType,
+    this.exp,
+    this.salary,
+    this.jobTypes,
+    this.supportAreas,
+    this.id,
+    this.name,
+    this.email,
+    this.gender,
+    this.birthday,
+    this.phoneNumber,
+    this.address,
+    this.avatar,
+    this.createdAt,
     this.rating = 0,
   });
 
@@ -70,7 +70,9 @@ class UserMaid {
       name: json['user']['name'],
       email: json['user']['email'],
       gender: json['user']['gender'],
-      birthday: DateTime.parse(json['user']['birthday']).toLocal(),
+      birthday: json['user']['birthday'] == null
+          ? null
+          : DateTime.parse(json['user']['birthday']).toLocal(),
       phoneNumber: json['user']['phoneNumber'],
       address: json['user']['address'],
       createdAt: DateTime.parse(json['createdAt']),

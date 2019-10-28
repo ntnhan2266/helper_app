@@ -3,8 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:smart_rabbit/models/service_category.dart';
 
+import '../../models/notification.dart' as app;
+import '../../models/service_category.dart';
+import '../../services/notification.dart';
 import '../../utils/dummy_data.dart';
 
 class NotificationTab extends StatefulWidget {
@@ -13,6 +15,24 @@ class NotificationTab extends StatefulWidget {
 }
 
 class _NotificationTabState extends State<NotificationTab> {
+  List<app.Notification> _notifications = List();
+  @override
+  void initState() {
+    super.initState();
+    _getNotification();
+  }
+
+  void _getNotification() async {
+    final res = await NotificationService.getNotification();
+    if (res['isValid']) {
+      setState(() {
+        _notifications..addAll(res['data']);
+      });
+    } else {
+      throw Exception('Failed to load notification');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,16 +48,15 @@ class _NotificationTabState extends State<NotificationTab> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 5.0),
         color: Colors.blueGrey[50],
-        child: ListView.builder(
-          primary: false,
-          shrinkWrap: true,
-          itemCount: 10,
-          itemBuilder: (BuildContext context, int index) {
-            ServiceCategory service =
-                categoriesData[new Random().nextInt(categoriesData.length)];
+        child: ListView(
+          children: _notifications.map((notification) {
+            ServiceCategory service = categoriesData.firstWhere(
+                (category) => notification.service.category == category.id);
             return Container(
               margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-              padding: EdgeInsets.symmetric(vertical: 5.0),
+              padding: EdgeInsets.symmetric(
+                vertical: ScreenUtil.instance.setHeight(15.0),
+              ),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10.0)),
@@ -48,11 +67,9 @@ class _NotificationTabState extends State<NotificationTab> {
                       Image.asset(
                         service.imgURL,
                         width: MediaQuery.of(context).size.width / 4,
-                        height: MediaQuery.of(context).size.width / 4,
+                        height: MediaQuery.of(context).size.width / 6,
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 3 / 4 - 30,
-                        padding: EdgeInsets.only(left: 20),
+                      Flexible(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -97,7 +114,7 @@ class _NotificationTabState extends State<NotificationTab> {
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     DateFormat('dd/MM/yyyy hh:mm')
-                                        .format(DateTime.now()),
+                                        .format(notification.updatedAt),
                                     style: TextStyle(
                                       fontSize: ScreenUtil.instance.setSp(14.0),
                                       color: Colors.blueGrey[300],
@@ -117,7 +134,94 @@ class _NotificationTabState extends State<NotificationTab> {
                 onTap: () {},
               ),
             );
-          },
+          }).toList(),
+          // itemCount: _notifications.length,
+          // itemBuilder: (BuildContext context, int index) {
+          // ServiceCategory service = categoriesData.firstWhere((category) =>
+          //     _notifications[index].service.category == category.id);
+          // return Container(
+          //   margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
+          //   padding: EdgeInsets.symmetric(
+          //     vertical: ScreenUtil.instance.setHeight(15.0),
+          //   ),
+          //   decoration: BoxDecoration(
+          //       color: Colors.white,
+          //       borderRadius: BorderRadius.circular(10.0)),
+          //   child: InkWell(
+          //     child: Container(
+          //       child: Row(
+          //         children: <Widget>[
+          //           Image.asset(
+          //             service.imgURL,
+          //             width: MediaQuery.of(context).size.width / 4,
+          //             height: MediaQuery.of(context).size.width / 6,
+          //           ),
+          //           Flexible(
+          //             child: Column(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: <Widget>[
+          //                 Container(
+          //                   alignment: Alignment.centerLeft,
+          //                   child: RichText(
+          //                     text: TextSpan(
+          //                       style: new TextStyle(
+          //                         fontSize: ScreenUtil.instance.setSp(15.0),
+          //                         color: Colors.black,
+          //                       ),
+          //                       children: [
+          //                         TextSpan(
+          //                           text: AppLocalizations.of(context)
+          //                               .tr('service '),
+          //                         ),
+          //                         TextSpan(
+          //                           text: AppLocalizations.of(context)
+          //                               .tr(service.serviceName),
+          //                           style: TextStyle(
+          //                             fontWeight: FontWeight.w700,
+          //                           ),
+          //                         ),
+          //                         TextSpan(
+          //                           text: AppLocalizations.of(context)
+          //                               .tr(' will-be-done'),
+          //                         ),
+          //                       ],
+          //                     ),
+          //                   ),
+          //                 ),
+          //                 SizedBox(height: 10),
+          //                 Row(
+          //                   children: <Widget>[
+          //                     Icon(
+          //                       Icons.date_range,
+          //                       size: 13,
+          //                       color: Colors.blueGrey[300],
+          //                     ),
+          //                     SizedBox(width: 3),
+          //                     Container(
+          //                       alignment: Alignment.centerLeft,
+          //                       child: Text(
+          //                         DateFormat('dd/MM/yyyy hh:mm')
+          //                             .format(DateTime.now()),
+          //                         style: TextStyle(
+          //                           fontSize: ScreenUtil.instance.setSp(14.0),
+          //                           color: Colors.blueGrey[300],
+          //                         ),
+          //                         maxLines: 1,
+          //                         textAlign: TextAlign.left,
+          //                       ),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     onTap: () {},
+          //   ),
+          // );
+          // },
         ),
       ),
     );

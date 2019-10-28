@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_rabbit/screens/helper_management_screen.dart';
-import 'package:smart_rabbit/screens/setting_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+import './models/service_category.dart';
+import './utils/dummy_data.dart';
+import './screens/helper_management_screen.dart';
+import './screens/setting_screen.dart';
 import './screens/helper_detail_screen.dart';
 import './screens/helper_register_screen.dart';
 import './screens/service_status_screen.dart';
@@ -51,6 +55,89 @@ Map<int, Color> color = {
 class _SmartRabbitAppState extends State<SmartRabbitApp> {
   MaterialColor colorCustom = MaterialColor(0xFF880E4F, color);
 
+  // Firebase messaging
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  @override
+  void initState() {
+    super.initState();
+    firebaseCloudMessagingListeners();
+  }
+
+  String _buildContent(
+      BuildContext context, String status, String name, String serviceName) {
+    String action = '';
+    switch (status) {
+      case '1':
+        action = 'has choose you as a helper for service ';
+        break;
+      default:
+        action = '';
+    }
+    print(name);
+    print(action);
+    print(AppLocalizations.of(context).tr(serviceName));
+    return name + action + AppLocalizations.of(context).tr(serviceName);
+  }
+
+  void firebaseCloudMessagingListeners() {
+    // if (Platform.isIOS) iOS_Permission();
+
+    _firebaseMessaging.getToken().then((token) {
+      print(token);
+    });
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+        // ServiceCategory serviceCategory = categoriesData.firstWhere(
+        //     (category) => category.id == message['data']['category']);
+        showOverlayNotification((context) {
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            child: SafeArea(
+              child: ListTile(
+                leading: SizedBox.fromSize(
+                  size: const Size(40, 40),
+                  child: ClipOval(
+                    child: Container(
+                      // child: Image.asset(serviceCategory.imgURL),
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                title: Text(message['notification']['title']),
+                subtitle: Text(message['data']['message']),
+                trailing: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      OverlaySupportEntry.of(context).dismiss();
+                    }),
+              ),
+            ),
+          );
+        }, duration: Duration(milliseconds: 40000));
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+
+// void iOS_Permission() {
+//   _firebaseMessaging.requestNotificationPermissions(
+//       IosNotificationSettings(sound: true, badge: true, alert: true)
+//   );
+//   _firebaseMessaging.onIosSettingsRegistered
+//       .listen((IosNotificationSettings settings)
+//   {
+//     print("Settings registered: $settings");
+//   });
+// }
+
   @override
   Widget build(BuildContext context) {
     // Prevent device orientation changes and force portrait
@@ -69,27 +156,30 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
       ],
       child: EasyLocalizationProvider(
         data: data,
-        child: MaterialApp(
-          title: APP_NAME,
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            // App-specific localization
-            EasylocaLizationDelegate(locale: data.locale, path: 'assets/i18n'),
-          ],
-          supportedLocales: [Locale('vi', 'VN'), Locale('en', 'US')],
-          locale: data.savedLocale,
-          theme: ThemeData(
-              primarySwatch: colorCustom,
-              primaryColor: Color.fromRGBO(42, 77, 108, 1),
-              textTheme: Theme.of(context).textTheme.copyWith(
-                  title: TextStyle(
-                      color: Color.fromRGBO(42, 77, 108, 1),
-                      fontFamily: 'Pacifico-Regular')),
-              fontFamily: 'Roboto',
-              scaffoldBackgroundColor: Colors.white),
-          home: SplashScreen(),
-          onGenerateRoute: _getRoute,
+        child: OverlaySupport(
+          child: MaterialApp(
+            title: APP_NAME,
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              // App-specific localization
+              EasylocaLizationDelegate(
+                  locale: data.locale, path: 'assets/i18n'),
+            ],
+            supportedLocales: [Locale('vi', 'VN'), Locale('en', 'US')],
+            locale: data.savedLocale,
+            theme: ThemeData(
+                primarySwatch: colorCustom,
+                primaryColor: Color.fromRGBO(42, 77, 108, 1),
+                textTheme: Theme.of(context).textTheme.copyWith(
+                    title: TextStyle(
+                        color: Color.fromRGBO(42, 77, 108, 1),
+                        fontFamily: 'Pacifico-Regular')),
+                fontFamily: 'Roboto',
+                scaffoldBackgroundColor: Colors.white),
+            home: SplashScreen(),
+            onGenerateRoute: _getRoute,
+          ),
         ),
       ),
     );
