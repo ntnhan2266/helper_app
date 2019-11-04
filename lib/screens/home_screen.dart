@@ -18,15 +18,32 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
   int _tabIndex;
+  PageController _pageController;
 
-  PageController pageController = PageController(
-    initialPage: 0,
-    keepPage: true,
-  );
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      if (widget.tabIndex != null) {
+        _tabIndex = widget.tabIndex;
+        _pageController = PageController(
+          initialPage: widget.tabIndex,
+          keepPage: true,
+        );
+      } else {
+        _tabIndex = 0;
+        _pageController = PageController(
+          initialPage: 0,
+          keepPage: true,
+        );
+      }
+    });
+  }
 
   Widget _buildPageView() {
     return PageView(
-      controller: pageController,
+      controller: _pageController,
       onPageChanged: (index) {
         _pageChanged(index);
       },
@@ -40,21 +57,6 @@ class _HomeState extends State<HomeScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    print(widget.tabIndex);
-    setState(() {
-      if (widget.tabIndex != null) {
-        _tabIndex = widget.tabIndex;
-        pageController.jumpToPage(widget.tabIndex);
-      } else {
-        _tabIndex = 0;
-      }
-    });
-  }
-
   void _pageChanged(int index) {
     setState(() {
       _tabIndex = index;
@@ -64,7 +66,7 @@ class _HomeState extends State<HomeScreen> {
   void _bottomTapped(int index) {
     setState(() {
       _tabIndex = index;
-      pageController.jumpToPage(index);
+      _pageController.jumpToPage(index);
     });
   }
 

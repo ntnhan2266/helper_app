@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -6,7 +8,6 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import './models/service_category.dart';
 import './utils/dummy_data.dart';
 import './screens/helper_management_screen.dart';
 import './screens/setting_screen.dart';
@@ -84,7 +85,7 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
                   Navigator.pushNamed(
                     context,
                     homeScreenRoute,
-                    arguments: {'tabIndex': 3},
+                    arguments: HomeScreen(tabIndex: 3),
                   );
                 },
                 contentPadding:
@@ -192,7 +193,12 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
   Route _getRoute(RouteSettings settings) {
     switch (settings.name) {
       case homeScreenRoute:
-        return _buildRoute(settings, HomeScreen());
+        return _buildRoute(
+            settings,
+            HomeScreen(
+                tabIndex: settings.arguments == null
+                    ? null
+                    : (settings.arguments as HomeScreen).tabIndex));
       case introScreenRoute:
         return _buildRoute(settings, IntroScreen());
       case authScreenRoute:
