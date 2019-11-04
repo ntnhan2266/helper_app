@@ -108,19 +108,28 @@ class _NotificationTabState extends State<NotificationTab> {
                                         ),
                                         children: [
                                           TextSpan(
-                                            text: AppLocalizations.of(context)
-                                                .tr('service '),
-                                          ),
-                                          TextSpan(
-                                            text: AppLocalizations.of(context)
-                                                .tr(service.serviceName),
+                                            text: notification.fromUser,
                                             style: TextStyle(
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),
                                           TextSpan(
-                                            text: AppLocalizations.of(context)
-                                                .tr(' will-be-done'),
+                                            text:
+                                                AppLocalizations.of(context).tr(
+                                              notification.message,
+                                              args: [
+                                                "",
+                                                AppLocalizations.of(context).tr(
+                                                    categoriesData
+                                                        .firstWhere(
+                                                            (category) =>
+                                                                category.id ==
+                                                                notification
+                                                                    .service
+                                                                    .category)
+                                                        .serviceName),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -139,7 +148,7 @@ class _NotificationTabState extends State<NotificationTab> {
                                         alignment: Alignment.centerLeft,
                                         child: Text(
                                           DateFormat('dd/MM/yyyy hh:mm')
-                                              .format(notification.updatedAt),
+                                              .format(notification.createdAt),
                                           style: TextStyle(
                                             fontSize:
                                                 ScreenUtil.instance.setSp(14.0),
