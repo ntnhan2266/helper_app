@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class UserMaid {
   String id;
   String intro = '';

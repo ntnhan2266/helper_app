@@ -8,37 +8,53 @@ import '../widgets/tabs/notification_tab.dart';
 import '../widgets/tabs/user_profile_tab.dart';
 
 class HomeScreen extends StatefulWidget {
+  final int tabIndex;
+
+  const HomeScreen({this.tabIndex});
+
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<HomeScreen> {
-  int _tabIndex = 0;
+  int _tabIndex;
+  PageController _pageController;
 
-  PageController pageController = PageController(
-    initialPage: 0,
-    keepPage: true,
-  );
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      if (widget.tabIndex != null) {
+        _tabIndex = widget.tabIndex;
+        _pageController = PageController(
+          initialPage: widget.tabIndex,
+          keepPage: true,
+        );
+      } else {
+        _tabIndex = 0;
+        _pageController = PageController(
+          initialPage: 0,
+          keepPage: true,
+        );
+      }
+    });
+  }
 
   Widget _buildPageView() {
     return PageView(
-      controller: pageController,
+      controller: _pageController,
       onPageChanged: (index) {
         _pageChanged(index);
       },
       children: <Widget>[
         HomeTab(bottomTapped: _bottomTapped),
         ServiceCategoryTab(),
-        ServiceHistoryTab(), 
+        ServiceHistoryTab(),
         NotificationTab(),
         UserProfileTab()
       ],
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   void _pageChanged(int index) {
@@ -50,7 +66,7 @@ class _HomeState extends State<HomeScreen> {
   void _bottomTapped(int index) {
     setState(() {
       _tabIndex = index;
-      pageController.jumpToPage(index);
+      _pageController.jumpToPage(index);
     });
   }
 
@@ -59,13 +75,9 @@ class _HomeState extends State<HomeScreen> {
       case 1:
         return AppBar(
           centerTitle: true,
-          title: Text(
-            AppLocalizations.of(context).tr('choose_service_type'),
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w300
-            )
-          ),
+          title: Text(AppLocalizations.of(context).tr('choose_service_type'),
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w300)),
           backgroundColor: Colors.white,
           elevation: 0,
         );
@@ -84,47 +96,42 @@ class _HomeState extends State<HomeScreen> {
         appBar: _buildAppBar(context),
         body: _buildPageView(),
         bottomNavigationBar: BottomNavigationBar(
-        // Disable title of bar item
+          // Disable title of bar item
           showSelectedLabels: false,
           showUnselectedLabels: false,
           backgroundColor: Colors.white,
           currentIndex: _tabIndex,
           selectedItemColor: Color.fromRGBO(75, 134, 180, 1),
           unselectedItemColor: Colors.grey,
-          type: BottomNavigationBarType.fixed ,
+          type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              title: new Text('')
-            ),
+                icon: Icon(
+                  Icons.home,
+                ),
+                title: new Text('')),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.add_circle,
-              ),
-              title: new Text('')
-            ),
+                icon: Icon(
+                  Icons.add_circle,
+                ),
+                title: new Text('')),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.history,
-              ),
-              title: new Text('')
-            ),
+                icon: Icon(
+                  Icons.history,
+                ),
+                title: new Text('')),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.notifications,
-              ),
-              title: new Text('')
-            ),
+                icon: Icon(
+                  Icons.notifications,
+                ),
+                title: new Text('')),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.account_circle,
-              ),
-              title: new Text('')
-            )
+                icon: Icon(
+                  Icons.account_circle,
+                ),
+                title: new Text(''))
           ],
-          onTap: (index){
+          onTap: (index) {
             _bottomTapped(index);
           },
         ),

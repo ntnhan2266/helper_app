@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -6,7 +8,6 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import './models/service_category.dart';
 import './utils/dummy_data.dart';
 import './screens/helper_management_screen.dart';
 import './screens/setting_screen.dart';
@@ -64,22 +65,6 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
     firebaseCloudMessagingListeners();
   }
 
-  String _buildContent(
-      BuildContext context, String status, String name, String serviceName) {
-    String action = '';
-    switch (status) {
-      case '1':
-        action = 'has choose you as a helper for service ';
-        break;
-      default:
-        action = '';
-    }
-    print(name);
-    print(action);
-    print(AppLocalizations.of(context).tr(serviceName));
-    return name + action + AppLocalizations.of(context).tr(serviceName);
-  }
-
   void firebaseCloudMessagingListeners() {
     // if (Platform.isIOS) iOS_Permission();
 
@@ -90,24 +75,44 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print('on message $message');
-        // ServiceCategory serviceCategory = categoriesData.firstWhere(
-        //     (category) => category.id == message['data']['category']);
         showOverlayNotification((context) {
           return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 4),
+            margin: const EdgeInsets.symmetric(horizontal: 3.0),
+            elevation: 4.0,
             child: SafeArea(
               child: ListTile(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    homeScreenRoute,
+                    arguments: HomeScreen(tabIndex: 3),
+                  );
+                },
+                contentPadding:
+                    EdgeInsets.only(top: 10.0, bottom: 10.0, left: 5.0),
                 leading: SizedBox.fromSize(
                   size: const Size(40, 40),
                   child: ClipOval(
-                    child: Container(
-                      // child: Image.asset(serviceCategory.imgURL),
-                      color: Colors.black,
+                    child: Icon(
+                      Icons.notifications_active,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ),
                 title: Text(message['notification']['title']),
-                subtitle: Text(message['data']['message']),
+                subtitle: Text(
+                  AppLocalizations.of(context).tr(
+                    message['data']['message'],
+                    args: [
+                      message['data']['name'],
+                      AppLocalizations.of(context).tr(categoriesData
+                          .firstWhere((category) =>
+                              category.id.toString() ==
+                              message['data']['category'])
+                          .serviceName),
+                    ],
+                  ),
+                ),
                 trailing: IconButton(
                     icon: Icon(Icons.close),
                     onPressed: () {
@@ -116,7 +121,7 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
               ),
             ),
           );
-        }, duration: Duration(milliseconds: 40000));
+        }, duration: Duration(milliseconds: 4000));
       },
       onResume: (Map<String, dynamic> message) async {
         print('on resume $message');
@@ -188,7 +193,12 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
   Route _getRoute(RouteSettings settings) {
     switch (settings.name) {
       case homeScreenRoute:
-        return _buildRoute(settings, HomeScreen());
+        return _buildRoute(
+            settings,
+            HomeScreen(
+                tabIndex: settings.arguments == null
+                    ? null
+                    : (settings.arguments as HomeScreen).tabIndex));
       case introScreenRoute:
         return _buildRoute(settings, IntroScreen());
       case authScreenRoute:

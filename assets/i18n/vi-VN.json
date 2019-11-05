@@ -302,5 +302,10 @@
     "select_service": "Chọn dịch vụ",
     "select_service_required": "Vui lòng chọn dịch vụ",
     "select_area_required": "Vui lòng chọn khu vực hỗ trợ",
-    "no_content": "Không có nội dung"
+    "no_content": "Không có nội dung",
+    "noti_message_waiting": "{} đã chọn bạn làm người giúp việc cho dịch vụ {}",
+    "noti_message_approved": "{} đã chấp nhận dịch vụ {}",
+    "noti_message_completed": "{} đã hoàn thành dịch vụ {}",
+    "noti_message_rejected": "{} has từ chối {}",
+    "noti_message_canceled": "{} has huỷ service {}"
 }
