@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/tabs/home_tab.dart';
 import '../widgets/tabs/service_category_tab.dart';
 import '../widgets/tabs/service_history_tab.dart';
 import '../widgets/tabs/notification_tab.dart';
 import '../widgets/tabs/user_profile_tab.dart';
+import '../services/user.dart';
+import '../models/user.dart';
 
 class HomeScreen extends StatefulWidget {
   final int tabIndex;
@@ -39,6 +42,25 @@ class _HomeState extends State<HomeScreen> {
         );
       }
     });
+  }
+
+  void _getData() async {
+    await UserService.getUser().then((res) {
+      if (res['isValid']) {
+        final user = res['user'];
+        final userProvider = Provider.of<User>(context, listen: true);
+        userProvider.fromJson(user);
+      }
+    });
+  }
+
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    final userProvider = Provider.of<User>(context, listen: true);
+    if (userProvider.id == null) {
+      _getData();
+    }
   }
 
   Widget _buildPageView() {

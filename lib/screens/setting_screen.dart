@@ -75,18 +75,17 @@ class _SettingScreenState extends State<SettingScreen> {
                     label: AppLocalizations.of(context).tr('vi'),
                     width: screenWidth * 0.4,
                     locale: Locale('vi', 'VN'),
-                    onPressed: () {
+                    onPressed: () async {
                       data.changeLocale(Locale("vi", "VN"));
                     },
                   ),
                   languageButton(
-                    label: AppLocalizations.of(context).tr('en'),
-                    width: screenWidth * 0.4,
-                    locale: Locale('en', 'US'),
-                    onPressed: () {
-                      data.changeLocale(Locale("en", "US"));
-                    },
-                  ),
+                      label: AppLocalizations.of(context).tr('en'),
+                      width: screenWidth * 0.4,
+                      locale: Locale('en', 'US'),
+                      onPressed: () async {
+                        data.changeLocale(Locale("en", "US"));
+                      }),
                 ],
               )
             ],

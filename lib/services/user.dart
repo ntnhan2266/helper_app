@@ -12,7 +12,9 @@ class UserService {
   static const String _getUserRoute = APIConfig.baseURL + '/auth/me';
   static const String _editUserRoute = APIConfig.baseURL + '/user/edit';
 
-  static Future<Map<String, dynamic>> getUser(String token) async {
+  static Future<Map<String, dynamic>> getUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(X_TOKEN);
     var completer = new Completer<Map<String, dynamic>>();
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: "application/json", // or whatever

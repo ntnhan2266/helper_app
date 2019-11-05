@@ -50,7 +50,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(X_TOKEN);
     if (token != null) {
-      UserService.getUser(token).then((res) {
+      UserService.getUser().then((res) {
         if (res['isValid']) {
           final user = res['user'];
           setState(() {

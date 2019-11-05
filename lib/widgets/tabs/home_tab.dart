@@ -204,6 +204,8 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<User>(context, listen: false);
+    print(userProvider.name);
     return Scaffold(
       body: ListView(
         children: <Widget>[

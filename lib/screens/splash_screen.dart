@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       final token = prefs.getString(X_TOKEN);
       if (token != null) {
-        UserService.getUser(token).then((res) {
+        UserService.getUser().then((res) {
           if (res['isValid']) {
             final user = res['user'];
             final userProvider = Provider.of<User>(context, listen: false);
