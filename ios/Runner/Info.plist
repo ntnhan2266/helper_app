@@ -18,8 +18,36 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb385707608994629</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1001001704459-8kjokc9ddnadldqel1idgag57a7qtq7r</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>385707608994629</string>
+	<key>FacebookDisplayName</key>
+	<string>Smart Rabbit</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -41,5 +69,35 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Need location when in use</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Always and when in use!</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Older devices need location.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Can I haz location always?</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Music!</string>
+	<key>kTCCServiceMediaLibrary</key>
+	<string>media</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Calendars</string>
+	<key>NSCameraUsageDescription</key>
+	<string>camera</string>
+	<key>NSContactsUsageDescription</key>
+	<string>contacts</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>microphone</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>speech</string>
+	<key>NSMotionUsageDescription</key>
+	<string>motion</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>photos</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>reminders</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>

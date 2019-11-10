@@ -185,11 +185,16 @@ class BookingStatus extends StatelessWidget {
                 size: ScreenUtil.instance.setSp(16),
               ),
             ),
-            onTap: () {
+            onTap: () async {
               if (isHelper) {
                 if (data.createdBy.phoneNumber != null) {
                   // Call customer
-                  launch('tel://${data.createdBy.phoneNumber}');
+                  final url = 'tel://${data.createdBy.phoneNumber}';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
                 } else {
                   Fluttertoast.showToast(
                     msg: AppLocalizations.of(context).tr('no_phone_number'),
@@ -204,7 +209,12 @@ class BookingStatus extends StatelessWidget {
               } else {
                 if (data.maid.phoneNumber != null) {
                   // Call customer
-                  launch('tel://${data.maid.phoneNumber}');
+                  final url = 'tel://${data.maid.phoneNumber}';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
                 } else {
                   Fluttertoast.showToast(
                     msg: AppLocalizations.of(context).tr('no_phone_number'),
