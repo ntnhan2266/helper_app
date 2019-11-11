@@ -307,5 +307,6 @@
     "noti_message_approved": "{} đã chấp nhận dịch vụ {}",
     "noti_message_completed": "{} đã hoàn thành dịch vụ {}",
     "noti_message_rejected": "{} has từ chối {}",
-    "noti_message_canceled": "{} has huỷ service {}"
+    "noti_message_canceled": "{} has huỷ service {}",
+    "no_maids": "Chưa có thông tin về người giúp việc"
 }

@@ -306,5 +306,6 @@
     "noti_message_approved": "{} has approved your service {}",
     "noti_message_completed": "{} has completed your service {}",
     "noti_message_rejected": "{} has rejected your service {}",
-    "noti_message_canceled": "{} has canceled your service {}"
+    "noti_message_canceled": "{} has canceled your service {}",
+    "no_maids": "No maid info"
 }

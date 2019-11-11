@@ -31,7 +31,8 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
 
   void getMaids() async {
     final res = await MaidService.getMaidList();
-    if (res['errorCode'] == null) {
+    print(res);
+    if (!res['hasError']) {
       final maids = res['maids'];
       final total = res['total'];
       setState(() {

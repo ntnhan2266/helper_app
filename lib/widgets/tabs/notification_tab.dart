@@ -23,7 +23,7 @@ class _NotificationTabState extends State<NotificationTab> {
 
   void _getNotification() async {
     final res = await NotificationService.getNotification();
-    if (res['isValid']) {
+    if (res['isValid'] && mounted) {
       setState(() {
         _notifications.addAll(res['data']);
       });

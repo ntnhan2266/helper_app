@@ -109,8 +109,8 @@ class MaidService {
       });
     } else {
       completer.complete({
-        'maids': null,
-        'total': null,
+        'maids': [],
+        'total': 0,
         'hasError': true,
       });
     }
