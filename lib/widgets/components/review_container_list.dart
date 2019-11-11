@@ -30,13 +30,15 @@ class _ReviewContainerListState extends State<ReviewContainerList> {
       pageIndex: 0,
       pageSize: 5,
     );
-    setState(() {
-     loading = false; 
-    });
-    if (res['isValid']) {
+    if (mounted) {
       setState(() {
-        _reviews = (res['data']);
+        loading = false;
       });
+      if (res['isValid']) {
+        setState(() {
+          _reviews = (res['data']);
+        });
+      }
     }
   }
 
@@ -48,9 +50,7 @@ class _ReviewContainerListState extends State<ReviewContainerList> {
             maidId: widget.maidId,
           )
         : Center(
-            child: Text(
-              AppLocalizations.of(context).tr('no_review')
-            ),
+            child: Text(AppLocalizations.of(context).tr('no_review')),
           );
   }
 
@@ -58,7 +58,7 @@ class _ReviewContainerListState extends State<ReviewContainerList> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(bottom: 15.0),
+      padding: EdgeInsets.only(bottom: 10.0, top: 15.0),
       color: Colors.white,
       child: loading
           ? Center(

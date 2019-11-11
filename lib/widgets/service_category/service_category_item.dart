@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_rabbit/models/service_category.dart';
 
 import '../../utils/route_names.dart';
+import '../../models/category.dart';
+import '../../configs/api.dart';
 
 class ServiceCategoryItem extends StatelessWidget {
-  final int id;
+  final String id;
   final String imgURL;
   final String serviceName;
 
@@ -32,8 +33,8 @@ class ServiceCategoryItem extends StatelessWidget {
             context,
             serviceDetailRoute,
             arguments: {
-              'serviceCategory': ServiceCategory(
-                  id: id, serviceName: serviceName, imgURL: imgURL),
+              'serviceCategory': Category(
+                  id: id, nameEn: serviceName, icon: imgURL, nameVi: serviceName),
             },
           );
         },
@@ -47,8 +48,14 @@ class ServiceCategoryItem extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset(
-                  imgURL,
+                imgURL != null
+                ? Image.network(
+                  APIConfig.hostURL + imgURL,
+                  width: ScreenUtil.instance.setWidth(100.0),
+                  height: ScreenUtil.instance.setWidth(100.0),
+                )
+                : Image.asset(
+                  'assets/images/category.png',
                   width: ScreenUtil.instance.setWidth(100.0),
                   height: ScreenUtil.instance.setWidth(100.0),
                 ),

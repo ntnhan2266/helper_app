@@ -12,7 +12,7 @@ class FormMultiChoice extends StatelessWidget {
   final String label;
   final String hint;
   final List<FormSelectItem> values;
-  final List<int> selectedValues;
+  final List<dynamic> selectedValues;
   final bool hasNext;
   final Function onChangeHandler;
 
@@ -69,7 +69,9 @@ class FormMultiChoice extends StatelessWidget {
           selectedData += item.label + ', ';
         }
       });
-      selectedData = selectedData.substring(0, selectedData.length - 2);
+      if (selectedValues.length > 2) {
+        selectedData = selectedData.substring(0, selectedData.length - 2);
+      }
     }
 
     return Column(
@@ -81,7 +83,7 @@ class FormMultiChoice extends StatelessWidget {
           onTap: () {
             _showReportDialog(context);
           },
-          child: Container( 
+          child: Container(
             width: double.infinity,
             child: selectedValues.isEmpty
                 ? Text(

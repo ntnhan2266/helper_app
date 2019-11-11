@@ -2,15 +2,16 @@ import 'package:easy_localization/easy_localization_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../models/service_details.dart';
 import '../models/user_maid.dart';
 import '../models/user.dart';
 import '../widgets/user_avatar.dart';
 import '../utils/utils.dart';
-import '../utils/dummy_data.dart';
 import '../utils/route_names.dart';
-import '../models/service_category.dart';
+import '../models/category_list.dart';
+import '../models/category.dart';
 
 class ServiceDetailInfo extends StatelessWidget {
   final ServiceDetails _data;
@@ -278,6 +279,9 @@ class ServiceDetailInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final categoryListProvider =
+        Provider.of<CategoryList>(context, listen: false);
+    final categoriesData = categoryListProvider.categories;
     var serviceFee = 0;
     if (_data.type == 1) {
       serviceFee = _data.maid != null
@@ -298,8 +302,8 @@ class ServiceDetailInfo extends StatelessWidget {
           : 0;
     }
     final int categoryIndex =
-        categoriesData.indexWhere((item) => item.id == _data.type);
-    final ServiceCategory category = categoriesData[categoryIndex];
+        categoriesData.indexWhere((item) => item.id == _data.category);
+    final Category category = categoriesData[categoryIndex];
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -311,7 +315,7 @@ class ServiceDetailInfo extends StatelessWidget {
           _buildDetailItem(
             context,
             AppLocalizations.of(context).tr('category'),
-            AppLocalizations.of(context).tr(category.serviceName),
+            Localizations.localeOf(context).languageCode == "en" ? category.nameEn : category.nameVi,
           ),
           _buildDetailItem(
             context,

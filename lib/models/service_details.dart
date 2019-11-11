@@ -6,7 +6,7 @@ import '../models/user.dart';
 
 class ServiceDetails {
   String id;
-  int category = 1;
+  String category = '';
   int type = 1;
   int status = 0;
   String address = '';

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,7 +6,6 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import './utils/dummy_data.dart';
 import './screens/helper_management_screen.dart';
 import './screens/setting_screen.dart';
 import './screens/helper_detail_screen.dart';
@@ -27,9 +24,10 @@ import './screens/choose_maid_screen.dart';
 import './screens/verify_booking.dart';
 import './screens/message_screen.dart';
 import './models/user.dart';
-
+import './models/category_list.dart';
 import './utils/constants.dart';
 import './utils/route_names.dart';
+
 
 void main() {
   runApp(EasyLocalization(child: SmartRabbitApp()));
@@ -66,6 +64,9 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
   }
 
   void firebaseCloudMessagingListeners() {
+    final categoryListProvider =
+        Provider.of<CategoryList>(context, listen: false);
+    final categoriesData = categoryListProvider.categories;
     // if (Platform.isIOS) iOS_Permission();
 
     _firebaseMessaging.getToken().then((token) {
@@ -105,11 +106,17 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
                     message['data']['message'],
                     args: [
                       message['data']['name'],
-                      AppLocalizations.of(context).tr(categoriesData
+                      Localizations.localeOf(context).languageCode == "en" 
+                      ? categoriesData
                           .firstWhere((category) =>
                               category.id.toString() ==
                               message['data']['category'])
-                          .serviceName),
+                          .nameEn
+                      : categoriesData
+                          .firstWhere((category) =>
+                              category.id.toString() ==
+                              message['data']['category'])
+                          .nameVi
                     ],
                   ),
                 ),
@@ -158,6 +165,9 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         ChangeNotifierProvider.value(
           value: User(),
         ),
+        ChangeNotifierProvider.value(
+          value: CategoryList(),
+        )
       ],
       child: EasyLocalizationProvider(
         data: data,

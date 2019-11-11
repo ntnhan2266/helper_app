@@ -29,7 +29,7 @@ class MaidList extends StatelessWidget {
                     gender: user['gender'],
                     id: maids[index]['_id'],
                     intro: maids[index]['intro'],
-                    jobTypes: maids[index]['jobTypes'].cast<int>(),
+                    jobTypes: maids[index]['jobTypes'].cast<String>(),
                     literacyType: maids[index]['literacyType'],
                     name: user['name'],
                     phoneNumber: user['phoneNumber'],

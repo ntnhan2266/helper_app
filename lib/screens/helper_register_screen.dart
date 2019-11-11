@@ -13,8 +13,8 @@ import '../widgets/form/form_label.dart';
 import '../models/form_select_item.dart';
 import '../models/user.dart';
 import '../models/maid.dart';
+import '../models/category_list.dart';
 import '../utils/constants.dart';
-import '../utils/dummy_data.dart';
 import '../utils/utils.dart';
 import '../services/maid.dart';
 
@@ -71,7 +71,7 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
     });
   }
 
-  void _handleChangeJob(List<int> values) {
+  void _handleChangeJob(List<String> values) {
     setState(() {
       _data.jobTypes = values;
     });
@@ -168,7 +168,8 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<User>(context, listen: false);
-    final services = categoriesData;
+    final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
+    final services = categoryListProvider.categories;
     // Responsive
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
@@ -484,8 +485,7 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                             .tr('work_hint'),
                                         values: services.map((item) {
                                           return FormSelectItem(
-                                            label: AppLocalizations.of(context)
-                                                .tr(item.serviceName),
+                                            label: Localizations.localeOf(context).languageCode == "en" ? item.nameEn : item.nameVi,
                                             value: item.id,
                                           );
                                         }).toList(),

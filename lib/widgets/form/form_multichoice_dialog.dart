@@ -5,7 +5,7 @@ import '../../models/form_select_item.dart';
 
 class FormMultiChoiceDialog extends StatefulWidget {
   final List<FormSelectItem> values;
-  final List<int> selectedValues;
+  final List<dynamic> selectedValues;
   final Function onSelectionChanged;
 
   const FormMultiChoiceDialog(
@@ -20,7 +20,7 @@ class FormMultiChoiceDialog extends StatefulWidget {
 }
 
 class _FormMultiChoiceDialogState extends State<FormMultiChoiceDialog> {
-  List<int> _selectedValues;
+  List<dynamic> _selectedValues;
 
   @override
   void initState() {

@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 
 import '../utils/route_names.dart';
 import '../services/user.dart';
-import '../models/user.dart';
 import '../services/auth.dart';
+import '../services/category.dart';
+import '../models/user.dart';
+import '../models/category_list.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -30,17 +32,30 @@ class _SplashScreenState extends State<SplashScreen> {
     return new Timer(_duration, navigationPage);
   }
 
+  _getCategories() {
+    // Load categories into provider
+        CategoryService.getAvailableCategories().then((res) {
+          if (res['isValid']) {
+            final categories = res['categories'];
+            final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
+            categoryListProvider.getDate(categories);
+          }
+        });
+  }
+
   void navigationPage() async {
     // If user first login show intro screen
     // Else if user logged navigate to home
     // Else navigatate to sign up/sign in page
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final isFirstLogin = prefs.getBool(IS_FIRST_LOGIN) ?? true;
+      _getCategories();
     if (isFirstLogin) {
       Navigator.of(context).pushReplacementNamed(introScreenRoute);
     } else {
       final token = prefs.getString(X_TOKEN);
       if (token != null) {
+        // Load user info into provider
         UserService.getUser().then((res) {
           if (res['isValid']) {
             final user = res['user'];

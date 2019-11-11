@@ -8,7 +8,9 @@ import '../widgets/tabs/service_history_tab.dart';
 import '../widgets/tabs/notification_tab.dart';
 import '../widgets/tabs/user_profile_tab.dart';
 import '../services/user.dart';
+import '../services/category.dart';
 import '../models/user.dart';
+import '../models/category_list.dart';
 
 class HomeScreen extends StatefulWidget {
   final int tabIndex;
@@ -44,7 +46,7 @@ class _HomeState extends State<HomeScreen> {
     });
   }
 
-  void _getData() async {
+  void _getUserData() async {
     await UserService.getUser().then((res) {
       if (res['isValid']) {
         final user = res['user'];
@@ -54,12 +56,27 @@ class _HomeState extends State<HomeScreen> {
     });
   }
 
+  _getCategoriesData() {
+    // Load categories into provider
+        CategoryService.getAvailableCategories().then((res) {
+          if (res['isValid']) {
+            final categories = res['categories'];
+            final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
+            categoryListProvider.getDate(categories);
+          }
+        });
+  }
+
   @override
   didChangeDependencies() {
     super.didChangeDependencies();
     final userProvider = Provider.of<User>(context, listen: true);
+    final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
     if (userProvider.id == null) {
-      _getData();
+      _getUserData();
+    }
+    if (categoryListProvider.categories == null) {
+      _getCategoriesData();
     }
   }
 

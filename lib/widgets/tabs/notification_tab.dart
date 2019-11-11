@@ -2,11 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/notification.dart' as app;
-import '../../models/service_category.dart';
+import '../../models/category_list.dart';
+import '../../models/category.dart';
 import '../../services/notification.dart';
-import '../../utils/dummy_data.dart';
+import '../../configs/api.dart';
 
 class NotificationTab extends StatefulWidget {
   @override
@@ -27,13 +29,14 @@ class _NotificationTabState extends State<NotificationTab> {
       setState(() {
         _notifications.addAll(res['data']);
       });
-    } else {
-      throw Exception('Failed to load notification');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final categoryListProvider =
+        Provider.of<CategoryList>(context, listen: false);
+    final categoriesData = categoryListProvider.categories;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -72,9 +75,8 @@ class _NotificationTabState extends State<NotificationTab> {
               )
             : ListView(
                 children: _notifications.map((notification) {
-                  ServiceCategory service = categoriesData.firstWhere(
-                      (category) =>
-                          notification.service.category == category.id);
+                  Category service = categoriesData.firstWhere((category) =>
+                      notification.service.category == category.id);
                   return Container(
                     margin:
                         EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
@@ -88,11 +90,24 @@ class _NotificationTabState extends State<NotificationTab> {
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            Image.asset(
-                              service.imgURL,
-                              width: MediaQuery.of(context).size.width / 4,
-                              height: MediaQuery.of(context).size.width / 6,
-                            ),
+                            // CircleAvatar(
+                            //   backgroundImage: service.icon != null
+                            //       ? NetworkImage(APIConfig.hostURL + service.icon)
+                            //       : AssetImage('assets/images/category.png'),
+                            //   backgroundColor: Colors.transparent,
+                            //   radius:  MediaQuery.of(context).size.width / 6,
+                            // ),
+                            service.icon != null
+                                ? Image.network(
+                                    APIConfig.hostURL + service.icon,
+                                    width: MediaQuery.of(context).size.width / 4,
+                                    height: MediaQuery.of(context).size.width / 6,
+                                  )
+                                : Image.asset(
+                                    'assets/images/category.png',
+                                    width: MediaQuery.of(context).size.width / 4,
+                                    height: MediaQuery.of(context).size.width / 6,
+                                  ),
                             Flexible(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -127,7 +142,7 @@ class _NotificationTabState extends State<NotificationTab> {
                                                                 notification
                                                                     .service
                                                                     .category)
-                                                        .serviceName),
+                                                        .nameVi),
                                               ],
                                             ),
                                           ),

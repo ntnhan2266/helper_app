@@ -4,17 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../models/service_category.dart';
-import '../widgets/booking_step_title.dart';
+import '../models/category.dart';
 import '../screens/choose_address_screen.dart';
-import '../utils/constants.dart';
 import '../services/permission.dart';
 import '../models/service_details.dart';
 import '../utils/route_names.dart';
+import '../utils/constants.dart';
 import '../widgets/booking_bottom_bar.dart';
 import '../widgets/service_interval.dart';
 import '../widgets/form/text_form_field_configs.dart';
 import '../widgets/dialogs/error_dialog.dart';
+import '../widgets/booking_step_title.dart';
+import '../configs/api.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
   @override
@@ -360,7 +361,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
-    final ServiceCategory serviceCategory = args['serviceCategory'];
+    final Category serviceCategory = args['serviceCategory'];
     _data.category = serviceCategory.id;
     var data = EasyLocalizationProvider.of(context).data;
 
@@ -373,16 +374,13 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     )..init(context);
 
     // Get screen width
-    final screenWidth = MediaQuery.of(context).size.width;
 
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.of(context).tr(serviceCategory == null
-                ? 'service_details'
-                : serviceCategory.serviceName),
+            Localizations.localeOf(context).languageCode == "en" ? serviceCategory.nameEn : serviceCategory.nameVi,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
           ),
           centerTitle: true,
@@ -403,10 +401,13 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                 children: <Widget>[
                   serviceCategory == null
                       ? Container()
-                      : Image.asset(
-                          serviceCategory.imgURL,
-                          width: screenWidth * 0.5,
-                        ),
+                      : CircleAvatar(
+                              backgroundImage: serviceCategory.icon != null
+                                  ? NetworkImage(APIConfig.hostURL + serviceCategory.icon)
+                                  : AssetImage('assets/images/category.png'),
+                              backgroundColor: Colors.transparent,
+                              radius:  MediaQuery.of(context).size.width / 8,
+                            ),
                   BookingStepTitle(
                     currentStep: 0,
                   ),

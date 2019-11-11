@@ -4,7 +4,7 @@ class UserMaid {
   int literacyType = 1; // LITERACY_TYPE
   String exp = '';
   int salary = 1; // SALARY_TYPE
-  List<int> jobTypes = []; // JOB_TYPE
+  List<String> jobTypes = []; // JOB_TYPE
   List<int> supportAreas = []; // SUPPORT_AREA
   String name;
   String email;
@@ -42,7 +42,7 @@ class UserMaid {
       literacyType: json['literacyType'],
       exp: json['exp'],
       salary: json['salary'],
-      jobTypes: json['jobTypes'].cast<int>(),
+      jobTypes: json['jobTypes'].cast<String>(),
       supportAreas: json['supportAreas'].cast<int>(),
       name: json['user']['name'],
       email: json['user']['email'],
@@ -63,7 +63,7 @@ class UserMaid {
       literacyType: json['literacyType'],
       exp: json['exp'],
       salary: json['salary'],
-      jobTypes: json['jobTypes'].cast<int>(),
+      jobTypes: json['jobTypes'].cast<String>(),
       supportAreas: json['supportAreas'].cast<int>(),
       name: json['user']['name'],
       email: json['user']['email'],

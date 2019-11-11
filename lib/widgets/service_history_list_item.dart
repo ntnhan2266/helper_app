@@ -3,13 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/booking.dart';
-import '../models/service_category.dart';
+import '../models/category.dart';
+import '../models/category_list.dart';
 import '../models/service_details.dart';
-import '../utils/dummy_data.dart';
 import '../utils/utils.dart';
 import '../utils/route_names.dart';
+import '../configs/api.dart';
 
 class ServiceHistoryListItem extends StatelessWidget {
   final ServiceDetails serviceDetail;
@@ -21,7 +23,10 @@ class ServiceHistoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ServiceCategory _serviceCategory = categoriesData.firstWhere((category) => category.id == serviceDetail.category);
+    final categoryListProvider =
+        Provider.of<CategoryList>(context, listen: false);
+    final categoriesData = categoryListProvider.categories;
+    Category _serviceCategory = categoriesData.firstWhere((category) => category.id == serviceDetail.category);
 
     Widget _iconAndText(IconData icon, String text) {
       return Row(
@@ -168,8 +173,7 @@ class ServiceHistoryListItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      AppLocalizations.of(context)
-                          .tr(_serviceCategory.serviceName),
+                      Localizations.localeOf(context).languageCode == "en" ? _serviceCategory.nameEn : _serviceCategory.nameVi,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                       ),
@@ -188,11 +192,18 @@ class ServiceHistoryListItem extends StatelessWidget {
               Divider(),
               Row(
                 children: <Widget>[
-                  Image.asset(
-                    _serviceCategory.imgURL,
-                    width: MediaQuery.of(context).size.width / 4,
-                    height: MediaQuery.of(context).size.width / 6,
-                  ),
+                  // Image.asset(
+                  //   _serviceCategory.imgURL,
+                  //   width: MediaQuery.of(context).size.width / 4,
+                  //   height: MediaQuery.of(context).size.width / 6,
+                  // ),
+                  CircleAvatar(
+                              backgroundImage: _serviceCategory.icon != null
+                                  ? NetworkImage(APIConfig.hostURL + _serviceCategory.icon)
+                                  : AssetImage('assets/images/category.png'),
+                              backgroundColor: Colors.transparent,
+                              radius:  MediaQuery.of(context).size.width / 10,
+                            ),
                   Flexible(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

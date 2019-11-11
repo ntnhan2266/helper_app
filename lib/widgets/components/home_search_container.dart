@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/utils.dart';
-import '../../utils/dummy_data.dart';
+import '../../models/category_list.dart';
 
 enum SalaryTypeEnum { all, custom }
 const MIN_SALARY = 0;
@@ -23,13 +24,13 @@ class HomeSearchContainer extends StatefulWidget {
 class _HomeSearchContainerState extends State<HomeSearchContainer> {
   final TextEditingController _searchControl = new TextEditingController();
   String _search = "";
-  List<int> _searchServices = List();
+  List<dynamic> _searchServices = List();
   List<int> _searchAreas = List();
   int _minSalary = MIN_SALARY;
   int _maxSalary = MAX_SALARY;
 
   //temp
-  List<int> _tempSearchServices = List();
+  List<dynamic> _tempSearchServices = List();
   ServiceTypeEnum _serviceType = ServiceTypeEnum.all;
   List<int> _tempSearchAreas = List();
   SalaryTypeEnum _salaryType = SalaryTypeEnum.all;
@@ -99,6 +100,9 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
   }
 
   void _showServiceDialog() {
+    final categoryListProvider =
+        Provider.of<CategoryList>(context, listen: false);
+    final categoriesData = categoryListProvider.categories;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -113,7 +117,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                     padding: EdgeInsets.symmetric(horizontal: 2.0),
                     child: ChoiceChip(
                       label: Text(
-                        AppLocalizations.of(context).tr(i.serviceName),
+                        Localizations.localeOf(context).languageCode == "en" ? i.nameEn : i.nameVi,
                       ),
                       selected: _tempSearchServices.contains(i.id),
                       onSelected: (selected) {
@@ -196,6 +200,9 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
   }
 
   List<Widget> _serviceList() {
+    final categoryListProvider =
+        Provider.of<CategoryList>(context, listen: false);
+    final categoriesData = categoryListProvider.categories;
     if (_serviceType == ServiceTypeEnum.all) {
       return [];
     } else if (_searchServices.isEmpty) {
@@ -207,7 +214,9 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
     } else {
       return categoriesData
           .where((service) => _searchServices.contains(service.id))
-          .map((service) => _serviceChoiceChip(service.serviceName))
+          .map((service) => _serviceChoiceChip(
+            Localizations.localeOf(context).languageCode == "en" ? service.nameEn : service.nameVi,
+          ))
           .toList();
     }
   }

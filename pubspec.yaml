@@ -102,6 +102,7 @@ flutter:
     - assets/images/other.png
     - assets/images/avt_default.png
     - assets/images/not_found.jpg
+    - assets/images/category.png
 
 
   #  - images/a_dot_burr.jpeg

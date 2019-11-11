@@ -3,9 +3,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/components/color_loader.dart';
 import './constants.dart';
+import '../models/category_list.dart';
 
 class Utils {
   static int genderToInt(GENDER gender) {
@@ -100,21 +102,16 @@ class Utils {
     }
   }
 
-  static String intToJob(int salary) {
-    switch (salary) {
-      case 1:
-        return "house_cleaning";
-      case 2:
-        return "garden";
-      case 3:
-        return "go_to_market";
-      case 4:
-        return "child_care";
-      case 5:
-        return "laundry";
-      default:
-        return "other";
+  static String intToJob(BuildContext context, String jobCode) {
+    final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
+    final categories = categoryListProvider.categories;
+    for (var i = 0; i < categories.length; i++) {
+      final cat = categories[i];
+      if (cat.id == jobCode) {
+        return Localizations.localeOf(context).languageCode == "en" ? cat.nameEn : cat.nameVi;
+      }
     }
+    return 'other';
   }
 
   static int getSupportAreaCode(SUPPURT_AREA supportArea) {

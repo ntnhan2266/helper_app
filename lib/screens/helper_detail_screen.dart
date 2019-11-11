@@ -119,7 +119,7 @@ class HelperDetailScreenData extends StatelessWidget {
                 label: AppLocalizations.of(context).tr("work"),
                 initialValue: userMaid.jobTypes
                     .map((x) =>
-                        AppLocalizations.of(context).tr(Utils.intToJob(x)))
+                        AppLocalizations.of(context).tr(Utils.intToJob(context, x)))
                     .join(", "),
                 enabled: false,
                 hasNext: true,

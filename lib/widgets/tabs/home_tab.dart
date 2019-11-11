@@ -8,16 +8,17 @@ import 'package:provider/provider.dart';
 import 'package:pk_skeleton/pk_skeleton.dart';
 
 import '../../services/booking.dart';
-import '../../utils/constants.dart';
-import '../../models/service_details.dart';
-import '../../models/user.dart';
 import '../../services/maid.dart';
+import '../../models/user.dart';
 import '../../models/user_maid.dart';
-import '../../widgets/components/home_search_container.dart';
-import '../../utils/dummy_data.dart';
+import '../../models/service_details.dart';
+import '../../models/category_list.dart';
+// import '../../utils/dummy_data.dart';
 import '../../utils/route_names.dart';
+import '../../utils/constants.dart';
 import '../../configs/api.dart';
 import '../service_history_list_item.dart';
+import '../../widgets/components/home_search_container.dart';
 
 class HomeTab extends StatefulWidget {
   final Function bottomTapped;
@@ -29,7 +30,6 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
-  var _categories = categoriesData.sublist(0, 4);
   bool _isShowModalBottomSheet = false;
   List<UserMaid> _topUsers = List();
   bool _isLoadingTopUsers = true;
@@ -204,8 +204,9 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<User>(context, listen: false);
-    print(userProvider.name);
+    final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
+    final categoriesData = categoryListProvider.categories;
+    var _categories = categoriesData.sublist(0, categoriesData.length > 4 ? 4 : categoriesData.length);
     return Scaffold(
       body: ListView(
         children: <Widget>[
@@ -265,18 +266,18 @@ class _HomeTabState extends State<HomeTab> {
                           shape: CircleBorder(),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              category.imgURL,
-                              width: MediaQuery.of(context).size.width / 8,
-                              height: MediaQuery.of(context).size.width / 8,
+                            child: CircleAvatar(
+                              backgroundImage: category.icon != null
+                                  ? NetworkImage(APIConfig.hostURL + category.icon)
+                                  : AssetImage('assets/images/category.png'),
+                              backgroundColor: Colors.transparent,
                             ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 20.0),
                           child: Text(
-                            AppLocalizations.of(context)
-                                .tr(category.serviceName),
+                            Localizations.localeOf(context).languageCode == "en" ? category.nameEn : category.nameVi,
                             style: TextStyle(
                               fontSize: ScreenUtil.instance.setSp(13.0),
                             ),

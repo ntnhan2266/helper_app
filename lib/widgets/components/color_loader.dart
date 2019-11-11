@@ -27,9 +27,6 @@ class _ColorLoaderState extends State<ColorLoader>
 
     radius = widget.radius;
     dotRadius = widget.dotRadius;
-
-    print(dotRadius);
-
     controller = AnimationController(
         lowerBound: 0.0,
         upperBound: 1.0,
