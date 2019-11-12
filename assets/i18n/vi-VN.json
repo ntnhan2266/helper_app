@@ -306,7 +306,7 @@
     "noti_message_waiting": "{} đã chọn bạn làm người giúp việc cho dịch vụ {}",
     "noti_message_approved": "{} đã chấp nhận dịch vụ {}",
     "noti_message_completed": "{} đã hoàn thành dịch vụ {}",
-    "noti_message_rejected": "{} has từ chối {}",
-    "noti_message_canceled": "{} has huỷ service {}",
+    "noti_message_rejected": "{} đã từ chối dịch vụ {}",
+    "noti_message_canceled": "{} đã huỷ dịch vụ {}",
     "no_maids": "Chưa có thông tin về người giúp việc"
 }
