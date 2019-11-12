@@ -192,18 +192,17 @@ class ServiceHistoryListItem extends StatelessWidget {
               Divider(),
               Row(
                 children: <Widget>[
-                  // Image.asset(
-                  //   _serviceCategory.imgURL,
-                  //   width: MediaQuery.of(context).size.width / 4,
-                  //   height: MediaQuery.of(context).size.width / 6,
-                  // ),
-                  CircleAvatar(
-                              backgroundImage: _serviceCategory.icon != null
-                                  ? NetworkImage(APIConfig.hostURL + _serviceCategory.icon)
-                                  : AssetImage('assets/images/category.png'),
-                              backgroundColor: Colors.transparent,
-                              radius:  MediaQuery.of(context).size.width / 10,
-                            ),
+                  _serviceCategory.icon != null
+                  ? Image.network(
+                    APIConfig.hostURL + _serviceCategory.icon,
+                    width: MediaQuery.of(context).size.width / 4,
+                    height: MediaQuery.of(context).size.width / 4,
+                  )
+                  : Image.asset(
+                    'assets/images/category.png',
+                    width: MediaQuery.of(context).size.width / 4,
+                    height: MediaQuery.of(context).size.width / 4,
+                  ),
                   Flexible(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
