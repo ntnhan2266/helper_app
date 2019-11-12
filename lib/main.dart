@@ -64,9 +64,9 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
   }
 
   void firebaseCloudMessagingListeners() {
-    final categoryListProvider =
-        Provider.of<CategoryList>(context, listen: false);
-    final categoriesData = categoryListProvider.categories;
+    // final categoryListProvider =
+    //     Provider.of<CategoryList>(context, listen: false);
+    // final categoriesData = categoryListProvider.categories;
     // if (Platform.isIOS) iOS_Permission();
 
     _firebaseMessaging.getToken().then((token) {
@@ -106,17 +106,18 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
                     message['data']['message'],
                     args: [
                       message['data']['name'],
-                      Localizations.localeOf(context).languageCode == "en" 
-                      ? categoriesData
-                          .firstWhere((category) =>
-                              category.id.toString() ==
-                              message['data']['category'])
-                          .nameEn
-                      : categoriesData
-                          .firstWhere((category) =>
-                              category.id.toString() ==
-                              message['data']['category'])
-                          .nameVi
+                      AppLocalizations.of(context).tr(message['data']['category']),
+                      // Localizations.localeOf(context).languageCode == "en" 
+                      // ? categoriesData
+                      //     .firstWhere((category) =>
+                      //         category.id.toString() ==
+                      //         message['data']['category'])
+                      //     .nameEn
+                      // : categoriesData
+                      //     .firstWhere((category) =>
+                      //         category.id.toString() ==
+                      //         message['data']['category'])
+                      //     .nameVi
                     ],
                   ),
                 ),
