@@ -28,7 +28,6 @@ import './models/category_list.dart';
 import './utils/constants.dart';
 import './utils/route_names.dart';
 
-
 void main() {
   runApp(EasyLocalization(child: SmartRabbitApp()));
 }
@@ -60,13 +59,10 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
   @override
   void initState() {
     super.initState();
-    // firebaseCloudMessagingListeners();
+    firebaseCloudMessagingListeners();
   }
 
   void firebaseCloudMessagingListeners() {
-    // final categoryListProvider =
-    //     Provider.of<CategoryList>(context, listen: false);
-    // final categoriesData = categoryListProvider.categories;
     // if (Platform.isIOS) iOS_Permission();
 
     _firebaseMessaging.getToken().then((token) {
@@ -106,18 +102,9 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
                     message['data']['message'],
                     args: [
                       message['data']['name'],
-                      AppLocalizations.of(context).tr(message['data']['category']),
-                      // Localizations.localeOf(context).languageCode == "en" 
-                      // ? categoriesData
-                      //     .firstWhere((category) =>
-                      //         category.id.toString() ==
-                      //         message['data']['category'])
-                      //     .nameEn
-                      // : categoriesData
-                      //     .firstWhere((category) =>
-                      //         category.id.toString() ==
-                      //         message['data']['category'])
-                      //     .nameVi
+                      Localizations.localeOf(context) == Locale('vi', 'VN')
+                          ? message['data']['category_vi']
+                          : message['data']['category_en'],
                     ],
                   ),
                 ),
