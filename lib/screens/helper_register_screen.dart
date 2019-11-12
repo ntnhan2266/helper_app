@@ -71,15 +71,15 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
     });
   }
 
-  void _handleChangeJob(List<String> values) {
+  void _handleChangeJob(List<dynamic> values) {
     setState(() {
-      _data.jobTypes = values;
+      _data.jobTypes = values.cast<String>();
     });
   }
 
-  void _handleChangeArea(List<int> values) {
+  void _handleChangeArea(List<dynamic> values) {
     setState(() {
-      _data.supportAreas = values;
+      _data.supportAreas = values.cast<int>();
     });
   }
 

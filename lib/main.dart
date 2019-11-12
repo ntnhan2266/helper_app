@@ -60,7 +60,7 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
   @override
   void initState() {
     super.initState();
-    firebaseCloudMessagingListeners();
+    // firebaseCloudMessagingListeners();
   }
 
   void firebaseCloudMessagingListeners() {
