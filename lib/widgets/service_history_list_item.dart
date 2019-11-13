@@ -25,7 +25,7 @@ class ServiceHistoryListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final categoryListProvider =
         Provider.of<CategoryList>(context, listen: false);
-    final categoriesData = categoryListProvider.categories;
+    final categoriesData = categoryListProvider.categories != null ? categoryListProvider.categories : [];
     Category _serviceCategory = categoriesData.firstWhere((category) => category.id == serviceDetail.category);
 
     Widget _iconAndText(IconData icon, String text) {
