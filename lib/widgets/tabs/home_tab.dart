@@ -138,6 +138,7 @@ class _HomeTabState extends State<HomeTab> {
   void _getBooking() async {
     final res =
         await BookingService.getBookingsByStatus(COMPLETED, pageSize: 2);
+        print(res);
     if (res['isValid']) {
       setState(() {
         _recentServices.addAll(res['data']);
@@ -206,7 +207,7 @@ class _HomeTabState extends State<HomeTab> {
   Widget build(BuildContext context) {
     final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
     final categoriesData = categoryListProvider.categories;
-    var _categories = categoriesData.sublist(0, categoriesData.length > 4 ? 4 : categoriesData.length);
+    var _categories = categoriesData != null ? categoriesData.sublist(0, categoriesData.length > 4 ? 4 : categoriesData.length) : [];
     return Scaffold(
       body: ListView(
         children: <Widget>[
