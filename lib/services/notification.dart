@@ -9,11 +9,12 @@ import './api.dart';
 class NotificationService {
   static const String _notificationRouter = APIConfig.baseURL + '/notification';
 
-  static Future<Map<String, dynamic>> getNotification() async {
+  static Future<Map<String, dynamic>> getNotification(
+      {int pageSize = 10, int pageIndex = 0}) async {
     var completer = new Completer<Map<String, dynamic>>();
     var headers = await API.getAuthToken();
     var response = await http.get(
-      _notificationRouter,
+      _notificationRouter + '?pageSize=$pageSize&pageIndex=$pageIndex',
       headers: headers,
     );
     if (response.statusCode == 200) {

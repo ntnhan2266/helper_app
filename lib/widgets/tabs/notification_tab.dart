@@ -17,19 +17,67 @@ class NotificationTab extends StatefulWidget {
 
 class _NotificationTabState extends State<NotificationTab> {
   List<app.Notification> _notifications = List();
+  int _pageIndex = 0;
+  bool _isLoading = true;
+  bool _canLoadMore = true;
+  ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
     _getNotification();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _getNotification();
+      }
+    });
   }
 
   void _getNotification() async {
-    final res = await NotificationService.getNotification();
+    if (!_canLoadMore || !mounted) {
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+    });
+    // await Future.delayed(Duration(milliseconds: 1500));
+    final res = await NotificationService.getNotification(
+      pageIndex: _pageIndex,
+      pageSize: 12,
+    );
     if (res['isValid'] && mounted) {
       setState(() {
-        _notifications.addAll(res['data']);
+        _notifications..addAll(res['data']);
+        _pageIndex++;
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
       });
     }
+  }
+
+  Widget _getLoading() {
+    return _isLoading
+        ? Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20.0,
+                    horizontal: 10.0,
+                  ),
+                  child: Text(AppLocalizations.of(context).tr("loading")),
+                ),
+              ],
+            ),
+          )
+        : Container();
   }
 
   @override
@@ -74,6 +122,7 @@ class _NotificationTabState extends State<NotificationTab> {
                 ),
               )
             : ListView(
+                controller: _scrollController,
                 children: _notifications.map((notification) {
                   Category service = categoriesData.firstWhere((category) =>
                       notification.service.category == category.id);
@@ -101,13 +150,17 @@ class _NotificationTabState extends State<NotificationTab> {
                             service.icon != null
                                 ? Image.network(
                                     APIConfig.hostURL + service.icon,
-                                    width: MediaQuery.of(context).size.width / 4,
-                                    height: MediaQuery.of(context).size.width / 6,
+                                    width:
+                                        MediaQuery.of(context).size.width / 4,
+                                    height:
+                                        MediaQuery.of(context).size.width / 6,
                                   )
                                 : Image.asset(
                                     'assets/images/category.png',
-                                    width: MediaQuery.of(context).size.width / 4,
-                                    height: MediaQuery.of(context).size.width / 6,
+                                    width:
+                                        MediaQuery.of(context).size.width / 4,
+                                    height:
+                                        MediaQuery.of(context).size.width / 6,
                                   ),
                             Flexible(
                               child: Column(
@@ -185,94 +238,8 @@ class _NotificationTabState extends State<NotificationTab> {
                       onTap: () {},
                     ),
                   );
-                }).toList(),
-                // itemCount: _notifications.length,
-                // itemBuilder: (BuildContext context, int index) {
-                // ServiceCategory service = categoriesData.firstWhere((category) =>
-                //     _notifications[index].service.category == category.id);
-                // return Container(
-                //   margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-                //   padding: EdgeInsets.symmetric(
-                //     vertical: ScreenUtil.instance.setHeight(15.0),
-                //   ),
-                //   decoration: BoxDecoration(
-                //       color: Colors.white,
-                //       borderRadius: BorderRadius.circular(10.0)),
-                //   child: InkWell(
-                //     child: Container(
-                //       child: Row(
-                //         children: <Widget>[
-                //           Image.asset(
-                //             service.imgURL,
-                //             width: MediaQuery.of(context).size.width / 4,
-                //             height: MediaQuery.of(context).size.width / 6,
-                //           ),
-                //           Flexible(
-                //             child: Column(
-                //               mainAxisAlignment: MainAxisAlignment.center,
-                //               children: <Widget>[
-                //                 Container(
-                //                   alignment: Alignment.centerLeft,
-                //                   child: RichText(
-                //                     text: TextSpan(
-                //                       style: new TextStyle(
-                //                         fontSize: ScreenUtil.instance.setSp(15.0),
-                //                         color: Colors.black,
-                //                       ),
-                //                       children: [
-                //                         TextSpan(
-                //                           text: AppLocalizations.of(context)
-                //                               .tr('service '),
-                //                         ),
-                //                         TextSpan(
-                //                           text: AppLocalizations.of(context)
-                //                               .tr(service.serviceName),
-                //                           style: TextStyle(
-                //                             fontWeight: FontWeight.w700,
-                //                           ),
-                //                         ),
-                //                         TextSpan(
-                //                           text: AppLocalizations.of(context)
-                //                               .tr(' will-be-done'),
-                //                         ),
-                //                       ],
-                //                     ),
-                //                   ),
-                //                 ),
-                //                 SizedBox(height: 10),
-                //                 Row(
-                //                   children: <Widget>[
-                //                     Icon(
-                //                       Icons.date_range,
-                //                       size: 13,
-                //                       color: Colors.blueGrey[300],
-                //                     ),
-                //                     SizedBox(width: 3),
-                //                     Container(
-                //                       alignment: Alignment.centerLeft,
-                //                       child: Text(
-                //                         DateFormat('dd/MM/yyyy hh:mm')
-                //                             .format(DateTime.now()),
-                //                         style: TextStyle(
-                //                           fontSize: ScreenUtil.instance.setSp(14.0),
-                //                           color: Colors.blueGrey[300],
-                //                         ),
-                //                         maxLines: 1,
-                //                         textAlign: TextAlign.left,
-                //                       ),
-                //                     ),
-                //                   ],
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //     onTap: () {},
-                //   ),
-                // );
-                // },
+                }).toList()
+                  ..add(_getLoading()),
               ),
       ),
     );
