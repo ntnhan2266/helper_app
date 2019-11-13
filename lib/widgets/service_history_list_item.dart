@@ -84,19 +84,21 @@ class ServiceHistoryListItem extends StatelessWidget {
         return Row(
           children: <Widget>[
             _flatButton(
-                icon: Icons.check,
-                text: AppLocalizations.of(context).tr("accept"),
-                onPressed: () {
-                  Booking.approveBooking(context, serviceDetail.id,
-                      callback: callback);
-                }),
+              icon: Icons.check,
+              text: AppLocalizations.of(context).tr("accept"),
+              onPressed: () {
+                Booking.approveBooking(context, serviceDetail.id,
+                    callback: callback);
+              },
+            ),
             _flatButton(
-                icon: Icons.close,
-                text: AppLocalizations.of(context).tr("deny"),
-                onPressed: () {
-                  Booking.cancelBooking(context, serviceDetail.id,
-                      callback: callback, isHelper: true);
-                }),
+              icon: Icons.close,
+              text: AppLocalizations.of(context).tr("deny"),
+              onPressed: () {
+                Booking.cancelBooking(context, serviceDetail.id,
+                    callback: callback, isHelper: true);
+              },
+            ),
           ],
         );
       } else if (serviceDetail.status == 2) {
@@ -173,7 +175,9 @@ class ServiceHistoryListItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      Localizations.localeOf(context).languageCode == "en" ? _serviceCategory.nameEn : _serviceCategory.nameVi,
+                      Localizations.localeOf(context).languageCode == "en"
+                          ? _serviceCategory.nameEn
+                          : _serviceCategory.nameVi,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                       ),

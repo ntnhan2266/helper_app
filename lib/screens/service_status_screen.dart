@@ -11,7 +11,7 @@ import '../widgets/booking_status.dart';
 import '../widgets/dialogs/cancel_booking_dialog.dart';
 import '../widgets/dialogs/report_helper_dialog.dart';
 import '../utils/constants.dart';
-import '../utils/route_names.dart';
+import '../utils/booking.dart';
 
 Future<ServiceDetails> fetchData(String id) async {
   final res = await BookingService.getBookingById(id);
@@ -41,56 +41,35 @@ class ServiceStatus extends StatelessWidget {
   ServiceStatus({Key key, this.service, this.id, this.isHelper = false})
       : super(key: key);
 
-  // void _handleCancelBooking() {
-  //   return;
-  // }
-
-  void _handleCustomerCancel(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return CancelBookingDialog();
-      },
-    );
-  }
-
-  void _denyBooking(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return CancelBookingDialog(
-          handleCancel: (reason, content) async {
-            var res = await BookingService.cancel(
-              id,
-              reason,
-              content,
-              isHelper,
-            );
-            if (res['isValid']) {
-              Fluttertoast.showToast(
-                msg: AppLocalizations.of(context).tr('deny_successfully'),
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIos: 1,
-                backgroundColor: Color.fromRGBO(75, 181, 67, 1),
-                textColor: Colors.white,
-                fontSize: ScreenUtil.instance.setSp(14),
-              );
-              Navigator.of(context).pushReplacementNamed(helperManagementRoute);
-            } else {
-              Fluttertoast.showToast(
-                msg: AppLocalizations.of(context).tr('error'),
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIos: 1,
-                backgroundColor: Color.fromRGBO(165, 0, 0, 1),
-                textColor: Colors.white,
-                fontSize: ScreenUtil.instance.setSp(14),
-              );
-            }
-          },
-        );
-      },
+  Widget _flatButton(
+      {String text,
+      Function onTap,
+      Color backgroundColor,
+      Color borderColor,
+      Color textColor}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
+        margin:
+            EdgeInsets.symmetric(horizontal: ScreenUtil.instance.setWidth(12)),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: backgroundColor ?? Colors.white,
+          border: Border.all(
+            width: 1,
+            color: borderColor ?? Color.fromRGBO(165, 0, 0, 1),
+          ),
+          borderRadius: BorderRadius.circular(3),
+        ),
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: textColor ?? Color.fromRGBO(165, 0, 0, 1),
+          ),
+        ),
+      ),
     );
   }
 
@@ -133,205 +112,73 @@ class ServiceStatus extends StatelessWidget {
     );
   }
 
-  void _approveBooking(BuildContext context) async {
-    var res = await BookingService.approve(id);
-    if (res['isValid']) {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context).tr('approved_successfully'),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Color.fromRGBO(75, 181, 67, 1),
-        textColor: Colors.white,
-        fontSize: ScreenUtil.instance.setSp(14),
-      );
-      Navigator.of(context).pushReplacementNamed(helperManagementRoute);
-    } else {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context).tr('error'),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Color.fromRGBO(165, 0, 0, 1),
-        textColor: Colors.white,
-        fontSize: ScreenUtil.instance.setSp(14),
-      );
-    }
-  }
-
-  void _completeBooking(BuildContext context) async {
-    var res = await BookingService.complete(id);
-    if (res['isValid']) {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context).tr('complete_successfully'),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Color.fromRGBO(75, 181, 67, 1),
-        textColor: Colors.white,
-        fontSize: ScreenUtil.instance.setSp(14),
-      );
-      Navigator.of(context).pushReplacementNamed(helperManagementRoute);
-    } else {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context).tr('error'),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Color.fromRGBO(165, 0, 0, 1),
-        textColor: Colors.white,
-        fontSize: ScreenUtil.instance.setSp(14),
-      );
-    }
-  }
-
-  Widget _buildWatingApproveAction(BuildContext context, int status) {
-    // Customer
-    if (!isHelper) {
-      return InkWell(
-        onTap: () {
-          _handleCustomerCancel(context);
-        },
-        child: Container(
-          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-          margin: EdgeInsets.symmetric(
-              horizontal: ScreenUtil.instance.setWidth(12)),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              width: 1,
-              color: Color.fromRGBO(165, 0, 0, 1),
-            ),
-            borderRadius: BorderRadius.circular(3),
-          ),
-          child: Text(
-            AppLocalizations.of(context).tr('cancel').toUpperCase(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color.fromRGBO(165, 0, 0, 1),
-            ),
-          ),
-        ),
-      );
-    } else {
+  Widget _buildHelperAction(BuildContext context, int status) {
+    if (status == WAITING_APPROVE) {
       return Column(
         children: <Widget>[
-          InkWell(
+          _flatButton(
+            text: AppLocalizations.of(context).tr("accept"),
+            backgroundColor: Theme.of(context).primaryColor,
+            borderColor: Theme.of(context).primaryColor,
+            textColor: Colors.white,
             onTap: () {
-              _approveBooking(context);
+              Booking.approveBooking(context, id,
+                  callback: () => Navigator.pop(context));
             },
-            child: Container(
-              padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-              margin: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil.instance.setWidth(12)),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(75, 181, 67, 1),
-                border: Border.all(
-                  width: 1,
-                  color: Color.fromRGBO(75, 181, 67, 1),
-                ),
-                borderRadius: BorderRadius.circular(3),
-              ),
-              child: Text(
-                AppLocalizations.of(context).tr('approve').toUpperCase(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
           ),
-          SizedBox(
-            height: ScreenUtil.instance.setHeight(20),
-          ),
-          InkWell(
+          SizedBox(height: 5.0),
+          _flatButton(
+            text: AppLocalizations.of(context).tr("deny"),
             onTap: () {
-              _denyBooking(context);
+              Booking.cancelBooking(context, id,
+                  isHelper: true, callback: () => Navigator.pop(context));
             },
-            child: Container(
-              padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-              margin: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil.instance.setWidth(12)),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border:
-                    Border.all(width: 1, color: Color.fromRGBO(165, 0, 0, 1)),
-                borderRadius: BorderRadius.circular(3),
-              ),
-              child: Text(
-                AppLocalizations.of(context).tr('cancel').toUpperCase(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color.fromRGBO(165, 0, 0, 1),
-                ),
-              ),
-            ),
           ),
         ],
       );
+    } else if (status == APPROVED) {
+      return Column(
+        children: <Widget>[
+          _flatButton(
+            text: AppLocalizations.of(context).tr("completed"),
+            backgroundColor: Theme.of(context).primaryColor,
+            borderColor: Theme.of(context).primaryColor,
+            textColor: Colors.white,
+            onTap: () {
+              Booking.doneBooking(context, id,
+                  callback: () => Navigator.pop(context));
+            },
+          ),
+          SizedBox(height: 5.0),
+          _flatButton(
+            text: AppLocalizations.of(context).tr("cancel"),
+            onTap: () {
+              Booking.cancelBooking(context, id,
+                  isHelper: true, callback: () => Navigator.pop(context));
+            },
+          ),
+        ],
+      );
+    } else {
+      return Container();
     }
   }
 
-  void _handlePaidConfirm(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            AppLocalizations.of(context).tr('confirm'),
+  Widget _buildUserAction(BuildContext context, int status) {
+    if (status == WAITING_APPROVE || status == APPROVED) {
+      return Column(
+        children: <Widget>[
+          _flatButton(
+            text: AppLocalizations.of(context).tr("cancel"),
+            onTap: () {
+              Booking.cancelBooking(context, id,
+                  isHelper: false, callback: () => Navigator.pop(context));
+            },
           ),
-          content: Text(
-            AppLocalizations.of(context).tr('complete_confirm_hint'),
-          ),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            FlatButton(
-              child: Text(
-                AppLocalizations.of(context).tr('close'),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Text(
-                AppLocalizations.of(context).tr('confirm'),
-              ),
-              onPressed: () {
-                _completeBooking(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildApproveAction(BuildContext context, int status) {
-    if (isHelper) {
-      return InkWell(
-        onTap: () {
-          _handlePaidConfirm(context);
-        },
-        child: Container(
-          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
-          margin: EdgeInsets.symmetric(
-              horizontal: ScreenUtil.instance.setWidth(12)),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(75, 181, 67, 1),
-            borderRadius: BorderRadius.circular(3),
-          ),
-          child: Text(
-            AppLocalizations.of(context).tr('complete_confirm').toUpperCase(),
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-          ),
-        ),
+        ],
       );
+    } else if (status == COMPLETED) {
+      return _buildReportAction(context);
     } else {
       return Container();
     }
@@ -372,15 +219,19 @@ class ServiceStatus extends StatelessWidget {
   }
 
   Widget _buildAction(BuildContext context, int status) {
-    if (status == WAITING_APPROVE) {
-      return _buildWatingApproveAction(context, status);
-    } else if (status == APPROVED) {
-      return _buildApproveAction(context, status);
-    } else if (status == COMPLETED) {
-      return _buildReportAction(context);
-    } else {
-      return Container();
-    }
+    // if (status == WAITING_APPROVE) {
+    //   return _buildWatingApproveAction(context, status);
+    // } else if (status == APPROVED) {
+    //   return _buildApproveAction(context, status);
+    // } else if (status == COMPLETED) {
+    //   return _buildReportAction(context);
+    // } else {
+    //   return Container();
+    // }
+    if (isHelper)
+      return _buildHelperAction(context, status);
+    else
+      return _buildUserAction(context, status);
   }
 
   @override
