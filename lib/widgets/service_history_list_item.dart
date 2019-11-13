@@ -26,7 +26,8 @@ class ServiceHistoryListItem extends StatelessWidget {
     final categoryListProvider =
         Provider.of<CategoryList>(context, listen: false);
     final categoriesData = categoryListProvider.categories;
-    Category _serviceCategory = categoriesData.firstWhere((category) => category.id == serviceDetail.category);
+    Category _serviceCategory = categoriesData
+        .firstWhere((category) => category.id == serviceDetail.category);
 
     Widget _iconAndText(IconData icon, String text) {
       return Row(
@@ -84,19 +85,21 @@ class ServiceHistoryListItem extends StatelessWidget {
         return Row(
           children: <Widget>[
             _flatButton(
-                icon: Icons.check,
-                text: AppLocalizations.of(context).tr("accept"),
-                onPressed: () {
-                  Booking.approveBooking(context, serviceDetail.id,
-                      callback: callback);
-                }),
+              icon: Icons.check,
+              text: AppLocalizations.of(context).tr("accept"),
+              onPressed: () {
+                Booking.approveBooking(context, serviceDetail.id,
+                    callback: callback);
+              },
+            ),
             _flatButton(
-                icon: Icons.close,
-                text: AppLocalizations.of(context).tr("deny"),
-                onPressed: () {
-                  Booking.cancelBooking(context, serviceDetail.id,
-                      callback: callback, isHelper: true);
-                }),
+              icon: Icons.close,
+              text: AppLocalizations.of(context).tr("deny"),
+              onPressed: () {
+                Booking.cancelBooking(context, serviceDetail.id,
+                    callback: callback, isHelper: true);
+              },
+            ),
           ],
         );
       } else if (serviceDetail.status == 2) {
@@ -173,7 +176,9 @@ class ServiceHistoryListItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      Localizations.localeOf(context).languageCode == "en" ? _serviceCategory.nameEn : _serviceCategory.nameVi,
+                      Localizations.localeOf(context).languageCode == "en"
+                          ? _serviceCategory.nameEn
+                          : _serviceCategory.nameVi,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                       ),
@@ -198,12 +203,13 @@ class ServiceHistoryListItem extends StatelessWidget {
                   //   height: MediaQuery.of(context).size.width / 6,
                   // ),
                   CircleAvatar(
-                              backgroundImage: _serviceCategory.icon != null
-                                  ? NetworkImage(APIConfig.hostURL + _serviceCategory.icon)
-                                  : AssetImage('assets/images/category.png'),
-                              backgroundColor: Colors.transparent,
-                              radius:  MediaQuery.of(context).size.width / 10,
-                            ),
+                    backgroundImage: _serviceCategory.icon != null
+                        ? NetworkImage(
+                            APIConfig.hostURL + _serviceCategory.icon)
+                        : AssetImage('assets/images/category.png'),
+                    backgroundColor: Colors.transparent,
+                    radius: MediaQuery.of(context).size.width / 10,
+                  ),
                   Flexible(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
