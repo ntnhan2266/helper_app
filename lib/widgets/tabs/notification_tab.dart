@@ -82,6 +82,7 @@ class _NotificationTabState extends State<NotificationTab> {
                         EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
                     padding: EdgeInsets.symmetric(
                       vertical: ScreenUtil.instance.setHeight(15.0),
+                      horizontal: ScreenUtil.instance.setHeight(5.0),
                     ),
                     decoration: BoxDecoration(
                         color: Colors.white,
