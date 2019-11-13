@@ -308,5 +308,13 @@
     "noti_message_completed": "{} đã hoàn thành dịch vụ {}",
     "noti_message_rejected": "{} đã từ chối dịch vụ {}",
     "noti_message_canceled": "{} đã huỷ dịch vụ {}",
-    "no_maids": "Chưa có thông tin về người giúp việc"
+    "no_maids": "Chưa có thông tin về người giúp việc",
+    "report": "Báo cáo",
+    "report_reason_1": "Dịch vụ chưa hoàn thành",
+    "report_reason_2": "Làm việc không hiệu quả",
+    "report_reason_3": "Thái độ làm việc",
+    "report_reason_4": "Lý do khác",
+    "report_helper": "Báo cáo dịch vụ",
+    "choose_reason_to_report": "Vui lòng chọn lý do",
+    "report_successfully": "Báo cáo của bạn đã được gửi"
 }

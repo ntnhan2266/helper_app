@@ -307,5 +307,13 @@
     "noti_message_completed": "{} has completed your service {}",
     "noti_message_rejected": "{} has rejected your service {}",
     "noti_message_canceled": "{} has canceled your service {}",
-    "no_maids": "No maid info"
+    "no_maids": "No maid info",
+    "report": "Report",
+    "report_reason_1": "Service not completed",
+    "report_reason_2": "Work inefficient",
+    "report_reason_3": "Working attitude",
+    "report_reason_4": "Other reason",
+    "report_helper": "Report helper",
+    "choose_reason_to_report": "Please choose reason to report",
+    "report_successfully": "Your report was sent"
 }

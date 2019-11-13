@@ -2,11 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/easy_localization_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../models/service_details.dart';
 import '../services/booking.dart';
 import '../widgets/service_detail_info.dart';
 import '../widgets/booking_status.dart';
+import '../widgets/dialogs/cancel_booking_dialog.dart';
+import '../widgets/dialogs/report_helper_dialog.dart';
 import '../utils/constants.dart';
 import '../utils/booking.dart';
 
@@ -70,8 +73,47 @@ class ServiceStatus extends StatelessWidget {
     );
   }
 
+  void _reportHelper(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ReportHelperDialog(
+          onSubmit: (reason, content) async {
+            var res = await BookingService.report(
+              id,
+              reason,
+              content,
+            );
+            if (res['isValid']) {
+              Fluttertoast.showToast(
+                msg: AppLocalizations.of(context).tr('report_successfully'),
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Color.fromRGBO(75, 181, 67, 1),
+                textColor: Colors.white,
+                fontSize: ScreenUtil.instance.setSp(14),
+              );
+              Navigator.of(context).pop();
+            } else {
+              Fluttertoast.showToast(
+                msg: AppLocalizations.of(context).tr('error'),
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIos: 1,
+                backgroundColor: Color.fromRGBO(165, 0, 0, 1),
+                textColor: Colors.white,
+                fontSize: ScreenUtil.instance.setSp(14),
+              );
+            }
+          },
+        );
+      },
+    );
+  }
+
   Widget _buildHelperAction(BuildContext context, int status) {
-    if (status == 1) {
+    if (status == WAITING_APPROVE) {
       return Column(
         children: <Widget>[
           _flatButton(
@@ -94,7 +136,7 @@ class ServiceStatus extends StatelessWidget {
           ),
         ],
       );
-    } else if (status == 2) {
+    } else if (status == APPROVED) {
       return Column(
         children: <Widget>[
           _flatButton(
@@ -123,7 +165,7 @@ class ServiceStatus extends StatelessWidget {
   }
 
   Widget _buildUserAction(BuildContext context, int status) {
-    if (status == 1 || status == 2) {
+    if (status == WAITING_APPROVE || status == APPROVED) {
       return Column(
         children: <Widget>[
           _flatButton(
@@ -135,6 +177,42 @@ class ServiceStatus extends StatelessWidget {
           ),
         ],
       );
+    } else if (status == COMPLETED) {
+      return _buildReportAction(context);
+    } else {
+      return Container();
+    }
+  }
+
+  Widget _buildReportAction(BuildContext context) {
+    if (!isHelper) {
+      return InkWell(
+        onTap: () {
+          _reportHelper(context);
+        },
+        child: Container(
+          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10)),
+          margin: EdgeInsets.symmetric(
+              horizontal: ScreenUtil.instance.setWidth(12)),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              width: 1,
+              color: Color.fromRGBO(165, 0, 0, 1),
+            ),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Text(
+            AppLocalizations.of(context).tr('report').toUpperCase(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color.fromRGBO(165, 0, 0, 1),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      );
     } else {
       return Container();
     }
@@ -145,6 +223,8 @@ class ServiceStatus extends StatelessWidget {
     //   return _buildWatingApproveAction(context, status);
     // } else if (status == APPROVED) {
     //   return _buildApproveAction(context, status);
+    // } else if (status == COMPLETED) {
+    //   return _buildReportAction(context);
     // } else {
     //   return Container();
     // }

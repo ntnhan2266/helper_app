@@ -56,22 +56,24 @@ class _HomeState extends State<HomeScreen> {
     });
   }
 
-  _getCategoriesData() {
+  _getCategoriesData() async {
     // Load categories into provider
-        CategoryService.getAvailableCategories().then((res) {
-          if (res['isValid']) {
-            final categories = res['categories'];
-            final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
-            categoryListProvider.getDate(categories);
-          }
-        });
+    await CategoryService.getAvailableCategories().then((res) {
+      if (res['isValid']) {
+        final categories = res['categories'];
+        final categoryListProvider =
+            Provider.of<CategoryList>(context, listen: false);
+        categoryListProvider.getDate(categories);
+      }
+    });
   }
 
   @override
   didChangeDependencies() {
     super.didChangeDependencies();
     final userProvider = Provider.of<User>(context, listen: true);
-    final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
+    final categoryListProvider =
+        Provider.of<CategoryList>(context, listen: false);
     if (userProvider.id == null) {
       _getUserData();
     }

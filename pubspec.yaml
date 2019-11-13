@@ -91,6 +91,7 @@ flutter:
     - assets/images/convenience.png
     - assets/images/review.png
     - assets/images/vn_flag_icon.png
+    - assets/images/us_flag_icon.png
     - assets/images/login_banner.png
     - assets/images/send_message.png
     - assets/images/female_user.jpg

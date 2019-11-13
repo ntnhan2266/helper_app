@@ -29,8 +29,9 @@ class _AuthScreenState extends State<AuthScreen> {
         Text(
           APP_NAME,
           style: Theme.of(context).textTheme.title.copyWith(
-              fontSize: ScreenUtil.instance.setSp(26),
-              fontFamily: 'Pacifico-Regular'),
+                fontSize: ScreenUtil.instance.setSp(26),
+                fontFamily: 'Pacifico-Regular',
+              ),
         )
       ],
     );
@@ -135,27 +136,24 @@ class _AuthScreenState extends State<AuthScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           actions: <Widget>[
-            InkWell(
-              onTap: () {
-                if (data.savedLocale != Locale("vi", "VN"))
-                  data.changeLocale(Locale("vi", "VN"));
-                else
-                  data.changeLocale(Locale("en", "US"));
-              },
-              child: Container(
-                margin: EdgeInsets.only(right: 10.0),
-                width: ScreenUtil.instance.setWidth(25.0),
-                height: ScreenUtil.instance.setHeight(25.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.green,
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/easy.png'),
-                    fit: BoxFit.cover,
-                  ),
+            Container(
+              margin: EdgeInsets.only(right: 10),
+              child: InkWell(
+                onTap: () {
+                  if (data.savedLocale != Locale("vi", "VN"))
+                    data.changeLocale(Locale("vi", "VN"));
+                  else
+                    data.changeLocale(Locale("en", "US"));
+                },
+                child: Image.asset(
+                 Localizations.localeOf(context).languageCode == "en" 
+                 ? 'assets/images/vn_flag_icon.png'
+                 : 'assets/images/us_flag_icon.png',
+                 width: 35,
+                 height: 35,
                 ),
               ),
-            )
+            ),
           ],
         ),
         body: Container(
