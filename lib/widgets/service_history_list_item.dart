@@ -195,13 +195,13 @@ class ServiceHistoryListItem extends StatelessWidget {
                   _serviceCategory.icon != null
                   ? Image.network(
                     APIConfig.hostURL + _serviceCategory.icon,
-                    width: MediaQuery.of(context).size.width / 4,
-                    height: MediaQuery.of(context).size.width / 4,
+                    width: MediaQuery.of(context).size.width / 5,
+                    height: MediaQuery.of(context).size.width / 5,
                   )
                   : Image.asset(
                     'assets/images/category.png',
-                    width: MediaQuery.of(context).size.width / 4,
-                    height: MediaQuery.of(context).size.width / 4,
+                    width: MediaQuery.of(context).size.width / 5,
+                    height: MediaQuery.of(context).size.width / 5,
                   ),
                   Flexible(
                     child: Column(
