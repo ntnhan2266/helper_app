@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -63,7 +65,7 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
   }
 
   void firebaseCloudMessagingListeners() {
-    // if (Platform.isIOS) iOS_Permission();
+    if (Platform.isIOS) iOS_Permission();
 
     _firebaseMessaging.getToken().then((token) {
       // print(token);
@@ -127,16 +129,16 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
     );
   }
 
-// void iOS_Permission() {
-//   _firebaseMessaging.requestNotificationPermissions(
-//       IosNotificationSettings(sound: true, badge: true, alert: true)
-//   );
-//   _firebaseMessaging.onIosSettingsRegistered
-//       .listen((IosNotificationSettings settings)
-//   {
-//     print("Settings registered: $settings");
-//   });
-// }
+void iOS_Permission() {
+  _firebaseMessaging.requestNotificationPermissions(
+      IosNotificationSettings(sound: true, badge: true, alert: true)
+  );
+  _firebaseMessaging.onIosSettingsRegistered
+      .listen((IosNotificationSettings settings)
+  {
+    print("Settings registered: $settings");
+  });
+}
 
   @override
   Widget build(BuildContext context) {
