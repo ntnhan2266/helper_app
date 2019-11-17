@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,19 @@ class UserProfileTab extends StatefulWidget {
 }
 
 class _UserProfileTabState extends State<UserProfileTab> {
+  void _clearToken(String id) {
+    Firestore.instance
+        .collection('users')
+        .document(id)
+        .collection('tokens')
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.documents) {
+        doc.reference.delete();
+      }
+    });
+  }
+
   Widget _menuItem(
       {@required String title,
       @required IconData leadingIcon,
@@ -63,12 +77,12 @@ class _UserProfileTabState extends State<UserProfileTab> {
               child: ListTile(
                 title: Consumer<User>(
                   builder: (ctx, user, _) => Text(
-                        user.name != null ? user.name : '--',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                    user.name != null ? user.name : '--',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
                 leading: Consumer<User>(
                     builder: (ctx, user, _) => UserAvatar(user.avatar)),
@@ -152,6 +166,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
           InkWell(
             onTap: () {
               final userProvider = Provider.of<User>(context, listen: false);
+              _clearToken(userProvider.id);
               userProvider.clear();
               AuthService.logout(context);
             },
