@@ -53,7 +53,7 @@ class _NotificationTabState extends State<NotificationTab> {
         _pageIndex++;
         _isLoading = false;
       });
-    } else {
+    } else if (mounted) {
       setState(() {
         _isLoading = false;
       });
@@ -80,6 +80,18 @@ class _NotificationTabState extends State<NotificationTab> {
         : Container();
   }
 
+  void _markAsRead() async {
+    final res = await NotificationService.markAsRead();
+    if (res['isValid'] && mounted) {
+      setState(() {
+        _notifications = List();
+        _isLoading = true;
+        _pageIndex = 1;
+      });
+      _getNotification();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final categoryListProvider =
@@ -94,6 +106,15 @@ class _NotificationTabState extends State<NotificationTab> {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.done_all,
+              color: Theme.of(context).primaryColor,
+            ),
+            onPressed: _markAsRead,
+          ),
+        ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 5.0),
@@ -134,19 +155,14 @@ class _NotificationTabState extends State<NotificationTab> {
                       horizontal: ScreenUtil.instance.setHeight(5.0),
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: notification.isRead
+                            ? Colors.white
+                            : Colors.grey[100],
                         borderRadius: BorderRadius.circular(10.0)),
                     child: InkWell(
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            // CircleAvatar(
-                            //   backgroundImage: service.icon != null
-                            //       ? NetworkImage(APIConfig.hostURL + service.icon)
-                            //       : AssetImage('assets/images/category.png'),
-                            //   backgroundColor: Colors.transparent,
-                            //   radius:  MediaQuery.of(context).size.width / 6,
-                            // ),
                             service.icon != null
                                 ? Image.network(
                                     APIConfig.hostURL + service.icon,
