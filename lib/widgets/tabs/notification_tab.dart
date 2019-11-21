@@ -11,6 +11,10 @@ import '../../services/notification.dart';
 import '../../configs/api.dart';
 
 class NotificationTab extends StatefulWidget {
+  final Function countNotification;
+
+  const NotificationTab({this.countNotification});
+
   @override
   _NotificationTabState createState() => _NotificationTabState();
 }
@@ -88,6 +92,7 @@ class _NotificationTabState extends State<NotificationTab> {
         _isLoading = true;
         _pageIndex = 1;
       });
+      widget.countNotification();
       _getNotification();
     }
   }
@@ -119,7 +124,7 @@ class _NotificationTabState extends State<NotificationTab> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 5.0),
         color: Colors.blueGrey[50],
-        child: _notifications.isEmpty
+        child: _notifications.isEmpty && !_isLoading
             ? Container(
                 color: Colors.white,
                 margin: EdgeInsets.symmetric(

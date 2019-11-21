@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 import './screens/helper_management_screen.dart';
 import './screens/setting_screen.dart';
@@ -55,90 +52,10 @@ Map<int, Color> color = {
 class _SmartRabbitAppState extends State<SmartRabbitApp> {
   MaterialColor colorCustom = MaterialColor(0xFF880E4F, color);
 
-  // Firebase messaging
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
   @override
   void initState() {
     super.initState();
-    firebaseCloudMessagingListeners();
   }
-
-  void firebaseCloudMessagingListeners() {
-    if (Platform.isIOS) iOS_Permission();
-
-    _firebaseMessaging.getToken().then((token) {
-      // print(token);
-    });
-
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print('on message $message');
-        showOverlayNotification((context) {
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 3.0),
-            elevation: 4.0,
-            child: SafeArea(
-              child: ListTile(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    homeScreenRoute,
-                    arguments: HomeScreen(tabIndex: 3),
-                  );
-                },
-                contentPadding:
-                    EdgeInsets.only(top: 10.0, bottom: 10.0, left: 5.0),
-                leading: SizedBox.fromSize(
-                  size: const Size(40, 40),
-                  child: ClipOval(
-                    child: Icon(
-                      Icons.notifications_active,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
-                title: Text(message['notification']['title']),
-                subtitle: Text(
-                  AppLocalizations.of(context).tr(
-                    message['data']['message'],
-                    args: [
-                      message['data']['name'],
-                      Localizations.localeOf(context) == Locale('vi', 'VN')
-                          ? message['data']['category_vi']
-                          : message['data']['category_en'],
-                    ],
-                  ),
-                ),
-                trailing: IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      OverlaySupportEntry.of(context).dismiss();
-                    }),
-              ),
-            ),
-          );
-        }, duration: Duration(milliseconds: 4000));
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print('on resume $message');
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print('on launch $message');
-      },
-    );
-  }
-
-void iOS_Permission() {
-  _firebaseMessaging.requestNotificationPermissions(
-      IosNotificationSettings(sound: true, badge: true, alert: true)
-  );
-  _firebaseMessaging.onIosSettingsRegistered
-      .listen((IosNotificationSettings settings)
-  {
-    print("Settings registered: $settings");
-  });
-}
 
   @override
   Widget build(BuildContext context) {

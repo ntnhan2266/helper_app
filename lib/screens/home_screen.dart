@@ -1,7 +1,13 @@
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_rabbit/utils/route_names.dart';
 
+import '../services/notification.dart';
 import '../widgets/tabs/home_tab.dart';
 import '../widgets/tabs/service_category_tab.dart';
 import '../widgets/tabs/service_history_tab.dart';
@@ -24,10 +30,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeState extends State<HomeScreen> {
   int _tabIndex;
   PageController _pageController;
+  int _newNotification = 0;
+
+  // Firebase messaging
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
     super.initState();
+    firebaseCloudMessagingListeners();
+    _countNotification();
 
     setState(() {
       if (widget.tabIndex != null) {
@@ -44,6 +56,91 @@ class _HomeState extends State<HomeScreen> {
         );
       }
     });
+  }
+
+  void firebaseCloudMessagingListeners() {
+    if (Platform.isIOS) iOS_Permission();
+
+    _firebaseMessaging.getToken().then((token) {
+      // print(token);
+    });
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+        showOverlayNotification((context) {
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 3.0),
+            elevation: 4.0,
+            child: SafeArea(
+              child: ListTile(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    homeScreenRoute,
+                    arguments: HomeScreen(tabIndex: 3),
+                  );
+                },
+                contentPadding:
+                    EdgeInsets.only(top: 10.0, bottom: 10.0, left: 5.0),
+                leading: SizedBox.fromSize(
+                  size: const Size(40, 40),
+                  child: ClipOval(
+                    child: Icon(
+                      Icons.notifications_active,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+                title: Text(message['notification']['title']),
+                subtitle: Text(
+                  AppLocalizations.of(context).tr(
+                    message['data']['message'],
+                    args: [
+                      message['data']['name'],
+                      Localizations.localeOf(context) == Locale('vi', 'VN')
+                          ? message['data']['category_vi']
+                          : message['data']['category_en'],
+                    ],
+                  ),
+                ),
+                trailing: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      OverlaySupportEntry.of(context).dismiss();
+                    }),
+              ),
+            ),
+          );
+        }, duration: Duration(milliseconds: 4000));
+        _countNotification();
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+
+  void iOS_Permission() {
+    _firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+  }
+
+  void _countNotification() async {
+    final res = await NotificationService.count();
+    print(res);
+    if (res['isValid'] && mounted) {
+      setState(() {
+        _newNotification = res['count'];
+      });
+    }
   }
 
   void _getUserData() async {
@@ -92,7 +189,7 @@ class _HomeState extends State<HomeScreen> {
         HomeTab(bottomTapped: _bottomTapped),
         ServiceCategoryTab(),
         ServiceHistoryTab(),
-        NotificationTab(),
+        NotificationTab(countNotification: _countNotification),
         UserProfileTab()
       ],
     );
@@ -162,9 +259,41 @@ class _HomeState extends State<HomeScreen> {
                 ),
                 title: new Text('')),
             BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.notifications,
-                ),
+                icon: _newNotification > 0
+                    ? Container(
+                        width: 30.0,
+                        height: 30.0,
+                        child: Stack(
+                          alignment: AlignmentDirectional.center,
+                          children: <Widget>[
+                            Icon(Icons.notifications),
+                            Positioned(
+                              right: 0,
+                              top: 1,
+                              child: new Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: new BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 14,
+                                  minHeight: 14,
+                                ),
+                                child: Text(
+                                  _newNotification.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 8,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    : Icon(Icons.notifications),
                 title: new Text('')),
             BottomNavigationBarItem(
                 icon: Icon(
