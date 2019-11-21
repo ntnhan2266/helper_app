@@ -138,7 +138,6 @@ class _HomeTabState extends State<HomeTab> {
   void _getBooking() async {
     final res =
         await BookingService.getBookingsByStatus(COMPLETED, pageSize: 2);
-        print(res);
     if (res['isValid']) {
       setState(() {
         _recentServices.addAll(res['data']);
@@ -205,9 +204,13 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
+    final categoryListProvider =
+        Provider.of<CategoryList>(context, listen: false);
     final categoriesData = categoryListProvider.categories;
-    var _categories = categoriesData != null ? categoriesData.sublist(0, categoriesData.length > 4 ? 4 : categoriesData.length) : [];
+    var _categories = categoriesData != null
+        ? categoriesData.sublist(
+            0, categoriesData.length > 4 ? 4 : categoriesData.length)
+        : [];
     return Scaffold(
       body: ListView(
         children: <Widget>[
@@ -269,7 +272,8 @@ class _HomeTabState extends State<HomeTab> {
                             padding: const EdgeInsets.all(8.0),
                             child: CircleAvatar(
                               backgroundImage: category.icon != null
-                                  ? NetworkImage(APIConfig.hostURL + category.icon)
+                                  ? NetworkImage(
+                                      APIConfig.hostURL + category.icon)
                                   : AssetImage('assets/images/category.png'),
                               backgroundColor: Colors.transparent,
                             ),
@@ -278,7 +282,9 @@ class _HomeTabState extends State<HomeTab> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 20.0),
                           child: Text(
-                            Localizations.localeOf(context).languageCode == "en" ? category.nameEn : category.nameVi,
+                            Localizations.localeOf(context).languageCode == "en"
+                                ? category.nameEn
+                                : category.nameVi,
                             style: TextStyle(
                               fontSize: ScreenUtil.instance.setSp(13.0),
                             ),

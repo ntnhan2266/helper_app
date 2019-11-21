@@ -135,7 +135,6 @@ class _HomeState extends State<HomeScreen> {
 
   void _countNotification() async {
     final res = await NotificationService.count();
-    print(res);
     if (res['isValid'] && mounted) {
       setState(() {
         _newNotification = res['count'];
