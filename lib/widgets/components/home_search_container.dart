@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../screens/search_result_screen.dart';
+import '../../utils/route_names.dart';
 import '../../utils/utils.dart';
 import '../../models/category_list.dart';
 
@@ -24,13 +26,13 @@ class HomeSearchContainer extends StatefulWidget {
 class _HomeSearchContainerState extends State<HomeSearchContainer> {
   final TextEditingController _searchControl = new TextEditingController();
   String _search = "";
-  List<dynamic> _searchServices = List();
+  List<String> _searchServices = List();
   List<int> _searchAreas = List();
   int _minSalary = MIN_SALARY;
   int _maxSalary = MAX_SALARY;
 
   //temp
-  List<dynamic> _tempSearchServices = List();
+  List<String> _tempSearchServices = List();
   ServiceTypeEnum _serviceType = ServiceTypeEnum.all;
   List<int> _tempSearchAreas = List();
   SalaryTypeEnum _salaryType = SalaryTypeEnum.all;
@@ -117,7 +119,9 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                     padding: EdgeInsets.symmetric(horizontal: 2.0),
                     child: ChoiceChip(
                       label: Text(
-                        Localizations.localeOf(context).languageCode == "en" ? i.nameEn : i.nameVi,
+                        Localizations.localeOf(context).languageCode == "en"
+                            ? i.nameEn
+                            : i.nameVi,
                       ),
                       selected: _tempSearchServices.contains(i.id),
                       onSelected: (selected) {
@@ -215,8 +219,10 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
       return categoriesData
           .where((service) => _searchServices.contains(service.id))
           .map((service) => _serviceChoiceChip(
-            Localizations.localeOf(context).languageCode == "en" ? service.nameEn : service.nameVi,
-          ))
+                Localizations.localeOf(context).languageCode == "en"
+                    ? service.nameEn
+                    : service.nameVi,
+              ))
           .toList();
     }
   }
@@ -439,6 +445,18 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
       Utils.showErrorDialog(context, "select_service_required");
     } else if (_areaType == AreaTypeEnum.custom && _searchAreas.isEmpty) {
       Utils.showErrorDialog(context, "select_area_required");
+    } else {
+      Navigator.pushNamed(
+        context,
+        searchResultRoute,
+        arguments: SearchResultScreen(
+          search: _search,
+          searchServices: _searchServices,
+          searchAreas: _searchAreas,
+          minSalary: _minSalary,
+          maxSalary: _maxSalary,
+        ),
+      );
     }
   }
 

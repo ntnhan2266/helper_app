@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../services/api.dart';
 import '../models/maid_review.dart';
 import '../configs/api.dart';
 import '../utils/constants.dart';
@@ -16,7 +17,9 @@ class MaidService {
   static const String _editMaidRoute = APIConfig.baseURL + '/maid/edit';
   static const String _getMaidReviewsRoute =
       APIConfig.baseURL + '/maid/reviews';
-  static const String _getTopRatingMaids = APIConfig.baseURL + '/maids/top-rating';
+  static const String _getTopRatingMaids =
+      APIConfig.baseURL + '/maids/top-rating';
+  static const String _searchMaids = APIConfig.baseURL + '/maids/search';
 
   static Future<Map<String, dynamic>> getMaid({String id}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -173,5 +176,46 @@ class MaidService {
       completer.complete({'isValid': false, 'data': null});
     }
     return completer.future;
+  }
+
+  static Future<Map<String, dynamic>> searchMaids({
+    int pageSize = 10,
+    int pageIndex = 0,
+    String search,
+    List<String> services,
+    List<int> areas,
+    int minSalary,
+    int maxSalary,
+  }) async {
+    var completer = new Completer<Map<String, dynamic>>();
+    try {
+      var serviceString = services.join(",");
+      var areaString = areas.join(",");
+      var headers = await API.getAuthToken();
+      var response = await http.get(
+        _searchMaids +
+            '?pageSize=$pageSize&pageIndex=$pageIndex&search=$search&services=$serviceString&areas=$areaString&minSalary=$minSalary&maxSalary=$maxSalary',
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['errorCode'] != null) {
+          completer.complete({'isValid': false, 'data': null});
+        } else {
+          // final json = data['maids'];
+          // final List<Maid> maids = [];
+          // for (var i = 0; i < json.length; i++) {
+          //   maids.add(Maid.maidFromJson(json[i]));
+          // }
+          completer.complete({'isValid': true, 'data': data['maids']});
+        }
+      } else {
+        completer.complete({'isValid': false, 'data': null});
+      }
+      return completer.future;
+    } catch (e) {
+      completer.complete({'isValid': false, 'data': null});
+      return completer.future;
+    }
   }
 }

@@ -315,5 +315,6 @@
     "report_reason_4": "Other reason",
     "report_helper": "Report helper",
     "choose_reason_to_report": "Please choose reason to report",
-    "report_successfully": "Your report was sent"
+    "report_successfully": "Your report was sent",
+    "search_result": "Search result"
 }

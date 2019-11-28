@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
+import './screens/search_result_screen.dart';
 import './screens/helper_management_screen.dart';
 import './screens/setting_screen.dart';
 import './screens/helper_detail_screen.dart';
@@ -146,6 +147,23 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         return _buildRoute(settings, HelperManagementScreen());
       case settingRoute:
         return _buildRoute(settings, SettingScreen());
+      case searchResultRoute:
+        return _buildRoute(
+          settings,
+          settings.arguments == null
+              ? SearchResultScreen()
+              : SearchResultScreen(
+                  search: (settings.arguments as SearchResultScreen).search,
+                  searchServices:
+                      (settings.arguments as SearchResultScreen).searchServices,
+                  searchAreas:
+                      (settings.arguments as SearchResultScreen).searchAreas,
+                  minSalary:
+                      (settings.arguments as SearchResultScreen).minSalary,
+                  maxSalary:
+                      (settings.arguments as SearchResultScreen).maxSalary,
+                ),
+        );
       default:
         return null;
     }

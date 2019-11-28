@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:pk_skeleton/pk_skeleton.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/notification.dart' as app;
@@ -121,148 +122,163 @@ class _NotificationTabState extends State<NotificationTab> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0),
-        color: Colors.blueGrey[50],
-        child: _notifications.isEmpty && !_isLoading
-            ? Container(
-                color: Colors.white,
-                margin: EdgeInsets.symmetric(
-                  vertical: ScreenUtil.instance.setHeight(2.0),
-                  horizontal: ScreenUtil.instance.setWidth(5.0),
-                ),
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Image.asset(
-                      'assets/images/not_found.jpg',
-                      width: MediaQuery.of(context).size.width * 0.5,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 20.0),
-                      child:
-                          Text(AppLocalizations.of(context).tr('no_content')),
+      body: _isLoading
+          ? PKCardPageSkeleton()
+          : Container(
+              padding: EdgeInsets.symmetric(vertical: 5.0),
+              color: Colors.blueGrey[50],
+              child: _notifications.isEmpty
+                  ? Container(
+                      color: Colors.white,
+                      margin: EdgeInsets.symmetric(
+                        vertical: ScreenUtil.instance.setHeight(2.0),
+                        horizontal: ScreenUtil.instance.setWidth(5.0),
+                      ),
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Image.asset(
+                            'assets/images/not_found.jpg',
+                            width: MediaQuery.of(context).size.width * 0.5,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 20.0),
+                            child: Text(
+                                AppLocalizations.of(context).tr('no_content')),
+                          )
+                        ],
+                      ),
                     )
-                  ],
-                ),
-              )
-            : ListView(
-                controller: _scrollController,
-                children: _notifications.map((notification) {
-                  Category service = categoriesData.firstWhere((category) =>
-                      notification.service.category == category.id);
-                  return Container(
-                    margin:
-                        EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-                    padding: EdgeInsets.symmetric(
-                      vertical: ScreenUtil.instance.setHeight(15.0),
-                      horizontal: ScreenUtil.instance.setHeight(5.0),
-                    ),
-                    decoration: BoxDecoration(
-                        color: notification.isRead
-                            ? Colors.white
-                            : Colors.grey[100],
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: InkWell(
-                      child: Container(
-                        child: Row(
-                          children: <Widget>[
-                            service.icon != null
-                                ? Image.network(
-                                    APIConfig.hostURL + service.icon,
-                                    width:
-                                        MediaQuery.of(context).size.width / 4,
-                                    height:
-                                        MediaQuery.of(context).size.width / 6,
-                                  )
-                                : Image.asset(
-                                    'assets/images/category.png',
-                                    width:
-                                        MediaQuery.of(context).size.width / 4,
-                                    height:
-                                        MediaQuery.of(context).size.width / 6,
-                                  ),
-                            Flexible(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                  : ListView(
+                      controller: _scrollController,
+                      children: _notifications.map((notification) {
+                        Category service = categoriesData.firstWhere(
+                            (category) =>
+                                notification.service.category == category.id);
+                        return Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: 2.0, horizontal: 5.0),
+                          padding: EdgeInsets.symmetric(
+                            vertical: ScreenUtil.instance.setHeight(15.0),
+                            horizontal: ScreenUtil.instance.setHeight(5.0),
+                          ),
+                          decoration: BoxDecoration(
+                            color: notification.isRead
+                                ? Colors.white
+                                : Colors.grey[100],
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: InkWell(
+                            child: Container(
+                              child: Row(
                                 children: <Widget>[
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: RichText(
-                                      text: TextSpan(
-                                        style: new TextStyle(
-                                          fontSize:
-                                              ScreenUtil.instance.setSp(15.0),
-                                          color: Colors.black,
+                                  service.icon != null
+                                      ? Image.network(
+                                          APIConfig.hostURL + service.icon,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              4,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              6,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/category.png',
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              4,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              6,
                                         ),
-                                        children: [
-                                          TextSpan(
-                                            text: notification.fromUser,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text:
-                                                AppLocalizations.of(context).tr(
-                                              notification.message,
-                                              args: [
-                                                "",
-                                                AppLocalizations.of(context).tr(
-                                                    categoriesData
-                                                        .firstWhere(
-                                                            (category) =>
-                                                                category.id ==
-                                                                notification
-                                                                    .service
-                                                                    .category)
-                                                        .nameVi),
+                                  Flexible(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              style: new TextStyle(
+                                                fontSize: ScreenUtil.instance
+                                                    .setSp(15.0),
+                                                color: Colors.black,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text: notification.fromUser,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: AppLocalizations.of(
+                                                          context)
+                                                      .tr(
+                                                    notification.message,
+                                                    args: [
+                                                      "",
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .tr(categoriesData
+                                                              .firstWhere((category) =>
+                                                                  category.id ==
+                                                                  notification
+                                                                      .service
+                                                                      .category)
+                                                              .nameVi),
+                                                    ],
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.date_range,
-                                        size: 13,
-                                        color: Colors.blueGrey[300],
-                                      ),
-                                      SizedBox(width: 3),
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          DateFormat('dd/MM/yyyy hh:mm')
-                                              .format(notification.createdAt),
-                                          style: TextStyle(
-                                            fontSize:
-                                                ScreenUtil.instance.setSp(14.0),
-                                            color: Colors.blueGrey[300],
-                                          ),
-                                          maxLines: 1,
-                                          textAlign: TextAlign.left,
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.date_range,
+                                              size: 13,
+                                              color: Colors.blueGrey[300],
+                                            ),
+                                            SizedBox(width: 3),
+                                            Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                DateFormat('dd/MM/yyyy hh:mm')
+                                                    .format(
+                                                        notification.createdAt),
+                                                style: TextStyle(
+                                                  fontSize: ScreenUtil.instance
+                                                      .setSp(14.0),
+                                                  color: Colors.blueGrey[300],
+                                                ),
+                                                maxLines: 1,
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      onTap: () {},
+                            onTap: () {},
+                          ),
+                        );
+                      }).toList()
+                        ..add(_getLoading()),
                     ),
-                  );
-                }).toList()
-                  ..add(_getLoading()),
-              ),
-      ),
+            ),
     );
   }
 }
