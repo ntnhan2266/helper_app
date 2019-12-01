@@ -28,28 +28,45 @@ class SearchResultScreen extends StatefulWidget {
 }
 
 class _SearchResultScreenState extends State<SearchResultScreen> {
-  bool _isLoading = true;
   List<dynamic> _maids = List();
+  int _pageIndex = 0;
+  bool _isLoading = true;
+  bool _canLoadMore = true;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _searchHelpers();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _searchHelpers();
+      }
+    });
   }
 
   void _searchHelpers() async {
+    if (!_canLoadMore || !mounted) {
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+    });
+
     final res = await MaidService.searchMaids(
+      pageIndex: _pageIndex,
       search: widget.search,
       services: widget.searchServices,
       areas: widget.searchAreas,
       minSalary: widget.minSalary,
       maxSalary: widget.maxSalary,
     );
-    print(res['isValid']);
     if (res['isValid'] && mounted) {
-      // final total = res['total'];
       setState(() {
         _maids.addAll(res['data']);
+        _pageIndex++;
         _isLoading = false;
       });
     } else {
@@ -91,9 +108,34 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             : Container(
                 color: Colors.blueGrey[50],
                 padding: EdgeInsets.symmetric(vertical: 3.0),
-                child: ListView(
-                  children: _maids.map((maid) => HelperListItem(maid)).toList(),
-                ),
+                child: _maids.isEmpty
+                    ? Container(
+                        color: Colors.white,
+                        margin: EdgeInsets.symmetric(
+                          vertical: ScreenUtil.instance.setHeight(2.0),
+                          horizontal: ScreenUtil.instance.setWidth(5.0),
+                        ),
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/not_found.jpg',
+                              width: MediaQuery.of(context).size.width * 0.5,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 20.0),
+                              child: Text(AppLocalizations.of(context)
+                                  .tr('no_content')),
+                            )
+                          ],
+                        ),
+                      )
+                    : ListView(
+                        controller: _scrollController,
+                        children:
+                            _maids.map((maid) => HelperListItem(maid)).toList(),
+                      ),
               ),
       ),
     );

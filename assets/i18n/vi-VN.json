@@ -317,5 +317,6 @@
     "report_helper": "Báo cáo dịch vụ",
     "choose_reason_to_report": "Vui lòng chọn lý do",
     "report_successfully": "Báo cáo của bạn đã được gửi",
-    "search_result": "Kết quả tìm kiếm"
+    "search_result": "Kết quả tìm kiếm",
+    "vnd_hour": "VND/giờ"
 }

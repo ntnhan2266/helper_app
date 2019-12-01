@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:smart_rabbit/configs/api.dart';
 
 class HelperListItem extends StatefulWidget {
   final maid;
@@ -22,10 +24,17 @@ class _HelperListItemState extends State<HelperListItem> {
       ),
       child: Row(
         children: <Widget>[
-          Image.asset(
-            'assets/images/category.png',
+          Container(
             width: MediaQuery.of(context).size.width / 4,
-            height: MediaQuery.of(context).size.width / 6,
+            height: MediaQuery.of(context).size.width / 4,
+            padding: EdgeInsets.all(10.0),
+            margin: EdgeInsets.only(right: 10.0),
+            child: CircleAvatar(
+              backgroundImage: widget.maid['avatar'] != null
+                  ? NetworkImage(APIConfig.hostURL + widget.maid['avatar'])
+                  : AssetImage('assets/images/avt_default.png'),
+              backgroundColor: Colors.transparent,
+            ),
           ),
           Flexible(
             child: Column(
@@ -37,7 +46,11 @@ class _HelperListItemState extends State<HelperListItem> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 5),
-                Text(widget.maid['salary'].toString() ?? "-" + " VND/hour"),
+                Text(
+                  (widget.maid['salary'].toString() ?? "-") +
+                      " " +
+                      AppLocalizations.of(context).tr('vnd_hour'),
+                ),
                 SizedBox(height: 5),
                 RatingBar(
                   initialRating: widget.maid['ratting'] ?? 0,

@@ -202,11 +202,6 @@ class MaidService {
         if (data['errorCode'] != null) {
           completer.complete({'isValid': false, 'data': null});
         } else {
-          // final json = data['maids'];
-          // final List<Maid> maids = [];
-          // for (var i = 0; i < json.length; i++) {
-          //   maids.add(Maid.maidFromJson(json[i]));
-          // }
           completer.complete({'isValid': true, 'data': data['maids']});
         }
       } else {

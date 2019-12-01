@@ -191,6 +191,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
               setState(() {
                 _serviceType = value;
                 _searchServices = [];
+                _tempSearchServices = [];
               });
               if (value == ServiceTypeEnum.custom) {
                 _showServiceDialog();
@@ -328,6 +329,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
               setState(() {
                 _areaType = value;
                 _searchAreas = [];
+                _tempSearchAreas = [];
               });
               if (value == AreaTypeEnum.custom) {
                 _showSupportedAreaDialog();

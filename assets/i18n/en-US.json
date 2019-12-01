@@ -316,5 +316,6 @@
     "report_helper": "Report helper",
     "choose_reason_to_report": "Please choose reason to report",
     "report_successfully": "Your report was sent",
-    "search_result": "Search result"
+    "search_result": "Search result",
+    "vnd_hour": "VND/hour"
 }
