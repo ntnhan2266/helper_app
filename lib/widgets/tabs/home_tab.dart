@@ -13,7 +13,6 @@ import '../../models/user.dart';
 import '../../models/user_maid.dart';
 import '../../models/service_details.dart';
 import '../../models/category_list.dart';
-// import '../../utils/dummy_data.dart';
 import '../../utils/route_names.dart';
 import '../../utils/constants.dart';
 import '../../configs/api.dart';
@@ -39,7 +38,7 @@ class _HomeTabState extends State<HomeTab> {
   Widget _inputSearch() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.blueGrey[50],
+        color: Colors.blueGrey[50].withOpacity(0.7),
         borderRadius: BorderRadius.all(
           Radius.circular(5.0),
         ),
@@ -214,22 +213,37 @@ class _HomeTabState extends State<HomeTab> {
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: Consumer<User>(
-              builder: (ctx, user, _) => Text(
-                AppLocalizations.of(context).tr('home_tab_welcome_title',
-                    args: [user.name != null ? user.name : '--']),
-                style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(25.0),
-                  fontWeight: FontWeight.w600,
-                ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.38,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/home_welcome.jpg"),
+                fit: BoxFit.cover,
+                alignment: Alignment.bottomCenter
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: _inputSearch(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Consumer<User>(
+                    builder: (ctx, user, _) => Text(
+                      AppLocalizations.of(context).tr('home_tab_welcome_title',
+                          args: [user.name != null ? user.name : '--']),
+                      style: TextStyle(
+                        fontSize: ScreenUtil.instance.setSp(25.0),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: _inputSearch(),
+                ),
+              ],
+            ),
           ),
           Container(
             color: Colors.blueGrey[50],
