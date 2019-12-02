@@ -18,6 +18,7 @@ class _HelperManagementScreenState extends State<HelperManagementScreen> {
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
+            isScrollable: true,
             indicatorSize: TabBarIndicatorSize.tab,
             indicator: BubbleTabIndicator(
               indicatorHeight: 40.0,
@@ -25,32 +26,36 @@ class _HelperManagementScreenState extends State<HelperManagementScreen> {
               tabBarIndicatorSize: TabBarIndicatorSize.tab,
             ),
             labelColor: Theme.of(context).primaryColor,
-            labelStyle: TextStyle(fontWeight: FontWeight.w500, color: Colors.white,),
-            unselectedLabelColor: Colors.white,
+            labelStyle: TextStyle(fontWeight: FontWeight.w600, color: Colors.white,),
+            unselectedLabelColor: Colors.white.withOpacity(0.7),
             unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
             tabs: [
               Tab(
                 child: Text(
                   AppLocalizations.of(context).tr('waiting'),
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 13),
                 ),
               ),
               Tab(
                 child: Text(
                   AppLocalizations.of(context).tr('on-going'),
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 13),
                 ),
               ),
               Tab(
                 child: Text(
                   AppLocalizations.of(context).tr('completed'),
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 13),
                 ),
               ),
               Tab(
                 child: Text(
                   AppLocalizations.of(context).tr('canceled'),
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 13),
                 ),
               ),
             ],

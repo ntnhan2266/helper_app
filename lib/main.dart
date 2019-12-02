@@ -95,9 +95,11 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
                 primarySwatch: colorCustom,
                 primaryColor: Color.fromRGBO(42, 77, 108, 1),
                 textTheme: Theme.of(context).textTheme.copyWith(
-                    title: TextStyle(
+                      title: TextStyle(
                         color: Color.fromRGBO(42, 77, 108, 1),
-                        fontFamily: 'Pacifico-Regular')),
+                        fontFamily: 'Pacifico-Regular',
+                      ),
+                    ),
                 fontFamily: 'Roboto',
                 scaffoldBackgroundColor: Colors.white),
             home: SplashScreen(),
