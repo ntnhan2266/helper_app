@@ -53,6 +53,8 @@ class _ReviewContainerState extends State<ReviewContainer> {
               Text(
                 widget.review.content,
                 style: TextStyle(fontSize: ScreenUtil.instance.setSp(14)),
+                maxLines: 6,
+                overflow: TextOverflow.fade,
               ),
             ],
           ),

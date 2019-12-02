@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:pk_skeleton/pk_skeleton.dart';
 
 import '../../models/maid_review.dart';
 import '../review_carousel_slider.dart';
@@ -61,9 +62,7 @@ class _ReviewContainerListState extends State<ReviewContainerList> {
       padding: EdgeInsets.only(bottom: 10.0, top: 15.0),
       color: Colors.white,
       child: loading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
+          ? PKCardPageSkeleton(totalLines: 1)
           : _buildReview(),
     );
   }
