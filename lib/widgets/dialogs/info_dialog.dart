@@ -33,7 +33,7 @@ class ErrorDialog extends StatelessWidget {
             AppLocalizations.of(context).tr('ok'),
             style: TextStyle(
               color: Colors.white,
-              fontSize: ScreenUtil.instance.setSp(12.0),
+              fontSize: ScreenUtil.instance.setSp(13.0),
             ),
           ),
           onPressed: () {

@@ -52,7 +52,7 @@ class FormDatePicker extends StatelessWidget {
               DateFormat.yMd('vi_VN').format(value),
               style: TextStyle(
                 color: Colors.black,
-                fontSize: ScreenUtil.instance.setSp(12.0),
+                fontSize: ScreenUtil.instance.setSp(13.0),
               ),
             ),
           ),

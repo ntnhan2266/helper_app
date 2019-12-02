@@ -51,7 +51,7 @@ class FormDropdown extends StatelessWidget {
                     item.label,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: ScreenUtil.instance.setSp(12.0),
+                      fontSize: ScreenUtil.instance.setSp(13.0),
                     ),
                   ),
                 ),

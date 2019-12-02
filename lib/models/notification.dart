@@ -7,6 +7,7 @@ class Notification {
   ServiceDetails service;
   String fromUser;
   bool isRead;
+  bool isHelper;
 
   Notification({
     this.id,
@@ -15,6 +16,7 @@ class Notification {
     this.service,
     this.fromUser,
     this.isRead = false,
+    this.isHelper = false,
   });
 
   Map<String, dynamic> toJson() {
@@ -25,6 +27,7 @@ class Notification {
       'service': service.id,
       'fromUser': fromUser,
       'isRead': isRead,
+      'isHelper': isHelper,
     };
   }
 
@@ -37,7 +40,8 @@ class Notification {
           ? ServiceDetails.fromJson(json['booking'])
           : null,
       fromUser: json['fromUser'],
-      isRead: json['isRead'],
+      isRead: json['isRead'] ?? false,
+      isHelper: json['isHelper'] ?? false,
     );
   }
 }

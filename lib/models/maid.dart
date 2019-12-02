@@ -33,7 +33,7 @@ class Maid {
     this.salary = json['salary'];
     this.jobTypes = json['jobTypes'].cast<String>();
     this.supportAreas = json['supportAreas'].cast<int>();
-    this.ratting = json['ratting'].cast<double>();
+    this.ratting = json['ratting'].toDouble();
   }
 
   Map<String, dynamic> toJson() {

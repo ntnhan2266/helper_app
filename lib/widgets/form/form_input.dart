@@ -56,7 +56,7 @@ class FormInput extends StatelessWidget {
             if (hasNext) _fieldFocusChange(context, focusNode, nextNode);
           },
           style: TextStyle(
-            fontSize: ScreenUtil.instance.setSp(12.0),
+            fontSize: ScreenUtil.instance.setSp(13.0),
             color: Colors.black,
           ),
           decoration: InputDecoration(

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pk_skeleton/pk_skeleton.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/route_names.dart';
 import '../../models/notification.dart' as app;
 import '../../models/category_list.dart';
 import '../../models/category.dart';
@@ -275,7 +276,16 @@ class _NotificationTabState extends State<NotificationTab> {
                                 ],
                               ),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                serviceStatusRoute,
+                                arguments: {
+                                  'id': notification.service.id,
+                                  'isHelper': notification.isHelper,
+                                },
+                              );
+                            },
                           ),
                         );
                       }).toList()

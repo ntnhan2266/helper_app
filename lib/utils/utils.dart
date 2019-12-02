@@ -224,7 +224,7 @@ class Utils {
       messageText: Text(
         AppLocalizations.of(context).tr('something_went_wrong'),
         style: TextStyle(
-          fontSize: ScreenUtil.instance.setSp(12.0),
+          fontSize: ScreenUtil.instance.setSp(13.0),
           color: Colors.red,
         ),
       ),
@@ -248,7 +248,7 @@ class Utils {
       messageText: Text(
         title,
         style: TextStyle(
-          fontSize: ScreenUtil.instance.setSp(12.0),
+          fontSize: ScreenUtil.instance.setSp(13.0),
           color: Colors.green,
         ),
       ),

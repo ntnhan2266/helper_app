@@ -219,7 +219,7 @@ class _HomeTabState extends State<HomeTab> {
               image: DecorationImage(
                 image: AssetImage("assets/images/home_welcome.jpg"),
                 fit: BoxFit.cover,
-                alignment: Alignment.bottomCenter
+                alignment: Alignment.bottomCenter,
               ),
             ),
             child: Column(

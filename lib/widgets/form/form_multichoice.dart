@@ -90,14 +90,14 @@ class FormMultiChoice extends StatelessWidget {
                     hint,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: ScreenUtil.instance.setSp(12.0),
+                      fontSize: ScreenUtil.instance.setSp(13.0),
                     ),
                   )
                 : Text(
                     selectedData,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: ScreenUtil.instance.setSp(12.0),
+                      fontSize: ScreenUtil.instance.setSp(13.0),
                     ),
                   ),
           ),
