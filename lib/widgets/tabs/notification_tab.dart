@@ -52,7 +52,7 @@ class _NotificationTabState extends State<NotificationTab> {
     // await Future.delayed(Duration(milliseconds: 1500));
     final res = await NotificationService.getNotification(
       pageIndex: _pageIndex,
-      pageSize: 10,
+      pageSize: 12,
     );
     if (res['isValid'] && mounted) {
       setState(() {
@@ -95,7 +95,7 @@ class _NotificationTabState extends State<NotificationTab> {
       setState(() {
         _notifications = List();
         _isLoading = true;
-        _pageIndex = 1;
+        _pageIndex = 0;
       });
       widget.countNotification();
       _getNotification();
