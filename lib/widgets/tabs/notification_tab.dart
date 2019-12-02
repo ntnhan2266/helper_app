@@ -24,6 +24,7 @@ class _NotificationTabState extends State<NotificationTab> {
   List<app.Notification> _notifications = List();
   int _pageIndex = 0;
   bool _isLoading = true;
+  bool _isLoadMore = false;
   bool _canLoadMore = true;
   ScrollController _scrollController = ScrollController();
 
@@ -36,6 +37,9 @@ class _NotificationTabState extends State<NotificationTab> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         _getNotification();
+        setState(() {
+          _isLoadMore = true;
+        });
       }
     });
   }
@@ -44,29 +48,28 @@ class _NotificationTabState extends State<NotificationTab> {
     if (!_canLoadMore || !mounted) {
       return;
     }
-    setState(() {
-      _isLoading = true;
-    });
     // await Future.delayed(Duration(milliseconds: 1500));
     final res = await NotificationService.getNotification(
       pageIndex: _pageIndex,
-      pageSize: 12,
+      pageSize: 10,
     );
     if (res['isValid'] && mounted) {
       setState(() {
         _notifications..addAll(res['data']);
         _pageIndex++;
         _isLoading = false;
+        _isLoadMore = false;
       });
     } else if (mounted) {
       setState(() {
         _isLoading = false;
+        _isLoadMore = false;
       });
     }
   }
 
   Widget _getLoading() {
-    return _isLoading
+    return _isLoadMore
         ? Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

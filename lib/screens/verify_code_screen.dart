@@ -151,9 +151,10 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
           errorMessage =
               AppLocalizations.of(context).tr('something_went_wrong');
         });
-      } finally {
-        Navigator.pop(context);
       }
+      //   finally {
+      //     Navigator.pop(context);
+      //   }
     }
   }
 

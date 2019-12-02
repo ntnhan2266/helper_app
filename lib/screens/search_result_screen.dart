@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pk_skeleton/pk_skeleton.dart';
 
-import '../models/maid.dart';
 import '../services/maid.dart';
 import '../widgets/components/helper_list_item.dart';
 

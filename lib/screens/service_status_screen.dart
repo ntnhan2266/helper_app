@@ -8,7 +8,6 @@ import '../models/service_details.dart';
 import '../services/booking.dart';
 import '../widgets/service_detail_info.dart';
 import '../widgets/booking_status.dart';
-import '../widgets/dialogs/cancel_booking_dialog.dart';
 import '../widgets/dialogs/report_helper_dialog.dart';
 import '../utils/constants.dart';
 import '../utils/booking.dart';
