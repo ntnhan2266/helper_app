@@ -214,7 +214,7 @@ class _HomeTabState extends State<HomeTab> {
       body: ListView(
         children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height * 0.38,
+            height: 260,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/images/home_welcome.jpg"),
