@@ -15,6 +15,7 @@ class UserMaid {
   String avatar;
   DateTime createdAt;
   double rating;
+  int numberOfRatting;
 
   UserMaid({
     this.intro,
@@ -33,6 +34,7 @@ class UserMaid {
     this.avatar,
     this.createdAt,
     this.rating = 0,
+    this.numberOfRatting = 0,
   });
 
   factory UserMaid.fromJson(Map<String, dynamic> json) {
@@ -52,7 +54,8 @@ class UserMaid {
       address: json['user']['address'],
       createdAt: DateTime.parse(json['createdAt']),
       avatar: json['user']['avatar'],
-      rating: json['rating'] != null ? json['rating'] : 0,
+      rating: json['ratting'] ?? 0,
+      numberOfRatting: json['numberOfRatting'] ?? 0,
     );
   }
 
@@ -75,7 +78,8 @@ class UserMaid {
       address: json['user']['address'],
       createdAt: DateTime.parse(json['createdAt']),
       avatar: json['user']['avatar'],
-      rating: json['rating'] != null ? json['rating'] : 0,
+      rating: json['ratting'] ?? 0,
+      numberOfRatting: json['numberOfRatting'] ?? 0,
     );
   }
 }

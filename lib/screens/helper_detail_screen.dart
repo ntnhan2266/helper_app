@@ -119,8 +119,8 @@ class HelperDetailScreenData extends StatelessWidget {
               FormInput(
                 label: AppLocalizations.of(context).tr("work"),
                 initialValue: userMaid.jobTypes
-                    .map((x) =>
-                        AppLocalizations.of(context).tr(Utils.intToJob(context, x)))
+                    .map((x) => AppLocalizations.of(context)
+                        .tr(Utils.intToJob(context, x)))
                     .join(", "),
                 enabled: false,
                 hasNext: true,
@@ -180,6 +180,7 @@ class HelperDetailScreenData extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 UserMaid userMaid = snapshot.data;
+                print(userMaid);
                 return Container(
                   color: Colors.blueGrey[50],
                   height: double.infinity,
@@ -279,8 +280,9 @@ class HelperDetailScreenData extends StatelessWidget {
                                         padding: EdgeInsets.only(
                                             bottom: 10, top: 10),
                                         child: Text(AppLocalizations.of(context)
-                                            .tr('ratting_comment',
-                                                args: ['30'])),
+                                            .tr('ratting_comment', args: [
+                                          userMaid.numberOfRatting.toString()
+                                        ])),
                                       ),
                                     ],
                                   ),

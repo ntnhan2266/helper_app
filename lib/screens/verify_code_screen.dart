@@ -274,7 +274,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                                 Duration(milliseconds: 200),
                             pinBoxWidth: MediaQuery.of(context).size.width -
                                 2 * ScreenUtil.instance.setWidth(MAIN_MARGIN) -
-                                MAIN_MARGIN,
+                                10,
                           ),
                           SizedBox(height: ScreenUtil.instance.setHeight(10.0)),
                           Visibility(
