@@ -375,8 +375,8 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
                                                 .tr('experience'),
                                           ),
                                           TextFormField(
-                                            maxLines: 4,
-                                            minLines: 4,
+                                            maxLines: 10,
+                                            minLines: 1,
                                             validator: (String value) {
                                               if (value.isEmpty) {
                                                 return AppLocalizations.of(

@@ -101,6 +101,7 @@ class HelperDetailScreenData extends StatelessWidget {
                 initialValue: userMaid.exp,
                 enabled: false,
                 hasNext: true,
+                inputType: TextInputType.multiline,
               ),
               FormInput(
                 label: AppLocalizations.of(context).tr("literacy"),
