@@ -94,15 +94,27 @@ class _HomeState extends State<HomeScreen> {
                 ),
                 title: Text(message['notification']['title']),
                 subtitle: Text(
-                  AppLocalizations.of(context).tr(
-                    message['data']['message'],
-                    args: [
-                      message['data']['name'],
-                      Localizations.localeOf(context) == Locale('vi', 'VN')
-                          ? message['data']['category_vi']
-                          : message['data']['category_en'],
-                    ],
-                  ),
+                  message['data'] == null
+                      ? AppLocalizations.of(context).tr(
+                          message['message'],
+                          args: [
+                            message['name'],
+                            Localizations.localeOf(context) ==
+                                    Locale('vi', 'VN')
+                                ? message['category_vi']
+                                : message['category_en'],
+                          ],
+                        )
+                      : AppLocalizations.of(context).tr(
+                          message['data']['message'],
+                          args: [
+                            message['data']['name'],
+                            Localizations.localeOf(context) ==
+                                    Locale('vi', 'VN')
+                                ? message['data']['category_vi']
+                                : message['data']['category_en'],
+                          ],
+                        ),
                 ),
                 trailing: IconButton(
                     icon: Icon(Icons.close),
