@@ -105,12 +105,12 @@ class _UserProfileTabState extends State<UserProfileTab> {
             ),
           ),
           _menuSpace(),
-          _menuItem(
-            title: 'history',
-            leadingIcon: Icons.history,
-            leadingIconColor: Theme.of(context).primaryColor,
-            trailingIcon: Icons.chevron_right,
-          ),
+          // _menuItem(
+          //   title: 'history',
+          //   leadingIcon: Icons.history,
+          //   leadingIconColor: Theme.of(context).primaryColor,
+          //   trailingIcon: Icons.chevron_right,
+          // ),
           _menuItem(
             title: 'location',
             leadingIcon: Icons.room,
@@ -135,19 +135,19 @@ class _UserProfileTabState extends State<UserProfileTab> {
               Navigator.of(context).pushNamed(helperManagementRoute);
             },
           ),
-          _menuSpace(),
-          _menuItem(
-            title: 'review',
-            leadingIcon: Icons.rate_review,
-            leadingIconColor: Colors.green,
-            trailingIcon: Icons.chevron_right,
-          ),
-          _menuItem(
-            title: 'invite_friend',
-            leadingIcon: Icons.people,
-            leadingIconColor: Colors.green,
-            trailingIcon: Icons.chevron_right,
-          ),
+          // _menuSpace(),
+          // _menuItem(
+          //   title: 'review',
+          //   leadingIcon: Icons.rate_review,
+          //   leadingIconColor: Colors.green,
+          //   trailingIcon: Icons.chevron_right,
+          // ),
+          // _menuItem(
+          //   title: 'invite_friend',
+          //   leadingIcon: Icons.people,
+          //   leadingIconColor: Colors.green,
+          //   trailingIcon: Icons.chevron_right,
+          // ),
           _menuSpace(),
           _menuItem(
             title: 'settings',
@@ -158,9 +158,17 @@ class _UserProfileTabState extends State<UserProfileTab> {
             },
           ),
           _menuItem(
+            title: 'invite_friend',
+            leadingIcon: Icons.people,
+            trailingIcon: Icons.chevron_right,
+          ),
+          _menuItem(
             title: 'about_app',
             leadingIcon: Icons.info,
             trailingIcon: Icons.chevron_right,
+            onTap: () {
+              Navigator.of(context).pushNamed(aboutRoute);
+            },
           ),
           _menuSpace(),
           InkWell(
