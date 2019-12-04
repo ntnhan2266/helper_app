@@ -12,7 +12,7 @@ class FormLabel extends StatelessWidget {
       label.toUpperCase(),
       style: TextStyle(
         fontSize: ScreenUtil.instance.setSp(13),
-        color: Colors.black,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }
