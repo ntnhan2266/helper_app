@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../services/auth.dart';
 import '../../models/user.dart';
@@ -158,10 +159,12 @@ class _UserProfileTabState extends State<UserProfileTab> {
             },
           ),
           _menuItem(
-            title: 'invite_friend',
-            leadingIcon: Icons.people,
-            trailingIcon: Icons.chevron_right,
-          ),
+              title: 'invite_friend',
+              leadingIcon: Icons.people,
+              trailingIcon: Icons.chevron_right,
+              onTap: () {
+                _showInviteFriendsDialog();
+              }),
           _menuItem(
             title: 'about_app',
             leadingIcon: Icons.info,
@@ -194,6 +197,79 @@ class _UserProfileTabState extends State<UserProfileTab> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showInviteFriendsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(
+            AppLocalizations.of(context).tr('invite_friend'),
+            style: TextStyle(fontSize: 16),
+          ),
+          children: <Widget>[
+            FlatButton(
+              padding: EdgeInsets.symmetric(vertical: 15.0),
+              child: Text(
+                AppLocalizations.of(context).tr('use_qr_code'),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                _showQRCodeDialog();
+              },
+            ),
+            FlatButton(
+              padding: EdgeInsets.symmetric(vertical: 15.0),
+              child: Text(
+                AppLocalizations.of(context).tr('use_mail'),
+              ),
+              onPressed: () {},
+            ),
+            FlatButton(
+              padding: EdgeInsets.symmetric(vertical: 15.0),
+              child: Text(
+                AppLocalizations.of(context).tr('use_message'),
+              ),
+              onPressed: () {},
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showQRCodeDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              width: MediaQuery.of(context).size.width * 0.5,
+              alignment: Alignment.center,
+              child: QrImage(
+                data: "Smart Rabbit",
+                size: MediaQuery.of(context).size.width * 0.5,
+                padding: EdgeInsets.zero,
+                // embeddedImage: AssetImage('assets/images/logo_x5.png'),
+              ),
+            ),
+            InkWell(
+              child: Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.center,
+                child: Text(AppLocalizations.of(context).tr('close')),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
