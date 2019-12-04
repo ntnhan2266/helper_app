@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:smart_rabbit/services/setting.dart';
 
+import '../../utils/constants.dart';
+import '../../widgets/form/form_input.dart';
 import '../../services/auth.dart';
 import '../../models/user.dart';
 import '../../utils/route_names.dart';
@@ -15,6 +18,9 @@ class UserProfileTab extends StatefulWidget {
 }
 
 class _UserProfileTabState extends State<UserProfileTab> {
+  final _emailForm = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+
   void _clearToken(String id) {
     Firestore.instance
         .collection('users')
@@ -225,14 +231,10 @@ class _UserProfileTabState extends State<UserProfileTab> {
               child: Text(
                 AppLocalizations.of(context).tr('use_mail'),
               ),
-              onPressed: () {},
-            ),
-            FlatButton(
-              padding: EdgeInsets.symmetric(vertical: 15.0),
-              child: Text(
-                AppLocalizations.of(context).tr('use_message'),
-              ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+                _showMailDialog();
+              },
             ),
           ],
         );
@@ -265,6 +267,74 @@ class _UserProfileTabState extends State<UserProfileTab> {
               ),
               onTap: () {
                 Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showMailDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Form(
+                key: _emailForm,
+                child: FormInput(
+                  controller: _emailController,
+                  label: AppLocalizations.of(context).tr('email'),
+                  hint: AppLocalizations.of(context).tr('email_example'),
+                  inputType: TextInputType.emailAddress,
+                  validator: (String value) {
+                    RegExp regex = new RegExp(EMAIL_PATTERN);
+                    if (value.isEmpty) {
+                      return AppLocalizations.of(context)
+                          .tr('please_enter_email');
+                    } else if (!regex.hasMatch(value)) {
+                      return AppLocalizations.of(context).tr('invalid_email');
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            InkWell(
+              child: Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.center,
+                child: Text(AppLocalizations.of(context).tr('cancel')),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            InkWell(
+              child: Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.center,
+                child: Text(
+                  AppLocalizations.of(context).tr('ok'),
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+              ),
+              onTap: () async {
+                if (_emailForm.currentState.validate()) {
+                  print(_emailController.text);
+                  final result =
+                      await SettingService.sendEmail(_emailController.text);
+                  if (result['success']) {
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.pop(context);
+                  }
+                }
               },
             ),
           ],

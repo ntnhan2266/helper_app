@@ -14,6 +14,7 @@ class FormInput extends StatelessWidget {
   final TextInputType inputType;
   final dynamic validator;
   final bool enabled;
+  final TextEditingController controller;
 
   FormInput({
     @required this.label,
@@ -25,6 +26,7 @@ class FormInput extends StatelessWidget {
     this.validator,
     this.inputType = TextInputType.text,
     this.enabled = true,
+    this.controller,
   });
 
   @override
@@ -43,6 +45,7 @@ class FormInput extends StatelessWidget {
       children: <Widget>[
         FormLabel(label),
         TextFormField(
+          controller: controller,
           validator: validator,
           initialValue: initialValue,
           keyboardType: inputType,
