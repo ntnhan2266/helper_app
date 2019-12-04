@@ -330,8 +330,10 @@ class _UserProfileTabState extends State<UserProfileTab> {
                   final result =
                       await SettingService.sendEmail(_emailController.text);
                   if (result['success']) {
+                    _emailController.text = "";
                     Navigator.pop(context);
                   } else {
+                    _emailController.text = "";
                     Navigator.pop(context);
                   }
                 }
