@@ -242,7 +242,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                                 height: 1.4)),
                       ),
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           PinCodeTextField(
                             autofocus: false,
@@ -274,7 +274,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                                 Duration(milliseconds: 200),
                             pinBoxWidth: MediaQuery.of(context).size.width -
                                 2 * ScreenUtil.instance.setWidth(MAIN_MARGIN) -
-                                10,
+                                2 * MAIN_MARGIN,
                           ),
                           SizedBox(height: ScreenUtil.instance.setHeight(10.0)),
                           Visibility(

@@ -121,10 +121,12 @@ class _ServiceHistoryListState extends State<ServiceHistoryList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 5.0),
-      color: Colors.blueGrey[50],
-      child: isLoading ? PKCardPageSkeleton() : _buildHistoryData(),
-    );
+    return isLoading
+        ? PKCardPageSkeleton()
+        : Container(
+            padding: EdgeInsets.symmetric(vertical: 5.0),
+            color: Colors.blueGrey[50],
+            child: _buildHistoryData(),
+          );
   }
 }
