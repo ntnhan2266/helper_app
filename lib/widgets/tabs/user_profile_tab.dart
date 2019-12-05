@@ -70,6 +70,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<User>(context, listen: false);
     return Container(
       color: Colors.blueGrey[50],
       child: ListView(
@@ -91,8 +92,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
                     ),
                   ),
                 ),
-                leading: Consumer<User>(
-                    builder: (ctx, user, _) => UserAvatar(user.avatar)),
+                leading:  UserAvatar(userProvider.avatar),
                 trailing: FittedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -125,7 +125,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
             trailingIcon: Icons.chevron_right,
           ),
           _menuItem(
-            title: 'register_to_helperer',
+            title: userProvider.isHost ? 'update_host_info' : 'register_to_helperer',
             leadingIcon: Icons.receipt,
             leadingIconColor: Theme.of(context).primaryColor,
             trailingIcon: Icons.chevron_right,
@@ -133,7 +133,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
               Navigator.of(context).pushNamed(helperRegisterRoute);
             },
           ),
-          _menuItem(
+          userProvider.isHost ? _menuItem(
             title: 'helper_management',
             leadingIcon: Icons.library_books,
             leadingIconColor: Theme.of(context).primaryColor,
@@ -141,7 +141,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
             onTap: () {
               Navigator.of(context).pushNamed(helperManagementRoute);
             },
-          ),
+          ) : Container(),
           // _menuSpace(),
           // _menuItem(
           //   title: 'review',
@@ -182,7 +182,6 @@ class _UserProfileTabState extends State<UserProfileTab> {
           _menuSpace(),
           InkWell(
             onTap: () {
-              final userProvider = Provider.of<User>(context, listen: false);
               _clearToken(userProvider.id);
               userProvider.clear();
               AuthService.logout(context);

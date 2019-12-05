@@ -59,8 +59,12 @@ class _SplashScreenState extends State<SplashScreen> {
         UserService.getUser().then((res) {
           if (res['isValid']) {
             final user = res['user'];
+            final isHost = res['isHost'];
             final userProvider = Provider.of<User>(context, listen: false);
             userProvider.fromJson(user);
+            if (isHost) {
+              userProvider.changeIsHost(isHost);
+            }
             Navigator.of(context).pushReplacementNamed(homeScreenRoute);
           } else {
             AuthService.logout(context);
