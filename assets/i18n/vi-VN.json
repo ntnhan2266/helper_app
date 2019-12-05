@@ -328,5 +328,7 @@
     "use_mail": "Sử dụng mail",
     "sort": "Sắp xếp",
     "ratting": "Đánh giá",
-    "distance": "Khoảng cách"
+    "distance": "Khoảng cách",
+    "distance_display": "Cách xa {}",
+    "no_location": "Không có vị trí"
 }

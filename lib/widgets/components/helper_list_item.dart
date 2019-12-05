@@ -13,8 +13,20 @@ class HelperListItem extends StatefulWidget {
 }
 
 class _HelperListItemState extends State<HelperListItem> {
+  String _getDistance(distance) {
+    var temp = distance.toDouble();
+    if (temp < 1000) {
+      return temp.toStringAsFixed(0) + "m";
+    } else if (temp < 50000) {
+      return (temp / 1000).toStringAsFixed(1) + "km";
+    } else {
+      return "-";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(widget.maid['location']);
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       margin: EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
@@ -47,9 +59,16 @@ class _HelperListItemState extends State<HelperListItem> {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  (widget.maid['salary'].toString() ?? "-") +
+                  (widget.maid['salary'] ?? "-").toString() +
                       " " +
                       AppLocalizations.of(context).tr('vnd_hour'),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  (widget.maid['distance'] != null
+                      ? AppLocalizations.of(context).tr('distance_display',
+                          args: [_getDistance(widget.maid['distance'])])
+                      : AppLocalizations.of(context).tr('no_location')),
                 ),
                 SizedBox(height: 5),
                 RatingBar(

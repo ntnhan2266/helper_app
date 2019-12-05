@@ -327,5 +327,7 @@
     "use_mail": "Use mail",
     "sort": "Sort",
     "ratting": "Ratting",
-    "distance": "Distance"
+    "distance": "Distance",
+    "distance_display": "{} away",
+    "no_location": "No location"
 }
