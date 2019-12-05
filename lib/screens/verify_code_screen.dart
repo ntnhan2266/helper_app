@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../utils/utils.dart';
 import '../utils/constants.dart';
 import '../services/auth.dart';
+import '../services/user.dart';
 import '../utils/route_names.dart';
 import '../models/user.dart';
 
@@ -81,12 +82,17 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
     _processAuthData(context, res);
   }
 
-  void _processAuthData(BuildContext context, res) {
+  void _processAuthData(BuildContext context, data) async {
     final userProvider = Provider.of<User>(context, listen: false);
-    switch (res['responseCode']) {
+    switch (data['responseCode']) {
       case NO_ERROR:
         // Set state
+        final res = await UserService.getUser();
         userProvider.fromJson(res['user']);
+        final isHost = res['isHost'];
+        if (isHost != null && isHost) {
+          userProvider.changeIsHost(isHost);
+        }
         _saveDeviceToken(userProvider.id);
         Navigator.of(context).pushNamedAndRemoveUntil(
             homeScreenRoute, (Route<dynamic> route) => false);
@@ -272,7 +278,8 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                                 ProvidedPinBoxTextAnimation.scalingTransition,
                             pinTextAnimatedSwitcherDuration:
                                 Duration(milliseconds: 200),
-                            pinBoxWidth: MediaQuery.of(context).size.width * 0.8,
+                            pinBoxWidth:
+                                MediaQuery.of(context).size.width * 0.16,
                           ),
                           SizedBox(height: ScreenUtil.instance.setHeight(10.0)),
                           Visibility(

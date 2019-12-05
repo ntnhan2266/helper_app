@@ -26,12 +26,12 @@ class UserService {
       final data = jsonDecode(response.body);
       final user = data['user'];
       if (user != null) {
-        completer.complete({'user': user, 'isValid': true});
+        completer.complete({'user': user, 'isHost': data['isHost'], 'isValid': true});
       } else {
-        completer.complete({'user': null, 'isValid': false});
+        completer.complete({'user': null, 'isHost': false, 'isValid': false});
       }
     } catch (e) {
-      completer.complete({'user': null, 'isValid': false});
+      completer.complete({'user': null, 'isHost': false, 'isValid': false});
     }
 
     return completer.future;

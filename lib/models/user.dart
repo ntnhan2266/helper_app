@@ -4,7 +4,6 @@ import 'package:json_annotation/json_annotation.dart';
 /// An annotation for the code generator to know that this class needs the
 /// JSON serialization logic to be generated.
 @JsonSerializable()
-
 class User with ChangeNotifier {
   String id;
   String uid;
@@ -17,6 +16,7 @@ class User with ChangeNotifier {
   double lat;
   String address;
   String avatar;
+  bool isHost;
 
   User({
     this.id,
@@ -29,7 +29,8 @@ class User with ChangeNotifier {
     this.long,
     this.lat,
     this.address,
-    this.avatar
+    this.avatar,
+    this.isHost = false,
   });
 
   void changeName(String name) {
@@ -69,6 +70,11 @@ class User with ChangeNotifier {
 
   void changeAddress(String address) {
     this.address = address;
+    notifyListeners();
+  }
+
+  void changeIsHost(bool isHost) {
+    this.isHost = isHost;
     notifyListeners();
   }
 
@@ -114,22 +120,24 @@ class User with ChangeNotifier {
     this.long = null;
     this.lat = null;
     this.address = null;
+    this.isHost = false;
     notifyListeners();
   }
 
   User getData(Map<String, dynamic> json) {
     return User(
-      id: json['_id'],
-      uid: json['uid'],
-      name: json['name'],
-      email: json['email'],
-      gender: json['gender'],
-      birthday: json['birthday'] == null ? null : DateTime.parse(json['birthday']).toLocal(),
-      phoneNumber: json['phoneNumber'],
-      long: json['long'],
-      lat: json['lat'],
-      address: json['address'],
-      avatar: json['avatar']
-    );
+        id: json['_id'],
+        uid: json['uid'],
+        name: json['name'],
+        email: json['email'],
+        gender: json['gender'],
+        birthday: json['birthday'] == null
+            ? null
+            : DateTime.parse(json['birthday']).toLocal(),
+        phoneNumber: json['phoneNumber'],
+        long: json['long'],
+        lat: json['lat'],
+        address: json['address'],
+        avatar: json['avatar']);
   }
 }

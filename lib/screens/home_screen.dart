@@ -158,8 +158,12 @@ class _HomeState extends State<HomeScreen> {
     await UserService.getUser().then((res) {
       if (res['isValid']) {
         final user = res['user'];
-        final userProvider = Provider.of<User>(context, listen: true);
+        final isHost = res['isHost'];
+        final userProvider = Provider.of<User>(context, listen: false);
         userProvider.fromJson(user);
+        if (isHost) {
+          userProvider.changeIsHost(isHost);
+        }
       }
     });
   }
