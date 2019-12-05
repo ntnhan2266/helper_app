@@ -12,15 +12,17 @@ class SearchResultScreen extends StatefulWidget {
   final List<int> searchAreas;
   final int minSalary;
   final int maxSalary;
+  final String sort;
 
-  const SearchResultScreen(
-      {Key key,
-      this.search,
-      this.searchServices,
-      this.searchAreas,
-      this.minSalary,
-      this.maxSalary})
-      : super(key: key);
+  const SearchResultScreen({
+    Key key,
+    this.search,
+    this.searchServices,
+    this.searchAreas,
+    this.minSalary,
+    this.maxSalary,
+    this.sort,
+  }) : super(key: key);
 
   @override
   _SearchResultScreenState createState() => _SearchResultScreenState();
@@ -61,6 +63,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       areas: widget.searchAreas,
       minSalary: widget.minSalary,
       maxSalary: widget.maxSalary,
+      sort: widget.sort,
     );
     if (res['isValid'] && mounted) {
       setState(() {

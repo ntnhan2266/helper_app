@@ -325,5 +325,8 @@
     "about_app_student_content": "Bach Khoa University",
     "use_qr_code": "Use QR code",
     "use_mail": "Use mail",
-    "update_host_info": "Update helper info"
+    "update_host_info": "Update helper info",
+    "sort": "Sort",
+    "ratting": "Ratting",
+    "distance": "Distance"
 }

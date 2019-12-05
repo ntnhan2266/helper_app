@@ -53,7 +53,7 @@ class _HelperListItemState extends State<HelperListItem> {
                 ),
                 SizedBox(height: 5),
                 RatingBar(
-                  initialRating: widget.maid['ratting'] ?? 0,
+                  initialRating: (widget.maid['ratting'] ?? 0).toDouble(),
                   allowHalfRating: true,
                   itemCount: 5,
                   itemPadding: EdgeInsets.only(right: 4.0),

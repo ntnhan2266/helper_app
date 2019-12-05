@@ -186,6 +186,7 @@ class MaidService {
     List<int> areas,
     int minSalary,
     int maxSalary,
+    String sort,
   }) async {
     var completer = new Completer<Map<String, dynamic>>();
     try {
@@ -194,7 +195,7 @@ class MaidService {
       var headers = await API.getAuthToken();
       var response = await http.get(
         _searchMaids +
-            '?pageSize=$pageSize&pageIndex=$pageIndex&search=$search&services=$serviceString&areas=$areaString&minSalary=$minSalary&maxSalary=$maxSalary',
+            '?pageSize=$pageSize&pageIndex=$pageIndex&search=$search&services=$serviceString&areas=$areaString&minSalary=$minSalary&maxSalary=$maxSalary&sort=$sort',
         headers: headers,
       );
       if (response.statusCode == 200) {

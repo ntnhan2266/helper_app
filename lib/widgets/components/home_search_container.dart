@@ -17,6 +17,7 @@ const MAX_SALARY = 10000000;
 const STEP_SALARY = 50000;
 enum AreaTypeEnum { all, custom }
 enum ServiceTypeEnum { all, custom }
+enum SortEnum { ratting, distance }
 
 class HomeSearchContainer extends StatefulWidget {
   @override
@@ -30,6 +31,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
   List<int> _searchAreas = List();
   int _minSalary = MIN_SALARY;
   int _maxSalary = MAX_SALARY;
+  SortEnum _sort = SortEnum.ratting;
 
   //temp
   List<String> _tempSearchServices = List();
@@ -98,6 +100,30 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
       alignment: Alignment.center,
       padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
       child: Text(label.toUpperCase()),
+    );
+  }
+
+  Widget _sortRadioGroup(dynamic groupValue, dynamic value, String title) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _sort = value;
+        });
+      },
+      child: Row(
+        children: <Widget>[
+          Radio(
+            groupValue: groupValue,
+            value: value,
+            onChanged: (value) {
+              setState(() {
+                _sort = value;
+              });
+            },
+          ),
+          Text(AppLocalizations.of(context).tr(title)),
+        ],
+      ),
     );
   }
 
@@ -457,6 +483,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
           searchAreas: _searchAreas,
           minSalary: _minSalary,
           maxSalary: _maxSalary,
+          sort: _sort.toString().split('.').last,
         ),
       );
     }
@@ -515,6 +542,18 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
                 children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: Divider(),
+                  ),
+                  _searchLabel(AppLocalizations.of(context).tr('sort')),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _sortRadioGroup(_sort, SortEnum.ratting, "ratting"),
+                      _sortRadioGroup(_sort, SortEnum.distance, "distance"),
+                    ],
+                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 10.0),
                     child: Divider(),

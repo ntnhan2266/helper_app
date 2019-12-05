@@ -165,6 +165,7 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
                       (settings.arguments as SearchResultScreen).minSalary,
                   maxSalary:
                       (settings.arguments as SearchResultScreen).maxSalary,
+                  sort: (settings.arguments as SearchResultScreen).sort,
                 ),
         );
       case aboutRoute:

@@ -256,7 +256,7 @@ class _NotificationTabState extends State<NotificationTab> {
                                             Container(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
-                                                DateFormat('dd/MM/yyyy hh:mm')
+                                                DateFormat('dd/MM/yyyy HH:mm')
                                                     .format(
                                                         notification.createdAt),
                                                 style: TextStyle(
