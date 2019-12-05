@@ -26,7 +26,6 @@ class _HelperListItemState extends State<HelperListItem> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.maid['location']);
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       margin: EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
