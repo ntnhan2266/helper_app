@@ -54,7 +54,7 @@ class UserMaid {
       address: json['user']['address'],
       createdAt: DateTime.parse(json['createdAt']),
       avatar: json['user']['avatar'],
-      rating: json['ratting'] ?? 0,
+      rating: json['ratting'].toDouble() ?? 0.0,
       numberOfRatting: json['numberOfRatting'] ?? 0,
     );
   }
@@ -78,7 +78,7 @@ class UserMaid {
       address: json['user']['address'],
       createdAt: DateTime.parse(json['createdAt']),
       avatar: json['user']['avatar'],
-      rating: json['ratting'] ?? 0,
+      rating: json['ratting'].toDouble() ?? 0.0,
       numberOfRatting: json['numberOfRatting'] ?? 0,
     );
   }
