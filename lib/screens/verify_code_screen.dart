@@ -194,7 +194,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
               height: double.infinity,
               color: Colors.white,
               padding: EdgeInsets.symmetric(
-                horizontal: ScreenUtil.instance.setWidth(MAIN_MARGIN),
+                horizontal: MAIN_MARGIN,
               ),
               child: Form(
                 key: _form,
@@ -272,9 +272,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                                 ProvidedPinBoxTextAnimation.scalingTransition,
                             pinTextAnimatedSwitcherDuration:
                                 Duration(milliseconds: 200),
-                            pinBoxWidth: MediaQuery.of(context).size.width -
-                                2 * ScreenUtil.instance.setWidth(MAIN_MARGIN) -
-                                2 * MAIN_MARGIN,
+                            pinBoxWidth: MediaQuery.of(context).size.width * 0.8,
                           ),
                           SizedBox(height: ScreenUtil.instance.setHeight(10.0)),
                           Visibility(
