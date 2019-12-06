@@ -14,7 +14,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="smart_rabbit"
+        android:label="Smart Rabbit"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyBhoiSRpE1Pd-59y-Svmi36YRAB1SXD10Y"/>
