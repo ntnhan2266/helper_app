@@ -51,7 +51,6 @@ class AuthService {
   static Future<dynamic> login({token, phoneNumber}) async {
     Map<String, String> body = {'token': token};
     var completer = new Completer();
-
     try {
       var response = await http.post(_loginRoute,
           headers: headers, body: jsonEncode(body));

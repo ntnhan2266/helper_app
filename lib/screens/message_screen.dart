@@ -99,6 +99,8 @@ class MessageScreenState extends State<MessageScreen> {
       userName = booking.createdBy.name;
       avatar = booking.createdBy.avatar;
     }
+    print('from: ' + document['from']);
+    print('provider: ' + userProvider.id);
     return ChatMessage(
       isLeftMessage: document['from'] == userProvider.id,
       avatar: avatar,
