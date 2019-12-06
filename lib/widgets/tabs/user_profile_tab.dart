@@ -325,7 +325,6 @@ class _UserProfileTabState extends State<UserProfileTab> {
               ),
               onTap: () async {
                 if (_emailForm.currentState.validate()) {
-                  print(_emailController.text);
                   final result =
                       await SettingService.sendEmail(_emailController.text);
                   if (result['success']) {

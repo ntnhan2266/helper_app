@@ -99,8 +99,6 @@ class MessageScreenState extends State<MessageScreen> {
       userName = userProvider.name;
       avatar = userProvider.avatar;
     }
-    print('from: ' + document['from']);
-    print('provider: ' + userProvider.id);
     return ChatMessage(
       isLeftMessage: document['from'] == userProvider.id,
       avatar: avatar,

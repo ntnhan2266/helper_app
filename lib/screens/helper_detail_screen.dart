@@ -180,7 +180,6 @@ class HelperDetailScreenData extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 UserMaid userMaid = snapshot.data;
-                print(userMaid);
                 return Container(
                   color: Colors.blueGrey[50],
                   height: double.infinity,
