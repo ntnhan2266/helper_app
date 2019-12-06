@@ -96,8 +96,8 @@ class MessageScreenState extends State<MessageScreen> {
     var userName = booking.maid.name;
     var avatar = booking.maid.avatar;
     if (document['from'] == userProvider.id) {
-      userName = booking.createdBy.name;
-      avatar = booking.createdBy.avatar;
+      userName = userProvider.name;
+      avatar = userProvider.avatar;
     }
     print('from: ' + document['from']);
     print('provider: ' + userProvider.id);

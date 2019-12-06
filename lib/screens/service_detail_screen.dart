@@ -10,6 +10,7 @@ import '../services/permission.dart';
 import '../models/service_details.dart';
 import '../utils/route_names.dart';
 import '../utils/constants.dart';
+import '../utils/utils.dart';
 import '../widgets/booking_bottom_bar.dart';
 import '../widgets/service_interval.dart';
 import '../widgets/form/text_form_field_configs.dart';
@@ -68,10 +69,13 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
         print('Can not get permission');
       });
       if (isGrantedPermission) {
+        // Show loading when fetch location
+        Utils.showLoadingDialog(context, lable: 'fetching_location');
         Position position = await Geolocator()
             .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
         lat = position.latitude;
         long = position.longitude;
+        Navigator.pop(context);
       }
       Map<String, dynamic> returnedData =
           await Navigator.push(context, MaterialPageRoute(builder: (context) {

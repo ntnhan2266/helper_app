@@ -59,7 +59,7 @@ class _HomeState extends State<HomeScreen> {
   }
 
   void firebaseCloudMessagingListeners() {
-    if (Platform.isIOS) iOS_Permission();
+    if (Platform.isIOS) iOSPermission();
 
     _firebaseMessaging.getToken().then((token) {
       // print(token);
@@ -136,7 +136,7 @@ class _HomeState extends State<HomeScreen> {
     );
   }
 
-  void iOS_Permission() {
+  void iOSPermission() {
     _firebaseMessaging.requestNotificationPermissions(
         IosNotificationSettings(sound: true, badge: true, alert: true));
     _firebaseMessaging.onIosSettingsRegistered
@@ -189,7 +189,7 @@ class _HomeState extends State<HomeScreen> {
     if (userProvider.id == null) {
       _getUserData();
     }
-    if (categoryListProvider.categories == null) {
+    if (categoryListProvider.categories.length == 0) {
       _getCategoriesData();
     }
   }

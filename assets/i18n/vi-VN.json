@@ -331,5 +331,6 @@
     "ratting": "Đánh giá",
     "distance": "Khoảng cách",
     "distance_display": "Cách xa {}",
-    "no_location": "Không có vị trí"
+    "no_location": "Không có vị trí",
+    "fetching_location": "Đang tải vị trí"
 }

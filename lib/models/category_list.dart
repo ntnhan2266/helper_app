@@ -9,7 +9,7 @@ import './category.dart';
 class CategoryList with ChangeNotifier {
   List<Category> categories;
 
-  CategoryList({this.categories});
+  CategoryList({this.categories = const []});
 
   void getDate(List<Category> categories) {
     this.categories = categories;

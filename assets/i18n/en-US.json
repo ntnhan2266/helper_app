@@ -330,5 +330,6 @@
     "ratting": "Ratting",
     "distance": "Distance",
     "distance_display": "{} away",
-    "no_location": "No location"
+    "no_location": "No location",
+    "fetching_location": "Fetching location"
 }

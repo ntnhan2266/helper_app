@@ -32,26 +32,26 @@ class BookingService {
       body: jsonEncode(booking),
     );
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (data['errorCode'] != null) {
+      final res = jsonDecode(response.body);
+      if (res['errorCode'] != null) {
         completer.complete({'isValid': false, 'data': null});
       } else {
-        final booking = data['booking'];
+        final data = res['booking'];
         var documentReference = Firestore.instance
             .collection('conversations')
-            .document(booking['_id'])
-            .collection(booking['_id'])
+            .document(data['_id'])
+            .collection(data['_id'])
             .document(DateTime.now().millisecondsSinceEpoch.toString());
         Firestore.instance.runTransaction((transaction) async {
           await transaction.set(documentReference, {
-            'from': booking['maid'],
-            'to': booking['createdBy'],
+            'from': booking.maid.id,
+            'to': data['createdBy'],
             'content':
                 'Cảm ơn bạn đã chọn dịch vụ của chúng tôi, dịch vụ của bạn đang được xác nhận',
             'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
           });
         });
-        completer.complete({'isValid': true, 'data': booking});
+        completer.complete({'isValid': true, 'data': data});
       }
     }
     return completer.future;

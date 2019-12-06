@@ -400,7 +400,7 @@ class Utils {
     );
   }
 
-  static void showLoadingDialog(BuildContext context) {
+  static void showLoadingDialog(BuildContext context, {String lable = 'loading'}) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -413,7 +413,7 @@ class Utils {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ColorLoader(),
-                Text(AppLocalizations.of(context).tr('loading')),
+                Text(AppLocalizations.of(context).tr(lable)),
               ],
             ),
           ),
