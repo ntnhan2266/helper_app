@@ -328,5 +328,7 @@
     "update_host_info": "Update helper info",
     "sort": "Sort",
     "ratting": "Ratting",
-    "distance": "Distance"
+    "distance": "Distance",
+    "distance_display": "{} away",
+    "no_location": "No location"
 }

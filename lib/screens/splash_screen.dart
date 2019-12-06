@@ -19,7 +19,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  
   @override
   void initState() {
     super.initState();
@@ -34,13 +33,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _getCategories() {
     // Load categories into provider
-        CategoryService.getAvailableCategories().then((res) {
-          if (res['isValid']) {
-            final categories = res['categories'];
-            final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
-            categoryListProvider.getDate(categories);
-          }
-        });
+    CategoryService.getAvailableCategories().then((res) {
+      if (res['isValid']) {
+        final categories = res['categories'];
+        final categoryListProvider =
+            Provider.of<CategoryList>(context, listen: false);
+        categoryListProvider.getDate(categories);
+      }
+    });
   }
 
   void navigationPage() async {
@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Else navigatate to sign up/sign in page
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final isFirstLogin = prefs.getBool(IS_FIRST_LOGIN) ?? true;
-      _getCategories();
+    _getCategories();
     if (isFirstLogin) {
       Navigator.of(context).pushReplacementNamed(introScreenRoute);
     } else {
@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
             final isHost = res['isHost'];
             final userProvider = Provider.of<User>(context, listen: false);
             userProvider.fromJson(user);
-            if (isHost) {
+            if (isHost ?? false) {
               userProvider.changeIsHost(isHost);
             }
             Navigator.of(context).pushReplacementNamed(homeScreenRoute);
@@ -73,9 +73,9 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         Navigator.of(context).pushReplacementNamed(authScreenRoute);
       }
-    } 
+    }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     // Responsive
@@ -89,34 +89,31 @@ class _SplashScreenState extends State<SplashScreen> {
 
     var data = EasyLocalizationProvider.of(context).data;
     return EasyLocalizationProvider(
-      data: data, 
-      child: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            color: Colors.white 
-          ),
+        data: data,
+        child: Scaffold(
+            body: Container(
+          decoration: BoxDecoration(color: Colors.white),
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  'assets/images/logo_x5.png',
-                  fit: BoxFit.fill,
-                  height: ScreenUtil.instance.setWidth(90.0),
-                  width: ScreenUtil.instance.setWidth(90.0),
-                ),
-                SizedBox(height: ScreenUtil.instance.setHeight(5.0),),
-                Text(APP_NAME, 
-                  style: Theme.of(context).textTheme.title.copyWith(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                'assets/images/logo_x5.png',
+                fit: BoxFit.fill,
+                height: ScreenUtil.instance.setWidth(90.0),
+                width: ScreenUtil.instance.setWidth(90.0),
+              ),
+              SizedBox(
+                height: ScreenUtil.instance.setHeight(5.0),
+              ),
+              Text(
+                APP_NAME,
+                style: Theme.of(context).textTheme.title.copyWith(
                     fontSize: ScreenUtil.instance.setSp(28),
-                    fontFamily: 'Pacifico-Regular'
-                  ),
-                )
-              ],
-            )
-          ),
-        )
-      )
-    );
+                    fontFamily: 'Pacifico-Regular'),
+              )
+            ],
+          )),
+        )));
   }
 }
