@@ -332,5 +332,7 @@
     "distance": "Khoảng cách",
     "distance_display": "Cách xa {}",
     "no_location": "Không có vị trí",
-    "fetching_location": "Đang tải vị trí"
+    "fetching_location": "Đang tải vị trí",
+    "search_by_ratting": "Tìm kiếm\ntheo ratting",
+    "search_by_distance": "Tìm kiếm\ntheo khoảng cách"
 }

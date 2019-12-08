@@ -331,5 +331,7 @@
     "distance": "Distance",
     "distance_display": "{} away",
     "no_location": "No location",
-    "fetching_location": "Fetching location"
+    "fetching_location": "Fetching location",
+    "search_by_ratting": "Search\nby ratting",
+    "search_by_distance": "Search\nby distance"
 }

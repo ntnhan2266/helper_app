@@ -17,7 +17,6 @@ const MAX_SALARY = 10000000;
 const STEP_SALARY = 50000;
 enum AreaTypeEnum { all, custom }
 enum ServiceTypeEnum { all, custom }
-enum SortEnum { ratting, distance }
 
 class HomeSearchContainer extends StatefulWidget {
   @override
@@ -31,7 +30,6 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
   List<int> _searchAreas = List();
   int _minSalary = MIN_SALARY;
   int _maxSalary = MAX_SALARY;
-  SortEnum _sort = SortEnum.ratting;
 
   //temp
   List<String> _tempSearchServices = List();
@@ -100,30 +98,6 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
       alignment: Alignment.center,
       padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
       child: Text(label.toUpperCase()),
-    );
-  }
-
-  Widget _sortRadioGroup(dynamic groupValue, dynamic value, String title) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _sort = value;
-        });
-      },
-      child: Row(
-        children: <Widget>[
-          Radio(
-            groupValue: groupValue,
-            value: value,
-            onChanged: (value) {
-              setState(() {
-                _sort = value;
-              });
-            },
-          ),
-          Text(AppLocalizations.of(context).tr(title)),
-        ],
-      ),
     );
   }
 
@@ -468,7 +442,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
     );
   }
 
-  void _onSearch() {
+  void _onSearch(String sort) {
     if (_serviceType == ServiceTypeEnum.custom && _searchServices.isEmpty) {
       Utils.showErrorDialog(context, "select_service_required");
     } else if (_areaType == AreaTypeEnum.custom && _searchAreas.isEmpty) {
@@ -483,7 +457,7 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
           searchAreas: _searchAreas,
           minSalary: _minSalary,
           maxSalary: _maxSalary,
-          sort: _sort.toString().split('.').last,
+          sort: sort,
         ),
       );
     }
@@ -528,32 +502,51 @@ class _HomeSearchContainerState extends State<HomeSearchContainer> {
               ),
             ),
             _inputSearch(),
-            RaisedButton(
-              color: Theme.of(context).primaryColor,
-              textTheme: ButtonTextTheme.primary,
-              child: Text("Search"),
-              onPressed: () {
-                FocusScope.of(context).requestFocus(new FocusNode());
-                _onSearch();
-              },
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  color: Theme.of(context).primaryColor,
+                  textTheme: ButtonTextTheme.primary,
+                  child: Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    alignment: Alignment.center,
+                    child: Text(
+                      AppLocalizations.of(context).tr('search_by_ratting'),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  onPressed: () {
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                    _onSearch("ratting");
+                  },
+                ),
+                SizedBox(width: 10),
+                RaisedButton(
+                  textTheme: ButtonTextTheme.primary,
+                  child: Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    alignment: Alignment.center,
+                    child: Text(
+                      AppLocalizations.of(context).tr('search_by_distance'),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  onPressed: () {
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                    _onSearch("distance");
+                  },
+                ),
+              ],
             ),
             Expanded(
               child: ListView(
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: Divider(),
-                  ),
-                  _searchLabel(AppLocalizations.of(context).tr('sort')),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      _sortRadioGroup(_sort, SortEnum.ratting, "ratting"),
-                      _sortRadioGroup(_sort, SortEnum.distance, "distance"),
-                    ],
-                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 10.0),
                     child: Divider(),
