@@ -1,7 +1,7 @@
 class APIConfig {
   // -- Production
-  static const baseURL = 'http://ec2-13-229-209-71.ap-southeast-1.compute.amazonaws.com/api/';
-  static const hostURL = 'http://ec2-13-229-209-71.ap-southeast-1.compute.amazonaws.com';
+  static const baseURL = 'http://ec2-18-140-5-166.ap-southeast-1.compute.amazonaws.com/api/';
+  static const hostURL = 'http://ec2-18-140-5-166.ap-southeast-1.compute.amazonaws.com';
   // -- IOS Dev
   // static const baseURL = 'http://localhost:4000/api';
   // static const hostURL = 'http://localhost:4000';
