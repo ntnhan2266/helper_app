@@ -133,7 +133,12 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
       case serviceDetailRoute:
         return _buildRoute(settings, ServiceDetailScreen());
       case chooseMaidRoute:
-        return _buildRoute(settings, ChooseMaidScreen());
+        return _buildRoute(
+          settings,
+          settings.arguments == null
+              ? ChooseMaidScreen()
+              : ChooseMaidScreen(data: settings.arguments),
+        );
       case verifyBookingRoute:
         return _buildRoute(settings, VerifyBookingScreen());
       case userDetailRoute:

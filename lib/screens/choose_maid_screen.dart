@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pk_skeleton/pk_skeleton.dart';
 
 import '../utils/utils.dart';
 import '../widgets/booking_step_title.dart';
@@ -13,34 +14,65 @@ import '../services/maid.dart';
 import '../utils/route_names.dart';
 
 class ChooseMaidScreen extends StatefulWidget {
+  final ServiceDetails data;
+
+  const ChooseMaidScreen({Key key, this.data}) : super(key: key);
+
   @override
   _ChooseMaidScreenState createState() => _ChooseMaidScreenState();
 }
 
 class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
-  List<dynamic> maids = [];
-  int total = 0;
-  bool loading = true;
   UserMaid maid;
+
+  List<dynamic> _maids = List();
+  int _pageIndex = 0;
+  bool _isLoading = true;
+  bool _canLoadMore = true;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    getMaids();
+    _searchHelpers();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _searchHelpers();
+      }
+    });
   }
 
-  void getMaids() async {
-    final res = await MaidService.getMaidList();
-    if (!res['hasError']) {
-      final maids = res['maids'];
-      final total = res['total'];
+  void _searchHelpers() async {
+    if (!_canLoadMore || !mounted) {
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+    });
+
+    final res = await MaidService.searchMaids(
+      pageIndex: _pageIndex,
+      services: [widget.data.category],
+      search: "",
+      areas: [],
+      minSalary: 0,
+      maxSalary: 0,
+      sort: "ratting",
+      lat: widget.data.lat,
+      long: widget.data.long,
+    );
+    if (res['isValid'] && mounted) {
       setState(() {
-        this.maids = maids;
-        this.total = total;
-        loading = false;
+        _maids.addAll(res['data']);
+        _pageIndex++;
+        _isLoading = false;
       });
     } else {
-      loading = false;
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -52,14 +84,14 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
 
   Widget _buildMaidList() {
     return MaidList(
-      maids: maids,
-      total: total,
+      maids: _maids,
+      total: _maids.length,
       selectedID: maid != null ? maid.id : null,
       handleTap: _handleTap,
+      scrollController: _scrollController,
     );
   }
 
-  // ServiceDetails _data = ServiceDetails();
   void _onSubmit(ServiceDetails data) {
     if (maid == null) {
       showDialog(
@@ -91,11 +123,18 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
       final interval = _data.interval;
       int days = Utils.calculateIntervalDays(startDate, endDate, interval);
       price = maid != null
-          ? (_data.endTime.difference(_data.startTime).inMinutes / 60 * maid.salary * days).round()
+          ? (_data.endTime.difference(_data.startTime).inMinutes /
+                  60 *
+                  maid.salary *
+                  days)
+              .round()
           : 0;
     } else {
       price = maid != null
-          ? (_data.endTime.difference(_data.startTime).inMinutes / 60 * maid.salary).round()
+          ? (_data.endTime.difference(_data.startTime).inMinutes /
+                  60 *
+                  maid.salary)
+              .round()
           : 0;
     }
 
@@ -130,8 +169,8 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
             SizedBox(
               height: 10,
             ),
-            loading
-                ? CircularProgressIndicator()
+            _isLoading
+                ? PKCardPageSkeleton()
                 : Expanded(
                     child: _buildMaidList(),
                   ),

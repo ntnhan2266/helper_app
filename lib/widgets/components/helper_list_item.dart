@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_rabbit/configs/api.dart';
 
 class HelperListItem extends StatefulWidget {
@@ -26,6 +27,7 @@ class _HelperListItemState extends State<HelperListItem> {
 
   @override
   Widget build(BuildContext context) {
+    final numericFormatter = new NumberFormat("#,###", "en_US");
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       margin: EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
@@ -58,7 +60,9 @@ class _HelperListItemState extends State<HelperListItem> {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  (widget.maid['salary'] ?? "-").toString() +
+                  (widget.maid['salary'] == null
+                          ? "-"
+                          : numericFormatter.format(widget.maid['salary'])) +
                       " " +
                       AppLocalizations.of(context).tr('vnd_hour'),
                 ),

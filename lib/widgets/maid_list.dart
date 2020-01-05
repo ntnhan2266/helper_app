@@ -9,42 +9,38 @@ class MaidList extends StatelessWidget {
   final int total;
   final String selectedID;
   final Function handleTap;
+  final ScrollController scrollController;
 
-  MaidList({this.maids, this.total, this.selectedID, this.handleTap});
+  MaidList({
+    this.maids,
+    this.total,
+    this.selectedID,
+    this.handleTap,
+    @required this.scrollController,
+  });
 
   @override
   Widget build(BuildContext context) {
     return maids.length > 0
         ? ListView.builder(
+            controller: scrollController,
             itemBuilder: (BuildContext context, int index) {
-              final user = maids[index]['user'];
+              final maid = maids[index];
               return MaidItem(
                   maid: UserMaid(
-                    address: user['address'],
-                    avatar: user['avatar'],
-                    birthday: DateTime.parse(user['birthday']),
-                    createdAt: DateTime.parse(maids[index]['createdAt']),
-                    email: user['email'],
-                    exp: maids[index]['exp'],
-                    gender: user['gender'],
-                    id: maids[index]['_id'],
-                    intro: maids[index]['intro'],
-                    jobTypes: maids[index]['jobTypes'].cast<String>(),
-                    literacyType: maids[index]['literacyType'],
-                    name: user['name'],
-                    phoneNumber: user['phoneNumber'],
-                    salary: maids[index]['salary'],
-                    supportAreas: maids[index]['supportAreas'].cast<int>(),
+                    id: maid['_id'],
+                    name: maid['name'],
+                    salary: maid['salary'],
+                    rating: maid['ratting'].toDouble(),
                   ),
-                  isSelected: selectedID == maids[index]['_id'],
+                  distance: maid['distance'] == null ? null : maid['distance'].toDouble(),
+                  isSelected: selectedID == maid['_id'],
                   handleTap: handleTap);
             },
             itemCount: maids.length,
           )
         : Center(
-            child: Text(
-              AppLocalizations.of(context).tr('no_maids')
-            ),
+            child: Text(AppLocalizations.of(context).tr('no_maids')),
           );
   }
 }

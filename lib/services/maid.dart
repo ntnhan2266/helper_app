@@ -187,15 +187,17 @@ class MaidService {
     int minSalary,
     int maxSalary,
     String sort,
+    double lat,
+    double long,
   }) async {
     var completer = new Completer<Map<String, dynamic>>();
     try {
-      var serviceString = services.join(",");
-      var areaString = areas.join(",");
+      var serviceString = services != null ? services.join(",") : "";
+      var areaString = areas != null ? areas.join(",") : "";
       var headers = await API.getAuthToken();
       var response = await http.get(
         _searchMaids +
-            '?pageSize=$pageSize&pageIndex=$pageIndex&search=$search&services=$serviceString&areas=$areaString&minSalary=$minSalary&maxSalary=$maxSalary&sort=$sort',
+            '?pageSize=$pageSize&pageIndex=$pageIndex&search=$search&services=$serviceString&areas=$areaString&minSalary=$minSalary&maxSalary=$maxSalary&sort=$sort&lat=$lat&long=$long',
         headers: headers,
       );
       if (response.statusCode == 200) {

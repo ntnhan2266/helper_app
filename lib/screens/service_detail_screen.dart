@@ -3,7 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
+import '../models/user.dart';
 import '../models/category.dart';
 import '../screens/choose_address_screen.dart';
 import '../services/permission.dart';
@@ -92,6 +94,17 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  void _getDefaultLocation(User user) {
+    if (user.address != null && user.lat != null && user.long != null) {
+      _data.address = user.address;
+      _data.lat = user.lat;
+      _data.long = user.long;
+      _addressController.text = user.address;
+    } else {
+      Utils.showErrorDialog(context, "no_default_location");
     }
   }
 
@@ -368,6 +381,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     final Category serviceCategory = args['serviceCategory'];
     _data.category = serviceCategory.id;
     var data = EasyLocalizationProvider.of(context).data;
+    final userProvider = Provider.of<User>(context, listen: false);
 
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
@@ -384,7 +398,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            Localizations.localeOf(context).languageCode == "en" ? serviceCategory.nameEn : serviceCategory.nameVi,
+            Localizations.localeOf(context).languageCode == "en"
+                ? serviceCategory.nameEn
+                : serviceCategory.nameVi,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
           ),
           centerTitle: true,
@@ -406,12 +422,13 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                   serviceCategory == null
                       ? Container()
                       : CircleAvatar(
-                              backgroundImage: serviceCategory.icon != null
-                                  ? NetworkImage(APIConfig.hostURL + serviceCategory.icon)
-                                  : AssetImage('assets/images/category.png'),
-                              backgroundColor: Colors.transparent,
-                              radius:  MediaQuery.of(context).size.width / 8,
-                            ),
+                          backgroundImage: serviceCategory.icon != null
+                              ? NetworkImage(
+                                  APIConfig.hostURL + serviceCategory.icon)
+                              : AssetImage('assets/images/category.png'),
+                          backgroundColor: Colors.transparent,
+                          radius: MediaQuery.of(context).size.width / 8,
+                        ),
                   BookingStepTitle(
                     currentStep: 0,
                   ),
@@ -446,62 +463,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         SizedBox(
                           height: ScreenUtil.instance.setHeight(LABEL_MARGIN),
                         ),
-                        // -- Common
-                        _buildLabel(
-                          Icons.location_on,
-                          AppLocalizations.of(context).tr('work_location'),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _getCurrentLocation();
-                          },
-                          child: TextFormField(
-                            controller: _addressController,
-                            enabled: false,
-                            decoration: textFormFieldConfig(
-                              AppLocalizations.of(context).tr('choose_address'),
-                            ),
-                            style: TextStyle(
-                              fontSize: ScreenUtil.instance.setSp(12.0),
-                              color: Colors.black,
-                            ),
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return AppLocalizations.of(context)
-                                    .tr('location_required');
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: ScreenUtil.instance.setHeight(20.0),
-                        ),
-                        _buildLabel(
-                          Icons.home,
-                          AppLocalizations.of(context).tr('house_number'),
-                        ),
-                        TextFormField(
-                          enabled: true,
-                          decoration: textFormFieldConfig(
-                            AppLocalizations.of(context)
-                                .tr('house_number_example'),
-                          ),
-                          style: TextStyle(
-                            fontSize: ScreenUtil.instance.setSp(12.0),
-                            color: Colors.black,
-                          ),
-                          onSaved: (String value) {
-                            _data.houseNumber = value;
-                          },
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return AppLocalizations.of(context)
-                                  .tr('house_required');
-                            }
-                            return null;
-                          },
-                        ),
+
                         // Depend on type
                         _data.type == 1
                             // Fixed time
@@ -621,6 +583,81 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                               return null;
                             },
                           ),
+                        ),
+                        // -- Common
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(20.0),
+                        ),
+                        Divider(),
+                        FlatButton(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Icon(
+                                Icons.my_location,
+                                size: 16,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              SizedBox(
+                                  width: ScreenUtil.instance
+                                      .setHeight(LABEL_MARGIN)),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .tr('default_location'),
+                              ),
+                            ],
+                          ),
+                          onPressed: () {
+                            _getDefaultLocation(userProvider);
+                          },
+                        ),
+                        _buildLabel(
+                          Icons.location_on,
+                          AppLocalizations.of(context).tr('work_location'),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            _getCurrentLocation();
+                          },
+                          child: TextFormField(
+                            controller: _addressController,
+                            enabled: false,
+                            decoration: textFormFieldConfig(
+                              AppLocalizations.of(context).tr('choose_address'),
+                            ),
+                            style: TextStyle(
+                              fontSize: ScreenUtil.instance.setSp(12.0),
+                              color: Colors.black,
+                            ),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return AppLocalizations.of(context)
+                                    .tr('location_required');
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: ScreenUtil.instance.setHeight(20.0),
+                        ),
+                        _buildLabel(
+                          Icons.home,
+                          AppLocalizations.of(context).tr('house_number'),
+                        ),
+                        TextFormField(
+                          enabled: true,
+                          decoration: textFormFieldConfig(
+                            AppLocalizations.of(context)
+                                .tr('house_number_example'),
+                          ),
+                          style: TextStyle(
+                            fontSize: ScreenUtil.instance.setSp(12.0),
+                            color: Colors.black,
+                          ),
+                          onSaved: (String value) {
+                            _data.houseNumber = value;
+                          },
                         ),
                         SizedBox(
                           height: ScreenUtil.instance.setHeight(20.0),
