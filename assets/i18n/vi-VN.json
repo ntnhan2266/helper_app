@@ -336,5 +336,6 @@
     "search_by_ratting": "Tìm kiếm\ntheo ratting",
     "search_by_distance": "Tìm kiếm\ntheo khoảng cách",
     "default_location": "Vị trí mặc định",
-    "no_default_location": "Không có vị trí mặc định"
+    "no_default_location": "Không có vị trí mặc định",
+    "helper_busy": "Người giúp việc đã bận vào ngày {} từ {} đến {}"
 }

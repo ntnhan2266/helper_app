@@ -103,12 +103,15 @@ class Utils {
   }
 
   static String intToJob(BuildContext context, String jobCode) {
-    final categoryListProvider = Provider.of<CategoryList>(context, listen: false);
+    final categoryListProvider =
+        Provider.of<CategoryList>(context, listen: false);
     final categories = categoryListProvider.categories;
     for (var i = 0; i < categories.length; i++) {
       final cat = categories[i];
       if (cat.id == jobCode) {
-        return Localizations.localeOf(context).languageCode == "en" ? cat.nameEn : cat.nameVi;
+        return Localizations.localeOf(context).languageCode == "en"
+            ? cat.nameEn
+            : cat.nameVi;
       }
     }
     return 'other';
@@ -345,13 +348,14 @@ class Utils {
       return AppLocalizations.of(context).tr("periodic");
   }
 
-  static void showErrorDialog(BuildContext context, String content) {
+  static void showErrorDialog(BuildContext context, String content,
+      {List<String> args}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(AppLocalizations.of(context).tr('error')),
-          content: Text(AppLocalizations.of(context).tr(content)),
+          content: Text(AppLocalizations.of(context).tr(content, args: args)),
           actions: <Widget>[
             FlatButton(
               child: Text(AppLocalizations.of(context).tr('ok')),
@@ -400,7 +404,8 @@ class Utils {
     );
   }
 
-  static void showLoadingDialog(BuildContext context, {String lable = 'loading'}) {
+  static void showLoadingDialog(BuildContext context,
+      {String lable = 'loading'}) {
     showDialog(
       context: context,
       barrierDismissible: false,

@@ -335,5 +335,6 @@
     "search_by_ratting": "Search\nby ratting",
     "search_by_distance": "Search\nby distance",
     "default_location": "Default location",
-    "no_default_location": "No default location"
+    "no_default_location": "No default location",
+    "helper_busy": "Helper is already busy on {} from {} to {}"
 }

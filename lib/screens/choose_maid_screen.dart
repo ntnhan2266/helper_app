@@ -76,10 +76,26 @@ class _ChooseMaidScreenState extends State<ChooseMaidScreen> {
     }
   }
 
-  void _handleTap(UserMaid maid) {
-    setState(() {
-      this.maid = maid;
-    });
+  void _handleTap(UserMaid maid) async {
+    Utils.showLoadingDialog(context);
+    final res = await MaidService.checkMaidWorkingDateTime(
+      maid: maid.id,
+      startDate: widget.data.startDate,
+      endDate: widget.data.endDate,
+      workingDates: widget.data.getWorkingDates(),
+      startTime: widget.data.startTime,
+      endTime: widget.data.endTime,
+    );
+    if (res['isValid'] && res['check']) {
+      Navigator.pop(context);
+      setState(() {
+        this.maid = maid;
+      });
+    } else {
+      Navigator.pop(context);
+      Utils.showErrorDialog(context, "helper_busy",
+          args: [res['busyDate'], res['busyTimeFrom'], res['busyTimeTo']]);
+    }
   }
 
   Widget _buildMaidList() {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/api.dart';
@@ -20,6 +21,7 @@ class MaidService {
   static const String _getTopRatingMaids =
       APIConfig.baseURL + '/maids/top-rating';
   static const String _searchMaids = APIConfig.baseURL + '/maids/search';
+  static const String _checkMaids = APIConfig.baseURL + '/maids/check';
 
   static Future<Map<String, dynamic>> getMaid({String id}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -213,6 +215,54 @@ class MaidService {
       return completer.future;
     } catch (e) {
       completer.complete({'isValid': false, 'data': null});
+      return completer.future;
+    }
+  }
+
+  static Future<Map<String, dynamic>> checkMaidWorkingDateTime({
+    String maid,
+    DateTime startDate,
+    DateTime endDate,
+    List<String> workingDates,
+    DateTime startTime,
+    DateTime endTime,
+  }) async {
+    var completer = new Completer<Map<String, dynamic>>();
+    try {
+      var data = {
+        "maid": maid.toString(),
+        "workingDates": workingDates,
+        "startDate": DateFormat('yyyy-MM-dd').format(startDate),
+        "endDate":
+            endDate != null ? DateFormat('MM-dd-yyyy').format(endDate) : null,
+        "startTime": startTime.toString(),
+        "endTime": endTime.toString(),
+      };
+      var headers = await API.getAuthToken();
+      var response = await http.post(
+        _checkMaids,
+        headers: headers,
+        body: jsonEncode(data),
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['errorCode'] != null) {
+          completer.complete({'isValid': false, 'check': null});
+        } else {
+          completer.complete({
+            'isValid': true,
+            'check': data['check'],
+            'busyDate': data['busyDate'] ?? '-',
+            'busyTimeFrom': data['busyTimeFrom'] ?? '-',
+            'busyTimeTo': data['busyTimeTo'] ?? '-',
+          });
+        }
+      } else {
+        completer.complete({'isValid': false, 'check': null});
+      }
+      return completer.future;
+    } catch (e) {
+      completer.complete({'isValid': false, 'check': null});
       return completer.future;
     }
   }

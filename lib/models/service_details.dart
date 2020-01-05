@@ -35,29 +35,29 @@ class ServiceDetails {
   String content = '';
   bool canReview = false;
 
-  ServiceDetails(
-      {this.type = 1,
-      this.category,
-      this.id,
-      this.workingDates,
-      this.status = 0,
-      this.address,
-      this.houseNumber,
-      this.startTime,
-      this.endTime,
-      this.note,
-      this.lat,
-      this.long,
-      this.interval,
-      this.startDate,
-      this.endDate,
-      this.maid,
-      this.amount,
-      this.createdBy,
-      this.reason,
-      this.content,
-      this.canReview,
-    });
+  ServiceDetails({
+    this.type = 1,
+    this.category,
+    this.id,
+    this.workingDates,
+    this.status = 0,
+    this.address,
+    this.houseNumber,
+    this.startTime,
+    this.endTime,
+    this.note,
+    this.lat,
+    this.long,
+    this.interval,
+    this.startDate,
+    this.endDate,
+    this.maid,
+    this.amount,
+    this.createdBy,
+    this.reason,
+    this.content,
+    this.canReview,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -84,51 +84,61 @@ class ServiceDetails {
 
   factory ServiceDetails.fromJson(Map<String, dynamic> json) {
     return ServiceDetails(
-      id: json['_id'],
-      category: json['category'],
-      type: json['type'],
-      status: json['status'],
-      address: json['address'],
-      houseNumber: json['houseNumber'],
-      startTime: DateTime.parse(json['startTime']).toLocal(),
-      endTime: DateTime.parse(json['endTime']).toLocal(),
-      note: json['note'],
-      lat: json['lat'],
-      long: json['long'],
-      startDate: DateTime.parse(json['startDate']).toLocal(),
-      endDate: DateTime.parse(json['endDate']).toLocal(),
-      maid: json['maid'] != null ? UserMaid.getMaid(json['maid']) : null,
-      amount: json['amount'],
-      createdBy: json['createdBy'] != null ? User().getData(json['createdBy']) : null,
-      reason: json['reason'],
-      content: json['content'],
-      canReview: json['canReview']
-    );
+        id: json['_id'],
+        category: json['category'],
+        type: json['type'],
+        status: json['status'],
+        address: json['address'],
+        houseNumber: json['houseNumber'],
+        startTime: DateTime.parse(json['startTime']).toLocal(),
+        endTime: DateTime.parse(json['endTime']).toLocal(),
+        note: json['note'],
+        lat: json['lat'],
+        long: json['long'],
+        startDate: DateTime.parse(json['startDate']).toLocal(),
+        endDate: DateTime.parse(json['endDate']).toLocal(),
+        maid: json['maid'] != null ? UserMaid.getMaid(json['maid']) : null,
+        amount: json['amount'],
+        createdBy: json['createdBy'] != null
+            ? User().getData(json['createdBy'])
+            : null,
+        reason: json['reason'],
+        content: json['content'],
+        canReview: json['canReview']);
   }
 
   static ServiceDetails getData(Map<String, dynamic> json) {
     return ServiceDetails(
-      id: json['_id'],
-      type: json['type'],
-      category: json['category'],
-      status: json['status'],
-      address: json['address'],
-      houseNumber: json['houseNumber'],
-      startTime: DateTime.parse(json['startTime']).toLocal(),
-      endTime: DateTime.parse(json['endTime']).toLocal(),
-      note: json['note'],
-      lat: json['lat'],
-      long: json['long'],
-      workingDates: json['interval'] != null ? json['interval']['days'].cast<DateTime>() : [],
-      interval: json['interval'] != null ? Map<String, bool>.from(json['interval']['options']) : null,
-      startDate: DateTime.parse(json['startDate']).toLocal(),
-      endDate: DateTime.parse(json['endDate']).toLocal(),
-      maid: UserMaid.getMaid(json['maid']),
-      amount: json['amount'],
-      createdBy: User().getData(json['createdBy']),
-      reason: json['reason'],
-      content: json['content'],
-      canReview: json['canReview']
-    );
+        id: json['_id'],
+        type: json['type'],
+        category: json['category'],
+        status: json['status'],
+        address: json['address'],
+        houseNumber: json['houseNumber'],
+        startTime: DateTime.parse(json['startTime']).toLocal(),
+        endTime: DateTime.parse(json['endTime']).toLocal(),
+        note: json['note'],
+        lat: json['lat'],
+        long: json['long'],
+        workingDates: json['interval'] != null
+            ? json['interval']['days'].cast<DateTime>()
+            : [],
+        interval: json['interval'] != null
+            ? Map<String, bool>.from(json['interval']['options'])
+            : null,
+        startDate: DateTime.parse(json['startDate']).toLocal(),
+        endDate: DateTime.parse(json['endDate']).toLocal(),
+        maid: UserMaid.getMaid(json['maid']),
+        amount: json['amount'],
+        createdBy: User().getData(json['createdBy']),
+        reason: json['reason'],
+        content: json['content'],
+        canReview: json['canReview']);
+  }
+
+  List<String> getWorkingDates() {
+    return type == 2
+        ? Utils.getIntervalDayList(startDate, endDate, interval)
+        : null;
   }
 }
