@@ -338,5 +338,6 @@
     "default_location": "Vị trí mặc định",
     "no_default_location": "Không có vị trí mặc định",
     "helper_busy": "Người giúp việc đã bận vào ngày {} từ {} đến {}",
+    "update_address_success": "Cập nhật địa chỉ thành công",
     "calendar": "Lịch"
 }

@@ -11,6 +11,7 @@ import '../utils/constants.dart';
 class UserService {
   static const String _getUserRoute = APIConfig.baseURL + '/auth/me';
   static const String _editUserRoute = APIConfig.baseURL + '/user/edit';
+  static const String _editUserAddress = APIConfig.baseURL + '/user/edit-address';
 
   static Future<Map<String, dynamic>> getUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -48,6 +49,32 @@ class UserService {
     var response = await http.post(_editUserRoute,
         headers: headers, body: jsonEncode(data));
     final body = jsonDecode(response.body);
+    final user = body['user'];
+    if (user != null) {
+      completer.complete({'user': user, 'isValid': true});
+    } else {
+      completer.complete({'user': null, 'isValid': false});
+    }
+    return completer.future;
+  }
+
+  static Future<Map<String, dynamic>> editUserAddress(String address, double lat, double long) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(X_TOKEN);
+    var completer = new Completer<Map<String, dynamic>>();
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: "application/json", // or whatever
+      HttpHeaders.authorizationHeader: "Bearer $token",
+    };
+    final Map<String, dynamic> data = {
+      "address": address,
+      'lat': lat,
+      'long': long,
+    };
+    var response = await http.put(_editUserAddress,
+        headers: headers, body: jsonEncode(data));
+    final body = jsonDecode(response.body);
+        print(response);
     final user = body['user'];
     if (user != null) {
       completer.complete({'user': user, 'isValid': true});

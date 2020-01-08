@@ -1,16 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:smart_rabbit/services/setting.dart';
 
 import '../../utils/constants.dart';
 import '../../widgets/form/form_input.dart';
 import '../../services/auth.dart';
 import '../../models/user.dart';
 import '../../utils/route_names.dart';
+import '../../utils/utils.dart';
 import '../../widgets/user_avatar.dart';
+import '../../screens/choose_address_screen.dart';
+import '../../services/setting.dart';
+import '../../services/permission.dart';
+import '../../services/user.dart';
 
 class UserProfileTab extends StatefulWidget {
   @override
@@ -123,6 +128,9 @@ class _UserProfileTabState extends State<UserProfileTab> {
             leadingIcon: Icons.room,
             leadingIconColor: Theme.of(context).primaryColor,
             trailingIcon: Icons.chevron_right,
+            onTap: () {
+              this._getCurrentLocation();
+            },
           ),
           _menuItem(
             title: 'calendar',
@@ -354,5 +362,44 @@ class _UserProfileTabState extends State<UserProfileTab> {
         );
       },
     );
+  }
+
+  void _getCurrentLocation() async {
+    try {
+      double lat = 21.0048;
+      double long = 105.8453;
+
+      final isGrantedPermission = await PermissionsService()
+          .requestLocationPermission(onPermissionDenied: () {
+        print('Can not get permission');
+      });
+      if (isGrantedPermission) {
+        Position position = await Geolocator()
+            .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        lat = position.latitude;
+        long = position.longitude;
+      }
+      Map<String, dynamic> returnedData =
+          await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return ChooseAddressScreen(
+          lat: lat,
+          long: long,
+        );
+      }));
+      if (returnedData != null) {
+        var res = await UserService.editUserAddress(returnedData['address'], returnedData['lat'], returnedData['long']);
+        if (res['isValid']) {
+          final userProvider = Provider.of<User>(context, listen: false);
+          userProvider.changeAddress(returnedData['address']);
+          userProvider.changeLatatute(returnedData['lat']);
+          userProvider.changeLongtitute(returnedData['long']);
+          Utils.showSuccessSnackbar(context, AppLocalizations.of(context).tr('update_address_success'));
+        } else {
+          Utils.showErrorSnackbar(context);
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
