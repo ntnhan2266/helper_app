@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:pk_skeleton/pk_skeleton.dart';
 
+import '../../models/category.dart';
+import '../../services/category.dart';
 import '../../services/booking.dart';
 import '../../services/maid.dart';
 import '../../models/user.dart';
@@ -34,6 +36,8 @@ class _HomeTabState extends State<HomeTab> {
   bool _isLoadingTopUsers = true;
   List<ServiceDetails> _recentServices = List();
   bool _isLoadingRecentServices = true;
+  List<Category> _suggestedCategories = List();
+  bool _isLoadingCategories = true;
 
   Widget _inputSearch() {
     return Container(
@@ -112,6 +116,7 @@ class _HomeTabState extends State<HomeTab> {
     super.initState();
     _getTopMaid();
     _getBooking();
+    _getSuggestedCategories();
   }
 
   void _getTopMaid() async {
@@ -145,6 +150,20 @@ class _HomeTabState extends State<HomeTab> {
     } else {
       setState(() {
         _isLoadingRecentServices = false;
+      });
+    }
+  }
+
+  void _getSuggestedCategories() async {
+    final res = await CategoryService.getSuggestedCategories();
+    if (res['isValid']) {
+      setState(() {
+        _suggestedCategories.addAll(res['categories']);
+        _isLoadingCategories = false;
+      });
+    } else {
+      setState(() {
+        _isLoadingCategories = false;
       });
     }
   }
@@ -203,13 +222,6 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    final categoryListProvider =
-        Provider.of<CategoryList>(context, listen: false);
-    final categoriesData = categoryListProvider.categories;
-    var _categories = categoriesData != null
-        ? categoriesData.sublist(
-            0, categoriesData.length > 4 ? 4 : categoriesData.length)
-        : [];
     return Scaffold(
       body: ListView(
         children: <Widget>[
@@ -251,7 +263,7 @@ class _HomeTabState extends State<HomeTab> {
           ),
           _homeComponent(
             title: 'suggested_services',
-            isLoading: false,
+            isLoading: _isLoadingCategories,
             action: GestureDetector(
               onTap: () {
                 widget.bottomTapped(1);
@@ -266,7 +278,7 @@ class _HomeTabState extends State<HomeTab> {
             ),
             content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: _categories.map((category) {
+              children: _suggestedCategories.map((category) {
                 return GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(
