@@ -32,6 +32,7 @@ class MaidList extends StatelessWidget {
                     name: maid['name'],
                     salary: maid['salary'],
                     rating: maid['ratting'].toDouble(),
+                    avatar: maid['avatar'],
                   ),
                   distance: maid['distance'] == null ? null : maid['distance'].toDouble(),
                   isSelected: selectedID == maid['_id'],

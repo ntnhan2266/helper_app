@@ -104,7 +104,7 @@ class _HelperRattingScreenState extends State<HelperRattingScreen> {
        submitting = false; 
       });
       if (res['isValid']) {
-        Navigator.of(context).pushReplacementNamed(helperManagementRoute);
+        Navigator.of(context).pushReplacementNamed(homeScreenRoute);
         Utils.showSuccessSnackbar(context, AppLocalizations.of(context).tr('review_successfully'));
       } else {
         Utils.showSuccessSnackbar(context, AppLocalizations.of(context).tr('review_error'));
