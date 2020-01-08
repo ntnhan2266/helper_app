@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 import '../models/service_details.dart';
 import '../configs/api.dart';
@@ -22,6 +23,8 @@ class BookingService {
   static const String _completeBooking =
       APIConfig.baseURL + '/booking/complete?id=';
   static const String _reportHelperRoute = APIConfig.baseURL + '/report';
+  static const String _bookingCalendarRouter =
+      APIConfig.baseURL + '/bookings/calendar';
 
   static Future<Map<String, dynamic>> booking(ServiceDetails booking) async {
     var completer = new Completer<Map<String, dynamic>>();
@@ -240,6 +243,34 @@ class BookingService {
       completer.complete({
         'isValid': false,
       });
+    }
+    return completer.future;
+  }
+
+  static Future<Map<String, dynamic>> getBookingByDate(
+      DateTime from, DateTime to) async {
+    var fromFormat = DateFormat('yyyy-MM-dd').format(from);
+    var toFormat = DateFormat('yyyy-MM-dd').format(to);
+
+    var completer = new Completer<Map<String, dynamic>>();
+    var headers = await API.getAuthToken();
+    try {
+      var response = await http.get(
+        _bookingCalendarRouter + '?from=$fromFormat&to=$toFormat',
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['errorCode'] != null) {
+          completer.complete({'isValid': false, 'data': null});
+        } else {
+          completer.complete({'isValid': true, 'data': data['calendar']});
+        }
+      } else {
+        completer.complete({'isValid': false, 'data': null});
+      }
+    } catch (e) {
+      completer.complete({'isValid': false, 'data': null});
     }
     return completer.future;
   }

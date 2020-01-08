@@ -24,3 +24,4 @@ const String helperManagementRoute = '/helper-management';
 const String settingRoute = '/setting';
 const String searchResultRoute = '/search-result';
 const String aboutRoute = '/about';
+const String calendarRoute = '/calendar';

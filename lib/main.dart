@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
+import './screens/calendar_screen.dart';
 import './screens/about_screen.dart';
 import './screens/search_result_screen.dart';
 import './screens/helper_management_screen.dart';
@@ -175,6 +176,8 @@ class _SmartRabbitAppState extends State<SmartRabbitApp> {
         );
       case aboutRoute:
         return _buildRoute(settings, AboutScreen());
+      case calendarRoute:
+        return _buildRoute(settings, CalendarScreen());
       default:
         return null;
     }

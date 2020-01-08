@@ -92,7 +92,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
                     ),
                   ),
                 ),
-                leading:  UserAvatar(userProvider.avatar),
+                leading: UserAvatar(userProvider.avatar),
                 trailing: FittedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -125,7 +125,18 @@ class _UserProfileTabState extends State<UserProfileTab> {
             trailingIcon: Icons.chevron_right,
           ),
           _menuItem(
-            title: userProvider.isHost ? 'update_host_info' : 'register_to_helperer',
+            title: 'calendar',
+            leadingIcon: Icons.calendar_today,
+            leadingIconColor: Theme.of(context).primaryColor,
+            trailingIcon: Icons.chevron_right,
+            onTap: () {
+              Navigator.of(context).pushNamed(calendarRoute);
+            },
+          ),
+          _menuItem(
+            title: userProvider.isHost
+                ? 'update_host_info'
+                : 'register_to_helperer',
             leadingIcon: Icons.receipt,
             leadingIconColor: Theme.of(context).primaryColor,
             trailingIcon: Icons.chevron_right,
@@ -133,15 +144,17 @@ class _UserProfileTabState extends State<UserProfileTab> {
               Navigator.of(context).pushNamed(helperRegisterRoute);
             },
           ),
-          userProvider.isHost ? _menuItem(
-            title: 'helper_management',
-            leadingIcon: Icons.library_books,
-            leadingIconColor: Theme.of(context).primaryColor,
-            trailingIcon: Icons.chevron_right,
-            onTap: () {
-              Navigator.of(context).pushNamed(helperManagementRoute);
-            },
-          ) : Container(),
+          userProvider.isHost
+              ? _menuItem(
+                  title: 'helper_management',
+                  leadingIcon: Icons.library_books,
+                  leadingIconColor: Theme.of(context).primaryColor,
+                  trailingIcon: Icons.chevron_right,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(helperManagementRoute);
+                  },
+                )
+              : Container(),
           // _menuSpace(),
           // _menuItem(
           //   title: 'review',
