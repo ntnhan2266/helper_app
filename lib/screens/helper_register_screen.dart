@@ -145,6 +145,8 @@ class _HelperRegisterScreenState extends State<HelperRegisterScreen> {
         context,
         AppLocalizations.of(context).tr('update_profile_successfully'),
       );
+      final userProvider = Provider.of<User>(context, listen: true);
+      userProvider.changeIsHost(true);
     } else {
       Utils.showErrorSnackbar(context);
     }
