@@ -338,5 +338,6 @@
     "no_default_location": "No default location",
     "helper_busy": "Helper is already busy on {} from {} to {}",
     "update_address_success": "Update address successfully",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "statistic": "Statistic"
 }

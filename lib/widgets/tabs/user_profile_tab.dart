@@ -133,15 +133,6 @@ class _UserProfileTabState extends State<UserProfileTab> {
             },
           ),
           _menuItem(
-            title: 'calendar',
-            leadingIcon: Icons.calendar_today,
-            leadingIconColor: Theme.of(context).primaryColor,
-            trailingIcon: Icons.chevron_right,
-            onTap: () {
-              Navigator.of(context).pushNamed(calendarRoute);
-            },
-          ),
-          _menuItem(
             title: userProvider.isHost
                 ? 'update_host_info'
                 : 'register_to_helperer',
@@ -163,19 +154,25 @@ class _UserProfileTabState extends State<UserProfileTab> {
                   },
                 )
               : Container(),
-          // _menuSpace(),
-          // _menuItem(
-          //   title: 'review',
-          //   leadingIcon: Icons.rate_review,
-          //   leadingIconColor: Colors.green,
-          //   trailingIcon: Icons.chevron_right,
-          // ),
-          // _menuItem(
-          //   title: 'invite_friend',
-          //   leadingIcon: Icons.people,
-          //   leadingIconColor: Colors.green,
-          //   trailingIcon: Icons.chevron_right,
-          // ),
+          _menuSpace(),
+          _menuItem(
+            title: 'calendar',
+            leadingIcon: Icons.calendar_today,
+            leadingIconColor: Colors.lightGreen[300],
+            trailingIcon: Icons.chevron_right,
+            onTap: () {
+              Navigator.of(context).pushNamed(calendarRoute);
+            },
+          ),
+          _menuItem(
+            title: 'statistic',
+            leadingIcon: Icons.insert_chart,
+            leadingIconColor: Colors.lightGreen[300],
+            trailingIcon: Icons.chevron_right,
+            onTap: () {
+              Navigator.of(context).pushNamed(statisticRoute);
+            },
+          ),
           _menuSpace(),
           _menuItem(
             title: 'settings',
@@ -387,13 +384,15 @@ class _UserProfileTabState extends State<UserProfileTab> {
         );
       }));
       if (returnedData != null) {
-        var res = await UserService.editUserAddress(returnedData['address'], returnedData['lat'], returnedData['long']);
+        var res = await UserService.editUserAddress(
+            returnedData['address'], returnedData['lat'], returnedData['long']);
         if (res['isValid']) {
           final userProvider = Provider.of<User>(context, listen: false);
           userProvider.changeAddress(returnedData['address']);
           userProvider.changeLatatute(returnedData['lat']);
           userProvider.changeLongtitute(returnedData['long']);
-          Utils.showSuccessSnackbar(context, AppLocalizations.of(context).tr('update_address_success'));
+          Utils.showSuccessSnackbar(context,
+              AppLocalizations.of(context).tr('update_address_success'));
         } else {
           Utils.showErrorSnackbar(context);
         }

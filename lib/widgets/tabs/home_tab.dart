@@ -14,7 +14,6 @@ import '../../services/maid.dart';
 import '../../models/user.dart';
 import '../../models/user_maid.dart';
 import '../../models/service_details.dart';
-import '../../models/category_list.dart';
 import '../../utils/route_names.dart';
 import '../../utils/constants.dart';
 import '../../configs/api.dart';
